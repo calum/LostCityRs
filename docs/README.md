@@ -5,6 +5,7 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 ## Notes
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).
+- [flows/server-response-woodcutting.md](flows/server-response-woodcutting.md): the return path. How `mes`, `anim`, `sound_synth`, `inv_add` and `stat_advance` become packets and what the client does with them (read from code, not run).
 
 Add each new note here with a one-line summary.
 
