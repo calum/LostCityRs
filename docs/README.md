@@ -4,7 +4,9 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 ## Notes
 
-_None yet._ Add each note here as it is written, with a one-line summary.
+- [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).
+
+Add each new note here with a one-line summary.
 
 ## Note template
 
