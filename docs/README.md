@@ -4,6 +4,10 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 ## Notes
 
+### Reader's guide
+
+- [guide/a-short-introduction-to-the-tick.md](guide/a-short-introduction-to-the-tick.md): a short illustrated book for a reader new to the engine: what a tick is, the eleven phases, a player's and an NPC's turn, packets in and out, a tick-by-tick worked example (chopping a tree) and a crib for reading scripts. Compiled from the notes below (read from code, not run). Kindle edition: [guide/a-short-introduction-to-the-tick.epub](guide/a-short-introduction-to-the-tick.epub). Regenerate with `python3 docs/guide/gen_images.py` then `python3 docs/guide/build_epub.py`.
+
 ### Traced flows
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).

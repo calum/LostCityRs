@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 556" width="600" height="556" role="img">
+<title>The steps of one NPC's turn in phase 4, with the validity gate after lifecycle</title>
+<rect x="0" y="0" width="600" height="556" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">One NPC's turn (phase 4)</text>
+<rect x="30" y="46" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="72" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<text x="84" y="72" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Undelay and resume</text>
+<text x="560" y="72" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">only if the NPC is active</text>
+<line x1="300" y1="84" x2="300" y2="96" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="96" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="122" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<text x="84" y="122" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Lifecycle</text>
+<text x="560" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">respawn, revert, despawn (if not delayed)</text>
+<line x1="300" y1="134" x2="300" y2="146" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="146" width="540" height="38" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="172" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#ffffff"></text>
+<text x="48" y="172" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#ffffff">isValid()?</text>
+<text x="560" y="172" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#dddddd">active and not delayed; if not, the turn ends here</text>
+<line x1="300" y1="184" x2="300" y2="196" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="196" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="222" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">4</text>
+<text x="84" y="222" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Hunt</text>
+<text x="560" y="222" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">non-player hunts; hunt counter + 1</text>
+<line x1="300" y1="234" x2="300" y2="246" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="246" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="272" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">5</text>
+<text x="84" y="272" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Use hunt target</text>
+<text x="560" y="272" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">turn a chosen target into an interaction</text>
+<line x1="300" y1="284" x2="300" y2="296" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="296" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="322" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">6</text>
+<text x="84" y="322" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Regen</text>
+<text x="560" y="322" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">stat regeneration</text>
+<line x1="300" y1="334" x2="300" y2="346" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="346" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="372" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">7</text>
+<text x="84" y="372" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">ai_timer</text>
+<text x="560" y="372" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">the NPC's timer script</text>
+<line x1="300" y1="384" x2="300" y2="396" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="396" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="422" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">8</text>
+<text x="84" y="422" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">NPC queue</text>
+<text x="560" y="422" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">ai_queue scripts</text>
+<line x1="300" y1="434" x2="300" y2="446" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="446" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="472" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">9</text>
+<text x="84" y="472" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Mode and move</text>
+<text x="560" y="472" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">at most one step</text>
+<line x1="300" y1="484" x2="300" y2="496" stroke="#111111" stroke-width="2.5"/>
+<rect x="30" y="496" width="540" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="48" y="522" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">10</text>
+<text x="84" y="522" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Facing</text>
+<text x="560" y="522" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">after movement</text>
+</svg>

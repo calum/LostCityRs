@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 410" width="600" height="410" role="img">
+<title>A click is buffered between ticks, decoded in phase 2, acted on in phase 5 and answered in phase 10</title>
+<rect x="0" y="0" width="600" height="410" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Where a click spends its time</text>
+<rect x="30" y="60" width="250" height="56" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="155" y="94" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">tick T - 1 (cycle runs)</text>
+<rect x="290" y="60" width="280" height="56" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="430" y="94" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">tick T (cycle runs)</text>
+<line x1="285" y1="118" x2="285" y2="134" stroke="#111111" stroke-width="2.5" stroke-dasharray="5,4"/>
+<text x="285" y="152" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">bytes arrive between cycles and wait in a buffer</text>
+<rect x="290" y="170" width="280" height="46" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="430" y="198" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">phase 2: decode, run handler</text>
+<rect x="290" y="232" width="280" height="46" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="430" y="260" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">phase 5: walk, op / ap, scripts</text>
+<rect x="290" y="294" width="280" height="46" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="430" y="322" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">phase 10: write results</text>
+<line x1="430" y1="216" x2="430" y2="225" stroke="#111111" stroke-width="2.5"/>
+<polygon points="423,223 437,223 430,232" fill="#111111"/>
+<line x1="430" y1="278" x2="430" y2="287" stroke="#111111" stroke-width="2.5"/>
+<polygon points="423,285 437,285 430,294" fill="#111111"/>
+<text x="30" y="192" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">In:</text>
+<text x="30" y="254" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Act:</text>
+<text x="30" y="316" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">Out:</text>
+<text x="300" y="372" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="italic" fill="#111111">A packet that reaches the process while cycle T is running is decoded in T + 1.</text>
+<text x="300" y="392" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">(inference from how the event loop is used; open question 46)</text>
+</svg>

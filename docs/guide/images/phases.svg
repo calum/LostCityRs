@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 574" width="600" height="574" role="img">
+<title>The eleven phases of a tick in order</title>
+<rect x="0" y="0" width="600" height="574" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">The eleven phases of cycle()</text>
+<rect x="140" y="50" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="74.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<text x="184" y="74.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processWorld</text>
+<text x="570" y="74.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">world queue, delayed objs, NPC player-hunt</text>
+<rect x="140" y="94" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="118.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<text x="184" y="118.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processClientsIn</text>
+<text x="570" y="118.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">decode and act on packets from players</text>
+<rect x="140" y="138" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="162.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">3</text>
+<text x="184" y="162.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processNpcEventQueue</text>
+<text x="570" y="162.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">ai_spawn / ai_despawn scripts</text>
+<rect x="140" y="182" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="206.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">4</text>
+<text x="184" y="206.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processNpcs</text>
+<text x="570" y="206.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">each NPC takes its turn</text>
+<rect x="140" y="226" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="250.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">5</text>
+<text x="184" y="250.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processPlayers</text>
+<text x="570" y="250.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">each player takes its turn</text>
+<rect x="140" y="270" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="294.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">6</text>
+<text x="184" y="294.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processLogouts</text>
+<text x="570" y="294.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">players leaving</text>
+<rect x="140" y="314" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="338.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">7</text>
+<text x="184" y="338.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processLogins</text>
+<text x="570" y="338.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">players arriving</text>
+<rect x="140" y="358" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="382.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">8</text>
+<text x="184" y="382.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processZones</text>
+<text x="570" y="382.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">loc and obj timers, shared zone events</text>
+<rect x="140" y="402" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="426.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">9</text>
+<text x="184" y="426.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processInfo</text>
+<text x="570" y="426.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">pre-encode player and NPC update blocks</text>
+<rect x="140" y="446" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="470.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">10</text>
+<text x="184" y="470.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processClientsOut</text>
+<text x="570" y="470.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">write each player's packets</text>
+<rect x="140" y="490" width="440" height="38" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="154" y="514.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">11</text>
+<text x="184" y="514.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">processCleanup</text>
+<text x="570" y="514.0" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">reset per-tick state</text>
+<line x1="128" y1="50" x2="128" y2="220" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="50" x2="134" y2="50" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="220" x2="134" y2="220" stroke="#111111" stroke-width="3"/>
+<text x="118" y="131.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">Input and</text>
+<text x="118" y="149.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">NPCs</text>
+<line x1="128" y1="226" x2="128" y2="264" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="226" x2="134" y2="226" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="264" x2="134" y2="264" stroke="#111111" stroke-width="3"/>
+<text x="118" y="250.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">Players</text>
+<line x1="128" y1="270" x2="128" y2="396" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="270" x2="134" y2="270" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="396" x2="134" y2="396" stroke="#111111" stroke-width="3"/>
+<text x="118" y="320.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">Logouts,</text>
+<text x="118" y="338.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">logins,</text>
+<text x="118" y="356.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">zones</text>
+<line x1="128" y1="402" x2="128" y2="528" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="402" x2="134" y2="402" stroke="#111111" stroke-width="3"/>
+<line x1="128" y1="528" x2="134" y2="528" stroke="#111111" stroke-width="3"/>
+<text x="118" y="461.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">Output and</text>
+<text x="118" y="479.0" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">reset</text>
+<text x="300" y="562" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#666666">Grouping into four acts is this book's, not the code's.</text>
+</svg>

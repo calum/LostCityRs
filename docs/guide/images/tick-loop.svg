@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320" role="img">
+<title>The tick loop: cycle() runs, then waits for the rest of 600 ms, then runs again</title>
+<rect x="0" y="0" width="600" height="320" fill="#ffffff"/>
+<rect x="40" y="60" width="520" height="90" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="95" font-family="Helvetica, Arial, sans-serif" font-size="24" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">cycle()</text>
+<text x="300" y="125" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">phases 1 to 11, then the tail (autosave, logs, currentTick + 1)</text>
+<line x1="300" y1="150" x2="300" y2="193" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,191 307,191 300,200" fill="#111111"/>
+<rect x="40" y="200" width="520" height="70" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="232" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">setTimeout(cycle, 600 - elapsed - drift)</text>
+<text x="300" y="256" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">wait out whatever is left of the 600 ms</text>
+<line x1="560" y1="235" x2="590" y2="235" stroke="#111111" stroke-width="2.5"/>
+<line x1="590" y1="235" x2="590" y2="105" stroke="#111111" stroke-width="2.5"/>
+<line x1="590" y1="105" x2="570" y2="105" stroke="#111111" stroke-width="2.5"/>
+<polygon points="568,98 568,112 558,105" fill="#111111"/>
+<text x="300" y="30" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">One tick = one pass through cycle()</text>
+<text x="300" y="305" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal" font-style="italic" fill="#111111">Incoming packets wait in a buffer until phase 2.</text>
+</svg>
