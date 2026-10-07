@@ -360,6 +360,8 @@ There are limits to what this book can tell you about scripts. How the compiler 
 
 For the full picture of which phase reads and writes which state, use `docs/tick/ordering-matrix.md`.
 
+**Next books in the series** (reading order in `docs/books/README.md`). *An introduction to RuneScript* (`docs/books/runescript-intro/`) explains how a header such as `[oploc1,_tree]` is compiled and found, and what protected access means in the compiler. *How multi-tick scripts run* (`docs/books/multi-tick-scripts/`) goes into suspension, queues, timers and re-arming loops with worked examples from many skills and random events, and covers the client side.
+
 **Not covered, and not verified**
 
 - Nothing here was observed on a running server. Tick scheduling in practice (open question 44), packet arrival windows (46), the phase-5 interaction timings (33) and the woodcutting cadence (10) all need a run.

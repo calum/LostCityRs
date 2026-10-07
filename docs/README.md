@@ -8,11 +8,23 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 - [guide/a-short-introduction-to-the-tick.md](guide/a-short-introduction-to-the-tick.md): a short illustrated book for a reader new to the engine: what a tick is, the eleven phases, a player's and an NPC's turn, packets in and out, a tick-by-tick worked example (chopping a tree) and a crib for reading scripts. Compiled from the notes below (read from code, not run). Kindle edition: [guide/a-short-introduction-to-the-tick.epub](guide/a-short-introduction-to-the-tick.epub). Regenerate with `python3 docs/guide/gen_images.py` then `python3 docs/guide/build_epub.py`.
 
+### Project history
+
+- [history/project-origins.md](history/project-origins.md): how Lost City started and how the server was recreated (cache = assets only; logic and RuneScript recreated by the team). Based on submodule git history and READMEs plus a user-pasted forum FAQ (not fetched; unverified against the live page).
+
 ### Traced flows
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).
 - [flows/server-response-woodcutting.md](flows/server-response-woodcutting.md): the return path. How `mes`, `anim`, `sound_synth`, `inv_add` and `stat_advance` become packets and what the client does with them (read from code, not run).
 - [flows/move-opclick.md](flows/move-opclick.md): how the client's walking route (`MOVE_OPCLICK`) is decoded, queued as waypoints and walked tick by tick (read from code, not run).
+
+### Books
+
+Series index and reading order (tick guide, project history, RuneScript, then multi-tick scripts): [books/README.md](books/README.md).
+
+- [books/multi-tick-scripts/README.md](books/multi-tick-scripts/README.md): Book 4, how multi-tick scripts run. Suspension model (`ScriptState`, the interpreter loop, the seven suspending commands, every resume site), queues/timers/re-arming loops, eight simple and six complex worked examples from Content with tick timelines, and the client side (interface expressions are the only client "scripts"; nothing on the client spans ticks as a script). Read from code, not run. EPUB: [books/multi-tick-scripts/multi-tick-scripts.epub](books/multi-tick-scripts/multi-tick-scripts.epub).
+
+- [books/runescript-intro/README.md](books/runescript-intro/README.md): Book 3, an introduction to RuneScript. Toolchain (`.rs2` to `script.dat` to the VM), config languages, script headers/triggers/lookup keys (what `_tree` means), syntax and types, pointers and protected access, commands, three real scripts line by line, glossary. Answers open questions 5, 25 (by reading) and 30. Read from code, not run. EPUB: [books/runescript-intro/runescript-intro.epub](books/runescript-intro/runescript-intro.epub). Regenerate both book EPUBs with `python3 docs/books/build_epub.py` (needs `markdown-it-py`).
 
 ### One game tick (notes in tick order)
 

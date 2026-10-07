@@ -42,7 +42,8 @@ def check(note):
             if a < 1 or b < a or b > len(code):
                 errors.append(f"{note}:{i+1}: {rel}:{a}-{b} outside file length {len(code)}")
         # a citation followed directly by a code fence: snippet must be in the cited range
-        if cites and i + 1 < len(lines) and lines[i + 1].strip().startswith("```"):
+        # a fence opened as ```abbrev is a deliberately elided/combined quote: not text-checked
+        if cites and i + 1 < len(lines) and lines[i + 1].strip().startswith("```") and not lines[i + 1].strip().startswith("```abbrev"):
             snippet = []
             j = i + 2
             while j < len(lines) and not lines[j].strip().startswith("```"):
@@ -58,7 +59,9 @@ def check(note):
                 continue
             window = [x.strip() for x in code[a - 1 : max(b, a + len(snippet) + 2)]]
             for s in snippet:
-                if not any(s in w for w in window):
+                # snippets may be quoted with leading source line numbers ("12 foo();")
+                s = re.sub(r"^\d+ ?", "", s).strip() if not any(s in w for w in window) else s
+                if not s or not any(s in w for w in window):
                     errors.append(f"{note}:{i+1}: snippet line not found in {rel}:{a}-{b}: {s!r}")
     return errors
 
