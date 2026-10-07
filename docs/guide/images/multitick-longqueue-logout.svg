@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 388" width="700" height="388" role="img">
+<title>The perm varp bit persists across logout while the longqueue entry is dropped and queued again at login with the full duration</title>
+<rect x="0" y="0" width="700" height="388" fill="#ffffff"/>
+<text x="350" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Thieving stall: a cooldown that survives logout</text>
+<rect x="120" y="52" width="220" height="28" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="2"/>
+<text x="230" y="72" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">session 1</text>
+<rect x="340" y="52" width="120" height="28" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="400" y="72" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">offline</text>
+<rect x="460" y="52" width="220" height="28" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="2"/>
+<text x="570" y="72" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">session 2</text>
+<text x="108" y="130" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">varp bit</text>
+<text x="108" y="145" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">(perm, saved)</text>
+<rect x="150" y="110" width="530" height="36" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="415" y="133" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">bit set at S+1 ... kept in the player save ... still set at login</text>
+<text x="108" y="200" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">longqueue</text>
+<text x="108" y="215" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">entry (memory)</text>
+<rect x="150" y="180" width="190" height="36" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="245" y="203" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">counting down from 1500</text>
+<text x="345" y="203" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">X</text>
+<text x="400" y="203" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">gone</text>
+<rect x="480" y="180" width="200" height="36" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="580" y="203" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">new entry, full 1500</text>
+<line x1="150" y1="250" x2="150" y2="225" stroke="#111111" stroke-width="2"/>
+<polygon points="143,227 157,227 150,218" fill="#111111"/>
+<text x="150" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">stolen from the stall:</text>
+<text x="150" y="277" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">bit set, entry queued</text>
+<text x="150" y="290" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">(^discard)</text>
+<line x1="345" y1="250" x2="345" y2="225" stroke="#111111" stroke-width="2"/>
+<polygon points="338,227 352,227 345,218" fill="#111111"/>
+<text x="345" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">logout: LONG entry with</text>
+<text x="345" y="277" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">^discard does not block</text>
+<text x="345" y="290" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">removal; it is dropped</text>
+<line x1="480" y1="250" x2="480" y2="225" stroke="#111111" stroke-width="2"/>
+<polygon points="473,227 487,227 480,218" fill="#111111"/>
+<text x="480" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">login hook sees the bit</text>
+<text x="480" y="277" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">and queues it again</text>
+<text x="480" y="290" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">with the full time</text>
+<rect x="20" y="306" width="660" height="62" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="32" y="328" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">While the entry is queued, getqueue(stolen_from_stall_baker) &gt; 0 is how the stall owner knows.</text>
+<text x="32" y="349" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">Inference: after a logout and login the owner stays hostile for a further full 1500 ticks, not the time left.</text>
+</svg>

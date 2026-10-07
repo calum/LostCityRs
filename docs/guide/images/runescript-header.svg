@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 432" width="600" height="432" role="img">
+<title>Anatomy of a script header and how the three subject forms become a numeric lookup key</title>
+<rect x="0" y="0" width="600" height="432" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">A header names a trigger and a subject</text>
+<text x="300" y="86" font-family="Consolas, Menlo, monospace" font-size="34" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">[oploc1,_tree]</text>
+<line x1="177.60000000000002" y1="100" x2="300.0" y2="100" stroke="#111111" stroke-width="3"/>
+<line x1="177.60000000000002" y1="100" x2="177.60000000000002" y2="94" stroke="#111111" stroke-width="3"/>
+<line x1="300.0" y1="100" x2="300.0" y2="94" stroke="#111111" stroke-width="3"/>
+<line x1="340.8" y1="100" x2="422.4" y2="100" stroke="#111111" stroke-width="3"/>
+<line x1="340.8" y1="100" x2="340.8" y2="94" stroke="#111111" stroke-width="3"/>
+<line x1="422.4" y1="100" x2="422.4" y2="94" stroke="#111111" stroke-width="3"/>
+<text x="238.8" y="122" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">trigger</text>
+<text x="238.8" y="140" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">which event</text>
+<text x="381.6" y="122" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">subject</text>
+<text x="381.6" y="140" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">which thing</text>
+<text x="300" y="178" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Three forms of subject, and the type number each gets in the key</text>
+<rect x="30" y="192" width="540" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="218" font-family="Consolas, Menlo, monospace" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">hans</text>
+<text x="150" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">specific: one config</text>
+<text x="556" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">type 2</text>
+<rect x="30" y="240" width="540" height="40" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="266" font-family="Consolas, Menlo, monospace" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">_citizen</text>
+<text x="150" y="266" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">category: every config with category=citizen</text>
+<text x="556" y="266" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">type 1</text>
+<rect x="30" y="288" width="540" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="314" font-family="Consolas, Menlo, monospace" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">_</text>
+<text x="150" y="314" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">global: everything (also login, ai_spawn)</text>
+<text x="556" y="314" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="end" font-weight="bold" font-style="normal" fill="#666666">no subject part</text>
+<rect x="30" y="348" width="540" height="62" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="374" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">key = trigger id + (type &lt;&lt; 8) + (subject id &lt;&lt; 10)</text>
+<text x="300" y="396" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#dddddd">global: key = trigger id. Name-mode triggers (proc, label, queue ...): key = -1</text>
+</svg>

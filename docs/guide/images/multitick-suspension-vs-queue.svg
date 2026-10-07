@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" width="640" height="340" role="img">
+<title>Suspension keeps one script state and continues it; a queue entry starts a fresh script state later</title>
+<rect x="0" y="0" width="640" height="340" fill="#ffffff"/>
+<text x="320" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Two ways to run work later</text>
+<rect x="16" y="46" width="296" height="276" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="164" y="72" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Suspension</text>
+<text x="164" y="91" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">p_delay, p_pausebutton, world_delay</text>
+<rect x="40" y="106" width="248" height="62" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="164" y="130" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">one ScriptState object</text>
+<text x="164" y="147" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">pc, stacks, locals, call frames</text>
+<line x1="164" y1="168" x2="164" y2="197" stroke="#111111" stroke-width="2.5"/>
+<polygon points="157,195 171,195 164,204" fill="#111111"/>
+<text x="176" y="192" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">stored in activeScript</text>
+<rect x="40" y="204" width="248" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="164" y="229" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">waiting</text>
+<line x1="164" y1="244" x2="164" y2="273" stroke="#111111" stroke-width="2.5"/>
+<polygon points="157,271 171,271 164,280" fill="#111111"/>
+<text x="176" y="268" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">execute() runs it again</text>
+<rect x="40" y="280" width="248" height="30" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="164" y="300" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">carries on after the command</text>
+<rect x="328" y="46" width="296" height="276" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="476" y="72" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Queue or timer entry</text>
+<text x="476" y="91" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">queue, weakqueue, longqueue, settimer</text>
+<rect x="352" y="106" width="248" height="62" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="476" y="130" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">script id + arguments</text>
+<text x="476" y="147" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">+ a delay counter</text>
+<line x1="476" y1="168" x2="476" y2="197" stroke="#111111" stroke-width="2.5"/>
+<polygon points="469,195 483,195 476,204" fill="#111111"/>
+<text x="488" y="192" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">counted down each visit</text>
+<rect x="352" y="204" width="248" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="476" y="229" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">due, and the player can be accessed</text>
+<line x1="476" y1="244" x2="476" y2="273" stroke="#111111" stroke-width="2.5"/>
+<polygon points="469,271 483,271 476,280" fill="#111111"/>
+<text x="488" y="268" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">init() builds a new state</text>
+<rect x="352" y="280" width="248" height="30" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="476" y="300" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">starts from line 1; only args survive</text>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 486" width="600" height="486" role="img">
+<title>An interface button closes the interface, the unprotected close script queues a script, and the queued script runs protected</title>
+<rect x="0" y="0" width="600" height="486" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Doing protected work from an unprotected trigger</text>
+<text x="300" y="50" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#666666">tutorial.rs2, the player_kit interface</text>
+<rect x="30" y="72" width="540" height="84" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="98" font-family="Consolas, Menlo, monospace" font-size="14" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[if_button,player_kit:accept]</text>
+<text x="46" y="120" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">body: if_close;</text>
+<text x="46" y="142" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#666666">protected unless the interface is an overlay</text>
+<line x1="300" y1="156" x2="300" y2="175" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,173 307,173 300,182" fill="#111111"/>
+<rect x="30" y="182" width="540" height="84" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="208" font-family="Consolas, Menlo, monospace" font-size="14" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[if_close,player_kit]</text>
+<text x="46" y="230" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">body: queue(tutorial_designed_character, 0, 0);</text>
+<text x="46" y="252" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#666666">provides active_player only: unprotected</text>
+<line x1="300" y1="266" x2="300" y2="285" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,283 307,283 300,292" fill="#111111"/>
+<rect x="30" y="292" width="540" height="84" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="318" font-family="Consolas, Menlo, monospace" font-size="14" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[queue,tutorial_designed_character]</text>
+<text x="46" y="340" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">body: %tutorial = ^...designed_character;</text>
+<text x="46" y="362" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#666666">queue scripts run protected: the varp write is allowed</text>
+<rect x="30" y="408" width="540" height="58" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2" stroke-dasharray="6,4"/>
+<text x="300" y="432" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">p_delay written in [if_close,...] is a compile error:</text>
+<text x="300" y="452" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">Attempt to access uninitialized pointer p_active_player.</text>
+</svg>

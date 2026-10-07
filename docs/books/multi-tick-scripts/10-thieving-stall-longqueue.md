@@ -13,7 +13,7 @@ Book: [Multi-tick scripts](README.md).
 ---
 
 
-**Question answered:** Stealing from a stall makes the stall's owner hostile to you for ~1000-1500 ticks. Where is that 25-minute memory kept, what happens to it when you log out and in, and why is it a `longqueue` with `^discard` rather than a timer or a plain `queue`?
+**Question answered:** Stealing from a stall makes the stall's owner hostile to you for ~1000-1500 ticks (10 to 15 minutes at 600 ms per tick; an earlier draft wrongly said 25 minutes). Where is that memory kept, what happens to it when you log out and in, and why is it a `longqueue` with `^discard` rather than a timer or a plain `queue`?
 
 **Based on commits:** Engine-TS `1d25566c`, Content `65b754f76`. **Method:** read, not observed.
 
@@ -135,7 +135,7 @@ Login hook: `Content/scripts/login_logout/login.rs2:67` (`~thieving_stall_timers
 
 - `removePlayer` and how the save drops queues; the login-time ordering of `~thieving_stall_timers_login` relative to the first queue pass (the login trigger runs in `onLogin`, phase 7, 07-logouts-logins).
 - `stealing_check_for_guard`/`owner` details and the guard retaliation (`~npc_retaliate`), the loc respawn timers, `stat_random` odds.
-- Other `longqueue` users (`grep` found only thieving and Zombie Queen): not read.
+- Other `longqueue` users (corrected: `grep -rl longqueue Content/scripts` also finds `keg_of_beer.rs2`, `quest_horror`, `quest_tbwt`, `quest_viking`, `game_mortton`, `quest_mortton`, `quest_zombiequeen` and a test script; an earlier draft said only thieving and Zombie Queen): not read.
 - Nothing was run.
 
 ---

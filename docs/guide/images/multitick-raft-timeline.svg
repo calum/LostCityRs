@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 360" width="700" height="360" role="img">
+<title>Timeline of the raft ride: resumes at ticks 0, 2, 4 up to 18, then 19, 21 to 25, ending at tick 26</title>
+<rect x="0" y="0" width="700" height="360" fill="#ffffff"/>
+<text x="350" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">The Zombie Queen raft ride, tick by tick</text>
+<text x="350" y="48" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#555555">T = tick of the Continue click; numbers are ticks after T; worked out from code, not observed</text>
+<rect x="28" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="39.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">0</text>
+<rect x="51" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="62.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">1</text>
+<rect x="74" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="85.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">2</text>
+<rect x="97" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="108.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">3</text>
+<rect x="120" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="131.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">4</text>
+<rect x="143" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="154.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">5</text>
+<rect x="166" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="177.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">6</text>
+<rect x="189" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="200.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">7</text>
+<rect x="212" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="223.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">8</text>
+<rect x="235" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="246.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">9</text>
+<rect x="258" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="269.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">10</text>
+<rect x="281" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="292.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">11</text>
+<rect x="304" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="315.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">12</text>
+<rect x="327" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="338.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">13</text>
+<rect x="350" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="361.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">14</text>
+<rect x="373" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="384.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">15</text>
+<rect x="396" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="407.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">16</text>
+<rect x="419" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="430.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">17</text>
+<rect x="442" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="453.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">18</text>
+<rect x="465" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="476.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">19</text>
+<rect x="488" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="499.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">20</text>
+<rect x="511" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="522.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">21</text>
+<rect x="534" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="545.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">22</text>
+<rect x="557" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="568.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">23</text>
+<rect x="580" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="591.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">24</text>
+<rect x="603" y="84" width="23" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="1.5"/>
+<text x="614.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">25</text>
+<rect x="626" y="84" width="23" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="637.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">26</text>
+<rect x="649" y="84" width="23" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="660.5" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">27</text>
+<text x="28" y="74" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">dark = the script runs this tick (phase 5, step 2; the first leg in phase 2)</text>
+<text x="28" y="140" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">p_delay argument chosen on that tick:</text>
+<text x="39.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="85.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="131.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="177.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="223.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="269.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="315.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="361.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="407.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="453.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(0)</text>
+<text x="476.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(1)</text>
+<text x="522.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(0)</text>
+<text x="545.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(0)</text>
+<text x="568.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(0)</text>
+<text x="591.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(0)</text>
+<text x="614.5" y="162" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">(0)</text>
+<line x1="28" y1="188" x2="442" y2="188" stroke="#111111" stroke-width="3"/>
+<line x1="28" y1="182" x2="28" y2="194" stroke="#111111" stroke-width="3"/>
+<line x1="442" y1="182" x2="442" y2="194" stroke="#111111" stroke-width="3"/>
+<text x="235" y="210" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">ride: nine legs of p_delay(1), two ticks each</text>
+<line x1="448" y1="188" x2="649" y2="188" stroke="#111111" stroke-width="3"/>
+<line x1="448" y1="182" x2="448" y2="194" stroke="#111111" stroke-width="3"/>
+<line x1="649" y1="182" x2="649" y2="194" stroke="#111111" stroke-width="3"/>
+<text x="545.5" y="210" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">landing: one tick per step</text>
+<rect x="28" y="244" width="644" height="98" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="40" y="266" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">Every phase 2 in ticks 1 to 26 sees the player still delayed, so walk and op packets are dropped.</text>
+<text x="40" y="286" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">Tick 18: the jump to map square 0_45_46 is noticed in phase 10; the exit trigger is queued on the engine queue.</text>
+<text x="40" y="306" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">Tick 26: the script ends, the engine queue runs the exit trigger, which queues exit_ah_za_rhoon.</text>
+<text x="40" y="326" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">Tick 27: the queued script runs (normal queue pass, step 3).</text>
+</svg>

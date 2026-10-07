@@ -12,6 +12,9 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 - [history/project-origins.md](history/project-origins.md): how Lost City started and how the server was recreated (cache = assets only; logic and RuneScript recreated by the team). Based on submodule git history and READMEs plus a user-pasted forum FAQ (not fetched; unverified against the live page).
 
+- [guide/an-introduction-to-runescript.md](guide/an-introduction-to-runescript.md): Book 3 in readable form, with figures. Source files to bytecode, headers and lookup keys, the language, the VM, pointers and protected access, commands, reading a script. Evidence: [books/runescript-intro/](books/runescript-intro/README.md). EPUB: [guide/an-introduction-to-runescript.epub](guide/an-introduction-to-runescript.epub). Build with `python3 docs/guide/gen_images_runescript.py` then `python3 docs/guide/build_epub_runescript.py`.
+- [guide/how-multi-tick-scripts-run.md](guide/how-multi-tick-scripts-run.md): Book 4 in readable form, with figures. Suspension, queues, timers, re-arming loops, eight short and six long worked examples, the client side. Evidence: [books/multi-tick-scripts/](books/multi-tick-scripts/README.md). EPUB: [guide/how-multi-tick-scripts-run.epub](guide/how-multi-tick-scripts-run.epub). Build with `python3 docs/guide/build_epub_multitick.py` (images are checked in).
+
 ### Traced flows
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).

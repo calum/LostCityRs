@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 352" width="700" height="352" role="img">
+<title>Server ticks are 600 ms apart; the client runs about 30 cycles per tick, and a camera shake started by one packet runs until a later reset packet</title>
+<rect x="0" y="0" width="700" height="352" fill="#ffffff"/>
+<text x="350" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">The client counts cycles, not ticks</text>
+<text x="20" y="82" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">server</text>
+<line x1="110" y1="62" x2="110" y2="92" stroke="#111111" stroke-width="3"/>
+<text x="114" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">T</text>
+<line x1="200" y1="62" x2="200" y2="92" stroke="#111111" stroke-width="3"/>
+<text x="204" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">T+1</text>
+<line x1="290" y1="62" x2="290" y2="92" stroke="#111111" stroke-width="3"/>
+<text x="294" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">T+2</text>
+<line x1="380" y1="62" x2="380" y2="92" stroke="#111111" stroke-width="3"/>
+<text x="384" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">T+3</text>
+<text x="480" y="82" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">...</text>
+<line x1="560" y1="62" x2="560" y2="92" stroke="#111111" stroke-width="3"/>
+<text x="564" y="106" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">T+60</text>
+<line x1="110" y1="77" x2="600" y2="77" stroke="#111111" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="20" y="166" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">client</text>
+<text x="214" y="168" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">one tick (600 ms) = about 30 client cycles of 20 ms, on an on-time client</text>
+<line x1="110" y1="152" x2="110" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="113" y1="152" x2="113" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="116" y1="152" x2="116" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="119" y1="152" x2="119" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="122" y1="152" x2="122" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="125" y1="152" x2="125" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="128" y1="152" x2="128" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="131" y1="152" x2="131" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="134" y1="152" x2="134" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="137" y1="152" x2="137" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="140" y1="152" x2="140" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="143" y1="152" x2="143" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="146" y1="152" x2="146" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="149" y1="152" x2="149" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="152" y1="152" x2="152" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="155" y1="152" x2="155" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="158" y1="152" x2="158" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="161" y1="152" x2="161" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="164" y1="152" x2="164" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="167" y1="152" x2="167" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="170" y1="152" x2="170" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="173" y1="152" x2="173" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="176" y1="152" x2="176" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="179" y1="152" x2="179" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="182" y1="152" x2="182" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="185" y1="152" x2="185" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="188" y1="152" x2="188" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="191" y1="152" x2="191" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="194" y1="152" x2="194" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="197" y1="152" x2="197" y2="176" stroke="#111111" stroke-width="1.5"/>
+<line x1="110" y1="152" x2="110" y2="176" stroke="#111111" stroke-width="3"/>
+<line x1="200" y1="152" x2="200" y2="176" stroke="#111111" stroke-width="3"/>
+<line x1="110" y1="94" x2="110" y2="143" stroke="#111111" stroke-width="1.5"/>
+<polygon points="103,141 117,141 110,150" fill="#111111"/>
+<line x1="200" y1="94" x2="200" y2="143" stroke="#111111" stroke-width="1.5"/>
+<polygon points="193,141 207,141 200,150" fill="#111111"/>
+<text x="20" y="242" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">camera</text>
+<rect x="110" y="222" width="450" height="32" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="335" y="243" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">CAM_SHAKE runs on its own counter, with no expiry</text>
+<line x1="110" y1="286" x2="110" y2="263" stroke="#111111" stroke-width="2"/>
+<polygon points="103,265 117,265 110,256" fill="#111111"/>
+<text x="110" y="300" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">tick T: cam_shake packet</text>
+<text x="110" y="313" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">(client keeps no tick count)</text>
+<line x1="560" y1="286" x2="560" y2="263" stroke="#111111" stroke-width="2"/>
+<polygon points="553,265 567,265 560,256" fill="#111111"/>
+<text x="560" y="300" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#111111">about T+60: queued cr_queue</text>
+<text x="560" y="313" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#111111">runs cam_reset; the packet</text>
+<text x="560" y="326" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#111111">stops the shake</text>
+</svg>

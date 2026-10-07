@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 636" width="600" height="636" role="img">
+<title>Pipeline from .rs2 sources and config files through packAll and the compiler to script.dat and the engine VM</title>
+<rect x="0" y="0" width="600" height="636" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">From .rs2 text to a running script</text>
+<rect x="30" y="50" width="250" height="62" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="155" y="76" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">scripts: *.rs2</text>
+<text x="155" y="98" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">Content/scripts/**</text>
+<rect x="320" y="50" width="250" height="62" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="445" y="76" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">data: configs + id tables</text>
+<text x="445" y="98" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">*.loc *.npc ... and pack/*.pack</text>
+<line x1="155" y1="112" x2="155" y2="143" stroke="#111111" stroke-width="2.5"/>
+<polygon points="148,141 162,141 155,150" fill="#111111"/>
+<line x1="445" y1="112" x2="445" y2="143" stroke="#111111" stroke-width="2.5"/>
+<polygon points="438,141 452,141 445,150" fill="#111111"/>
+<rect x="30" y="150" width="540" height="74" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="176" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">packAll  (Engine-TS/tools/pack)</text>
+<text x="300" y="200" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">revalidatePack, then packConfigs, then runServerCompiler</text>
+<line x1="300" y1="224" x2="300" y2="255" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,253 307,253 300,262" fill="#111111"/>
+<rect x="30" y="262" width="540" height="128" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="288" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">RuneScriptTS compiler (the npm package @lostcityrs/runescript)</text>
+<rect x="46" y="306" width="90" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="91.0" y="331" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">1 parse</text>
+<rect x="144" y="306" width="90" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="189.0" y="331" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">2 analyze</text>
+<rect x="242" y="306" width="90" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="287.0" y="331" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">3 codegen</text>
+<rect x="340" y="306" width="116" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="398.0" y="331" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">4 pointer check</text>
+<rect x="464" y="306" width="90" height="40" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="509.0" y="331" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">5 write</text>
+<text x="300" y="372" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">any error: the compiler prints it and calls process.exit(1)</text>
+<line x1="300" y1="390" x2="300" y2="421" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,419 307,419 300,428" fill="#111111"/>
+<rect x="30" y="428" width="540" height="56" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="454" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">data/pack/server/script.dat + script.idx</text>
+<text x="300" y="474" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#666666">one byte block per script id</text>
+<line x1="300" y1="484" x2="300" y2="515" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,513 307,513 300,522" fill="#111111"/>
+<rect x="30" y="522" width="540" height="74" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="548" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Engine: ScriptProvider.load  -&gt;  ScriptFile objects</text>
+<text x="300" y="572" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">ScriptRunner.execute(state) is the virtual machine</text>
+<text x="300" y="618" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#666666">Read from code at the commits in the last chapter; no compile was run.</text>
+</svg>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 486" width="600" height="486" role="img">
+<title>Step by step stack contents while the scale_by_playercount proc runs, ending with 119 left on the int stack</title>
+<rect x="0" y="0" width="600" height="486" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">~scale_by_playercount(120) on the stacks</text>
+<text x="300" y="50" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#666666">hand-traced from the handlers, not run</text>
+<rect x="30" y="62" width="540" height="30" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="38" y="83" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#ffffff">step</text>
+<text x="108" y="83" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#ffffff">executed</text>
+<text x="318" y="83" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#ffffff">int stack</text>
+<text x="488" y="83" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#ffffff">locals</text>
+<rect x="30" y="92" width="540" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="114" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">caller</text>
+<text x="108" y="114" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">PUSH_INT_LOCAL</text>
+<text x="318" y="114" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[120]</text>
+<text x="488" y="114" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="126" width="540" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="148" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">gosub</text>
+<text x="108" y="148" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">GOSUB_WITH_PARAMS</text>
+<text x="318" y="148" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[]</text>
+<text x="488" y="148" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">[120, 0]</text>
+<rect x="30" y="160" width="540" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="182" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">0</text>
+<text x="108" y="182" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">playercount (3 online)</text>
+<text x="318" y="182" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[3]</text>
+<text x="488" y="182" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="194" width="540" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="216" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<text x="108" y="216" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">PUSH_CONSTANT_INT 2000</text>
+<text x="318" y="216" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[3, 2000]</text>
+<text x="488" y="216" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="228" width="540" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="250" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<text x="108" y="250" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">min</text>
+<text x="318" y="250" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[3]</text>
+<text x="488" y="250" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="262" width="540" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="284" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">3</text>
+<text x="108" y="284" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">POP_INT_LOCAL 1</text>
+<text x="318" y="284" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[]</text>
+<text x="488" y="284" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">[120, 3]</text>
+<rect x="30" y="296" width="540" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="318" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">4-5</text>
+<text x="108" y="318" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">push 4000, push local 1</text>
+<text x="318" y="318" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[4000, 3]</text>
+<text x="488" y="318" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="330" width="540" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="352" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">6</text>
+<text x="108" y="352" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">sub</text>
+<text x="318" y="352" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[3997]</text>
+<text x="488" y="352" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="364" width="540" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="386" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">7-8</text>
+<text x="108" y="386" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">push 4000, push local 0</text>
+<text x="318" y="386" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[3997, 4000, 120]</text>
+<text x="488" y="386" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="398" width="540" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="420" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">9</text>
+<text x="108" y="420" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">scale</text>
+<text x="318" y="420" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[119]</text>
+<text x="488" y="420" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111"></text>
+<rect x="30" y="432" width="540" height="34" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="38" y="454" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">10</text>
+<text x="108" y="454" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">RETURN</text>
+<text x="318" y="454" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">[119]</text>
+<text x="488" y="454" font-family="Consolas, Menlo, monospace" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">restored</text>
+</svg>

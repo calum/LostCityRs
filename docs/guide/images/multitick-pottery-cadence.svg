@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 378" width="720" height="378" role="img">
+<title>Pottery weak-queue entries each count 2, 1, 0 over three ticks, giving one item every three ticks</title>
+<rect x="0" y="0" width="720" height="378" fill="#ffffff"/>
+<text x="350" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Pottery wheel: why one pot every 3 ticks</text>
+<text x="350" y="48" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#555555">weak queue, delay 2; number shown = counter value read at that tick's visit; computed from code, not observed</text>
+<text x="88" y="92" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">tick</text>
+<rect x="100" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="125.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T</text>
+<rect x="150" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="175.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+1</text>
+<rect x="200" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="225.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+2</text>
+<rect x="250" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="275.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+3</text>
+<rect x="300" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="325.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+4</text>
+<rect x="350" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="375.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+5</text>
+<rect x="400" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="425.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+6</text>
+<rect x="450" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="475.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+7</text>
+<rect x="500" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="525.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+8</text>
+<rect x="550" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="575.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+9</text>
+<rect x="600" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="625.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+10</text>
+<rect x="650" y="70" width="50" height="30" rx="0" fill="#e4e4e4" stroke="#111111" stroke-width="1.5"/>
+<text x="675.0" y="90" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">T+11</text>
+<text x="88" y="138" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">entry A</text>
+<rect x="100" y="114" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="125.0" y="137" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<rect x="150" y="114" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="175.0" y="137" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<rect x="200" y="114" width="50" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="225.0" y="137" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">0</text>
+<text x="258" y="136" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">item made</text>
+<text x="88" y="182" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">entry B</text>
+<rect x="250" y="158" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="275.0" y="181" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<rect x="300" y="158" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="325.0" y="181" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<rect x="350" y="158" width="50" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="375.0" y="181" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">0</text>
+<text x="408" y="180" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">item made</text>
+<text x="88" y="226" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">entry C</text>
+<rect x="400" y="202" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="425.0" y="225" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<rect x="450" y="202" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="475.0" y="225" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<rect x="500" y="202" width="50" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="525.0" y="225" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">0</text>
+<text x="558" y="224" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">item made</text>
+<text x="88" y="270" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="end" font-weight="bold" font-style="normal" fill="#111111">entry D</text>
+<rect x="550" y="246" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="575.0" y="269" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">2</text>
+<rect x="600" y="246" width="50" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="625.0" y="269" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">1</text>
+<rect x="650" y="246" width="50" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="675.0" y="269" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">0</text>
+<rect x="20" y="298" width="680" height="62" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="32" y="320" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">A run at T+2 enqueues B. A was the last node of the weak list, so the loop's saved cursor is the end marker</text>
+<text x="32" y="340" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">and B is not visited until T+3. Delay 2 then needs three visits, so items arrive at T+2, T+5, T+8, T+11.</text>
+</svg>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 482" width="600" height="482" role="img">
+<title>A command call needs a signature, an opcode number, a pointer rule and a handler</title>
+<rect x="0" y="0" width="600" height="482" fill="#ffffff"/>
+<text x="300" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">One command, four places</text>
+<rect x="130" y="46" width="340" height="44" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="300" y="74" font-family="Consolas, Menlo, monospace" font-size="16" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">mes("It looks like ...");</text>
+<line x1="300" y1="92" x2="300" y2="103" stroke="#111111" stroke-width="2.5"/>
+<polygon points="293,101 307,101 300,110" fill="#111111"/>
+<rect x="30" y="110" width="540" height="74" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="134" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">1  signature</text>
+<text x="556" y="134" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">Content/scripts/engine.rs2:159</text>
+<text x="46" y="156" font-family="Consolas, Menlo, monospace" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">[command,mes](string $text)</text>
+<text x="46" y="174" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="italic" fill="#111111">read by the compiler: types</text>
+<rect x="30" y="194" width="540" height="74" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="218" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">2  opcode number</text>
+<text x="556" y="218" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">Engine-TS ScriptOpcode.ts, ScriptOpcodeMap</text>
+<text x="46" y="240" font-family="Consolas, Menlo, monospace" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">['MES', ScriptOpcode.MES]</text>
+<text x="46" y="258" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="italic" fill="#111111">read by the compiler: the number written</text>
+<rect x="30" y="278" width="540" height="74" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="302" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">3  pointer rule</text>
+<text x="556" y="302" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">Engine-TS ScriptOpcodePointers.ts:268</text>
+<text x="46" y="324" font-family="Consolas, Menlo, monospace" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">require: ['active_player']</text>
+<text x="46" y="342" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="italic" fill="#111111">read by the pointer check</text>
+<rect x="30" y="362" width="540" height="74" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="46" y="386" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">4  handler</text>
+<text x="556" y="386" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="end" font-weight="normal" font-style="normal" fill="#666666">Engine-TS PlayerOps.ts:343</text>
+<text x="46" y="408" font-family="Consolas, Menlo, monospace" font-size="13" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">pops the string, messageGame(...)</text>
+<text x="46" y="426" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="italic" fill="#111111">run by the VM</text>
+<text x="300" y="464" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="italic" fill="#111111">Miss one and it fails at a different stage (compile, pointer check, or run).</text>
+</svg>

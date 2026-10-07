@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 312" width="700" height="312" role="img">
+<title>The eleven phases with the four resume points highlighted: world queue, packet decode, NPC turn and player turn</title>
+<rect x="0" y="0" width="700" height="312" fill="#ffffff"/>
+<text x="350" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">Where a waiting script comes back, within one tick</text>
+<rect x="16" y="48" width="54" height="64" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="43.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">1</text>
+<text x="43.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#ffffff">world</text>
+<rect x="74" y="48" width="54" height="64" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="101.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">2</text>
+<text x="101.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#ffffff">packets</text>
+<text x="101.0" y="98" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#ffffff">in</text>
+<rect x="132" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="159.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">3</text>
+<text x="159.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">NPC</text>
+<text x="159.0" y="98" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">events</text>
+<rect x="190" y="48" width="54" height="64" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="217.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">4</text>
+<text x="217.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#ffffff">NPCs</text>
+<rect x="248" y="48" width="54" height="64" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="275.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">5</text>
+<text x="275.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#ffffff">players</text>
+<rect x="306" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="333.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">6</text>
+<text x="333.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">logouts</text>
+<rect x="364" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="391.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">7</text>
+<text x="391.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">logins</text>
+<rect x="422" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="449.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">8</text>
+<text x="449.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">zones</text>
+<rect x="480" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="507.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">9</text>
+<text x="507.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">info</text>
+<rect x="538" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="565.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">10</text>
+<text x="565.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">packets</text>
+<text x="565.0" y="98" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">out</text>
+<rect x="596" y="48" width="54" height="64" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="623.0" y="68" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">11</text>
+<text x="623.0" y="86" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">cleanup</text>
+<rect x="16" y="176" width="150" height="61" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2"/>
+<text x="91.0" y="198" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">world_delay</text>
+<text x="91.0" y="213" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">resumes here, on</text>
+<text x="91.0" y="228" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">visit d + 2</text>
+<line x1="43.0" y1="112" x2="43.0" y2="154" stroke="#111111" stroke-width="2.5"/>
+<line x1="43.0" y1="154" x2="91.0" y2="154" stroke="#111111" stroke-width="2.5"/>
+<line x1="91.0" y1="154" x2="91.0" y2="168" stroke="#111111" stroke-width="2.5"/>
+<polygon points="84.0,166 98.0,166 91.0,175" fill="#111111"/>
+<rect x="176" y="176" width="160" height="76" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2"/>
+<text x="256.0" y="198" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">p_pausebutton and</text>
+<text x="256.0" y="213" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">p_countdialog resume</text>
+<text x="256.0" y="228" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">when the packet is</text>
+<text x="256.0" y="243" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">decoded</text>
+<line x1="101.0" y1="112" x2="101.0" y2="144" stroke="#111111" stroke-width="2.5"/>
+<line x1="101.0" y1="144" x2="256.0" y2="144" stroke="#111111" stroke-width="2.5"/>
+<line x1="256.0" y1="144" x2="256.0" y2="168" stroke="#111111" stroke-width="2.5"/>
+<polygon points="249.0,166 263.0,166 256.0,175" fill="#111111"/>
+<rect x="346" y="176" width="140" height="61" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2"/>
+<text x="416.0" y="198" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">npc_delay resumes</text>
+<text x="416.0" y="213" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">at the top of</text>
+<text x="416.0" y="228" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">that NPC's turn</text>
+<line x1="217.0" y1="112" x2="217.0" y2="134" stroke="#111111" stroke-width="2.5"/>
+<line x1="217.0" y1="134" x2="416.0" y2="134" stroke="#111111" stroke-width="2.5"/>
+<line x1="416.0" y1="134" x2="416.0" y2="168" stroke="#111111" stroke-width="2.5"/>
+<polygon points="409.0,166 423.0,166 416.0,175" fill="#111111"/>
+<rect x="496" y="176" width="190" height="91" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2"/>
+<text x="591.0" y="198" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">p_delay resumes at step 2</text>
+<text x="591.0" y="213" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">of the player's turn,</text>
+<text x="591.0" y="228" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">before queues (3),</text>
+<text x="591.0" y="243" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">timers (4), engine</text>
+<text x="591.0" y="258" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">queue (5)</text>
+<line x1="275.0" y1="112" x2="275.0" y2="124" stroke="#111111" stroke-width="2.5"/>
+<line x1="275.0" y1="124" x2="591.0" y2="124" stroke="#111111" stroke-width="2.5"/>
+<line x1="591.0" y1="124" x2="591.0" y2="168" stroke="#111111" stroke-width="2.5"/>
+<polygon points="584.0,166 598.0,166 591.0,175" fill="#111111"/>
+<text x="350" y="296" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#555555">Time-waits come back at a fixed point of a later tick. Dialogue waits come back when the client says so.</text>
+</svg>

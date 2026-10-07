@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 372" width="700" height="372" role="img">
+<title>The Mime director cycle of 16 counts and a player's state machine from 7 through 100, 101 and 102 to the reward</title>
+<rect x="0" y="0" width="700" height="372" fill="#ffffff"/>
+<text x="350" y="28" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">The Mime: one director, many players</text>
+<text x="20" y="58" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">The NPC's ai_timer fires every 2 ticks. count = (map_clock mod 32) / 2, so each value 0 to 15 comes round once per 32 ticks.</text>
+<rect x="30" y="74" width="40" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="50.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">0</text>
+<rect x="70" y="74" width="40" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="90.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">1</text>
+<rect x="110" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="130.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">2</text>
+<rect x="150" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="170.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">3</text>
+<rect x="190" y="74" width="40" height="34" rx="0" fill="#111111" stroke="#111111" stroke-width="2"/>
+<text x="210.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">4</text>
+<rect x="230" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="250.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">5</text>
+<rect x="270" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="290.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">6</text>
+<rect x="310" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="330.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">7</text>
+<rect x="350" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="370.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">8</text>
+<rect x="390" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="410.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">9</text>
+<rect x="430" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="450.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">10</text>
+<rect x="470" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="490.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">11</text>
+<rect x="510" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="530.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">12</text>
+<rect x="550" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="570.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">13</text>
+<rect x="590" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="610.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">14</text>
+<rect x="630" y="74" width="40" height="34" rx="0" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+<text x="650.0" y="96" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">15</text>
+<line x1="50.0" y1="148" x2="50.0" y2="117" stroke="#111111" stroke-width="2"/>
+<polygon points="43.0,119 57.0,119 50.0,110" fill="#111111"/>
+<text x="30" y="164" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">hunt the</text>
+<text x="30" y="177" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">start tile</text>
+<line x1="90.0" y1="148" x2="90.0" y2="117" stroke="#111111" stroke-width="2"/>
+<polygon points="83.0,119 97.0,119 90.0,110" fill="#111111"/>
+<text x="98" y="164" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">pick the</text>
+<text x="98" y="177" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">emote</text>
+<line x1="210.0" y1="148" x2="210.0" y2="117" stroke="#111111" stroke-width="2"/>
+<polygon points="203.0,119 217.0,119 210.0,110" fill="#111111"/>
+<text x="182.0" y="164" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">open emote</text>
+<text x="182.0" y="177" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#111111">interface</text>
+<text x="310" y="148" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">(counts 2, 3 and 5 to 15 do nothing here)</text>
+<text x="20" y="198" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="start" font-weight="bold" font-style="normal" fill="#111111">One player's %macro_event, changed only by that player's own answers</text>
+<rect x="40" y="222" width="80" height="50" rx="6" fill="#ffffff" stroke="#111111" stroke-width="2.5"/>
+<text x="80.0" y="246" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">7</text>
+<text x="80.0" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">start</text>
+<line x1="120" y1="247" x2="156" y2="247" stroke="#111111" stroke-width="2.5"/>
+<polygon points="154,240 154,254 164,247" fill="#111111"/>
+<text x="142.0" y="238" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">right</text>
+<rect x="164" y="222" width="80" height="50" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="204.0" y="246" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">100</text>
+<text x="204.0" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">1 right</text>
+<line x1="244" y1="247" x2="280" y2="247" stroke="#111111" stroke-width="2.5"/>
+<polygon points="278,240 278,254 288,247" fill="#111111"/>
+<text x="266.0" y="238" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">right</text>
+<rect x="288" y="222" width="80" height="50" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="328.0" y="246" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">101</text>
+<text x="328.0" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">2 right</text>
+<line x1="368" y1="247" x2="404" y2="247" stroke="#111111" stroke-width="2.5"/>
+<polygon points="402,240 402,254 412,247" fill="#111111"/>
+<text x="390.0" y="238" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">right</text>
+<rect x="412" y="222" width="80" height="50" rx="6" fill="#e4e4e4" stroke="#111111" stroke-width="2.5"/>
+<text x="452.0" y="246" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="bold" font-style="normal" fill="#111111">102</text>
+<text x="452.0" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#555555">3 right</text>
+<line x1="492" y1="247" x2="528" y2="247" stroke="#111111" stroke-width="2.5"/>
+<polygon points="526,240 526,254 536,247" fill="#111111"/>
+<text x="514.0" y="238" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">right</text>
+<rect x="536" y="222" width="130" height="50" rx="6" fill="#111111" stroke="#111111" stroke-width="2.5"/>
+<text x="601" y="244" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">return teleport</text>
+<text x="601" y="259" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" font-style="normal" fill="#ffffff">and reward</text>
+<line x1="328.0" y1="272" x2="328.0" y2="314" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+<line x1="80.0" y1="314" x2="328.0" y2="314" stroke="#111111" stroke-width="2" stroke-dasharray="6 4"/>
+<line x1="80.0" y1="314" x2="80.0" y2="279" stroke="#111111" stroke-width="2"/>
+<polygon points="73.0,281 87.0,281 80.0,272" fill="#111111"/>
+<text x="226.0" y="332" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="normal" fill="#111111">any wrong answer: p_delay(4), cry, back to 7</text>
+<text x="350" y="292" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" font-style="normal" fill="#555555">each right answer also costs p_delay(4)</text>
+</svg>
