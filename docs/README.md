@@ -4,6 +4,10 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 ## Notes
 
+### Project history
+
+- [history/project-origins.md](history/project-origins.md): how Lost City started and how the server was recreated (cache = assets only; logic and RuneScript recreated by the team). Based on submodule git history and READMEs plus a user-pasted forum FAQ (not fetched; unverified against the live page).
+
 ### Traced flows
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).
