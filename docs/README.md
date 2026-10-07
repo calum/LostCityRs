@@ -14,6 +14,10 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 - [flows/server-response-woodcutting.md](flows/server-response-woodcutting.md): the return path. How `mes`, `anim`, `sound_synth`, `inv_add` and `stat_advance` become packets and what the client does with them (read from code, not run).
 - [flows/move-opclick.md](flows/move-opclick.md): how the client's walking route (`MOVE_OPCLICK`) is decoded, queued as waypoints and walked tick by tick (read from code, not run).
 
+### Books
+
+- [books/multi-tick-scripts/README.md](books/multi-tick-scripts/README.md): Book 1, how multi-tick scripts run. Suspension model (`ScriptState`, the interpreter loop, the seven suspending commands, every resume site), queues/timers/re-arming loops, eight simple and six complex worked examples from Content with tick timelines, and the client side (interface expressions are the only client "scripts"; nothing on the client spans ticks as a script). Read from code, not run.
+
 ### One game tick (notes in tick order)
 
 Start with the overview, then follow the phases in the order `World.cycle()` runs them.
