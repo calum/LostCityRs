@@ -192,7 +192,7 @@ That is the whole phase. There is no `try`/`catch` around the loop or around eac
 
 ## Not checked / open questions
 
-- How content trigger keys like `[ai_spawn,_]` are compiled and registered in `ScriptProvider.scriptLookup`. `docs/open-questions.md` #5 and #25.
+- How content trigger keys like `[ai_spawn,_]` are compiled and registered in `ScriptProvider.scriptLookup`. Answered by reading in [`../books/runescript-intro/02-script-anatomy-and-lookup.md`](../books/runescript-intro/02-script-anatomy-and-lookup.md) (finding 47); the runtime effect is `docs/open-questions.md` #25.
 - What commands do when `self`/`active_npc` is a despawned NPC (`nid` -1, not in `World.npcs`), or an inactive `RESPAWN` NPC removed by `npc_del` while its spawn entry was still queued. `docs/open-questions.md` #26.
 - RuneScript VM internals (what the spawn script does beyond its entry; `npc_say`, `obj_addall` handlers). Boundary; `docs/open-questions.md` #15.
 - The respawn path's rsbuf state (observer count after `addNpc(..., false)`) is read in [`09-info.md`](09-info.md) rule 22; `docs/open-questions.md` #20(a) is now observation-only.

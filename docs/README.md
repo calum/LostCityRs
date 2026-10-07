@@ -18,6 +18,8 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 - [books/multi-tick-scripts/README.md](books/multi-tick-scripts/README.md): Book 1, how multi-tick scripts run. Suspension model (`ScriptState`, the interpreter loop, the seven suspending commands, every resume site), queues/timers/re-arming loops, eight simple and six complex worked examples from Content with tick timelines, and the client side (interface expressions are the only client "scripts"; nothing on the client spans ticks as a script). Read from code, not run.
 
+- [books/runescript-intro/README.md](books/runescript-intro/README.md): Book 2, an introduction to RuneScript. Toolchain (`.rs2` to `script.dat` to the VM), config languages, script headers/triggers/lookup keys (what `_tree` means), syntax and types, pointers and protected access, commands, three real scripts line by line, glossary. Answers open questions 5, 25 (by reading) and 30. Read from code, not run.
+
 ### One game tick (notes in tick order)
 
 Start with the overview, then follow the phases in the order `World.cycle()` runs them.
