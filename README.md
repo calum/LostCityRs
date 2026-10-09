@@ -35,9 +35,9 @@ All submodules are checked out on a local branch named **`calum-research`**, bra
 
 The Engine-TS README states that historical versions are organised as **branches** and that matching engine and content branches must be used together. Engine-TS, Content and Client-TS were all added at their `274` branch. How the client's revision relates to the engine's is still an open question (see `docs/open-questions.md`).
 
-### Safety: never push upstream
+### Safety: never push the submodules
 
-We never push to GitHub. As a guard, every submodule's **push URL** has been set to the invalid value `DISABLED_NO_PUSH`, so `git push` inside a submodule fails by design. Do not undo this.
+Commits to this root repo are pushed to `calum/LostCityRs`. The submodules are owned by other developers and are never pushed. As a guard, every submodule's **push URL** has been set to the invalid value `DISABLED_NO_PUSH`, so `git push` inside a submodule fails by design. Do not undo this.
 
 - Our modifications to upstream code (for example debug logging added to trace behaviour) stay local, on `calum-research`.
 - Our documentation lives in this container repo's `docs/`, not in the submodules.
@@ -48,7 +48,7 @@ To re-apply the guard (for example after re-cloning):
 git submodule foreach 'git remote set-url --push origin DISABLED_NO_PUSH'
 ```
 
-Note: this container repo has no remote configured either.
+This root repo's remote is https://github.com/calum/LostCityRs.
 
 ## Cloning this project elsewhere
 

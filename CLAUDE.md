@@ -16,10 +16,11 @@ The user needs to *fully understand* the system. Wrong documentation is actively
 - **Fix wrong docs immediately** and tell the user what was wrong.
 - When the user asks a question the code cannot answer, say so rather than filling the gap.
 
-## Git rules: never push upstream
+## Git rules: push the root repo, never the submodules
 
-- **Never run `git push`** in any submodule or in this repo, and never add or change remotes to enable it. Submodule push URLs are intentionally set to `DISABLED_NO_PUSH`; do not change that.
-- Do not open PRs, issues or comments on GitHub for these repos.
+- **Always push new commits in this root repo** (`calum/LostCityRs`) once they are made.
+- **Never run `git push` in any submodule.** The submodules are owned by other developers (LostCityRS upstream). Never add or change their remotes to enable pushing. Submodule push URLs are intentionally set to `DISABLED_NO_PUSH`; do not change that. (Plan: fork them to Calum's GitHub account later so they can be pushed too; until then, only the root repo is updated.)
+- Do not open PRs, issues or comments on the upstream submodule repos.
 - Read-only `gh` / `git fetch` use is fine.
 - Each submodule is on the local branch `calum-research`. Stay on it. Local edits to upstream code are allowed only when they help research (e.g. temporary logging); commit them on `calum-research`, keep them minimal, and record them in `docs/local-changes.md` (create it when first needed) so they can be told apart from upstream behaviour.
 - Documentation goes in this container repo's `docs/`, not in the submodules.
