@@ -25,10 +25,11 @@ The user needs to *fully understand* the system. Wrong documentation is actively
 - Read-only `gh` / `git fetch` use is fine.
 - Each submodule is on the local branch `calum-research`. Stay on it. Local edits to upstream code are allowed only when they help research (e.g. temporary logging); commit them on `calum-research`, keep them minimal, and record them in `docs/local-changes.md` (create it when first needed) so they can be told apart from upstream behaviour.
 - Documentation goes in this container repo's `docs/`, not in the submodules.
-- Commit only when the user asks.
+- Commit and push doc updates as part of the work. Commit other changes (for example `mise.toml` or other repo config) when the user asks for them.
 
 ## Documentation conventions
 
+- **Always keep the docs up to date.** Any new finding about server or client mechanics, RuneScript details, or important information about this repo (setup, tooling, conventions, layout) goes into `docs/` in the same piece of work, with citations as above. Add a new note or update the existing one, update the index in `docs/README.md`, and add or remove items in `docs/open-questions.md`. A finding that lives only in a chat answer is lost. Then commit and push it (see Git rules).
 - Location and index: `docs/README.md`. Each note follows the template there.
 - Each note records: the question it answers, the commit hash of each repo it was based on, the findings with citations, and its own open questions.
 - Keep notes focused (one flow or subsystem per file) and link to related notes.
@@ -66,7 +67,7 @@ This is how the existing notes were produced; follow it for new ones.
 3. Get citations with `grep -n` on the actual file **after** reading. Do not cite a line number from memory or from an earlier `sed` range. Re-check line numbers before saving a note; earlier drafts had wrong ranges.
 4. Record the `git rev-parse --short HEAD` of each repo read, and the method (read vs ran).
 5. Separate findings, labelled inferences and "not checked". Add every unverified thing to `docs/open-questions.md` and remove items you answer.
-6. Add the note to the index in `docs/README.md`. Commit only when the user asks.
+6. Add the note to the index in `docs/README.md`, then commit and push it to `main`.
 
 ## Staleness check
 
