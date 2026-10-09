@@ -19,6 +19,7 @@ The user needs to *fully understand* the system. Wrong documentation is actively
 ## Git rules: push the root repo, never the submodules
 
 - **Always push new commits in this root repo** (`calum/LostCityRs`) once they are made.
+- **Commit and push straight to `main`.** Only use a separate branch to avoid conflicts with another agent working at the same time, and bring it back onto `main` when done. Do not open pull requests.
 - **Never run `git push` in any submodule.** The submodules are owned by other developers (LostCityRS upstream). Never add or change their remotes to enable pushing. Submodule push URLs are intentionally set to `DISABLED_NO_PUSH`; do not change that. (Plan: fork them to Calum's GitHub account later so they can be pushed too; until then, only the root repo is updated.)
 - Do not open PRs, issues or comments on the upstream submodule repos.
 - Read-only `gh` / `git fetch` use is fine.
