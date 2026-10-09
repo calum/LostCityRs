@@ -84,6 +84,9 @@ So setting `build.srcDir` to `../Content` is not enough on a case-sensitive file
 | `dev` | `npm run dev` (restarts on `.ts` changes) | `start.js:251`; `package.json:19`; `Engine-TS/README.md` Workflow |
 | `configure` | `npm run setup` in `Engine-TS` | `start.js:106,256`; `package.json:26` |
 | `engine:clean-build` | `npm run clean` then `npm run build` | `start.js:262-270`; `package.json:14-15` |
+| `docs:install` | `python -m pip install -r docs-site/requirements.txt` | MkDocs + Material for the docs site (not an upstream script; not run through mise) |
+| `docs:serve` | `python -m mkdocs serve` (live preview at http://127.0.0.1:8000) | `mkdocs.yml` at the repo root |
+| `docs:build` | `python -m mkdocs build --strict` into `site/` | Same build `.github/workflows/docs.yml` runs for GitHub Pages |
 
 Run on Linux: `up` (and so `setup`, `content:link`, `engine:install`, `client:install`, `client:build`, `start`). Not run: `submodules:init`, `dev`, `configure`, `engine:clean-build`.
 

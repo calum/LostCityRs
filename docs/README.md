@@ -1,5 +1,7 @@
 # Documentation index
 
+These notes are published as a searchable site at <https://calum.github.io/LostCityRs/> (built from `mkdocs.yml` by `.github/workflows/docs.yml` on every push to `main`). Preview locally with `mise run docs:serve`.
+
 Rules: everything here must be evidenced and accurate. See [`../README.md`](../README.md#ground-rules-evidence-only-no-guessing) and [`../CLAUDE.md`](../CLAUDE.md).
 
 ## Notes

@@ -1,0 +1,66 @@
+# Publishes docs/ as a searchable site on GitHub Pages.
+# Build locally: `mise run docs:serve` (live preview) or `mise run docs:build`.
+# Deployed by .github/workflows/docs.yml on every push to main that touches docs/.
+site_name: LostCityRS research notes
+site_description: How the LostCityRS engine, scripts and client work, traced from the code.
+site_url: https://calum.github.io/LostCityRs/
+repo_url: https://github.com/calum/LostCityRs
+repo_name: calum/LostCityRs
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+site_dir: site
+
+# Build scripts and the doc-writing plan/spec files are not reader pages.
+exclude_docs: |
+  *.py
+  tools/
+  superpowers/
+
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+
+# Notes link to files outside docs/ (CLAUDE.md, mise.toml, submodule sources).
+# Those links cannot resolve on the site; report them without failing the build.
+validation:
+  links:
+    not_found: info
+    unrecognized_links: info
+
+hooks:
+  - docs-site/hooks.py
