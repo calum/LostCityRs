@@ -17,7 +17,7 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 ### Local setup
 
-- [setup/local-setup-with-mise.md](setup/local-setup-with-mise.md): installing mise, the services `npm start` brings up (world, game TCP, web, management) and the tasks in the root [`mise.toml`](../mise.toml) that build and run them. Read from code; mise parsed the file but no task was run.
+- [setup/local-setup-with-mise.md](setup/local-setup-with-mise.md): installing mise, the services `npm start` brings up (world, game TCP, web, management) and the tasks in the root [`mise.toml`](../mise.toml) that build and run them. `mise run up` was run on Linux: server started and a headless browser logged in. Not run on Windows.
 
 ### Traced flows
 
