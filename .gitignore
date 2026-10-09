@@ -3,3 +3,4 @@
 
 # MkDocs build output (mise run docs:build)
 site/
+__pycache__/
