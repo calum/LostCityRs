@@ -1,0 +1,51 @@
+# Local setup tasks for LostCityRS. Guide: docs/setup/local-setup-with-mise.md
+# Not yet run: every command mirrors an upstream script, but none has been
+# executed through mise. See the guide for citations.
+
+[tools]
+# Engine-TS/package.json:6 requires node >=24; Server/README.md:27 says Node 24+.
+node = "24"
+# Only needed to rebuild the web client: Client-TS/package.json:10 runs `bun run bundle.ts`.
+bun = "1"
+
+[tasks."submodules:init"]
+description = "Clone the Engine-TS, Content and Client-TS submodules (first clone only)"
+# Warning: on submodules that are already checked out, this moves them to the
+# commit recorded in this repo and detaches HEAD from calum-research.
+run = "git submodule update --init Engine-TS Content Client-TS"
+
+[tasks."engine:install"]
+description = "Install engine npm dependencies"
+dir = "{{config_root}}/Engine-TS"
+run = "npm install"
+
+[tasks.configure]
+description = "Open the engine's setup page (http://localhost:8898/setup) to edit data/config/world.json"
+dir = "{{config_root}}/Engine-TS"
+run = "npm run setup"
+
+[tasks.start]
+description = "Pack the cache if needed, then start the world, game TCP server, web server and management server"
+dir = "{{config_root}}/Engine-TS"
+run = "npm start"
+
+[tasks.dev]
+description = "Like start, but restarts when engine .ts files change"
+dir = "{{config_root}}/Engine-TS"
+depends = ["engine:install"]
+run = "npm run dev"
+
+[tasks."engine:clean-build"]
+description = "Delete packed data and repack the cache from Content"
+dir = "{{config_root}}/Engine-TS"
+depends = ["engine:install"]
+run = ["npm run clean", "npm run build"]
+
+[tasks."client:build"]
+description = "Build Client-TS and copy client.js over the engine's prebuilt copy"
+dir = "{{config_root}}/Client-TS"
+run = [
+  "bun install",
+  "bun run build",
+  "node -e \"require('fs').copyFileSync('out/client.js', '../Engine-TS/public/client/client.js')\"",
+]
