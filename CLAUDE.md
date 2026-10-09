@@ -16,14 +16,15 @@ The user needs to *fully understand* the system. Wrong documentation is actively
 - **Fix wrong docs immediately** and tell the user what was wrong.
 - When the user asks a question the code cannot answer, say so rather than filling the gap.
 
-## Git rules: never push upstream
+## Git rules: push the root repo, never the submodules
 
-- **Never run `git push`** in any submodule or in this repo, and never add or change remotes to enable it. Submodule push URLs are intentionally set to `DISABLED_NO_PUSH`; do not change that.
-- Do not open PRs, issues or comments on GitHub for these repos.
+- **Root repo (`calum/LostCityRs`): always push new commits.** Whenever you commit in this container repo, push the commit to `origin` straight away so work is never left only in a local checkout.
+- **Never run `git push` in any submodule** (`Engine-TS`, `Content`, `Client-TS`, `RuneScriptTS`, `Server`), and never add or change their remotes to enable it. They are owned by other developers. Submodule push URLs are intentionally set to `DISABLED_NO_PUSH`; do not change that. (The plan is to fork them into Calum's own GitHub account later; until that happens and this file is updated, they stay read-only upstream.)
+- Do not open PRs, issues or comments on the submodules' upstream GitHub repos.
 - Read-only `gh` / `git fetch` use is fine.
-- Each submodule is on the local branch `calum-research`. Stay on it. Local edits to upstream code are allowed only when they help research (e.g. temporary logging); commit them on `calum-research`, keep them minimal, and record them in `docs/local-changes.md` (create it when first needed) so they can be told apart from upstream behaviour.
+- Each submodule is on the local branch `calum-research`. Stay on it. Local edits to upstream code are allowed only when they help research (e.g. temporary logging); commit them on `calum-research`, keep them minimal, and record them in `docs/local-changes.md` (create it when first needed) so they can be told apart from upstream behaviour. These submodule commits stay local.
 - Documentation goes in this container repo's `docs/`, not in the submodules.
-- Commit only when the user asks.
+- Commit only when the user asks; once committed in the root repo, push.
 
 ## Documentation conventions
 
