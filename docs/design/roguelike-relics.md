@@ -282,6 +282,21 @@ New one-line hooks:
 
 That is about 25 lines in ~13 Content files plus the two engine lines. Everything else (relic data, offer logic, celebration, tables, varps) is in `mods/relics/`. For the lowest merge risk, ship the easy relics first (#1, 3, 5, 6, 7, 9, 14 to 19) and add the medium ones afterwards.
 
+## Losing relic items on death
+
+Which relics create items? Everlasting Jewellery gives a ring, amulet and necklace (worn or carried, so droppable); Last Recall and Banker's Call need a trigger, and an item with an op is one candidate (trigger not yet chosen). Relics themselves (varp bits) cannot be lost.
+
+Findings (read, not run):
+29. On death, `[proc,player_death_lose_items]` keeps up to 3 of the most valuable items (plus 1 with Protect Item) in `deathkeep`, deletes items whose `destroy_death`/`destroy_drop` param is true, drops everything else from `inv` and `worn` (`Content/scripts/player/scripts/death.rs2:47-101`; drops at `:97-98`), then restores `deathkeep` to the inventory. `deathkeep` has `size=4` (`Content/scripts/player/configs/player.inv:21-22`). The player respawns at `0_50_50_21_18` (`death.rs2:32`), which by the coord format in `docs/reference/coordinates.md` is map square 50_50, tile (21,18): the Lumbridge area.
+30. The bank is a `scope=perm` inventory (`Content/scripts/interface_bank/configs/bank.inv:1-3`) and the death procs read above touch only `inv`, `worn` and `deathkeep`, so banked items are not lost on a PvE death.
+31. `npc_add(coord, type, duration)` spawns a despawning NPC at runtime (`Engine-TS/src/engine/script/handlers/NpcOps.ts:57-68`). Static NPC spawns instead live in the map files, as numeric ids in an `==== NPC ====` section (`Content/maps/m50_50.jm2:9658`), so adding a spawn there edits an upstream data file and depends on the packed numeric id of a new mod NPC (how mod NPC ids are assigned was not checked).
+
+**Recommendation: both, in this order of priority.**
+1. **Keep on death (preferred; one hook line).** Add `~relic_stash_items;` in `player_death_lose_items` just before the drops at `death.rs2:97`. The mod proc walks `inv` and `worn` and moves every relic item into the **bank** (`inv_moveitem(inv, bank, obj, n)`; the opcode is already used with `deathkeep` at `death.rs2` and the helper `~moveallinv` shows the pattern, `interface_trade/scripts/trade.rs2:1-10`). This avoids the 4-slot `deathkeep` limit and needs no new inventory. The player sees "Your relic items were sent to your bank." Edge case: a full bank (open question 76). Relic items are recognised by a small list proc or a mod-defined obj param.
+2. **Keeper NPC in Lumbridge (fallback and for items lost another way, such as dropping or trading them).** A new NPC "Relic Keeper" (`mods/relics/configs/*.npc`, talk op handled by `[opnpc1,relic_keeper]` in the mod) near the respawn point. Dialogue is **stateless**: for each owned relic that has an item, check `inv_total` in `inv`, `worn` and `bank`, and re-issue only what is missing. Stateless re-issue cannot duplicate items and needs no record of what was lost. Spawn it from the login hook with `npc_add` if none is nearby (`npc_find`, as used in `_test/scripts/debug/debug_kalphite.rs2:72`), rather than editing the map file (finding 31); the duration limits `npc_add` accepts were not checked (open question 79).
+
+Cost: one extra hook line (`death.rs2`) over the current plan, plus mod files. The NPC alone is mod-only; the keep-on-death hook alone makes the NPC rarely needed.
+
 ## Risks to decide on
 
 - **Level requirements.** Some tasks need levels (silver bar, mithril, magic shortbow, runecrafting at the law altar, paladin pickpocket). With the multiplier starting at 8x and no level-skipping relics, the player must train these skills; tier the tasks so each tier's requirement is reachable at the multiplier the player will have by then, and check this when tuning.
