@@ -19,6 +19,16 @@
 4. **There are 21 pickable relics** (19 relics, with the XP Multiplier counting three times) for 23 offers, so the last offers of a full run are empty. (`docs/design/roguelike-relics.md`, "Offer mechanics")
 5. **Hoarder** gives one extra pick from relics you were offered and declined earlier.
 
+## In-game menus { #menus }
+
+Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
+
+- **Tasks** lists all 25 tasks, green `[x]` when done. Click *Hide completed* to show only the open ones; the setting is remembered.
+- **Relics** shows your XP rate, the relics you have, and the relics you do not have yet. If you closed a relic choice by accident it says "relic choice waiting": click **Choose a relic now** and the same three relics come back, no relog needed.
+- Each menu has a link to the other one at the top.
+
+Seen working in a real browser client (high-detail tab). Details: [design/relics-menus.md](../design/relics-menus.md).
+
 ## Your tracker
 
 Tick the box when you take a relic or finish a task. Ticks are saved in **this browser only** (local storage): they are not sent anywhere, they are not shared between devices, and clearing the site data for this page clears them. Use the notes box for your own reminders (for example which relics you turned down, for Hoarder).
