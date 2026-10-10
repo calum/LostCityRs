@@ -6,5 +6,4 @@
 #relic-tracker-notes textarea { width: 100%; box-sizing: border-box; padding: .4rem; font: inherit; background: var(--md-code-bg-color); color: var(--md-default-fg-color); border: 1px solid var(--md-default-fg-color--lighter); border-radius: .2rem; }
 .relic-table input[type="checkbox"] { width: 1.15rem; height: 1.15rem; cursor: pointer; }
 .md-typeset table.relic-table tr.relic-done td { opacity: .55; }
-.md-typeset table.relic-table tr.relic-locked td { opacity: .4; }
 .md-typeset table.relic-table tr.relic-hidden { display: none; }

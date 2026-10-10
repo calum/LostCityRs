@@ -40,7 +40,6 @@
     var th = document.createElement("th");
     th.textContent = headerLabel;
     headRow.insertBefore(th, headRow.cells[0]);
-    var tierCol = kind === "tasks" ? 1 : -1;
 
     var count = document.createElement("span");
     count.className = "relic-count";
@@ -70,27 +69,15 @@
       });
       td.appendChild(box);
       tr.insertBefore(td, tr.cells[0]);
-      return { tr: tr, id: id, box: box, tier: tierCol >= 0 ? parseInt(tr.cells[tierCol + 1].textContent, 10) : 0 };
+      return { tr: tr, id: id, box: box };
     });
-
-    function currentTier() {
-      // Lowest tier that still has an unticked task (same rule as relic_current_tier).
-      for (var t = 1; t <= 4; t++) {
-        for (var i = 0; i < boxes.length; i++) {
-          if (boxes[i].tier === t && !boxes[i].box.checked) return t;
-        }
-      }
-      return 4;
-    }
 
     function refresh() {
       var done = boxes.filter(function (b) { return b.box.checked; }).length;
-      var tier = kind === "tasks" ? currentTier() : 0;
-      count.textContent = done + " / " + boxes.length + " " + noun + (kind === "tasks" ? " (current tier: " + tier + ")" : "");
+      count.textContent = done + " / " + boxes.length + " " + noun;
       boxes.forEach(function (b) {
         b.tr.classList.toggle("relic-done", b.box.checked);
         b.tr.classList.toggle("relic-hidden", hideBox.checked && b.box.checked);
-        b.tr.classList.toggle("relic-locked", kind === "tasks" && !b.box.checked && b.tier > tier);
       });
     }
 
