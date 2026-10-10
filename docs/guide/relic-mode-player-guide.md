@@ -1,7 +1,7 @@
 # Relic mode: player guide and tracker
 
 !!! note "This page follows the current plan"
-    This page follows the plan and the code in `mods/relics/` as of root commit `89a3b19` (all eight milestones are on `main`). Relics and tasks may still change. Every relic has automated tests (106 tests, 105 pass, 1 marked todo), run with a scripted headless client. Nobody has done a full play-through by hand, and this page's author ran nothing.
+    This page follows the plan and the code in `mods/relics/` as of root commit `c268b85` (all eight milestones are on `main`). Relics and tasks may still change. Every relic has automated tests (106 tests, 105 pass, 1 marked todo), run with a scripted headless client. Nobody has done a full play-through by hand, and this page's author ran nothing.
 
 ## The run in one minute
 
@@ -63,8 +63,8 @@ Things worth knowing:
 - **Executioner** finishes an NPC below 25% of its base HP on your next landed hit, but it over-credits attack XP a little (a known issue, not fixed). **Quickstrike** halves melee and bow attack delays in tests; magic and special attacks were not tested, and nobody checked that the client shows the faster swing.
 - **Glass Cannon** doubling is tested on melee only (ranged and magic not tested).
 - **Phoenix** was tested with a debug hit, not a real killing blow, and its cooldown survives death.
-- **Everlasting Jewellery**: all three items keep their charges in tests. The glory amulet's message still says it lost a charge, though it did not (a known message bug).
-- **Closing an offer and relogging** gives you three new relics, so the offer is not a fixed pick (known, unchanged).
+- **Everlasting Jewellery**: all three items keep their charges in tests.
+- **Closing an offer** without choosing keeps the same three relics when it comes back (fixed in `c3c6d25`).
 
 ### If you die
 
