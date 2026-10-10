@@ -1,9 +1,10 @@
-# Client camera: orbit camera, render radius, scroll zoom and middle-mouse drag
+# Client camera: orbit camera, render radius, zoom, middle-mouse drag and pitch range
 
-**Question answered:** how does the web client place and draw the camera, what limits how far you can see (client and server), and how do the local scroll-wheel zoom and middle-mouse drag work?
+**Question answered:** how does the web client place and draw the camera, what limits how far you can see (client and server), and how do the local scroll-wheel zoom, middle-mouse drag and wider up/down (pitch) range work?
 
 **Based on commits:**
 - Client-TS: upstream `7d6ca61` (branch `274`) for upstream behaviour; `93b19c3` (branch `calum-research`: zoom/drag in `15ece4e`, render radius in `93b19c3`). Line numbers marked *(up)* are at `7d6ca61`; unmarked lines are at `93b19c3`.
+- Client-TS `5fd6cc3` (fork `main`) for the pitch range change (findings 20-23 only; their line numbers are at `5fd6cc3`).
 - Engine-TS: `8c4fa9c` (branch `relic-mode`).
 
 **Method:** read code. Then **ran** the server (node 24, `npm start`) and the rebuilt client in headless Chromium (Playwright, software rendering, Linux cloud container): at `15ece4e` wheel zoom in and out, middle drag left/right/up/down, middle click on the ground, wheel over the side panel; at `93b19c3` `::radius 25/32/40/50` in Varrock square with `::fpson`. Observed from screenshots only.
@@ -38,6 +39,14 @@
 17. `World.viewRadius` (default 25, `World.ts:117`) replaces every radius constant in the visibility table, tile loops and occluder checks; the tables are sized `2R+1` and `2R+3`. `World.setViewRadius(r)` (`World.ts:863`) also sets the depth cut to `r * 128 + 300` for both `testPoint` (`World.ts:950`) and `Model.worldRender` (`Model.ts:1726`), so `r = 25` gives the upstream 3500.
 18. The client sets the radius at start-up from `?radius=N`, default 32, clamped to 10..50 (`Client.ts:96`, `1243`), and `::radius N` in chat changes it live and rebuilds the visibility table (`Client.ts:3100`); this command is handled in the client and not sent to the server. With `::fpson`, the client also shows `Radius:` and the average `renderAll` time (`Client.ts:4284`, `4943`).
 19. Observed (Varrock square, minimum pitch, 2x zoom, headless software Chromium): radius 25 shows black where the far side of the square should be; 32 fills most of it; 40 and 50 fill the view. Average scene draw time: 6.3 ms (25), 10.2 ms (32), 12.8 ms (40), 14.0 ms (50). At 40 with 2x zoom and a higher pitch, one reading was 18.5 ms with Fps 40, against the 20 ms frame budget at 50 fps. No map edge was seen in these spots.
+
+## Findings: wider pitch range, `5fd6cc3`
+
+20. The camera's up/down (pitch) range is now `World.minPitch = 32` to `World.maxPitch = 480` (`Client-TS/src/dash3d/World.ts:122-123`), about 6 to 84 degrees above level, instead of upstream 128..383 (about 22 to 67 degrees). The up/down arrow keys and the middle-mouse drag both clamp to it (`Client.ts:3301`, `11759`); the upstream code paths that move the pitch are unchanged.
+21. The visibility table covers the whole range. `World.visPitchLevel(pitch)` maps a pitch to a table level from `minPitch` in steps of 32 (`World.ts:868`), `visSampleCount()` gives the number of samples (`World.ts:877`), `renderAll` looks up its level with it (`World.ts:1007`), and the client builds one `pitchDistance` entry per sample (`Client.ts:3244`).
+22. Terrain still limits how low the camera goes. `followCamera` looks at the ground within 4 tiles of the camera focus and computes a pitch floor of `maxY * 192 / 256`, where `maxY` is how much higher the highest nearby tile is (`Client.ts:3322`, `3331`). `gameDrawMain` uses that floor if it is above the chosen pitch (`Client.ts:4224-4225`). Only the minimum of that floor changed, from 128 to `minPitch` (`Client.ts:3334-3335`). Observed: in the Lumbridge sheep field the arrow keys and drag reached the low view, while at the Varrock fountain the floor kept the camera higher.
+23. Above the horizon the client draws nothing, so the sky is black: the frame is cleared to black before the scene is drawn (`Pix2D.cls()`). Observed at low pitch.
+24. Test: `Client-TS/test/camera-pitch.test.ts` (`bun test` in `Client-TS`, 2 tests). First run before the change: 1 pass, 1 fail (`expect(World.minPitch).toBeLessThanOrEqual(48)`, received 128). After: 2 pass. It checks the range and that every allowed pitch maps to a built table level; it does not render. The headless check was a live run (screenshots), not covered by the engine harness.
 
 ## Inferences (labelled)
 

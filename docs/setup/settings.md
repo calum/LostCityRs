@@ -14,7 +14,7 @@
 |---|---|---|---|
 | Render distance (radius in tiles) | Client only | `::radius N` in chat, or `?radius=N` on the URL | `::radius`: at once. URL: on page load |
 | Camera zoom | Client only | Mouse wheel over the game view | At once (not saved) |
-| Camera rotate/tilt | Client only | Middle-mouse drag, or arrow keys | At once |
+| Camera rotate/tilt | Client only | Middle-mouse drag, or arrow keys (tilt range 32..480, about 6 to 84 degrees; nearby high ground can stop it going lower) | At once |
 | FPS / scene time overlay | Client only | `::fpson`, `::fpsoff`, `::fps N` | At once |
 | Canvas size, scaling, mobile keyboard | Browser page (saved in the browser's `localStorage`) | Drop-downs under the game | At once |
 | XP rate, members, ports, debug, production, database, … | Server: `Engine-TS/data/config/world.json` | Edit the file or use the setup page | **Restart the server** |
