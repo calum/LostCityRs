@@ -62,12 +62,22 @@ if (testbit(%relic_owned, $id) = ^true) {
 }
 return(1);
 
-// Number of eligible relics not in the $drawn bitmask.
-[proc,relic_pool_size](int $drawn)(int)
+// $mode 0: every eligible relic. $mode 1: only eligible relics the player declined earlier (Hoarder).
+[proc,relic_in_pool](int $id, int $drawn, int $mode)(int)
+if (~relic_eligible($id) = 0 | testbit($drawn, $id) = ^true) {
+    return(0);
+}
+if ($mode = 1 & testbit(%relic_declined, $id) = ^false) {
+    return(0);
+}
+return(1);
+
+// Number of pool relics not in the $drawn bitmask.
+[proc,relic_pool_size](int $drawn, int $mode)(int)
 def_int $size = 0;
 def_int $i = 1;
 while ($i <= 19) {
-    if (~relic_eligible($i) = 1 & testbit($drawn, $i) = ^false) {
+    if (~relic_in_pool($i, $drawn, $mode) = 1) {
         $size = calc($size + 1);
     }
     $i = calc($i + 1);
@@ -76,8 +86,8 @@ return($size);
 
 // Advance the seed (small Lehmer-style generator so every intermediate stays exact) and return the k-th
 // eligible relic not in $drawn, or 0 if none is left.
-[proc,relic_draw](int $drawn)(int)
-def_int $size = ~relic_pool_size($drawn);
+[proc,relic_draw](int $drawn, int $mode)(int)
+def_int $size = ~relic_pool_size($drawn, $mode);
 if ($size = 0) {
     return(0);
 }
@@ -85,7 +95,7 @@ if ($size = 0) {
 def_int $k = calc(%relic_seed % $size);
 def_int $i = 1;
 while ($i <= 19) {
-    if (~relic_eligible($i) = 1 & testbit($drawn, $i) = ^false) {
+    if (~relic_in_pool($i, $drawn, $mode) = 1) {
         if ($k = 0) {
             return($i);
         }
@@ -107,22 +117,33 @@ if ($id = 1) {
 }
 %relic_declined = clearbit(%relic_declined, $id);
 ~relic_say("You gained the relic: <~relic_name($id)>.");
+if ($id = 16) {
+    ~relic_give_item(ring_of_dueling_8);
+    ~relic_give_item(amulet_of_glory_4);
+    ~relic_give_item(necklace_of_minigames_8);
+} else if ($id = 17) {
+    ~relic_give_item(relic_recall_stone);
+} else if ($id = 18) {
+    ~relic_give_item(relic_banker_stone);
+} else if ($id = 19) {
+    def_int $extra = ~relic_offer_mode(1);
+}
 
-// Draw up to 3 relics, ask, grant. Returns 1 if a relic was granted, 0 if the pool was empty.
-[proc,relic_offer_once](int $dummy)(int)
+// Draw up to 3 relics (see relic_in_pool for $mode), ask, grant. Returns 1 if something was offered, 0 if the pool was empty.
+[proc,relic_offer_mode](int $mode)(int)
 def_int $drawn = 0;
-def_int $a = ~relic_draw($drawn);
+def_int $a = ~relic_draw($drawn, $mode);
 if ($a = 0) {
     return(0);
 }
 $drawn = setbit($drawn, $a);
-def_int $b = ~relic_draw($drawn);
+def_int $b = ~relic_draw($drawn, $mode);
 if ($b ! 0) {
     $drawn = setbit($drawn, $b);
 }
 def_int $c = 0;
 if ($b ! 0) {
-    $c = ~relic_draw($drawn);
+    $c = ~relic_draw($drawn, $mode);
     if ($c ! 0) {
         $drawn = setbit($drawn, $c);
     }
@@ -151,7 +172,7 @@ return(1);
 // Answer every pending offer. An empty pool just clears the pending count.
 [proc,relic_offer_pending]
 while (%relic_pending > 0) {
-    def_int $granted = ~relic_offer_once(0);
+    def_int $granted = ~relic_offer_mode(0);
     %relic_pending = calc(%relic_pending - 1);
 }
 
@@ -165,6 +186,15 @@ db_find(levelup:stat, attack);
 def_dbrow $row = db_findnext;
 if ($row ! null) {
     ~music_jingle(db_getfield($row, levelup:levelup_jingle, 0));
+}
+
+// Put an item in the inventory, or the bank if the inventory is full.
+[proc,relic_give_item](namedobj $item)
+if (inv_freespace(inv) > 0) {
+    inv_add(inv, $item, 1);
+} else {
+    inv_add(bank, $item, 1);
+    ~relic_say("Your inventory was full: <oc_name($item)> went to your bank.");
 }
 
 // The completion of a task: celebrate, then (tasks 24 and 25 are the finals) owe an offer.

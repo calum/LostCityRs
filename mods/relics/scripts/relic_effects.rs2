@@ -1,0 +1,86 @@
+// One proc per relic effect. Ids as in relic_offer.rs2. Content hooks call these (docs/local-changes.md).
+
+[proc,relic_has](int $id)(int)
+return(testbit(%relic_owned, $id));
+
+// damage.rs2 hook. 3 Stoneskin: half damage. 5 Glass Cannon: x1.5 taken. 6 Phoenix: a lethal hit leaves 1 HP, once per 5 minutes.
+[proc,relic_damage_taken](int $amount)(int)
+if ($amount <= 0) {
+    return($amount);
+}
+if (~relic_has(3) = 1) {
+    $amount = calc(($amount + 1) / 2);
+}
+if (~relic_has(5) = 1) {
+    $amount = calc(($amount * 3 + 1) / 2);
+}
+if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & map_clock >= %relic_phoenix_until) {
+    %relic_phoenix_until = calc(map_clock + 500);
+    $amount = calc(stat(hitpoints) - 1);
+    mes("Your Phoenix relic saves you from a lethal hit!");
+}
+return($amount);
+
+// npc_combat.rs2 hook (npc_max_dealt). 5 Glass Cannon: double damage dealt.
+[proc,relic_dealt](int $maxhit)(int)
+if (~relic_has(5) = 1) {
+    return(calc($maxhit * 2));
+}
+return($maxhit);
+
+// alchemy.rs2 hooks. 14 Philosopher's Coin: alchemy pays double.
+[proc,relic_alch_profit](int $profit)(int)
+if (~relic_has(14) = 1) {
+    return(calc($profit * 2));
+}
+return($profit);
+
+// magic.rs2 hook (staff_runes). 15 Infinite Runes: every rune count becomes 0, so spells check and consume nothing.
+[proc,relic_rune_count](int $count)(int)
+if (~relic_has(15) = 1) {
+    return(0);
+}
+return($count);
+
+// jewellery hooks. 16 Everlasting Jewellery: skip the charge swap (item moving to its next, lower-charge stage).
+[proc,relic_keep_charge]()(int)
+return(~relic_has(16));
+
+// teleport.rs2 hook (end of pre_tele_checks). 17 Last Recall: remember where the teleport started.
+[proc,relic_record_origin](coord $origin)
+if (~relic_has(17) = 1) {
+    %relic_recall_a = $origin;
+}
+
+[opheld1,relic_recall_stone]
+def_coord $dest = %relic_recall_a;
+if ($dest = null) {
+    mes("You have not teleported anywhere yet.");
+    return;
+}
+if (~pre_tele_checks(coord) = false) {
+    return;
+}
+~player_teleport_normal($dest);
+
+[opheld1,relic_banker_stone]
+@openbank;
+
+// Called from relic_on_kill (npc_death hook) with the killer active. 7 Vampire heals, 9 Bounty drops coins and food by npc toughness.
+[proc,relic_kill_effects]
+if (~relic_has(7) = 1) {
+    stat_heal(hitpoints, 1, 10);
+}
+if (~relic_has(9) = 1) {
+    def_int $hp = npc_basestat(hitpoints);
+    obj_add(npc_coord, coins, calc(5 + $hp * 3), ^lootdrop_duration);
+    if ($hp >= 100) {
+        obj_add(npc_coord, shark, 1, ^lootdrop_duration);
+    } else if ($hp >= 50) {
+        obj_add(npc_coord, swordfish, 1, ^lootdrop_duration);
+    } else if ($hp >= 20) {
+        obj_add(npc_coord, trout, 1, ^lootdrop_duration);
+    } else {
+        obj_add(npc_coord, bread, 1, ^lootdrop_duration);
+    }
+}

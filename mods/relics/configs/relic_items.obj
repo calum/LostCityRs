@@ -1,0 +1,19 @@
+[relic_recall_stone]
+name=Recall stone
+desc=Takes you back to where you last teleported from.
+model=inv_lawrune
+2dyof=1
+2dzoom=740
+2dxan=516
+weight=0g
+iop1=Recall
+
+[relic_banker_stone]
+name=Banker's stone
+desc=Opens your bank from anywhere.
+model=inv_cosmicrune
+2dyof=1
+2dzoom=740
+2dxan=516
+weight=0g
+iop1=Open bank

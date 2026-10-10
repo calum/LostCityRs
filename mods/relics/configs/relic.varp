@@ -24,3 +24,12 @@ scope=perm
 
 [relic_pending]
 scope=perm
+
+[relic_recall_a]
+scope=perm
+type=coord
+protect=no
+
+[relic_phoenix_until]
+scope=perm
+protect=no

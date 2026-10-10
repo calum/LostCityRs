@@ -29,6 +29,7 @@ queue(relic_task_done, 0, $task);
 if (npc_findhero = ^false) {
     return;
 }
+~relic_kill_effects;
 db_find(relic_task_npc:npc, npc_type);
 def_dbrow $row = db_findnext;
 while ($row ! null) {

@@ -3,6 +3,7 @@
 // Logs in as <user> (password "test"), then executes the lines appended to <dir>/cmd:
 //   say <text>        type text into the chat box and press Enter (e.g. say ::~relic_demo)
 //   key <name>        press a key        click <x> <y>   click in client pixels (765x503)
+//   rclick <x> <y>    right-click in client pixels
 //   shot <name>       save <dir>/<name>.png   wait <ms>   quit
 // Writes progress to <dir>/driver.log. Playwright comes from /opt/node-tools (cloud container).
 import { createRequire } from 'node:module';
@@ -48,6 +49,7 @@ for (;;) {
     else if (c === 'type') await page.keyboard.type(arg, { delay: 40 });
     else if (c === 'key') await page.keyboard.press(arg);
     else if (c === 'click') { const [x, y] = arg.split(' ').map(Number); await click(x, y); }
+    else if (c === 'rclick') { const [x, y] = arg.split(' ').map(Number); await page.mouse.move(box.x + x, box.y + y); await page.waitForTimeout(100); await page.mouse.click(box.x + x, box.y + y, { button: 'right' }); }
     else if (c === 'shot') await page.screenshot({ path: `${dir}/${arg}.png` });
     else if (c === 'wait') await page.waitForTimeout(Number(arg));
     else if (c === 'quit') { await browser.close(); process.exit(0); }

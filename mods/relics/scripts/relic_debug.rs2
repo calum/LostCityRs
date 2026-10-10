@@ -125,3 +125,18 @@ if (p_finduid(uid) = false) {
 %relic_pending = 0;
 ~relic_xp_recompute;
 ~relic_say("relic state cleared");
+
+// M5 debug: ::~relic_hp <n> sets current hitpoints, ::~relic_hit <n> takes n damage through damage_self.
+[debugproc,relic_hit](int $n)
+if (p_finduid(uid) = false) {
+    return;
+}
+~damage_self($n);
+~relic_say("hit <tostring($n)> hp now <tostring(stat(hitpoints))>");
+
+// ::~relic_cast casts Varrock Teleport as if the spell button was clicked (tests rune and teleport hooks).
+[debugproc,relic_cast]
+if (p_finduid(uid) = false) {
+    return;
+}
+@magic_teleport(^varrock_teleport);
