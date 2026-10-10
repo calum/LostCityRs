@@ -1,6 +1,7 @@
 # Local setup tasks for LostCityRS. Guide: docs/setup/local-setup-with-mise.md
 # `mise run up` was run end to end on Linux (mise 2026.10.6): it built the
-# client, started the server and a browser logged in. Not yet run on Windows.
+# client, started the server and a browser logged in. On Windows the steps
+# (setup, client:build, start) were run in sequence and the server came up.
 
 [tools]
 # Engine-TS/package.json:6 requires node >=24; Server/README.md:27 says Node 24+.
@@ -45,7 +46,7 @@ description = "Build Client-TS and copy its output over the engine's prebuilt co
 dir = "{{config_root}}/Client-TS"
 run = [
   "bun run build",
-  "node -e \"for (const f of ['client.js', 'ondemandworker.js', 'tinymidipcm.wasm']) require('fs').copyFileSync('out/' + f, '../Engine-TS/public/client/' + f)\"",
+  "node ../scripts/copy-client.mjs",
 ]
 
 [tasks.start]
