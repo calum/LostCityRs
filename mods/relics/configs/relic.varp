@@ -3,6 +3,8 @@ scope=perm
 
 [relic_owned]
 scope=perm
+transmit=yes
+clientcode=100
 
 [relic_seed]
 scope=perm
