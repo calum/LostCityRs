@@ -38,3 +38,27 @@ queue(relic_choice_q, 0, 0);
 [queue,relic_choice_q]
 ~relic_say("queue started");
 ~relic_choice_run;
+
+// ::~relic_setxp <tier 0..3> sets the tier and recomputes the factor.
+[debugproc,relic_setxp](int $tier)
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_xp_tier = $tier;
+~relic_xp_recompute;
+~relic_say("xp tier <tostring(%relic_xp_tier)> factor <tostring(%relic_xp_factor)>");
+
+// ::~relic_xptest advances 1000 xp in fletching and reports the resulting base level.
+[debugproc,relic_xptest]
+if (p_finduid(uid) = false) {
+    return;
+}
+stat_advance(fletching, 1000);
+~relic_say("fletching base level <tostring(stat_base(fletching))> after +1000 at factor <tostring(%relic_xp_factor)>");
+
+// ::~relic_energy prints run energy (0..10000) and whether the player is set to run.
+[debugproc,relic_energy]
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("runenergy <tostring(runenergy)>");

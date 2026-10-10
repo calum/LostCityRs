@@ -96,3 +96,14 @@ run = "python -m mkdocs serve"
 description = "Build the docs site into site/ (the same build GitHub Pages runs)"
 depends = ["docs:install"]
 run = "python -m mkdocs build --strict"
+
+[tasks."relics:hooks"]
+description = "List every relic hook in the forks (must match docs/local-changes.md)"
+run = [
+  "git -C Content grep -n '~relic_' -- scripts ':!scripts/_mods' || true",
+  "git -C Engine-TS grep -n -i relic || true",
+]
+
+[tasks."relics:config"]
+description = "Copy config/world.json (xpRate 8, BUILD_VERIFY off) to Engine-TS/data/config/ (restart the server after)"
+run = "node -e \"require('fs').mkdirSync('Engine-TS/data/config',{recursive:true});require('fs').copyFileSync('config/world.json','Engine-TS/data/config/world.json')\""

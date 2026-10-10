@@ -33,6 +33,7 @@ await page.keyboard.type('test');
 await click(302, 322); // Login button
 await page.waitForTimeout(8000);
 await page.screenshot({ path: `${dir}/login.png` });
+await click(150, 435); // focus the canvas (chat input) so typed keys register
 log('login sent');
 
 let offset = 0;

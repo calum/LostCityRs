@@ -6,3 +6,9 @@ scope=perm
 
 [relic_seed]
 scope=perm
+
+[relic_xp_tier]
+scope=perm
+
+[relic_xp_factor]
+scope=perm

@@ -1,0 +1,4 @@
+// XP: the engine base rate (config/world.json node.xpRate) is 8. Engine hook Player.addXp multiplies by
+// max(1, %relic_xp_factor). Tier 0..3 gives factor 1, 2, 4, 8, so 8x, 16x, 32x, 64x overall.
+[proc,relic_xp_recompute]
+%relic_xp_factor = pow(2, %relic_xp_tier);
