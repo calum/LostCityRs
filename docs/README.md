@@ -36,6 +36,7 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 - [flows/server-response-woodcutting.md](flows/server-response-woodcutting.md): the return path. How `mes`, `anim`, `sound_synth`, `inv_add` and `stat_advance` become packets and what the client does with them (read from code, not run).
 - [flows/move-opclick.md](flows/move-opclick.md): how the client's walking route (`MOVE_OPCLICK`) is decoded, queued as waypoints and walked tick by tick (read from code, not run).
 - [flows/dev-cheat-commands.md](flows/dev-cheat-commands.md): how `::` cheat commands get from the chat box to the engine, which staff level unlocks which command, why a default local player is staff level 4, and the `~` debug procs (read from code, not run; no command was typed in-game).
+- [flows/script-testing.md](flows/script-testing.md): how RuneScript is checked. No unit-test harness; CI only lints/typechecks the engine and packs (compiles) Content; the compiler's parse/type/pointer errors exit 1; runtime testing is manual `~debugproc` scripts in `Content/scripts/_test` (read from code, not run).
 
 ### Books
 
