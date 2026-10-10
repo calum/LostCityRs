@@ -33,3 +33,7 @@ protect=no
 [relic_phoenix_until]
 scope=perm
 protect=no
+
+[relic_hide_done]
+scope=perm
+protect=no

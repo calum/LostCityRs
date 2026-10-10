@@ -1,0 +1,187 @@
+// Settings-tab menus: a task list and a relic overview (interfaces: mods/relics/interfaces/relic_taskmenu.if, relic_relicmenu.if).
+// The two buttons live in Content's options.if / options_ld.if (relic_tasks, relic_relics). Row components come from enums
+// (relic_menus.enum), the same way skill_guide.rs2 fills its rows. Text colours are @tags@ in the row text.
+
+[if_button,options:relic_tasks]
+if_close;
+~relic_taskmenu_open;
+
+[if_button,options_ld:relic_tasks]
+if_close;
+~relic_taskmenu_open;
+
+[if_button,options:relic_relics]
+if_close;
+~relic_relicmenu_open;
+
+[if_button,options_ld:relic_relics]
+if_close;
+~relic_relicmenu_open;
+
+[if_button,relic_taskmenu:to_relics]
+~relic_relicmenu_open;
+
+[if_button,relic_relicmenu:to_tasks]
+~relic_taskmenu_open;
+
+// ---------------------------------------------------------------- tasks
+
+[proc,relic_task_name](int $n)(string)
+switch_int ($n) {
+    case 1 : return("Defeat a goblin");
+    case 2 : return("Defeat a lesser demon");
+    case 3 : return("Defeat a giant");
+    case 4 : return("Mine a mithril ore");
+    case 5 : return("Chop a maple log");
+    case 6 : return("Make a magic shortbow");
+    case 7 : return("Burn a yew log");
+    case 8 : return("Craft a law rune");
+    case 9 : return("Harpoon a swordfish");
+    case 10 : return("Cook a raw shark");
+    case 11 : return("Smith a silver bar");
+    case 12 : return("Make a super attack potion");
+    case 13 : return("Pickpocket a paladin");
+    case 14 : return("Defeat a scorpion");
+    case 15 : return("Defeat a bear");
+    case 16 : return("Defeat a monkey");
+    case 17 : return("Defeat a green dragon");
+    case 18 : return("Defeat a blue dragon");
+    case 19 : return("Mine a runite ore");
+    case 20 : return("Chop a yew log");
+    case 21 : return("Defeat a hellhound");
+    case 22 : return("Defeat a black demon");
+    case 23 : return("Defeat a Kalphite soldier");
+    case 24 : return("Defeat the King Black Dragon");
+    case 25 : return("Defeat the Kalphite Queen");
+    case default : return("Unknown task");
+}
+
+[proc,relic_taskmenu_open]
+if_openmain(relic_taskmenu);
+if_setscrollpos(relic_taskmenu:list, 0);
+~relic_taskmenu_refresh;
+
+// Fill the 25 rows: every task in order, or (hide completed on) only the open ones packed to the top.
+[proc,relic_taskmenu_refresh]
+def_int $row = 0;
+def_int $done_count = 0;
+def_int $n = 1;
+def_int $done = 0;
+def_component $com = null;
+while ($n <= ^relic_task_count) {
+    $done = testbit(%relic_tasks_done, calc($n - 1));
+    if ($done = ^true) {
+        $done_count = calc($done_count + 1);
+    }
+    if ($done = ^false | %relic_hide_done = 0) {
+        $com = enum(int, component, relic_task_rows, $row);
+        if ($done = ^true) {
+            if_settext($com, "@gre@[x] <tostring($n)>. <~relic_task_name($n)>");
+        } else {
+            if_settext($com, "@whi@[ ] <tostring($n)>. <~relic_task_name($n)>");
+        }
+        $row = calc($row + 1);
+    }
+    $n = calc($n + 1);
+}
+while ($row < ^relic_task_count) {
+    $com = enum(int, component, relic_task_rows, $row);
+    if_settext($com, "");
+    $row = calc($row + 1);
+}
+if_settext(relic_taskmenu:summary, "Tasks done: <tostring($done_count)> of <tostring(^relic_task_count)>");
+if (%relic_hide_done = 1) {
+    if_settext(relic_taskmenu:toggle, "Hide completed: On (click to show)");
+} else {
+    if_settext(relic_taskmenu:toggle, "Hide completed: Off (click to hide)");
+}
+
+[if_button,relic_taskmenu:toggle]
+%relic_hide_done = calc(1 - %relic_hide_done);
+if_setscrollpos(relic_taskmenu:list, 0);
+~relic_taskmenu_refresh;
+
+// ---------------------------------------------------------------- relics
+
+// 1 if the player has relic $id. XP Multiplier (1) counts once its first tier is taken.
+[proc,relic_unlocked](int $id)(int)
+if ($id = 1) {
+    if (%relic_xp_tier > 0) {
+        return(1);
+    }
+    return(0);
+}
+return(testbit(%relic_owned, $id));
+
+// XP rate shown for XP Multiplier tier $tier: engine base * 2^tier.
+[proc,relic_xp_rate](int $tier)(int)
+return(calc(^relic_base_xp * pow(2, $tier)));
+
+[proc,relic_menu_line](int $id, int $have)(string)
+if ($id = 1) {
+    if ($have = 1) {
+        return("@gre@<~relic_name($id)> @whi@- now <tostring(~relic_xp_rate(%relic_xp_tier))>x");
+    }
+    return("@yel@<~relic_name($id)> @whi@- next <tostring(~relic_xp_rate(calc(%relic_xp_tier + 1)))>x");
+}
+if ($have = 1) {
+    return("@gre@<~relic_name($id)> @whi@- <~relic_desc($id)>");
+}
+return("@yel@<~relic_name($id)> @whi@- <~relic_desc($id)>");
+
+[proc,relic_relicmenu_open]
+if_openmain(relic_relicmenu);
+~relic_relicmenu_refresh;
+
+[proc,relic_relicmenu_refresh]
+def_int $u = 0;
+def_int $a = 0;
+def_int $id = 1;
+def_component $com = null;
+while ($id <= 19) {
+    if (~relic_unlocked($id) = 1) {
+        $com = enum(int, component, relic_unlocked_rows, $u);
+        if_settext($com, ~relic_menu_line($id, 1));
+        $u = calc($u + 1);
+    }
+    if (~relic_eligible($id) = 1) {
+        $com = enum(int, component, relic_available_rows, $a);
+        if_settext($com, ~relic_menu_line($id, 0));
+        $a = calc($a + 1);
+    }
+    $id = calc($id + 1);
+}
+def_int $free = $u;
+while ($free < 19) {
+    $com = enum(int, component, relic_unlocked_rows, $free);
+    if_settext($com, "");
+    $free = calc($free + 1);
+}
+$free = $a;
+while ($free < 19) {
+    $com = enum(int, component, relic_available_rows, $free);
+    if_settext($com, "");
+    $free = calc($free + 1);
+}
+if_settext(relic_relicmenu:xp, "XP rate: <tostring(~relic_xp_rate(%relic_xp_tier))>x (base <tostring(^relic_base_xp)>x, XP Multiplier tier <tostring(%relic_xp_tier)> of 3)");
+if_settext(relic_relicmenu:unlocked_title, "Unlocked relics (<tostring($u)>)");
+if_settext(relic_relicmenu:available_title, "Not yet unlocked (<tostring($a)>)");
+if (%relic_pending > 0) {
+    if (%relic_pending = 1) {
+        if_settext(relic_relicmenu:pending, "@gre@1 relic choice waiting");
+    } else {
+        if_settext(relic_relicmenu:pending, "@gre@<tostring(%relic_pending)> relic choices waiting");
+    }
+    if_sethide(relic_relicmenu:choose_box, false);
+} else {
+    if_settext(relic_relicmenu:pending, "No relic choice is waiting.");
+    if_sethide(relic_relicmenu:choose_box, true);
+}
+
+// Re-open the pending relic choice (a closed dialog leaves %relic_pending set). The offer needs a free chat box and protected
+// access, so close the menu and run it from the queue, like the login hook does.
+[if_button,relic_relicmenu:choose]
+if_close;
+if (%relic_pending > 0) {
+    queue(relic_offer_q, 0, 0);
+}

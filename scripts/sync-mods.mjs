@@ -99,8 +99,52 @@ function ensurePackIds() {
     }
 }
 
+// Interfaces need ids too: the interface and each of its components go in Content/pack/interface.pack
+// (`id=name` and `id=name:component`), and the ids in interface.order, an interface's own id followed by
+// its components (Engine-TS/tools/pack/interface/PackShared.ts packInterface reads both). Appending a
+// whole group at the end of the order keeps it contiguous. Only new interfaces are handled: adding a
+// component to an existing interface needs its id inserted into the middle of interface.order by hand.
+function ensureInterfaceIds() {
+    if (!fs.existsSync(SRC)) return;
+    const packFile = path.join('Content', 'pack', 'interface.pack');
+    const orderFile = path.join('Content', 'pack', 'interface.order');
+    if (!fs.existsSync(packFile) || !fs.existsSync(orderFile)) return;
+    const packText = fs.readFileSync(packFile, 'utf8');
+    const have = new Set();
+    let max = -1;
+    for (const line of packText.split(/\r?\n/)) {
+        const [id, name] = line.split('=');
+        if (name === undefined) continue;
+        have.add(name);
+        max = Math.max(max, Number(id));
+    }
+    const packLines = [];
+    const orderLines = [];
+    for (const rel of walk(SRC)) {
+        if (!rel.endsWith('.if') || !rel.includes('interfaces')) continue;
+        const iface = path.basename(rel, '.if');
+        const names = [iface, ...[...fs.readFileSync(path.join(SRC, rel), 'utf8').matchAll(/^\[([^\]]+)\]/gm)].map((m) => `${iface}:${m[1]}`)];
+        if (names.every((n) => have.has(n))) continue;
+        if (names.some((n) => have.has(n))) {
+            console.warn(`[mods] ${rel}: some of its interface ids exist already; add the new components to interface.pack and interface.order by hand`);
+            continue;
+        }
+        for (const n of names) {
+            packLines.push(`${++max}=${n}`);
+            orderLines.push(String(max));
+        }
+    }
+    if (!packLines.length) return;
+    const eol = packText.includes('\r\n') ? '\r\n' : '\n';
+    fs.appendFileSync(packFile, (packText.endsWith('\n') ? '' : eol) + packLines.join(eol) + eol);
+    const orderText = fs.readFileSync(orderFile, 'utf8');
+    fs.appendFileSync(orderFile, (orderText.endsWith('\n') ? '' : eol) + orderLines.join(eol) + eol);
+    console.log(`[mods] interface.pack/.order: added ${packLines.length} id(s)`);
+}
+
 excludeFromContentGit();
 ensurePackIds();
+ensureInterfaceIds();
 sync();
 
 if (process.argv.includes('--watch')) {
@@ -108,6 +152,6 @@ if (process.argv.includes('--watch')) {
     let t;
     fs.watch(SRC, { recursive: true }, () => {
         clearTimeout(t);
-        t = setTimeout(() => { ensurePackIds(); sync(); }, 300);
+        t = setTimeout(() => { ensurePackIds(); ensureInterfaceIds(); sync(); }, 300);
     });
 }
