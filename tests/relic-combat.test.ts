@@ -413,13 +413,12 @@ test('Executioner in real melee: a wounded giant (3 HP) dies on the first landed
     assert.equal(ctl.gained, 3 * 40, 'control: 3 damage, 40 attack xp tenths each (accurate, multiplier 1000)');
     const ex = run([8], 4);
     assert.deepEqual([...ex.seen], [3, 0], 'executed from 3 HP');
-    // Execution credits at least the 3 remaining HP (see the todo test below for the extra credit).
+    // Execution credits at least the 3 remaining HP (the test below covers the extra credit for the landed hit).
     assert.ok(ex.gained >= 3 * 40, `attack xp ${ex.gained}`);
 });
 
 test(
-    'Executioner credits xp for no more damage than the npc had left (vanilla caps credit at npc HP)',
-    { todo: 'QUESTION: the landed hit is also credited (player_melee.rs2 damage_capped uses npc_stat before the queued execution), so a kill credits remaining HP + the hit' },
+    'Executioner credits the remaining HP plus the landed hit (kept by design, Calum 2026-10-10)',
     t => {
         if (skip()) return t.skip(String(skip()));
         const bot = relicBot({ x: SPOT.execE2e.x, z: SPOT.execE2e.z + 8 }, [8], { attack: 99, strength: 1, hitpoints: 99, defence: 99 });
@@ -437,8 +436,11 @@ test(
             'the giant to die'
         );
         bot.tick(3);
-        // accurate style: 40 attack xp tenths per damage point at multiplier 1000 (combat.rs2 give_combat_experience)
-        assert.ok((bot.xp('attack') - atk0) / xpMulti(bot) <= maxHp * 40, `credited ${(bot.xp('attack') - atk0) / xpMulti(bot)} for an npc with at most ${maxHp} HP`);
+        // accurate style: 40 attack xp tenths per damage point at multiplier 1000 (combat.rs2 give_combat_experience).
+        // relic_execute credits the remaining HP, and player_melee.rs2 credits the landed hit again (its damage_capped
+        // reads npc_stat before the queued execution). Strength 1 means a max hit of 1, so the extra is 0 or 1 point.
+        const credited = (bot.xp('attack') - atk0) / xpMulti(bot);
+        assert.ok(credited >= maxHp * 40 && credited <= (maxHp + 1) * 40, `credited ${credited} for an npc with at most ${maxHp} HP`);
     }
 );
 

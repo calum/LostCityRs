@@ -88,7 +88,7 @@ Names are config debugnames (`'bronze_axe'`, `'hans'`, `'tree'`, varp `'tutorial
 - `tests/smoke.test.ts`: login and welcome message, tick speed, give/count/clear, teleport and walk (including a blocked destination), `::~hello` through the real cheat handler, debugprocs refused below staff 4, levels, a full dialogue with Hans (NPC op, continue, choice by text, continue to the end), relog keeps items/position/varps, a RuneScript `error()` fails the test.
 - `tests/skills.test.ts`: woodcutting with and without an axe, burying bones (`opheld1`), killing a spawned chicken.
 - `tests/relics.test.ts`: first-login relic offer and picking a relic; XP tier 3 gives exactly 8 times the XP of tier 0 for the same `stat_advance` (the `Player.addXp` hook, `../design/relics-m2-xp-energy.md`); `bot.choices` with two choice dialogs from one script.
-- `tests/relic-*.test.ts` (offers, combat, skilling, utility, tasks, death-win): end-to-end tests for every relic and flow, listed in `../design/relics-e2e-tests.md`. With them the suite is 106 tests (105 pass, 1 todo) and runs in about 35 s with `--no-build` and 2 files in parallel (observed on Linux, Node 24.11.1).
+- `tests/relic-*.test.ts` (offers, combat, skilling, utility, tasks, death-win): end-to-end tests for every relic and flow, listed in `../design/relics-e2e-tests.md`. With them the suite is 106 tests, all passing and runs in about 35 s with `--no-build` and 2 files in parallel (observed on Linux, Node 24.11.1).
 
 ## How it works (read from code; the harness relies on each point)
 

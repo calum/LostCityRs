@@ -2,14 +2,14 @@
 
 **Question answered:** which relic-mode behaviours are proven by automated tests, what the tests found wrong, and what is still untested?
 
-**Based on:** root `4be14d8` plus this change, Engine-TS `8c4fa9ca`, Content `c8cff7b57` (then `0bd36bfa3` for the glory fix), `mods/relics/` as changed here. **Method:** headless harness (`../setup/headless-test-harness.md`), run on Linux with Node 24.11.1. The full suite (`node harness/run.mjs`, the same as `mise run test`) ran twice with the same result: **106 tests, 105 pass, 0 fail, 1 todo** (the todo is the Executioner question below). `mise run test:types` is clean.
+**Based on:** root `4be14d8` plus this change, Engine-TS `8c4fa9ca`, Content `c8cff7b57` (then `0bd36bfa3` for the glory fix), `mods/relics/` as changed here. **Method:** headless harness (`../setup/headless-test-harness.md`), run on Linux with Node 24.11.1. The full suite (`node harness/run.mjs`, the same as `mise run test`) ran twice with the same result: **106 tests, 105 pass, 0 fail, 1 todo** at first; after Calum's Executioner decision (below) **106 pass**. `mise run test:types` is clean.
 
 ## Test files
 
 | File | Tests | Covers |
 |---|---|---|
 | `tests/relic-offers.test.ts` | 19 | offer engine: first offer, seed determinism (a local copy of the `relic_draw` formula predicts every offer), closed and pending offers, pool shrinking to 2, 1 ("No thanks") and 0, 1 XP Multiplier (tiers 1-3, factor, stops at 3, real bone burying at 4x), 19 Hoarder, 2 Quest Pass, `::~relic_reset` |
-| `tests/relic-combat.test.ts` | 14 (1 todo) | 3 Stoneskin, 4 Quickstrike, 5 Glass Cannon (taken and dealt), 6 Phoenix, 7 Vampire, 8 Executioner, 9 Bounty |
+| `tests/relic-combat.test.ts` | 14 | 3 Stoneskin, 4 Quickstrike, 5 Glass Cannon (taken and dealt), 6 Phoenix, 7 Vampire, 8 Executioner, 9 Bounty |
 | `tests/relic-skilling.test.ts` | 14 | 10 Eternal Vein, 11 Evergreen, 12 Double Yield, 13 Midas Loop, 14 Philosopher's Coin |
 | `tests/relic-utility.test.ts` | 18 | 15 Infinite Runes, 16 Everlasting Jewellery, 17 Last Recall, 18 Banker's Call |
 | `tests/relic-tasks.test.ts` | 13 | every `relic_task_npc` and `relic_task_obj` row, real kills and real skill actions for tasks 1, 4, 5, 6, 7, 10, 11, 12, 13, 20, no re-firing, any order |
@@ -31,9 +31,9 @@ Each relic test has a control: the same scenario without the relic. Actions are 
 
 Each fix was made test first: the test failed for the expected reason, then passed after the fix.
 
-## Open questions for Calum (not changed)
+## Decided and remaining questions
 
-- **Executioner over-credits XP.** `relic_execute` credits the NPC's remaining HP (`mods/relics/scripts/relic_effects.rs2`, `[proc,relic_execute]`), and the landed hit is credited again: `player_melee.rs2:29` computes `min($damage, npc_stat(hitpoints))` while the NPC still has its HP, because the execution damage is only queued. Observed: a 3 HP giant credited 4 damage worth of attack XP (160 tenths, not at most 120). Fixing it exactly needs the hook to know the roll, which is in Content (`player_melee.rs2:28`). Test marked `todo`.
+- **Executioner credits more XP than the monster had left: kept by design** (Calum, 2026-10-10). `relic_execute` credits the NPC's remaining HP (`mods/relics/scripts/relic_effects.rs2`, `[proc,relic_execute]`), and the landed hit is credited again: `player_melee.rs2:29` computes `min($damage, npc_stat(hitpoints))` while the NPC still has its HP, because the execution damage is only queued. Observed: a 3 HP giant credited 4 damage worth of attack XP. The test now asserts this (remaining HP plus at most one max hit).
 - **Quest Pass on a live server** opens about 63 quest scrolls one after another (each `*_complete` queue opens one through `[proc,send_quest_complete]`, `Content/scripts/general/scripts/quests.rs2:15`); the test closes them all. Inference: a real player must click through each.
 
 ## Verified behaviour (by test, at the commits above)
