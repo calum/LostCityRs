@@ -1,0 +1,4 @@
+// Run in game with: ::~hello   (staff level 4 + production off; see docs/flows/dev-cheat-commands.md)
+// Edit the text, save, wait for "Reloading with changes" in the engine log, run it again.
+[debugproc,hello]
+mes("hello from mods/hello/scripts/hello.rs2");

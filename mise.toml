@@ -60,6 +60,18 @@ dir = "{{config_root}}/Engine-TS"
 depends = ["engine:install"]
 run = "npm run dev"
 
+[tasks."mods:sync"]
+description = "Copy mods/ (your scripts) into Content/scripts/_mods/ once"
+run = "node scripts/sync-mods.mjs"
+
+[tasks."mods:watch"]
+description = "Copy mods/ into Content/scripts/_mods/ now and on every change (the running server then reloads)"
+run = "node scripts/sync-mods.mjs --watch"
+
+[tasks.live]
+description = "Script dev loop: start the server and keep mods/ synced; edits in mods/ reload in game"
+depends = ["mods:watch", "start"]
+
 [tasks.configure]
 description = "Open the engine's setup page (http://localhost:8898/setup) to edit data/config/world.json"
 dir = "{{config_root}}/Engine-TS"

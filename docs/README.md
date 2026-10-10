@@ -20,6 +20,7 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 ### Local setup
 
 - [setup/local-setup-with-mise.md](setup/local-setup-with-mise.md): installing mise, the services `npm start` brings up (world, game TCP, web, management) and the tasks in the root [`mise.toml`](../mise.toml) that build and run them. `mise run up` was run on Linux: server started and a headless browser logged in. Not run on Windows.
+- [setup/script-dev-loop.md](setup/script-dev-loop.md): writing your own RuneScript and running it live on your character. The engine already hot-reloads `.rs2`/config edits (`DevThread`, `World.reload`); observed edit, compile error and reload in a headless browser; the `mods/` folder and `mise run mods:sync|mods:watch|live` tasks; what is and is not known about client-side scripts.
 
 ### Traced flows
 
