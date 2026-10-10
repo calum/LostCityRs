@@ -21,8 +21,11 @@ while ($i < $size) {
     if (inv_getnum($from, $i) > 0) {
         def_obj $item = inv_getobj($from, $i);
         if (~relic_item_relic($item) ! 0) {
-            inv_moveitem($from, bank, $item, inv_getnum($from, $i));
-            if (inv_getnum($from, $i) > 0) {
+            // inv_moveitem drops what the bank cannot take on the ground (InvOps.ts INV_MOVEITEM), so check first;
+            // an item that stays here is handled by the normal death drops.
+            if (inv_itemspace(bank, $item, inv_getnum($from, $i), inv_size(bank)) = ^true) {
+                inv_moveitem($from, bank, $item, inv_getnum($from, $i));
+            } else {
                 ~relic_say("Your bank is full: <oc_name($item)> could not be kept safe.");
             }
         }

@@ -13,3 +13,5 @@
 
 ## Not checked
 Other `addXp` callers with `allowMulti=false`; the cap logic at `Player.ts:1834-1836` with a 64x factor (not reached).
+
+**Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.

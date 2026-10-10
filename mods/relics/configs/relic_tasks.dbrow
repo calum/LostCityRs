@@ -151,7 +151,7 @@ data=tier,2
 [relic_task12_4dose2attack_obj]
 table=relic_task_obj
 data=task,12
-data=obj,4dose2attack
+data=obj,3dose2attack
 data=tier,2
 
 [relic_task19_runite_ore_obj]

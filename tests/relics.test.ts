@@ -36,3 +36,16 @@ test('XP tier multiplies stat_advance (engine hook in Player.addXp)', t => {
     assert.ok(plain.xp('fletching') > 0);
     assert.equal(boosted.xp('fletching'), plain.xp('fletching') * 8);
 });
+
+test('bot.choices lists only the open dialog when one script asks twice (two pending offers)', t => {
+    if (skip()) return t.skip(String(skip()));
+    // relic_offer_pending loops while %relic_pending > 0, so one script pauses on two choice dialogs.
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 2, relic_seed: 5 } });
+    bot.waitUntil(() => bot.choices.length >= 2, 10, 'the first offer');
+    assert.equal(bot.choices.length, 3);
+    bot.choose(1);
+    bot.waitUntil(() => bot.varp('relic_pending') === 1, 5, 'the second offer');
+    assert.equal(bot.choices.length, 3, `stale buttons from the first dialog: ${JSON.stringify(bot.choices)}`);
+    bot.choose(1);
+    bot.waitUntil(() => bot.varp('relic_pending') === 0, 5, 'both offers answered');
+});

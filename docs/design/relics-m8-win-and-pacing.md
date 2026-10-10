@@ -20,3 +20,5 @@ The plan asks for a stopwatch run on a fresh character to replace the 10-hour es
 
 ## Not checked
 Everything under "Pacing"; a play-through to the win message by real play; whether the offer dialogs can be closed without choosing (pending offers re-open at login).
+
+**Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.

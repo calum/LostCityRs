@@ -21,3 +21,5 @@ Dragon, hellhound, black demon, Kalphite and KBD kills (same code path, not run)
 ## Update: tier lock removed (Calum's request, 2026-10-10)
 
 `relic_task_try` in `mods/relics/scripts/relic_tasks.rs2` no longer compares the task's tier with `relic_current_tier`, so tasks count in any order. The tier column and `relic_current_tier` remain in the data but are unused. Win check is unchanged (both final-boss bits). Checked: compiles; see the in-game check below if recorded.
+
+**Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.

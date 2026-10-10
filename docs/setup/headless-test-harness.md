@@ -71,6 +71,7 @@ Put files in `tests/` named `*.test.ts`. Everything is synchronous: a "wait" run
 | Spawn | `Bot.spawn({ name, at, tutorialDone, staff, varps, levels, save, failOnScriptError })`, `Bot.defaults` (merged into every spawn), `bot.relog()`, `bot.remove()`, `bot.save()` |
 | Time | `tick(n)`, `waitUntil(cond, maxTicks, what)`, `waitForMessage(re, maxTicks)`, `waitUntilIdle(maxTicks)`, `idle` |
 | Read state | `pos`, `x`/`z`/`level`, `stat(s)`, `baseLevel(s)`, `xp(s)` (tenths, as stored), `varp(name)`, `count(obj, inv)`, `items(inv)`, `messages`, `texts`, `dialogText`, `choices`, `inDialog`, `chatModal`, `mainModal`, `serverLog(sinceTick)` |
+| Choices | `choices` and `choose` only see resume buttons under the open chat modal: `if_addresumebutton` appends (`Engine-TS/src/engine/script/handlers/PlayerOps.ts:835`) and `Player.openChatModal` clears `resumeButtons` only when it replaces a paused script (`Engine-TS/src/engine/entity/Player.ts:2034-2056`), so a script showing a second dialog would otherwise list the first one's buttons too |
 | Find | `findNpc(type, radius)`, `findLoc(type, radius)`, `findObj(type, radius)`, `spawnNpc(type, at)` |
 | Client input (queued, real handlers) | `opNpc(npc, op)`, `opLoc(loc, op)`, `opObj(obj, op)`, `opHeld(obj, op)`, `useOnHeld`, `useOnNpc`, `useOnLoc`, `walkTo(coord, run)`, `walk(coord)`, `continueDialog()`, `skipDialog()`, `choose(n or text)`, `clickButton(com)`, `enterCount(n)`, `closeModal()`, `cheat(text)`, `debugproc(name, ...args)` |
 | Server-side set-up (immediate) | `teleport(coord)`, `give(obj, n, inv)`, `clearInv(inv)`, `setVar(name, v)`, `setLevel(stat, lvl)`, `call(script, ...args)` |
@@ -86,7 +87,8 @@ Names are config debugnames (`'bronze_axe'`, `'hans'`, `'tree'`, varp `'tutorial
 
 - `tests/smoke.test.ts`: login and welcome message, tick speed, give/count/clear, teleport and walk (including a blocked destination), `::~hello` through the real cheat handler, debugprocs refused below staff 4, levels, a full dialogue with Hans (NPC op, continue, choice by text, continue to the end), relog keeps items/position/varps, a RuneScript `error()` fails the test.
 - `tests/skills.test.ts`: woodcutting with and without an axe, burying bones (`opheld1`), killing a spawned chicken.
-- `tests/relics.test.ts`: first-login relic offer and picking a relic; XP tier 3 gives exactly 8 times the XP of tier 0 for the same `stat_advance` (the `Player.addXp` hook, `../design/relics-m2-xp-energy.md`).
+- `tests/relics.test.ts`: first-login relic offer and picking a relic; XP tier 3 gives exactly 8 times the XP of tier 0 for the same `stat_advance` (the `Player.addXp` hook, `../design/relics-m2-xp-energy.md`); `bot.choices` with two choice dialogs from one script.
+- `tests/relic-*.test.ts` (offers, combat, skilling, utility, tasks, death-win): end-to-end tests for every relic and flow, listed in `../design/relics-e2e-tests.md`. With them the suite is 106 tests (105 pass, 1 todo) and runs in about 35 s with `--no-build` and 2 files in parallel (observed on Linux, Node 24.11.1).
 
 ## How it works (read from code; the harness relies on each point)
 

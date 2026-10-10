@@ -89,7 +89,7 @@ Client changes or new interfaces; multiplayer; relics that skip level requiremen
 - Nothing has been compiled or run; every hook site is from reading code.
 - First-login offer vs Tutorial Island, and opening a dialog from `[login,_]` (77).
 - Whether a new `scope=perm` varp from `mods/` persists (70); whether the high-alch loop is interrupted (71); `HEALENERGY` semantics (74); combat spells and `delete_spell_runes` (74); the Evergreen full-inventory/bank-full behaviour (76); `npc_add` duration and mod NPC id assignment (79).
-- Task details still to pin: pickpocket success line, super attack dose, Kalphite soldier type (73); whether every task site is reachable on a fresh character.
+- Task details still to pin: Kalphite soldier type (73) (pickpocket line and super attack dose answered: brewing makes `3dose2attack`, `relics-e2e-tests.md`); whether every task site is reachable on a fresh character.
 - The 10-hour target is an estimate that rests on an illustrative XP rate, not data.
 
 ## 10. What the development plan should cover

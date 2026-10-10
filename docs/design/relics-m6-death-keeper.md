@@ -20,3 +20,5 @@
 - Keeper surviving a long uptime or area unload (only minutes observed).
 - PvP death and the `player_death_lose_items` early return for staff (`staffmodlevel > 1 & map_live`): not hooked or tested.
 - Items lying in a trade, duel stake or the death-keep slots; bank-full path (warning text only seen as a false positive before the fix).
+
+**Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.

@@ -107,9 +107,9 @@ Coordinates are `(x, z)` in game tiles. They are the **centre of the 64x64 map s
 
 !!! warning "Not verified"
     - Whether every task is reachable on a fresh character, and what else you need to get to the location (quests, keys, items), was not checked. The law altar and the Kalphite lair in particular may have access rules.
-    - Task 6: it is not settled whether cutting the unstrung bow or stringing it counts; make the finished bow to be safe.
-    - Task 12: the plan says the exact super attack dose that counts is not settled (`docs/design/roguelike-relics.md`, task list); make a potion and keep it.
-    - All task hooks exist now. The kill tasks and the mithril-ore task were seen completing in tests. The runecraft, bows, smelting, herblore, yew-burning and paladin hooks compiled but were never triggered, and real mining, woodcutting, fishing and cooking completions were not played through (`docs/design/relics-m7-medium-relics.md`, "Not checked").
+    - Task 6: stringing the bow counts (seen in a test, `tests/relic-tasks.test.ts`).
+    - Task 12: brewing the potion counts (it makes a 3-dose super attack; seen in a test).
+    - Every task row completes in tests. Real actions were tested for the goblin, mithril, maple, magic bow, yew burning, shark cooking, silver, super attack, paladin and yew tasks; runecrafting and fishing only through the hook, and the two bosses only through their death scripts (`docs/design/relics-e2e-tests.md`).
     - After you win (both bosses down) nothing resets, and pacing (the 10 hour target) was never measured (`docs/design/relics-m8-win-and-pacing.md`).
 
 ## Evidence

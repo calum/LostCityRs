@@ -21,3 +21,5 @@
 
 ## Not checked
 Closing the dialog and re-offer at next login; level-up and relic jingle in the same tick (Q75); `spotanim_pl` visibility to other players; the full tutorial ending path.
+
+**Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.

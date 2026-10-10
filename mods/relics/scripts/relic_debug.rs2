@@ -216,7 +216,8 @@ if (p_finduid(uid) = false) {
 }
 ~relic_say("<oc_name($o)> inv/bank: <tostring(inv_total(inv, $o))>/<tostring(inv_total(bank, $o))>");
 
-// ::~relic_wound <npc> spawns the npc east of you with 2 hitpoints left and attacks it.
+// ::~relic_wound <npc> spawns the npc east of you with 2 hitpoints left and attacks it (observed 3 by the first hit:
+// a new npc regenerates 1 hitpoint on its first tick, tests/relic-combat.test.ts).
 [debugproc,relic_wound](npc $npc)
 if (p_finduid(uid) = false) {
     return;

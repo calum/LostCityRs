@@ -216,7 +216,9 @@ if ($task >= 24) {
     return;
 }
 %relic_pending = calc(%relic_pending + 1);
-~relic_offer_pending;
+// Not shown here: a kill task completes inside npc_death while the npc is still swinging, and a melee npc's
+// swing at 0 hp runs if_close (npc_combat_melee.rs2:36), which drops a paused dialog. 3 ticks lets it finish.
+queue(relic_offer_q, 3, 0);
 
 // First offer of a run: start the run, seed it, owe one offer.
 [proc,relic_first_offer]
@@ -236,7 +238,10 @@ if (%tutorial < ^tutorial_complete) {
     return;
 }
 ~relic_ensure_keeper;
-~relic_first_offer;
+if (%relic_started = 0) {
+    ~relic_first_offer; // queues the offer itself
+    return;
+}
 if (%relic_pending > 0) {
     queue(relic_offer_q, 0, 0);
 }

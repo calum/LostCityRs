@@ -28,3 +28,5 @@
 
 ## Not checked
 Dealt damage doubling, alch payout, combat spell rune use, recall ping-pong, jewellery bank gift when the inventory is full, the amulet of glory and games necklace (same code shape as the ring, only the ring was rubbed).
+
+**Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.

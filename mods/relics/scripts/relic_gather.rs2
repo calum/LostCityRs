@@ -6,12 +6,21 @@
 [proc,relic_gathered](namedobj $obj, int $relic)
 ~relic_task_obj($obj);
 def_int $n = 1;
-if (~relic_has(12) = 1 & inv_itemspace(inv, $obj, 2, inv_size(inv)) = ^true) {
+if (~relic_has(12) = 1) {
     $n = 2;
 }
-if ($relic > 0 & ~relic_has($relic) = 1 & inv_itemspace(bank, $obj, $n, inv_size(bank)) = ^true) {
-    inv_add(bank, $obj, $n);
-    return;
+// to the bank when the skill relic sends it there and the bank can take it (2, else 1 with Double Yield)
+if ($relic > 0 & ~relic_has($relic) = 1) {
+    if ($n = 2 & inv_itemspace(bank, $obj, 2, inv_size(bank)) = ^false) {
+        $n = 1;
+    }
+    if (inv_itemspace(bank, $obj, $n, inv_size(bank)) = ^true) {
+        inv_add(bank, $obj, $n);
+        return;
+    }
+}
+if ($n = 2 & inv_itemspace(inv, $obj, 2, inv_size(inv)) = ^false) {
+    $n = 1;
 }
 inv_add(inv, $obj, $n);
 

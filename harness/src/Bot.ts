@@ -582,12 +582,29 @@ export class Bot {
         for (const r of this.player.received) {
             if (r.message instanceof IfSetText) texts.set(r.message.component, r.message.text);
         }
-        return this.player.resumeButtons.map(c => texts.get(c) ?? Component.get(c).comName ?? String(c));
+        return this.resumeButtons.map(c => texts.get(c) ?? Component.get(c).comName ?? String(c));
+    }
+
+    /**
+     * Resume buttons of the open chat modal, without duplicates. `if_addresumebutton` only appends
+     * (Engine-TS PlayerOps.ts), and `Player.openChatModal` clears `resumeButtons` only when it replaces
+     * a script that is paused (Player.ts), not when the running script opens its next dialog. So a
+     * script that shows a second choice dialog keeps the first one's buttons in the list, and
+     * IfButtonHandler rejects those because they are no longer visible.
+     */
+    private get resumeButtons(): number[] {
+        const root = this.player.modalChat;
+        const out: number[] = [];
+        for (const c of this.player.resumeButtons) {
+            if (root !== -1 && Component.get(c).rootLayer !== root) continue;
+            if (!out.includes(c)) out.push(c);
+        }
+        return out;
     }
 
     /** Pick a choice by 1-based index or by (part of) its text (IF_BUTTON on that resume button), then tick. */
     choose(option: number | string | RegExp): this {
-        const buttons = this.player.resumeButtons;
+        const buttons = this.resumeButtons;
         let index: number;
         if (typeof option === 'number') {
             index = option - 1;
