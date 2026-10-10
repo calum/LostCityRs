@@ -135,11 +135,11 @@ Task-detection hooks (about 12 `~relic_task_obj` calls, design finding 21) are a
 
 M1 → M2 → M3 → M4 → M5. M6 needs M5's jewellery. M7 needs M3's task hooks for sites it shares. M8 needs all. M1 and the engine part of M2 are independent and could run in parallel.
 
-## Open decisions for Calum
+## Decisions (Calum, 2026-10-10)
 
-1. `relic-mode` branch per fork vs committing hooks directly on `calum-research` (rule 3).
-2. Trigger for Last Recall and Banker's Call (M5).
-3. Whether first-login must wait for Tutorial Island completion (decided by M1 results).
+1. **Hook branch:** a `relic-mode` branch per fork, branched from `calum-research` (rule 3). The CLAUDE.md "stay on `calum-research`" line should be updated to allow it when M2 creates the branches.
+2. **Last Recall and Banker's Call:** triggered by an item with an op, granted when the relic is picked and covered by the death stash and Relic Keeper (M5, M6). Whether a mod `.obj` with an op script loads is still to be tested (M5).
+3. **First-login offer:** wait until Tutorial Island ends. Calum notes the tutorial can be skipped by answering "I have played before"; the offer must fire in both cases. M1/M4 must find the hook point for tutorial completion or skip (the `[tutorial]` trigger, `ServerTriggerType.ts:159`, and `~in_tutorial_island`, `teleport.rs2:97`, are candidates; not yet read) and check that the skip path also reaches it. `%relic_started` stays the once-per-character guard.
 
 ## Not checked
 
