@@ -44,7 +44,10 @@ run = "bun install"
 [tasks."client:build"]
 description = "Build Client-TS and copy its output over the engine's prebuilt copy"
 dir = "{{config_root}}/Client-TS"
+# Stops with the fix if Client-TS is older than the commit this repo records
+# (a plain `git pull` does not update submodule folders).
 run = [
+  "node ../scripts/check-submodules.mjs Client-TS",
   "bun run build",
   "node ../scripts/copy-client.mjs",
 ]
@@ -52,7 +55,7 @@ run = [
 [tasks.start]
 description = "Pack the cache if needed, then start the world, game TCP server, web server and management server"
 dir = "{{config_root}}/Engine-TS"
-run = "npm start"
+run = ["node ../scripts/check-submodules.mjs Engine-TS Content", "node ../scripts/check-client-build.mjs", "npm start"]
 
 [tasks.dev]
 description = "Like start, but restarts when engine .ts files change"
