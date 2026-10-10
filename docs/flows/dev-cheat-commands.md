@@ -84,6 +84,27 @@ Read from code, not run. There is no in-game command that lists NPCs. The intern
 - The `.npc` config files under `Content/scripts/**/configs/` hold the `[name]` headers (`1359` headers in `138` files at `65b754f76`). The header is the name `::npcadd` takes; `name=` is the display name, and is not used for the lookup. Example: `[borderguard1]` with `name=Border Guard` in `Content/scripts/areas/area_alkharid/configs/border_guard.npc:1-2`.
 - How `npc.pack` relates to the configs: `validateConfigPack` crawls the config names with `crawlConfigNames` and registers each new name with the next free ID (`pack.register(pack.max++, names[i])`) (`Engine-TS/tools/pack/PackFile.ts:131-151`, `:366`; `NpcPack` at `:295`; the pack path is listed in `Engine-TS/tools/pack/PackAll.ts:55`). **Not verified:** the step that saves the updated `npc.pack`, and whether the list is rewritten on every pack run.
 
+### Ranking NPCs by hitpoints
+
+The `hitpoints=` line is read by the packer, range-checked to 0-5000, and written as server-only opcode 77 (`Engine-TS/tools/pack/config/NpcConfig.ts:23,80,353-355`). The engine reads it into `stats[NpcStat.HITPOINTS]` (`Engine-TS/src/cache/config/NpcType.ts:186`). A block without the line gets `1` (`NpcType.ts:106`). Whether this value is the NPC's max hitpoints or its starting level was not traced.
+
+Method (read, and run over the `.npc` files at `65b754f76`, with a short script in the scratchpad, not committed): every `[name]` block under `Content/scripts`, sorted by `hitpoints`. Result: 1,359 blocks, 597 with an explicit line, no block with two lines. Top 10:
+
+| Rank | Name | hitpoints | File |
+|---|---|---|---|
+| 1 | `kalphite_flyingqueen` | 255 | `areas/area_kalphite/configs/kalphite.npc` |
+| 2 | `kalphite_queen` | 255 | `areas/area_kalphite/configs/kalphite.npc` |
+| 3 | `macro_dwarf` | 255 | `macro events/configs/antimacro.npc` |
+| 4 | `macro_swarm` | 255 | `macro events/configs/antimacro.npc` |
+| 5 | `viking_enemy4` | 255 | `quests/quest_viking/configs/viking.npc` |
+| 6 | `nasty_tree` | 250 | `_unpack/225/all.npc` |
+| 7 | `nasty_tree_swamp` | 250 | `areas/area_mortmyre/configs/mortmyre.npc` |
+| 8 | `king_dragon` | 240 | `areas/area_wilderness/configs/king_dragon.npc` |
+| 9 | `macro_triffidseed` | 200 | `macro events/configs/antimacro.npc` |
+| 10 | `macro_triffidseed_angry` | 200 | `macro events/configs/antimacro.npc` |
+
+Not checked: what `_unpack/` is and whether `nasty_tree` is used in play; whether the `hitpoints` value is the in-game maximum. Ties at 255 are ordered by name.
+
 ## Open questions
 
 - Do the `~` debugprocs `maxme`, `giverunes`, `bank`, `foodbank` and the rest do what `cheat_help.rs2` says? Needs their scripts read, or an in-game run.
