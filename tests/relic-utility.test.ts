@@ -156,7 +156,7 @@ function rub(bot: Bot, item: string, choice: string, dest: { x: number; z: numbe
 }
 
 // Destinations: ring 0_51_50_51_35 = 3315,3235 (+-2, ring_of_dueling.rs2:20); games necklace 0_34_77_31_12 = 2207,4940
-// (+-2, necklace_of_minigames.rs2:20); glory Edgeville 0_48_54_15_40 = 3087,3496 exact (amulet_of_glory.rs2:94).
+// (+-2, necklace_of_minigames.rs2:20); glory Edgeville 0_48_54_15_40 = 3087,3496 exact (amulet_of_glory.rs2:30).
 const RUBS = [
     { item: 'ring_of_dueling_8', next: 'ring_of_dueling_7', choice: 'Duel Arena', dest: { x: 3315, z: 3235 }, mes: 'Your Ring of Dueling has 7 uses left.' },
     { item: 'amulet_of_glory_4', next: 'amulet_of_glory_3', choice: 'Edgeville', dest: { x: 3087, z: 3496 }, mes: 'Your amulet has three charges left.' },
@@ -180,14 +180,9 @@ for (const r of RUBS) {
         rub(bot, r.item, r.choice, r.dest);
         assert.equal(bot.count(r.item), 1);
         assert.equal(bot.count(r.next), 0);
-        if (r.item === 'amulet_of_glory_4') {
-            // Current behaviour: the glory prints its charge message BEFORE the hook (amulet_of_glory.rs2:92 mes($message),
-            // hook at :99), so with the relic it still says "three charges left" although the amulet stays (4).
-            bot.expectMessage('Your amulet has three charges left.');
-        } else {
-            // ring and games necklace print their "uses left" message after the hook (ring_of_dueling.rs2:21,32)
-            bot.expectNoMessage(/uses? left/);
-        }
+        // no "charges/uses left" message: the charge was kept. Ring and necklace print theirs after the hook
+        // (ring_of_dueling.rs2:21); the glory prints before its teleport, behind its own relic hook (amulet_of_glory.rs2).
+        bot.expectNoMessage(/uses? left|charges? left/);
     });
 }
 

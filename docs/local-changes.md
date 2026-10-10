@@ -17,7 +17,8 @@ Hooks live on branch `relic-mode` of each fork (branched from the pinned upstrea
 | M5 | Content | `scripts/skill_magic/scripts/magic.rs2:65,88` (`staff_runes`, both returns) | rune counts wrapped in `~relic_rune_count(...)` | `30ede1e59` |
 | M5 | Content | `.../enchanted_jewellry/ring_of_dueling.rs2:21` | 3-line `if (~relic_keep_charge = ^true) { return; }` before the charge swap | `3251ccafb` |
 | M5 | Content | `.../enchanted_jewellry/necklace_of_minigames.rs2:21` | same | `a67cacfab` |
-| M5 | Content | `.../enchanted_jewellry/amulet_of_glory.rs2:35` | same | `a995d118b` |
+| M5 | Content | `.../enchanted_jewellry/amulet_of_glory.rs2:37` | same | `a995d118b` |
+| e2e | Content | `.../enchanted_jewellry/amulet_of_glory.rs2:28-30` | `mes($message)` wrapped in `if (~relic_keep_charge = ^false)`, so no "charges left" message when the charge is kept (on fork `main`, also pushed to `relic-mode`) | `0bd36bfa3` |
 | M5 | Content | `scripts/skill_magic/scripts/spells/teleport.rs2:127` (end of `pre_tele_checks`) | `~relic_record_origin($coord); // relic hook` | `c80daec05` |
 | M6 | Content | `scripts/player/scripts/death.rs2:55` (`player_death_lose_items`, after `inv_clear(deathkeep);`) | `~relic_stash_items; // relic hook` | `d6197b655` |
 | M6 | Content | `pack/npc.pack` | pack id `1359=relic_keeper` | `73546549b` |

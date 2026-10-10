@@ -132,7 +132,10 @@ if ($id = 16) {
 }
 
 // Draw up to 3 relics (see relic_in_pool for $mode), ask, grant. Returns 1 if something was offered, 0 if the pool was empty.
+// The seed advanced by the draws is stored only once the player answers: closing the dialog drops this script
+// (Player.closeModal), so the seed stays where it was and the next login shows the same offer (no reroll).
 [proc,relic_offer_mode](int $mode)(int)
+def_int $seed_before = %relic_seed;
 def_int $drawn = 0;
 def_int $a = ~relic_draw($drawn, $mode);
 if ($a = 0) {
@@ -150,6 +153,8 @@ if ($b ! 0) {
         $drawn = setbit($drawn, $c);
     }
 }
+def_int $seed_after = %relic_seed;
+%relic_seed = $seed_before;
 def_int $pick = 0;
 if ($c ! 0) {
     $pick = ~p_choice3_header(~relic_option($a), $a, ~relic_option($b), $b, ~relic_option($c), $c, "Choose a relic");
@@ -158,6 +163,7 @@ if ($c ! 0) {
 } else {
     $pick = ~p_choice2_header(~relic_option($a), $a, "No thanks", 0, "Take this relic?");
 }
+%relic_seed = $seed_after;
 // everything offered and not picked can come back and feeds the Hoarder relic
 def_int $i = 1;
 while ($i <= 19) {

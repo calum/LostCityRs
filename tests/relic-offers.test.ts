@@ -119,11 +119,13 @@ test('first login after the tutorial: three relics from the seed, the pick is gr
     assert.deepEqual(offeredIds(bot), expected.ids);
     assert.equal(choiceTexts(bot)[0], 'Midas Loop: high alch repeats');
     assert.match(bot.dialogText, /Choose a relic/);
-    assert.equal(bot.varp('relic_seed'), expected.seed);
+    // the advanced seed is only stored once the offer is answered, so closing it cannot reroll it
+    assert.equal(bot.varp('relic_seed'), 5);
 
     pick(bot, 'Midas Loop');
     bot.waitUntilIdle(20);
     bot.expectMessage('You gained the relic: Midas Loop.');
+    assert.equal(bot.varp('relic_seed'), expected.seed);
     assert.equal(bot.varp('relic_owned'), bit(13));
     assert.equal(bot.varp('relic_declined'), bit(19) | bit(10));
     assert.equal(bot.varp('relic_pending'), 0);
@@ -192,7 +194,7 @@ test('the same seed gives the same offer, a different seed a different one', t =
     assert.notDeepEqual(runs[0], runs[3]);
 });
 
-test('closing an offer keeps it pending; it is not re-offered until the next login', t => {
+test('closing an offer keeps it pending and unchanged; the next login shows the same three relics', t => {
     if (skip()) return t.skip(String(skip()));
     // run already started and one offer owed: [login,_] -> relic_on_login queues relic_offer_q once (relic_offer.rs2:240-241)
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 5, relic_pending: 1 } });
@@ -210,16 +212,17 @@ test('closing an offer keeps it pending; it is not re-offered until the next log
     bot.tick(10);
     assert.equal(bot.inDialog, false, 'not re-offered without a relog');
 
+    assert.equal(bot.varp('relic_seed'), 5, 'a closed offer does not advance the seed');
+
     const again = bot.relog();
     waitForOffer(again);
-    // the seed advanced during the closed offer, so the re-offer is the next draw, not the same three
-    const second = predictOffer(first.seed, 0, 0);
-    assert.deepEqual(offeredIds(again), second.ids);
-    assert.notDeepEqual(second.ids, first.ids);
+    // no reroll: the re-offer shows the same three relics
+    assert.deepEqual(offeredIds(again), first.ids);
     pick(again, 1);
     again.waitUntilIdle(20);
     assert.equal(again.varp('relic_pending'), 0);
-    again.expectMessage(`You gained the relic: ${NAMES[second.ids[0]]}.`);
+    assert.equal(again.varp('relic_seed'), first.seed);
+    again.expectMessage(`You gained the relic: ${NAMES[first.ids[0]]}.`);
 });
 
 test('first login queues the offer once: closing it leaves it owed until a relog', t => {
@@ -237,7 +240,7 @@ test('first login queues the offer once: closing it leaves it owed until a relog
 
     const again = bot.relog();
     waitForOffer(again);
-    assert.deepEqual(offeredIds(again), predictOffer(first.seed, 0, 0).ids, 'a fresh draw from the advanced seed');
+    assert.deepEqual(offeredIds(again), first.ids, 'the same offer, not a reroll');
 });
 
 test('several pending offers are answered one after another', t => {
@@ -276,6 +279,7 @@ test('owned relics are never offered', t => {
         seed = p.seed;
         bot.closeModal().tick();
         bot.setVar('relic_pending', 0);
+        bot.setVar('relic_seed', seed); // a closed offer keeps its seed; move on to get a different draw
     }
 });
 
