@@ -1,7 +1,7 @@
 # Relic mode: player guide and tracker
 
 !!! note "This page follows the current plan"
-    This page follows the plan and the code in `mods/relics/` as of root commit `d136077` (all eight milestones are on `main`). Relics and tasks may still change. Everything is built, but only part of it was tested, and only with a scripted test client, never a full play-through (see the *Status* column). The author of this page ran nothing.
+    This page follows the plan and the code in `mods/relics/` as of root commit `9da0b24` (all eight milestones are on `main`). Relics and tasks may still change. Everything is built, but only part of it was tested, and only with a scripted test client, never a full play-through (see the *Status* column). The author of this page ran nothing.
 
 ## The run in one minute
 
@@ -13,7 +13,7 @@
 
 ### Rules worth knowing
 
-1. **Tasks unlock in tiers.** Only tasks in the lowest tier that still has an unfinished task count. Tier 1 is tasks 1-6, tier 2 is 7-13, tier 3 is 14-23 and tier 4 is the two bosses. Inside a tier you may do them in any order. (`mods/relics/scripts/relic_tasks.rs2:1-24`)
+1. **Tasks count in any order.** There is no unlock order: do them as you please, including the two bosses at any time. (`docs/design/relics-m3-tasks.md`, "Update: tier lock removed")
 2. **A task counts once.** Doing it again gives nothing.
 3. **Relics you decline stay in the pool** and can be offered again later. If only 1 or 2 are left you are offered just those. If none are left, the task still completes with the celebration but there is no choice.
 4. **There are 21 pickable relics** (19 relics, with the XP Multiplier counting three times) for 23 offers, so the last offers of a full run are empty. (`docs/design/roguelike-relics.md`, "Offer mechanics")
@@ -73,35 +73,35 @@ For the details and the code, see the notes [M5](../design/relics-m5-easy-relics
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-The **Tier** column shows when a task counts: only tasks up to the current tier count (rule 1). Rows of a tier you cannot use yet are greyed out once you start ticking.
+Tasks count in any order. Ticking a task here does not affect any other row.
 
-| # | Tier | Task | Requirements | Where (from the map spawn data) |
-|---|---|---|---|---|
-| 1 | 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | Lumbridge (3232, 3232), Rimmington (2976, 3232), Goblin Village (2976, 3488) |
-| 2 | 1 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | underground around (2848, 9568) |
-| 3 | 1 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | underground around (3104, 9824), or in the Wilderness around (3104, 3872) |
-| 4 | 1 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
-| 5 | 1 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
-| 6 | 1 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
-| 7 | 2 | **Burn a yew log** | Firemaking 60 and yew logs | anywhere you can light a fire |
-| 8 | 2 | **Craft a law rune** | Runecrafting 54, **members** world, a law talisman and essence | law altar around (2858, 3381), on Entrana |
-| 9 | 2 | **Harpoon a swordfish** | Fishing 50 and a harpoon | harpoon fishing spots |
-| 10 | 2 | **Cook a raw shark** | Cooking 80. The cooked shark counts, a burnt one does not | any fire or range |
-| 11 | 2 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
-| 12 | 2 | **Make a super attack potion** | Herblore 45, an unfinished Irit potion and an eye of newt | anywhere |
-| 13 | 2 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
-| 14 | 3 | Defeat a **scorpion** | combat level 14, 17 HP | around (3040, 3552), (3296, 3296) or (2848, 3168) |
-| 15 | 3 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | brown: around (2720, 3360); dark: around (2976, 3488) |
-| 16 | 3 | Defeat a **monkey** | combat level 3, 6 HP | Karamja, around (2848, 3040) and (2912, 3104) |
-| 17 | 3 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | Wilderness around (3104, 3808) |
-| 18 | 3 | Defeat a **blue dragon** | combat level 111, 105 HP | underground around (2592, 9440) |
-| 19 | 3 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
-| 20 | 3 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
-| 21 | 3 | Defeat a **hellhound** | combat level 122, 116 HP | underground around (2848, 9824) or (2720, 9696) |
-| 22 | 3 | Defeat a **black demon** | combat level 172, 157 HP | underground around (2848, 9760) or (3104, 9952) |
-| 23 | 3 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | Kalphite lair, around (3488, 9504) (height level 2) |
-| 24 | 4 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | underground around (2720, 9824) |
-| 25 | 4 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | Kalphite lair |
+| # | Task | Requirements | Where (from the map spawn data) |
+|---|---|---|---|
+| 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | Lumbridge (3232, 3232), Rimmington (2976, 3232), Goblin Village (2976, 3488) |
+| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | underground around (2848, 9568) |
+| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | underground around (3104, 9824), or in the Wilderness around (3104, 3872) |
+| 4 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
+| 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
+| 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
+| 7 | **Burn a yew log** | Firemaking 60 and yew logs | anywhere you can light a fire |
+| 8 | **Craft a law rune** | Runecrafting 54, **members** world, a law talisman and essence | law altar around (2858, 3381), on Entrana |
+| 9 | **Harpoon a swordfish** | Fishing 50 and a harpoon | harpoon fishing spots |
+| 10 | **Cook a raw shark** | Cooking 80. The cooked shark counts, a burnt one does not | any fire or range |
+| 11 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
+| 12 | **Make a super attack potion** | Herblore 45, an unfinished Irit potion and an eye of newt | anywhere |
+| 13 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
+| 14 | Defeat a **scorpion** | combat level 14, 17 HP | around (3040, 3552), (3296, 3296) or (2848, 3168) |
+| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | brown: around (2720, 3360); dark: around (2976, 3488) |
+| 16 | Defeat a **monkey** | combat level 3, 6 HP | Karamja, around (2848, 3040) and (2912, 3104) |
+| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | Wilderness around (3104, 3808) |
+| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | underground around (2592, 9440) |
+| 19 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
+| 20 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
+| 21 | Defeat a **hellhound** | combat level 122, 116 HP | underground around (2848, 9824) or (2720, 9696) |
+| 22 | Defeat a **black demon** | combat level 172, 157 HP | underground around (2848, 9760) or (3104, 9952) |
+| 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | Kalphite lair, around (3488, 9504) (height level 2) |
+| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | underground around (2720, 9824) |
+| 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | Kalphite lair |
 
 Coordinates are `(x, z)` in game tiles. They are the **centre of the 64x64 map square** that holds the spawns, so treat them as "around here", not an exact tile. A `z` of 6400 or more is an underground map square. I did not look up where the entrances are. Skill, level and combat numbers come from the game config files listed under *Evidence*.
 
@@ -122,7 +122,7 @@ All paths are relative to the repo root. Content commit `6c7b18f`, root `8a83538
 - Relic list and effects: `docs/design/roguelike-relics-spec.md:40-60`, names in `mods/relics/scripts/relic_offer.rs2:7-26`, effects in `mods/relics/scripts/relic_effects.rs2`.
 - Phoenix 5 minutes: `relic_effects.rs2` sets `map_clock + 500` ticks. Stoneskin, Glass Cannon, Philosopher's Coin, Infinite Runes: same file. Bounty coin and food tiers: `relic_kill_effects` in the same file.
 - Recall stone and Banker's stone: `mods/relics/configs/relic_items.obj`, ops handled at `relic_effects.rs2` (`[opheld1,relic_recall_stone]`, `[opheld1,relic_banker_stone]`).
-- Task list: `docs/design/roguelike-relics.md` ("The task list (25)"); tiers and detection: `mods/relics/configs/relic_tasks.dbrow`, `mods/relics/configs/relic.constant`, `mods/relics/scripts/relic_tasks.rs2`.
+- Task list: `docs/design/roguelike-relics.md` ("The task list (25)"); detection (the tier column in these files is now unused): `mods/relics/configs/relic_tasks.dbrow`, `mods/relics/configs/relic.constant`, `mods/relics/scripts/relic_tasks.rs2`.
 - Mithril Mining 55: `Content/scripts/skill_mining/configs/mine.dbrow:101-109`. Runite Mining 85: `mine.dbrow:127-135`.
 - Maple Woodcutting 45: `Content/scripts/skill_woodcutting/configs/trees.dbrow:116-118`. Yew Woodcutting 60: `trees.dbrow:131-133`.
 - Magic shortbow Fletching 80: `Content/scripts/skill_fletching/configs/stringing/bows.dbrow:71-75` (stringing) and `cut_logs/cut_logs.dbrow:41` (unstrung).
