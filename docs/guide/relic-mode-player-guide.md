@@ -1,7 +1,7 @@
 # Relic mode: player guide and tracker
 
 !!! note "This page follows the current plan"
-    This page follows the plan and the code in `mods/relics/` as of root commit `9da0b24` (all eight milestones are on `main`). Relics and tasks may still change. Everything is built, but only part of it was tested, and only with a scripted test client, never a full play-through (see the *Status* column). The author of this page ran nothing.
+    This page follows the plan and the code in `mods/relics/` as of root commit `89a3b19` (all eight milestones are on `main`). Relics and tasks may still change. Every relic has automated tests (106 tests, 105 pass, 1 marked todo), run with a scripted headless client. Nobody has done a full play-through by hand, and this page's author ran nothing.
 
 ## The run in one minute
 
@@ -36,36 +36,39 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 1c | XP Multiplier III | XP rate 32x to **64x** (needs II) | tested | automatic |
 | 2 | Quest Pass | every quest is marked complete | tested, see note | automatic |
 | 3 | Stoneskin | you take **half** the damage | tested | automatic |
-| 4 | Quickstrike | you attack **twice as fast** | built, partly tested | automatic |
-| 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | partly tested | automatic |
+| 4 | Quickstrike | you attack **twice as fast** | tested (melee, bow) | automatic |
+| 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | tested | automatic |
 | 6 | Phoenix | a lethal hit leaves you on 1 HP, once every **5 minutes** | tested | automatic |
 | 7 | Vampire | you heal a little on **every kill** | tested | automatic |
-| 8 | Executioner | NPCs below 25% HP die instantly | built, partly tested | automatic |
+| 8 | Executioner | NPCs below 25% HP die instantly | tested, see note | automatic |
 | 9 | Bounty | every kill drops **coins plus one food**, bigger for tougher NPCs | tested | pick the drop up |
-| 10 | Eternal Vein | ore rocks never run out and ore goes **straight to your bank** | tested with debug commands | automatic |
-| 11 | Evergreen | trees never fall and logs go **straight to your bank** | tested with debug commands | automatic |
-| 12 | Double Yield | gathering and cooking give **x2** items | tested with debug commands | automatic |
+| 10 | Eternal Vein | ore rocks never run out and ore goes **straight to your bank** | tested | automatic |
+| 11 | Evergreen | trees never fall and logs go **straight to your bank** | tested | automatic |
+| 12 | Double Yield | gathering and cooking give **x2** items | tested (not fishing or cooking) | automatic |
 | 13 | Midas Loop | high alchemy keeps repeating on the same stack | tested | cast High Level Alchemy |
-| 14 | Philosopher's Coin | alchemy pays **x2** coins | built, not tested | cast an alchemy spell |
+| 14 | Philosopher's Coin | alchemy pays **x2** coins | tested | cast an alchemy spell |
 | 15 | Infinite Runes | spells cost **no runes** | tested | automatic |
-| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested (ring only) | use the jewellery |
-| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested (one trip) | a **Recall stone** item, op *Recall* |
+| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested | use the jewellery |
+| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested | a **Recall stone** item, op *Recall* |
 | 18 | Banker's Call | opens your bank from anywhere | tested | a **Banker's stone** item, op *Open bank* |
-| 19 | Hoarder | one extra pick from relics you declined earlier | partly tested | automatic, right after you take it |
+| 19 | Hoarder | one extra pick from relics you declined earlier | tested | automatic, right after you take it |
 
-*Status* says how far the relic was checked by the builder, using a scripted headless client (not a person playing). "Tested" means the effect was seen working once. "Debug commands" means the effect was triggered by test commands, not by real mining, chopping or cooking. Nothing was checked over a long session.
+*Status* says how the relic was checked. "Tested" means an automated test (with a control run without the relic) saw it work, using real client input where the test harness allows it. Not covered by any test: anything the client shows (dialogs, jingle, fireworks), Tutorial Island, real boss fights, and long sessions. (`docs/design/relics-e2e-tests.md`)
 
 Things worth knowing:
 
-- **Quest Pass** runs the engine's own "complete all quests" cheat script. It also hands out quest reward items and XP (quest points reached 135 in the test), so it is a big skill boost too. In the test, the final "Quest complete" scroll could not be closed by the test client; whether a real client can close it is not checked.
-- **Eternal Vein** stops after each ore, so click the rock again. Evergreen keeps chopping.
+- **Quest Pass** runs the engine's own "complete all quests" cheat script. It also hands out quest reward items and XP (quest points reached 135 in the test), so it is a big skill boost too. About 63 quest-complete scrolls open one after another, so expect to click through them (inference; the test closes them all).
+- **Eternal Vein** was seen by hand to stop after each ore, so you may need to click the rock again. Evergreen keeps chopping until you walk away.
 - **Midas Loop** stops when you walk or click something else.
-- **Executioner** and **Quickstrike**: the effects ran, but the faster swing animation and the real attack speed were not checked.
-- **Everlasting Jewellery**: only the ring of dueling was tried; the glory amulet and games necklace use the same code shape.
+- **Executioner** finishes an NPC below 25% of its base HP on your next landed hit, but it over-credits attack XP a little (a known issue, not fixed). **Quickstrike** halves melee and bow attack delays in tests; magic and special attacks were not tested, and nobody checked that the client shows the faster swing.
+- **Glass Cannon** doubling is tested on melee only (ranged and magic not tested).
+- **Phoenix** was tested with a debug hit, not a real killing blow, and its cooldown survives death.
+- **Everlasting Jewellery**: all three items keep their charges in tests. The glory amulet's message still says it lost a charge, though it did not (a known message bug).
+- **Closing an offer and relogging** gives you three new relics, so the offer is not a fixed pick (known, unchanged).
 
 ### If you die
 
-Relic items (the three jewellery items, the Recall stone and the Banker's stone) are moved to your bank on death. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (`0_50_50_21_18`, about (3221, 3218)); it re-issues each missing item once. Tested: one death, one keeper after login. Not checked: bank full, PvP death, long uptime. (`docs/design/relics-m6-death-keeper.md`)
+Relic items (the three jewellery items, the Recall stone and the Banker's stone) are moved to your bank on death. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (`0_50_50_21_18`, about (3221, 3218)); it re-issues each missing item once. Tested: death with the bank full or not, one keeper after many logins. Not checked: PvP death, long uptime. (`docs/design/relics-m6-death-keeper.md`)
 
 For the details and the code, see the notes [M5](../design/relics-m5-easy-relics.md), [M6](../design/relics-m6-death-keeper.md), [M7](../design/relics-m7-medium-relics.md) and the [development plan](../design/roguelike-relics-dev-plan.md).
 
