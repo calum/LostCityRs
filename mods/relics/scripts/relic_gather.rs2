@@ -1,0 +1,35 @@
+// Gathering and task-product hooks (docs/local-changes.md). Relics: 10 Eternal Vein, 11 Evergreen, 12 Double Yield.
+
+// Replaces inv_add(inv, $obj, 1) at gathering and cooking sites. $relic is the skill relic (10 mining, 11 woodcutting, 0 none):
+// with it the product goes straight to the bank (falls back to the inventory if the bank cannot take it).
+// Double Yield (12) doubles the count when it fits. Also counts the product for tasks.
+[proc,relic_gathered](namedobj $obj, int $relic)
+~relic_task_obj($obj);
+def_int $n = 1;
+if (~relic_has(12) = 1 & inv_itemspace(inv, $obj, 2, inv_size(inv)) = ^true) {
+    $n = 2;
+}
+if ($relic > 0 & ~relic_has($relic) = 1 & inv_itemspace(bank, $obj, $n, inv_size(bank)) = ^true) {
+    inv_add(bank, $obj, $n);
+    return;
+}
+inv_add(inv, $obj, $n);
+
+// mining.rs2 hooks. 10 Eternal Vein: rocks never deplete.
+[proc,relic_loc_change](loc $new_loc, int $duration)
+if (~relic_has(10) = 1) {
+    return;
+}
+loc_change($new_loc, $duration);
+
+// firemaking.rs2 hook. Task 7 (tier 2): burn a yew log. Not table driven because yew chopping (task 20) uses the same object.
+[proc,relic_task_burn](obj $log)
+if ($log = yew_logs) {
+    ~relic_task_try(7, 2);
+}
+
+// thieving.rs2 hook (after a successful pickpocket). Task 13 (tier 2): pickpocket a paladin.
+[proc,relic_task_pickpocket]
+if (npc_type = paladin) {
+    ~relic_task_try(13, 2);
+}

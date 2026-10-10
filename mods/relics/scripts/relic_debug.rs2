@@ -183,3 +183,73 @@ while (npc_findnext = true) {
     $n = calc($n + 1);
 }
 ~relic_say("keepers in 60 tiles: <tostring($n)>");
+
+// ::~relic_give <obj> <n> adds items to the inventory.
+[debugproc,relic_give](namedobj $o, int $n)
+if (p_finduid(uid) = false) {
+    return;
+}
+inv_add(inv, $o, $n);
+
+// ::~relic_gather <obj> <relic> runs the gather hook as if the player had just produced the item.
+[debugproc,relic_gather](namedobj $o, int $r)
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_gathered($o, $r);
+
+// ::~relic_chop adds a tree next to the player and starts chopping it.
+[debugproc,relic_chop]
+if (p_finduid(uid) = false) {
+    return;
+}
+def_coord $c = movecoord(coord, 1, 0, 0);
+loc_add($c, tree, 0, centrepiece_straight, 500);
+if (loc_find($c, tree) = true) {
+    p_oploc(1);
+}
+
+// ::~relic_inv prints inventory and bank counts of an item.
+[debugproc,relic_count](namedobj $o)
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("<oc_name($o)> inv/bank: <tostring(inv_total(inv, $o))>/<tostring(inv_total(bank, $o))>");
+
+// ::~relic_wound <npc> spawns the npc east of you with 2 hitpoints left and attacks it.
+[debugproc,relic_wound](npc $npc)
+if (p_finduid(uid) = false) {
+    return;
+}
+npc_add(movecoord(coord, 1, 0, 0), $npc, 500);
+npc_damage(^hitmark_damage, calc(npc_basestat(hitpoints) - 2));
+p_opnpc(2);
+
+// ::~relic_alch <obj> casts high alchemy on the item as if the spell was used on it.
+[debugproc,relic_alch](obj $item)
+if (p_finduid(uid) = false) {
+    return;
+}
+@magic_spell_high_alch(^highlvl_alchemy, $item);
+
+// ::~relic_delay_test prints relic_delay for 1, 4, 5 ticks with the current relics.
+[debugproc,relic_delay_test]
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("quickstrike=<tostring(~relic_has(4))> delay 1/4/5 -> <tostring(~relic_delay(1))>/<tostring(~relic_delay(4))>/<tostring(~relic_delay(5))>");
+
+// ::~relic_swing <npc> spawns an npc east of you and attacks it; prints its hitpoints after.
+[debugproc,relic_swing](npc $npc)
+if (p_finduid(uid) = false) {
+    return;
+}
+npc_add(movecoord(coord, 1, 0, 0), $npc, 500);
+p_opnpc(2);
+
+// ::~relic_qp prints quest points.
+[debugproc,relic_qp]
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("quest points: <tostring(%qp)>");
