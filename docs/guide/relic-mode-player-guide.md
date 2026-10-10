@@ -47,7 +47,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 12 | Double Yield | gathering and cooking give **x2** items | tested (not fishing or cooking) | automatic |
 | 13 | Midas Loop | high alchemy keeps repeating on the same stack | tested | cast High Level Alchemy |
 | 14 | Philosopher's Coin | alchemy pays **x2** coins | tested | cast an alchemy spell |
-| 15 | Infinite Runes | **every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. The magic tab still shows the spell icons greyed out and the rune counts in red, because the client works that out itself; casting works anyway | tested | automatic |
+| 15 | Infinite Runes | **every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. The magic tab draws every spell you have the Magic level for as castable (needs the updated client) | tested | automatic |
 | 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested | use the jewellery |
 | 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested | a **Recall stone** item, op *Recall* |
 | 18 | Banker's Call | opens your bank from anywhere | tested | a **Banker's stone** item, op *Open bank* |

@@ -12,7 +12,7 @@
 | `tests/relic-combat.test.ts` | 14 | 3 Stoneskin, 4 Quickstrike, 5 Glass Cannon (taken and dealt), 6 Phoenix, 7 Vampire, 8 Executioner, 9 Bounty |
 | `tests/relic-skilling.test.ts` | 14 | 10 Eternal Vein, 11 Evergreen, 12 Double Yield, 13 Midas Loop, 14 Philosopher's Coin |
 | `tests/relic-utility.test.ts` | 18 | 15 Infinite Runes, 16 Everlasting Jewellery, 17 Last Recall, 18 Banker's Call |
-| `tests/relic-infinite-runes.test.ts` | 43 | 15 Infinite Runes on every spell: 30 combat spells (incl. god spells with their staff), 7 teleports, bones to bananas, low alchemy, enchant, superheat, a staff worn, a relog. Each spell has a control without the relic |
+| `tests/relic-infinite-runes.test.ts` | 45 | 15 Infinite Runes on every spell: 30 combat spells (incl. god spells with their staff), 7 teleports, bones to bananas, low alchemy, enchant, superheat, a staff worn, a relog. Each spell has a control without the relic |
 | `tests/relic-tasks.test.ts` | 13 | every `relic_task_npc` and `relic_task_obj` row, real kills and real skill actions for tasks 1, 4, 5, 6, 7, 10, 11, 12, 13, 20, no re-firing, any order |
 | `tests/relic-death-win.test.ts` | 11 | death stash (inv and worn, bank full), Relic Keeper (one only, re-issue rules), win on both final bosses in either order |
 
@@ -66,3 +66,5 @@ Each fix was made test first: the test failed for the expected reason, then pass
 `relics-m2-xp-energy.md` to `relics-m8-win-and-pacing.md` (what was observed by hand), `../setup/headless-test-harness.md`, `../local-changes.md`.
 
 **Infinite Runes sweep (2026-10-10, Content `0bd36bfa3`, root `c5da4f1`).** Every rune check goes through `[proc,check_spell_requirements]` and `[proc,staff_runes]` in `Content/scripts/skill_magic/scripts/magic.rs2`, which the `~relic_rune_count` hook zeroes (hook commit `30ede1e59`, 2026-10-10 16:10 UTC). `grep` found no other rune check: all 12 callers of `check_spell_requirements` (combat, pvp, autocast, crumble undead, alchemy, teleport, enchant, superheat, charge, charge orb, bones, telegrab) use it. The sweep test casts each spell from an empty backpack, with and without the relic; all pass. Not covered: Charge, Charge Orb and Telekinetic Grab (set-up needs the Mage Arena varp, an obelisk and a floor item), PvP magic. The client only greys the spell icon and shows rune counts in red (`Client-TS/src/client/Client.ts` `getIfActive`, callers at 10096-10252 and 10616 only draw); it does not stop a click.
+
+**Client display (Client-TS `a822635`).** `%relic_owned` is now `transmit=yes, clientcode=100` (`mods/relics/configs/relic.varp`). `Client.ts` `clientVar` sets `relicFreeRunes` from bit 15 and `getIfVar` opcode 4 reports infinite for `* rune` objects, so `getIfActive` treats the rune conditions as met. Verified: client typechecks (`tsc --noEmit`) and builds (`bun run build`); the varp flags are asserted by tests. Not verified: the actual drawing in a browser.

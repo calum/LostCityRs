@@ -168,3 +168,21 @@ test('infinite runes: still free after a relog (the relic is saved with the char
     bot.tick(6);
     bot.expectNoMessage(NO_RUNES);
 });
+
+// ---------------------------------------------------------------- client display
+
+// The client greys spell icons by counting runes in the backpack itself (Client.ts getIfActive/getIfVar opcode 4).
+// To show spells enabled it must know about relic 15, so %relic_owned is sent to the client and carries clientcode 100,
+// which Client-TS reads as "bit 15 set = runes are free". Not covered by the harness: the drawing itself.
+test('infinite runes: the client is told about the relic (relic_owned is transmitted with clientcode 100)', async () => {
+    const { default: VarPlayerType } = await import('../Engine-TS/src/cache/config/VarPlayerType.js');
+    const v = VarPlayerType.getByName('relic_owned')!;
+    assert.equal(v.transmit, true);
+    assert.equal(v.clientcode, 100);
+});
+
+test('infinite runes: granting the relic sends relic_owned with bit 15 set to the client', () => {
+    const bot = fresh(true);
+    bot.tick(2);
+    assert.equal(((bot.varp('relic_owned') as number) >> 15) & 1, 1);
+});
