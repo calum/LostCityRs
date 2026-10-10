@@ -161,6 +161,8 @@ Level 99 is 13,034,431 xp (finding 9). A skill whose training you can do at, say
 27. **Damage dealt to NPCs** in melee, ranged, magic and the `pvm_*` specials is computed through `[proc,npc_max_dealt]` (`skill_combat/scripts/npc/npc_combat.rs2:391`; callers incl. `player_melee.rs2:28`, `player_ranged.rs2:51`, `player_magic.rs2:201`). One hook there scales damage dealt (and a "minimum hit" effect).
 28. **Utility opcodes exist**: `RUNENERGY`, `WEIGHT` (`Engine-TS/src/engine/script/ScriptOpcode.ts:168,206`), and a reusable `@openbank` label used by bank booths (`interface_bank/scripts/bank_booth.rs2:5`). What each does (read vs set) was not read.
 
+> **Revision (after review):** the base XP rate is now **8x** (not the 10x used in Part 1's examples), and the relic pool below replaces the first 32-relic draft.
+
 ## The task list (25)
 
 Your 18 examples, plus 7 chosen by me. "Hook" = where the completion is detected. 1-3 and 14-25 are kills.
@@ -193,79 +195,79 @@ Your 18 examples, plus 7 chosen by me. "Hook" = where the completion is detected
 | 24 | Defeat the King Black Dragon | `npc_death`, `king_dragon` | final, no relic offer |
 | 25 | Defeat the Kalphite Queen | `npc_death` of `kalphite_flyingqueen` (finding 14) | final, no relic offer |
 
-Tasks 1-23 each trigger one offer (23 offers). Suggested order: tasks are *unlocked in tiers* (for example 1-6 first, then 7-13, then 14-23, then the two finals), but inside a tier the player picks any, which keeps routing interesting. The "accelerate toward a named NPC or action" goal is served by the task-aware relics below (Compass, Tutor, Boss Key).
+Tasks 1-23 each trigger one offer (23 offers). Suggested order: tasks are *unlocked in tiers* (for example 1-6 first, then 7-13, then 14-23, then the two finals), but inside a tier the player picks any, which keeps routing interesting. The Compass, Tutor and Boss Key relics from the first draft were dropped, so v1 has no relic that points at the next task.
 
 ## Offer mechanics
 
-1. Each completed task triggers `~relic_offer`. It draws **3 distinct relics** with the run seed (`%relic_seed`, advanced each draw) from the *eligible pool*.
-2. Eligible pool = every relic not yet owned, plus stackable relics that have tiers left. The two relics not picked **stay in the pool**, so they can reappear (as you asked).
-3. Pick via `~p_choice3_header`-style dialog (the 2- and 5-option versions exist; a 3-option one is not verified, so use the 5-option with three entries if needed: `interface_chat/scripts/chat.rs2:149`).
-4. Optional weighting (cheap, mod only): bias the draw toward relics tagged for the task's category (combat task favours combat relics), and never offer a relic whose prerequisite is unmet (e.g. "auto-alch" before "free runes").
-5. **Balance warning (inference):** 23 offers x 1 pick = 23 relics, out of a pool of ~32. Most relics will eventually be owned, so the real choice is *order*, not *which*. To keep tension, either enlarge the pool to ~45, or make some relics mutually exclusive ("Glass Cannon" vs "Stoneskin"). Stackable tiers (XP surge I/II/III) naturally consume several offers.
+1. Each completed task triggers `~relic_task_done`, which plays the celebration (below) and then `~relic_offer`. It draws **up to 3 distinct relics** with the run seed (`%relic_seed`, advanced each draw) from the *eligible pool*.
+2. Eligible pool = every relic not yet owned, plus the next tier of the XP multiplier while it has tiers left. Relics offered but not picked **stay in the pool**, so they can reappear.
+3. **Pool exhausted:** if the eligible pool is empty, no offer is shown and the task just completes (celebration only). If 1 or 2 relics remain, offer just those. This is the v1 rule you asked for.
+4. Pick via the choice dialog: `~p_choice5_header` exists (`interface_chat/scripts/chat.rs2:149`; 2- and 5-option versions are verified; use the 5-option one with 3 entries if no 3-option proc exists).
+5. Pool size vs offers (inference): 21 pickable relics (see below) for 23 offers, so with this pool the last offers are empty. That is fine for v1; a bigger pool is a later addition.
 
-## The relic pool (32)
+## Celebration on task completion (fireworks and level-up sound)
 
-Feasibility legend: **E** easy (mod + at most one hook line), **M** medium (several hook lines or tricky behaviour), **H** hard or high-maintenance (not recommended for v1). "Hooks" refer to Part 1 and findings 21-28.
+Both effects are already used by upstream's level-up script, so this is **mod only**, no hook beyond the task hook:
+- **Fireworks:** `spotanim_pl(levelup_anim, 124, 0);` (`Content/scripts/levelup/scripts/levelup.rs2:33`, commented "play the fireworks"). The spotanim `levelup_anim` is defined in `Content/scripts/_unpack/225/all.spotanim:1341`. Being a player spotanim, other players nearby would see it too (inference from `spotanim_pl`; not run).
+- **Level-up sound:** upstream plays it as a music jingle, not a sound effect: `~music_jingle($jingle)` (`levelup.rs2:50`, proc at `Content/scripts/music/scripts/music.rs2:50`, which wraps `midi_jingle`). The jingle is a per-skill value in the db table: `data=levelup_jingle,advance attack` (`Content/scripts/levelup/configs/levelup.dbrow:9`). For a task, call `~music_jingle(...)` with one fixed jingle, for example the value of that row's `levelup:levelup_jingle` field read with `db_find`/`db_getfield` as `levelup.rs2` does at `:24-25` and `:42-50`. The `sound_synth(firework, ...)` line is commented out upstream (`levelup.rs2:34`), so no firework synth exists to reuse.
+- Not verified: how the jingle behaves if a real level-up jingle plays in the same tick (both can happen, since XP relics level skills quickly). Open question 75.
 
-### XP and levels
+## The relic pool (19 names, 21 pickable relics)
+
+Feasibility legend: **E** easy (mod + at most one hook line), **M** medium (several hook lines or behaviour to verify). Hooks refer to Part 1 and findings 21-28. Removed from the earlier draft per your review: Scholar/Warlord (merged), Tutor, Prodigy, Free Teleports, Boss Key, Compass, Fleet Foot, Featherweight, Pathfinder, Reroll, Fast Hands, Smelter's Blessing.
+
+### XP
 | # | Relic | Effect | Hook | |
 |---|---|---|---|---|
-| 1 | Scholar I / II / III | skilling XP x2, then x3, then x5 (stacking tiers, 3 offers) | engine `addXp` line (finding 5) | E |
-| 2 | Warlord I / II | combat-stat XP x2, then x3 | same engine line, switch on `stat` index | E |
-| 3 | Tutor | on each task completion, instantly gain XP in that task's skill (e.g. enough for ~10 levels) | mod only (`stat_advance` in `~relic_task_*`) | E |
-| 4 | Prodigy | one-time: set every skill needed for the next task tier to its requirement (see risk below) | mod only, table of requirements | M |
-| 5 | Quest Pass | auto-complete all quests | generated (varp, constant) table (Part 1 finding 18) | M |
+| 1 | **XP Multiplier I / II / III** | one multiplier for all skills and combat. Start at **8x**; the three tiers take it to **16x, 32x, 64x** (3 offers) | base `NODE_XPRATE=8`; engine `addXp` line multiplies by a perm varp factor (1, 2, 4, 8) (finding 5) | E |
+| 2 | Quest Pass | auto-complete all quests | generated (varp, constant) table (Part 1 finding 18) | M |
 
-### Combat
+On the multiplier: finding 5 shows the rate is one integer from `NODE_XPRATE` (`WorldConfig.ts:98,237`), so 8x is configuration alone, and the tiers need the single engine line `this.stats[stat] += xp * multi * <varp factor>`. Memory notes say the engine reads `world.json`/`.env` rather than process env vars; confirm how to set 8 (open question 69).
+
+### Combat (kept as you liked them)
 | # | Relic | Effect | Hook | |
 |---|---|---|---|---|
-| 6 | Stoneskin | 50% less damage taken | `damage_self` (Part 1 finding 10) | E |
-| 7 | Quickstrike | attacks twice as fast (halve attack delay) | ~9 `%action_delay` sites (Part 1 finding 11) | M |
-| 8 | Glass Cannon | damage dealt x2, damage taken x1.5 | `npc_max_dealt` + `damage_self` | E |
-| 9 | Phoenix | the first lethal hit in each 5-minute window leaves 1 HP | `damage_self` + timer | E |
-| 10 | Vampire | heal a % of max HP on every kill | `npc_death` hook | E |
-| 11 | Executioner | NPCs below 25% HP die instantly | `npc_max_dealt` (needs the target HP) | M |
-| 12 | Bounty | every kill drops coins and the bones/supplies of the NPC tier | `npc_death` hook, mod loot table | E |
+| 3 | Stoneskin | 50% less damage taken | `damage_self` (Part 1 finding 10) | E |
+| 4 | Quickstrike | attacks twice as fast (halve attack delay) | ~9 `%action_delay` sites (Part 1 finding 11) | M |
+| 5 | Glass Cannon | damage dealt x2, damage taken x1.5 | `npc_max_dealt` (finding 27) + `damage_self` | E |
+| 6 | Phoenix | the first lethal hit in each 5-minute window leaves 1 HP | `damage_self` + timer | E |
+| 7 | Vampire | heal a % of max HP on every kill | `npc_death` hook | E |
+| 8 | Executioner | NPCs below 25% HP die instantly | `npc_max_dealt` (needs the target HP) | M |
+| 9 | Bounty | every kill drops coins and supplies by NPC tier | `npc_death` hook, mod loot table | E |
 
-### Gathering and production
+### Gathering
 | # | Relic | Effect | Hook | |
 |---|---|---|---|---|
-| 13 | Eternal Vein | ore rocks never deplete | skip `loc_change` at `mining.rs2:133,176,221` | M |
-| 14 | Deep Pockets | mined ore goes straight to the bank | `inv_add(bank, ...)` at `mining.rs2:142,179,194` | M |
-| 15 | Evergreen | trees never fall | skip `loc_change` at `woodcut.rs2:137` | M |
-| 16 | Double Yield | gathering and cooking give x2 items | change the `inv_add` counts at the Part 2 sites | M |
-| 17 | Fast Hands | one-click crafting: no repeat clicks, 1-tick action delay | many action-delay sites | **H** |
-| 18 | Smelter's Blessing | smelting, fletching, cooking and potions cannot fail and use half the inputs | several scripts | **H** |
+| 10 | **Eternal Vein** (merged) | ore rocks never deplete **and** ore goes straight to the bank | skip `loc_change` at `mining.rs2:133,176,221`; `inv_add(bank, ...)` at `:142,179,194` | M |
+| 11 | **Evergreen** | trees never fall **and** logs go straight to the bank | skip `loc_change` at `woodcut.rs2:137`; `inv_add(bank, ...)` at `:134` | M |
+| 12 | Double Yield | gathering and cooking give x2 items | change `inv_add` counts at the finding 21 sites | M |
 
-### Magic and money
+Autobank skips the inventory-full check (`mining.rs2:32,75`), so the relic must also bypass that check, otherwise a full inventory still blocks mining. The woodcutting full-inventory check was not read (open question 76). Note the full-bank case is also unhandled: a bank has a finite number of slots (not read), so decide what happens when the bank is full.
+
+### Magic and money (kept)
 | # | Relic | Effect | Hook | |
 |---|---|---|---|---|
-| 19 | Midas Loop | high alchemy repeats on the same item stack | tail call at `alchemy.rs2:37` (interruption unverified) | M |
-| 20 | Philosopher's Coin | alchemy pays x2 | profit lines in `alchemy.rs2` (the `scale(6, 10, ...)` and `scale(4, 10, ...)` lines) | E |
-| 21 | Infinite Runes | spells cost no runes | `delete_spell_runes` (finding 26) | E |
+| 13 | Midas Loop | high alchemy repeats on the same item stack | tail call at `alchemy.rs2:37` (interruption unverified, open question 71) | M |
+| 14 | Philosopher's Coin | alchemy pays x2 | profit lines `alchemy.rs2:25,61` | E |
+| 15 | Infinite Runes | spells cost no runes | `delete_spell_runes` (finding 26) | E |
 
-### Travel (your two requests)
+### Travel and utility
 | # | Relic | Effect | Hook | |
 |---|---|---|---|---|
-| 22 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges or crumble | `~relic_keep_charge` in 3 files (finding 25) | E |
-| 23 | Last Recall | one use of an item or command teleports you back to where you *last teleported from* | record origin in `pre_tele_checks` (finding 24), then `~player_teleport_normal` | E |
-| 24 | Free Teleports | teleport spells and jewellery are instant and cost nothing | `player_teleport_normal` has a 2-tick `p_delay(2)` (`teleport.rs2:61`); the delay is shared by all, so trimming it is one line | M |
-| 25 | Boss Key | teleports straight to the KBD lair or Kalphite lair (one use per task tier) | mod table of coords (see `docs/reference/coordinates.md`) | E |
-| 26 | Compass | teleports you next to the current task's NPC or resource | mod table of 25 coords, hand-verified | M |
-| 27 | Banker's Call | open the bank from anywhere | reuse `@openbank` (finding 28), via an item op or command | E |
+| 16 | **Everlasting Jewellery** | the duelling ring, glory amulet and games necklace never lose charges, **and unlocking the relic puts one of each in your bank** | `~relic_keep_charge` in 3 files (finding 25); on unlock `inv_add(bank, ring_of_dueling_8, 1)`, `amulet_of_glory_4`, `necklace_of_minigames_8` | E |
+| 17 | Last Recall | teleports you back to where you last teleported from (ping-pongs between the two places) | record origin in `pre_tele_checks` (finding 24), then `~player_teleport_normal` | E |
+| 18 | Banker's Call | open the bank from anywhere | reuse `@openbank` (finding 28), via an item op or command | E |
+| 19 | Hoarder | grants one extra pick from relics you were offered and declined earlier | mod only; needs a "declined" bitmask varp | E |
 
-**Last Recall details.** Store the origin in two perm varps. Because the recall itself goes through `pre_tele_checks`, it would overwrite the stored origin with the place you are leaving. That is a feature: recall then *ping-pongs* between the two places (to the shop and back, to the rock and back), which is the usual way people use it. How a player triggers it must be chosen at implementation time: either a granted item with an op handled by a type-specific script (finding 2, allowed since no upstream script exists for that new item), or the existing `::~` debug proc during development.
+Item names for the jewellery come from `Content/scripts/skill_magic/configs/enchanted_jewelry.obj` (`ring_of_dueling_8` "Ring of dueling(8)" at line 21, `amulet_of_glory_1`..`_4`, `necklace_of_minigames_8`). That `amulet_of_glory_4` is the full-charge item and `amulet_of_glory` the uncharged one is inferred from the name list and the `next_obj_stage` chain, not fully read; confirm before coding. If the player already holds the item, adding another is harmless, but the bank gift should be given once (`%relic_jewellery_given` varp).
 
-### Utility
-| # | Relic | Effect | Hook | |
-|---|---|---|---|---|
-| 28 | Fleet Foot | unlimited run energy | `RUNENERGY` opcode, set in a timer (use not read) | M |
-| 29 | Featherweight | no carry weight | `WEIGHT` opcode (use not read) | M |
-| 30 | Pathfinder | removes wilderness-level teleport limits | `wilderness_level(coord) > 20` checks at `teleport.rs2:17` and ring of duelling | M |
-| 31 | Reroll | once per offer, reroll the 3 choices (consumable, recharged by task) | mod only | E |
-| 32 | Hoarder | pick any one earlier-unpicked relic you declined (second chance) | mod only, needs a "declined" list varp | E |
+**Last Recall details** are unchanged from the previous draft: two perm varps; the recall goes through `pre_tele_checks`, so it overwrites the stored origin with the place you are leaving and repeated recalls swap between two places. The trigger (item op vs command) is still to choose.
 
-Counts: 32 relics (#1 has three tiers and #2 two, so the pool has more offers than names), 2 hard (#17, #18). Only #1-2 need the engine line.
+### Moved out of the relic pool
+
+- **Unlimited run energy** is a default for every run, not a relic. Run energy is only readable from script (`RUNENERGY` pushes `player.runenergy`, `Engine-TS/src/engine/script/handlers/PlayerOps.ts:1240-1243`), so a script cannot set it. The drain is in the engine: `updateEnergy` subtracts energy while running (`Engine-TS/src/engine/entity/Player.ts:701-712`). Therefore this is **one engine edit** (skip the drain branch, or keep it at 10000), alongside the XP line. I found no setter opcode in `ScriptOpcode.ts` (only `RUNENERGY` and `HEALENERGY`). What `HEALENERGY` does was not read; if it restores energy, a per-tick timer could replace the engine edit (open question 74).
+
+Counts: **19 relics**, with the XP multiplier counting as 3 offers, so **21 pickable relics**. Effort: easy are #1, 3, 5, 6, 7, 9, 14 to 19; medium are #2, 4, 8, 10 to 13.
 
 ## How much upstream surgery this adds (on top of Part 1)
 
@@ -274,13 +276,14 @@ New one-line hooks:
 - `pre_tele_checks` (1), `delete_spell_runes` (1), `npc_max_dealt` (1)
 - 3 jewellery files
 - `alchemy.rs2` tail call and two profit lines
-- 3 mining labels (2 lines each), 1 woodcut line
+- 3 mining labels and 1 woodcut label
+- Engine: the XP factor line and the run-energy line (2 edits in `Player.ts`)
 
-That is about 30 lines in ~15 Content files, plus the single engine line. Everything else (relic data, offer logic, tables, varps) is in `mods/relics/`. If you want the lowest upstream-merge risk, ship in this order: **E** relics only (#1-3, 6, 8-10, 12, 20-23, 25, 27, 31, 32), which needs the engine line, `damage_self`, `npc_death`, `npc_max_dealt`, `pre_tele_checks`, `delete_spell_runes`, and the 3 jewellery lines.
+That is about 25 lines in ~13 Content files plus the two engine lines. Everything else (relic data, offer logic, celebration, tables, varps) is in `mods/relics/`. For the lowest merge risk, ship the easy relics first (#1, 3, 5, 6, 7, 9, 14 to 19) and add the medium ones afterwards.
 
 ## Risks to decide on
 
-- **Tutor/Prodigy vs level requirements.** Some tasks need levels (silver bar, mithril, magic shortbow, runecrafting at the law altar, paladin pickpocket). With ~10x to 100x XP the player will out-level them, but task order matters: tier the tasks so each tier's requirement is reachable with the XP relics already offered.
+- **Level requirements.** Some tasks need levels (silver bar, mithril, magic shortbow, runecrafting at the law altar, paladin pickpocket). With the multiplier starting at 8x and no level-skipping relics, the player must train these skills; tier the tasks so each tier's requirement is reachable at the multiplier the player will have by then, and check this when tuning.
 - **Access gating.** Some task sites sit behind quests or members-only areas. I did not verify that every task site is reachable on a fresh character (for example the law altar and the Kalphite lair). That check needs a play-through or a read of each access path.
 - **Phoenix, Executioner and Quickstrike** change fight balance for the two bosses. Test against KBD and KQ before locking numbers.
 
@@ -288,6 +291,6 @@ That is about 30 lines in ~15 Content files, plus the single engine line. Everyt
 
 - Which NPC types are spawned where, and whether each task is reachable without other quests.
 - The exact pickpocket success line, the super attack dose produced, the Kalphite soldier NPC name.
-- `RUNENERGY` and `WEIGHT` opcode semantics; whether combat spells call `delete_spell_runes`.
+- `HEALENERGY` semantics; whether combat spells call `delete_spell_runes`.
 - Whether an item can be granted from `mods/` with an op that has a mod-only script (config shape not tried).
 - Nothing was compiled or run.
