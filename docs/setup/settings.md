@@ -85,6 +85,16 @@ mise run start             # warns if it would serve the upstream client
 
 Then reload the page with Ctrl+F5 and type `::fpson`. If the overlay shows `Radius:32`, you are on the right build, and the wheel and middle drag should work over the 3D view.
 
+## Troubleshooting: Tasks / Relics buttons missing from the wrench tab
+
+Observed 2026-10-10 on Windows (Content `8535c3ee6`, Engine-TS `8c4fa9c`, root `456ef02`): Content already contained the buttons (`Content/scripts/interface_options/interfaces/options.if:600` `[relic_tasks]`; `Content/pack/interface.pack:10984-10987`), but the packed cache was older than the Content commit: `Engine-TS/data/pack/client/interface` was written 18:19 +0100 (17:19 UTC), `d61913385` is dated 18:25 UTC, and no server was listening.
+
+**Cause (inference from the above plus the code):** `Engine-TS/src/app.ts:14` only packs on startup when the cache is missing (`OnDemand.cache.count(0) !== 9 || ... || !fs.existsSync('data/pack/server/script.dat')`), so an existing cache is not rebuilt after Content changes. The client reads interfaces from that cache.
+
+**Fix (run, worked):** `cd Engine-TS && npm run build` (`tools/pack/Build.ts` calls `packAll`, 6.3 s). `data/pack/client/interface` grew from 102899 to 103791 bytes. Then restart the server and hard refresh (Ctrl+Shift+R), relog. Use `mise run engine:clean-build` for a full rebuild.
+
+Not checked: that the buttons render in a browser (not run); `mods:sync` printed no errors and `Content/scripts/_mods/relics/interfaces/` has both menu files; which tab (`options` or `options_ld`) you use (`login.rs2:109` picks `options_ld` when `lowmem = true`), but both define the buttons.
+
 ## Not checked
 
 - None of this was run on Windows. A `git submodule update` there over a `Client-TS` folder with local changes was not tried.
