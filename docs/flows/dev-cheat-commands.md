@@ -67,6 +67,15 @@ Read from code, not run. All three are debug procs, so they need the `~` prefix 
 
 These print to the chat, not onto a map. The map editor at `/maped` is registered only in debug mode (`Engine-TS/src/web.ts:270`, inside the `if (Environment.node.debug)` block at `web.ts:254-298`; `debug` defaults to `true`, `WorldConfig.ts:101`). Its page (`Engine-TS/view/maped.ejs`) and script (`Engine-TS/public/maped/maped.js`) contain a status line that formats `Tile: <x>, <z> | Level: <n>` (the format string is in `maped.js`). **Not verified:** which tile the status line shows (presumably the one under the mouse) and whether the editor draws your position. The mousemove listener on the editor canvas only records the pointer position, and the function that feeds the status line was not traced. The page is also not known to load the Client-TS `MapView` (`Client-TS/src/mapview/MapView.ts`); no HTML in `Engine-TS/public` or `Engine-TS/view` references `mapview.js` (grep).
 
+### 6. Worked example: where `::~brimhaven` is defined
+
+Read at Engine-TS `1d25566c`, Content `65b754f76` (matches the commit hashes above; read, not run).
+
+- There is no engine-side `brimhaven` command. It is a debug proc: `[debugproc,brimhaven]` at `Content/scripts/_test/scripts/cheats/cheat_teles.rs2:71-74`. The body is `if_close;`, a `p_finduid(uid)` guard, then `~player_teleport_normal(0_43_49_50_41);` (level 0, mapsquare 43_49, local tile 50,41).
+- It is listed in the help menu at `Content/scripts/_test/scripts/cheats/cheat_help.rs2:37` as `::brimhaven`, without the `~` (the prefix error described in section 4).
+- Dispatch: `ClientCheatHandler.ts:58-62` requires `!production && staffModLevel >= 4`, checks `cmd[0] === debugProcChar`, then looks up `ScriptProvider.getByName('[debugproc,brimhaven]')`. A missing script returns `false` (`:63-65`). With no parameters, the script runs via `player.executeScript(ScriptRunner.init(script, player, null, params), false)` (`:149`).
+- So type `::~brimhaven`. Typing `::brimhaven` does not reach the script (inference from `:60`, see section 4).
+
 ## Limits and caveats
 
 - `::setstat` calls `player.setLevel(stat, parseInt(args[1]))` with no range check (`ClientCheatHandler.ts:466`). Values above or below the valid range were not tested.
