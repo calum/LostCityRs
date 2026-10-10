@@ -71,6 +71,8 @@ These print to the chat, not onto a map. The map editor at `/maped` is registere
 
 - `::setstat` calls `player.setLevel(stat, parseInt(args[1]))` with no range check (`ClientCheatHandler.ts:466`). Values above or below the valid range were not tested.
 - `::give` adds to the inventory only (`:354`). Bank items come from the `~` debugprocs (`::bank`, `::foodbank`, and so on), which were not read.
+- **Names with spaces do not work.** The handler lowercases the whole line and splits it on single spaces (`ClientCheatHandler.ts:47`), so `::give rune sword` gives `args = ['rune', 'sword']`. `give` reads only `args[0]` (`:348`) and looks up `rune`, which is not an obj, so `ObjType.getId` returns `-1` and the handler returns `false` (`:348-351`). That path sends no message to the player. The same applies to `givemany`, `locadd`, `npcadd` and the debug-proc OBJ/NPC/LOC parameters (each takes one token: `:83-103`).
+- **Use the internal name, with underscores.** `ObjType.getId` is keyed by `debugname` (`Engine-TS/src/cache/config/ObjType.ts:43-44`). That is the header of the config block, read as the pack name (`Engine-TS/tools/pack/config/ObjConfig.ts:207,222`). The rune sword is `[rune_sword]` with `name=Rune sword` (`Content/scripts/skill_combat/configs/melee/swords.obj:175-176`). So `::give rune_sword` (and `::give rune_sword 5` for a count) is the form that matches. The display name is not used for the lookup.
 - `::locadd` and `::npcadd` spawn with `EntityLifeCycle.DESPAWN` at the player's tile (`:503`, `:515`).
 - Level 4 also enables `reload` and `rebuild`, which reload or rebuild content while the world runs (`:149-153`).
 
