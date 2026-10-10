@@ -58,6 +58,7 @@ These are **starting points only** (paths verified to exist). What they do is in
 | Client logic | `Client-TS/src/client/Client.ts`: one very large file. Grep for the packet name (`ClientProt.X`, `ServerProt.X`) or the method name; do not read it whole |
 | Game rules/content | `Content/scripts/<feature>/scripts/*.rs2` and `configs/` |
 | Script compiler | `RuneScriptTS/src/` (not yet read) |
+| Headless tests | `harness/src/` (world stepping, `Bot` API), `tests/*.test.ts`; run `mise run test`. How it works: `docs/setup/headless-test-harness.md` |
 
 ## Tracing workflow
 

@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "WebWorker"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "../Engine-TS/node_modules/@types"
+    ],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "#3rdparty/*": [
+        "../Engine-TS/src/3rdparty/*"
+      ],
+      "#/*": [
+        "../Engine-TS/src/*"
+      ],
+      "#tools/*": [
+        "../Engine-TS/tools/*"
+      ]
+    },
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "../tests/**/*.ts"
+  ]
+}

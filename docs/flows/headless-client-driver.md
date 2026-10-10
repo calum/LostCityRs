@@ -8,6 +8,8 @@
 
 A Playwright-driven Chromium that opens the real browser client and drives it with synthetic mouse/keyboard input. It is not a protocol-level bot: nothing speaks the game TCP protocol directly (`scripts/headless-client.mjs:1-7`, `:21-23`).
 
+> **Update (branch `claude/test-harness-xavwsl`):** for pass/fail tests of server behaviour, use the in-process harness in [`../setup/headless-test-harness.md`](../setup/headless-test-harness.md) (`mise run test`). It addresses the gaps below except client coverage: real assertions and exit codes, waits on game state instead of sleeps, no separate server to start, and NPC/loc ops sent through the engine's handlers instead of pixel clicks. This driver remains the way to exercise the real client.
+
 ## How it works (all line numbers `scripts/headless-client.mjs`)
 
 1. **Start-up** (`:13-23`): `node scripts/headless-client.mjs <user> [dir]`. Defaults: user `relic1`, work dir `/tmp/claude-0/drv`, URL `http://localhost:8888/rs2.cgi` (env `CLIENT_URL`). Playwright is `require`d from `/opt/node-tools/node_modules/playwright` (env `PLAYWRIGHT_DIR`) and Chromium from `/opt/pw-browsers/chromium-1194/...` (env `CHROME`): both paths are specific to this cloud container (`:7`, `:11`, `:21`). Launched with `--no-sandbox`, viewport 1000x700.

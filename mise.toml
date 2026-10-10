@@ -60,6 +60,16 @@ dir = "{{config_root}}/Engine-TS"
 depends = ["engine:install"]
 run = "npm run dev"
 
+[tasks.test]
+description = "Headless tests: sync mods, pack what changed, run tests/*.test.ts in-process (docs/setup/headless-test-harness.md)"
+depends = ["engine:install"]
+run = "node harness/run.mjs"
+
+[tasks."test:types"]
+description = "Typecheck the test harness and the tests"
+dir = "{{config_root}}/Engine-TS"
+run = "npx tsc -p ../harness/tsconfig.json"
+
 [tasks."mods:sync"]
 description = "Copy mods/ (your scripts) into Content/scripts/_mods/ once"
 run = "node scripts/sync-mods.mjs"

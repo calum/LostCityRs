@@ -22,4 +22,6 @@
 
 ## What a real script test would need (inference)
 
-The engine has no headless mode in the files read; a test would have to start `World`, create a player, run a script and inspect state. Not investigated.
+The engine has no headless mode in the files read; a test would have to start `World`, create a player, run a script and inspect state.
+
+**Update:** this now exists in this repo (not upstream): [`../setup/headless-test-harness.md`](../setup/headless-test-harness.md). `World.start(false, false)` loads the world without starting the clock, a test steps `World.cycle()` itself, and players with a fake socket are driven through the engine's packet handlers. Run with `mise run test`. Also observed while building it: a RuneScript type error makes the pack (`tools/pack/Build.ts`) exit 1, which answers the first part of open question 78.
