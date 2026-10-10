@@ -28,6 +28,7 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 ### Design
 
+- [design/roguelike-relics-spec.md](design/roguelike-relics-spec.md): the agreed v1 specification for the relic mode (decisions, tasks, 19-relic pool, systems, upstream edits, out of scope, risks), written as the input for a development plan.
 - [design/roguelike-relics.md](design/roguelike-relics.md): design guidance for a relic-based roguelike mode. Part 2: 25 tasks, 3-choice offer mechanics and a 19-relic pool (21 pickable; 8x to 64x XP multiplier, infinite jewellery, last recall, task celebration) with hooks per relic. What a mod can and cannot do (no script override, one global XP rate, no kill or XP trigger), the verified hook points (`addXp`, `damage_self`, `npc_death`, login, mining, high alch, attack delay), a feasibility table per relic, and a patch-series approach to keep upstream merges easy (read from code, not run).
 
 ### Traced flows
