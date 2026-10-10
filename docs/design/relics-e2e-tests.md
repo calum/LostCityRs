@@ -12,7 +12,7 @@
 | `tests/relic-combat.test.ts` | 14 | 3 Stoneskin, 4 Quickstrike, 5 Glass Cannon (taken and dealt), 6 Phoenix, 7 Vampire, 8 Executioner, 9 Bounty |
 | `tests/relic-skilling.test.ts` | 14 | 10 Eternal Vein, 11 Evergreen, 12 Double Yield, 13 Midas Loop, 14 Philosopher's Coin |
 | `tests/relic-utility.test.ts` | 18 | 15 Infinite Runes, 16 Everlasting Jewellery, 17 Last Recall, 18 Banker's Call |
-| `tests/relic-infinite-runes.test.ts` | 44 | 15 Infinite Runes on every spell: 30 combat spells (incl. god spells with their staff), 7 teleports, bones to bananas, low alchemy, enchant, superheat, a staff worn, a relog. Each spell has a control without the relic |
+| `tests/relic-infinite-runes.test.ts` | 43 | 15 Infinite Runes on every spell: 30 combat spells (incl. god spells with their staff), 7 teleports, bones to bananas, low alchemy, enchant, superheat, a staff worn, a relog. Each spell has a control without the relic |
 | `tests/relic-tasks.test.ts` | 13 | every `relic_task_npc` and `relic_task_obj` row, real kills and real skill actions for tasks 1, 4, 5, 6, 7, 10, 11, 12, 13, 20, no re-firing, any order |
 | `tests/relic-death-win.test.ts` | 11 | death stash (inv and worn, bank full), Relic Keeper (one only, re-issue rules), win on both final bosses in either order |
 
