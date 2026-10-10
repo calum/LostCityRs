@@ -16,3 +16,8 @@
 
 ## Not checked
 Dragon, hellhound, black demon, Kalphite and KBD kills (same code path, not run); real melee kills; persistence of `relic_tasks_done` across logout (same mechanism as M1's perm varps); object-task hooks (M7).
+
+
+## Update: tier lock removed (Calum's request, 2026-10-10)
+
+`relic_task_try` in `mods/relics/scripts/relic_tasks.rs2` no longer compares the task's tier with `relic_current_tier`, so tasks count in any order. The tier column and `relic_current_tier` remain in the data but are unused. Win check is unchanged (both final-boss bits). Checked: compiles; see the in-game check below if recorded.

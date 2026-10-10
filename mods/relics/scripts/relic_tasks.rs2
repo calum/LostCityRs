@@ -1,5 +1,4 @@
-// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tasks unlock in tiers: only
-// tasks of the lowest tier that still has an unfinished task count (tiers 1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25).
+// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tiers (1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25) are no longer enforced in v1, see relic_task_try.
 
 [proc,relic_current_tier](int $dummy)(int)
 if (and(%relic_tasks_done, ^relic_tier1_mask) ! ^relic_tier1_mask) {
@@ -16,9 +15,7 @@ return(4);
 // Called with the task number and its tier; queues the completion on the active player if it counts.
 // (Writing the varp here would fail: %relic_* varps need protected access and an npc death script has none.)
 [proc,relic_task_try](int $task, int $tier)
-if ($tier > ~relic_current_tier(0)) {
-    return;
-}
+// v1: no tier lock, any task can be done in any order ($tier is kept in the data but ignored).
 if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
     return;
 }
