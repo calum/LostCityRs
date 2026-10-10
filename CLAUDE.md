@@ -16,11 +16,12 @@ The user needs to *fully understand* the system. Wrong documentation is actively
 - **Fix wrong docs immediately** and tell the user what was wrong.
 - When the user asks a question the code cannot answer, say so rather than filling the gap.
 
-## Git rules: push the root repo, never the submodules
+## Git rules: push the root repo and the submodule forks, never upstream
 
 - **Always push new commits in this root repo** (`calum/LostCityRs`) once they are made.
 - **Commit and push straight to `main`.** Only use a separate branch to avoid conflicts with another agent working at the same time, and bring it back onto `main` when done. Do not open pull requests.
-- **Never run `git push` in any submodule.** The submodules are owned by other developers (LostCityRS upstream). Never add or change their remotes to enable pushing. Submodule push URLs are intentionally set to `DISABLED_NO_PUSH`; do not change that. (Plan: fork them to Calum's GitHub account later so they can be pushed too; until then, only the root repo is updated.)
+- **Submodules point at Calum's forks** (`github.com/calum/<name>`, see `docs/setup/submodule-forks.md`). Agents may push `calum-research` (and other branches) in a submodule, but **only to the fork (`origin`)**. Never push to, or open PRs/issues against, the original `LostCityRS/*` upstreams. Do not add a remote that points at upstream with push enabled (the `upstream` remote in `docs/setup/submodule-forks.md` is fetch-only: set its push URL to `DISABLED_NO_PUSH`).
+- After pushing in a submodule, commit the updated submodule pointer in the root repo and push it too, so the root never references a commit that only exists locally.
 - Do not open PRs, issues or comments on the upstream submodule repos.
 - Read-only `gh` / `git fetch` use is fine.
 - Each submodule is on the local branch `calum-research`. Stay on it. Local edits to upstream code are allowed only when they help research (e.g. temporary logging); commit them on `calum-research`, keep them minimal, and record them in `docs/local-changes.md` (create it when first needed) so they can be told apart from upstream behaviour.
