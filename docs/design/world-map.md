@@ -3,6 +3,7 @@
 **Question answered:** how do we give the player a world map they can open in game, pan and zoom, and see where they are? Which of "live-rendered" and "pre-rendered" is better, how would it open, and how does it fit the upstream-merge strategy?
 
 **Based on commits:** root `ca4f6ba`, Client-TS `5fd6cc3`, Engine-TS `8c4fa9ca`, Content `8535c3ee6`.
+**Phase 1 status: implemented** (see "Implementation status" at the end; Client-TS `ec49aa1`, Engine-TS `32537f36`).
 **Method:** read code, then **built and ran** the existing world-map applet headlessly on Linux (Node 24.21.0, bun, headless Chromium). Nothing here is implemented yet; this is a design plus the evidence it rests on. Not run: a real game session with the map open, Windows/macOS, a production (`node.debug: false`) server.
 
 **Recommendation (details in "Recommendation"):** do not build a new map. The client repo already contains a complete world-map program (`MapView`) and the pack tool already builds its data file. Reuse it, add a player marker, and open it from the game with `::map` (plus an optional button) as a second view that receives the player's position. Phase 1 is almost all wiring.
@@ -131,3 +132,19 @@ Recommended: **C1 now, C2 as an optional polish** reusing the same page and chan
 - No real game session with the map open; the position channel and marker do not exist yet.
 - `MapView.ts` was read for structure and the parts cited above, not line by line (the render helpers `drawOverlayShape`, wall drawing, loaders were not read in full).
 - `maped.js` in `Engine-TS/public/maped/` contains a MapView-derived editor bundle (it fetches `worldmap.jag`); not read.
+
+## Implementation status (Phase 1, done)
+
+Built as designed, option C1 (separate window). Commits: Client-TS `ec49aa1`, Engine-TS `32537f36`; the changes are listed in [../local-changes.md](../local-changes.md).
+
+- `Client-TS/src/mapview/MapCoords.ts`: area table (mirrors `reloadMain/reloadDungeon/reloadExtra`), `areaForTile`, `tileToMap`, `mapToScreen`, `parsePlayerPos`. **Tests first:** `test/map-coords.test.ts` failed 5 of 5 on assertions against stubs, then passed after implementing; `bun test` in Client-TS: 7 pass (5 new, 2 existing camera tests), `tsc --noEmit` clean.
+- `MapView.ts`: `BroadcastChannel('lostcity-worldmap')` listener, `drawPlayerMarker` (red dot with white ring and halo, "Level N" text above ground floor), `centreOnPlayer` (switches area if needed, then focuses), run once automatically on the first position after the map data has loaded, and on key `C`.
+- `Client.ts`: `::map` in the player-facing command block opens `/worldmap.html` and posts the position at once; afterwards `postMapPosition` posts `{x, z, level}` every 50 client cycles (`Client.loopCycle % 50`, about once a second; 50 cycles at the 20 ms cycle is an inference).
+- Engine: `public/worldmap.html`, prebuilt `public/client/mapview.js`, `/worldmap.jag` route moved out of the debug block (`web.ts`). Root `scripts/copy-client.mjs` now also copies `mapview.js`.
+
+**Observed (Linux, Node 24, headless Chromium, real server, new account):**
+1. `::map` typed in chat opened a popup; its marker sat on Tutorial Island at the player's tile (3094, 3106), [screenshot](../assets/world-map/marker-tutorial-island.png).
+2. After `::~kbd` the posted position became (3068, 10256), the dungeon band. In that run the player then died to the antechamber spiders and respawned in Lumbridge (3221, 3219), so the popup's own `C` press raced with the move; I did not get a clean screenshot of the marker in the dungeon from the real game.
+3. The dungeon marker was checked with a synthetic position (3069, 10255) posted to the map page: area switched to the dungeon, marker drawn, [screenshot](../assets/world-map/marker-dungeon.png).
+
+**Not done / not covered:** edge arrow when the player is off screen, wheel zoom, live area switch when you walk into a dungeon after the map is already open (only the first position and `C` switch area; the marker is hidden while you are in a different area), the in-page overlay (C2), mobile, real GPU browsers. `mise run test` (server harness) was not run: nothing server-side changed except serving the jag.

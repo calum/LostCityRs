@@ -11,7 +11,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const from = path.join(root, 'Client-TS/out');
 const to = path.join(root, 'Engine-TS/public/client');
 
-for (const file of ['client.js', 'ondemandworker.js', 'tinymidipcm.wasm']) {
+for (const file of ['client.js', 'mapview.js', 'ondemandworker.js', 'tinymidipcm.wasm']) {
     fs.copyFileSync(path.join(from, file), path.join(to, file));
     console.log(`copied ${file}`);
 }

@@ -13,6 +13,7 @@
 | Setting | Where it lives | How to change it | Takes effect |
 |---|---|---|---|
 | Render distance (radius in tiles) | Client only | `::radius N` in chat, or `?radius=N` on the URL | `::radius`: at once. URL: on page load |
+| World map window | Client only | `::map` in chat opens `/worldmap.html` (drag to pan, keys `1`-`4` zoom, `C` centre on you, `K` key, `O` overview, `]` dungeon) | At once (see [design/world-map.md](../design/world-map.md)) |
 | Camera zoom | Client only | Mouse wheel over the game view | At once (not saved) |
 | Camera rotate/tilt | Client only | Middle-mouse drag, or arrow keys (tilt range 32..480, about 6 to 84 degrees; nearby high ground can stop it going lower) | At once |
 | FPS / scene time overlay | Client only | `::fpson`, `::fpsoff`, `::fps N` | At once |
