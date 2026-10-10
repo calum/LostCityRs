@@ -113,6 +113,7 @@ Names are config debugnames (`'bronze_axe'`, `'hans'`, `'tree'`, varp `'tutorial
 - Every queued input is "sent" in the same tick; a real client spreads clicks over frames.
 - `::` input is lower-cased by `ClientCheatHandler` (`ClientCheatHandler.ts:47`), so string arguments to `bot.debugproc` arrive lower case, as typed ones do.
 - `bot.teleport`, `give`, `setVar`, `setLevel` and `call` act between ticks, outside any phase. `call` runs the script with protected access forced, like `ResumePauseButtonHandler` does when resuming (`executeScript(..., true, true)`).
+- `bot.call` cannot pass arguments to a proc: for `[proc,check_if_success_pick_pocket](dbrow)` the compiled `ScriptFile.info.parameterTypes` was empty, so `call` throws "takes 0 argument(s)" (Engine-TS `f8bd5427`, observed 2026-10-10). `tests/skilling-second-chance.test.ts` runs `ScriptRunner.init` directly with the already-converted argument. Cause not found (open question 105).
 - Tutorial Island, logout scripts and the login/friend servers are not covered.
 
 ## Findings recorded while building this

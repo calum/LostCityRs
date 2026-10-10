@@ -48,6 +48,7 @@ What a bigger radius costs and what it cannot show (players and NPCs beyond 15 t
    | `node.port` | 43594 (`:95`) | Game TCP port |
    | `node.members` | true (`:96`) | Members world |
    | `node.xpRate` | 1 (`:98`) | XP multiplier |
+   | `node.skillingSecondChance` | true | Skilling buff: a failed skilling roll is rolled again with a 50% chance. `false` = upstream odds. See below |
    | `node.production` | false (`:99`) | Production mode; dev cheats need it off (see [flows/dev-cheat-commands.md](../flows/dev-cheat-commands.md)) |
    | `node.debug` | true (`:101`) | Debug mode |
    | `node.clientRoutefinder` | true (`:103`) | Use the client's route finder |
@@ -63,6 +64,16 @@ What a bigger radius costs and what it cannot show (players and NPCs beyond 15 t
    - With the server stopped, `mise run configure` runs `npm run setup` (`Engine-TS/src/setup.ts`), which serves the same page on the management port (`setup.ts:244`, URL built at `:275`).
 6. **Environment variables are ignored.** A legacy `Engine-TS/.env` is read only when `world.json` does not exist yet, and is then converted into `world.json` once (`WorldConfig.ts:311-316`). See [setup/local-setup-with-mise.md](local-setup-with-mise.md).
 7. **`mise run relics:config` overwrites the whole file** with this repo's `config/world.json` (`build.verify=false`, `node.xpRate=8`). It copies the file rather than merging, so any other keys you set are lost. Re-add them after running it.
+
+## Skilling second chance (on by default on this server)
+
+World setting `node.skillingSecondChance` (default `true`; Engine-TS fork `f8bd5427`). When a skilling success roll fails, the engine rolls once more with a flat 50% chance. Set `"node": { "skillingSecondChance": false }` in `world.json` and restart to get upstream odds. Applies to every player, not a relic.
+
+- Where: the script command `stat_random` (`Engine-TS/src/engine/script/handlers/PlayerOps.ts`, `STAT_RANDOM`). Content calls it for woodcutting, mining, fishing, cooking, firemaking, crafting, thieving (pickpocket, locked doors) and agility, plus some quests and minigames (the Gnomeball shot uses `ranged`). No combat script calls it (grep of `Content/scripts/skill_combat`, `skill_magic`, `skill_prayer`, and the test below counts zero calls during a melee fight).
+- Effect: with per-roll success p, success becomes p + (1 - p) / 2. A man pickpocket at thieving 1 goes from about 71% to 85%.
+- Agility: `stat_random` is the fall check there too, so obstacles fail less often.
+- Tests: `tests/skilling-second-chance.test.ts` (failed before the change with 0.7105 observed vs 0.854 expected; passes after). Not checked: a real client session.
+- `mise run relics:config` overwrites `world.json` with the repo copy, which does not set this key, so the default (on) applies.
 
 ## Random events (off by default on this server)
 

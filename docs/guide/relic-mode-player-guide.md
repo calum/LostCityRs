@@ -6,6 +6,7 @@
 ## The run in one minute
 
 - You play a normal LostCityRS character (revision 274) with **8x XP** and **unlimited run energy**.
+- Everyone also has a free **skilling second chance**: when a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails its success roll, it gets one more roll with a 50% chance to succeed. This makes bronze tools much less painful. Combat is not affected. It is a server setting (`node.skillingSecondChance`), see [settings](../setup/settings.md).
 - There are **25 tasks**. Finishing one plays fireworks and the level-up jingle, then offers you **a pick of up to 3 random relics**.
 - Relics are "game-breaking" perks (table below). One of them, the **XP Multiplier**, can be taken three times and lifts your XP rate to **16x, 32x, then 64x**.
 - The last two tasks are the bosses: the **King Black Dragon** and the **Kalphite Queen**. Those two give no relic offer. Killing both is the end of the run.
