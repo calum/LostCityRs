@@ -3,7 +3,7 @@
 **Question answered:** how do we give the player a world map they can open in game, pan and zoom, and see where they are? Which of "live-rendered" and "pre-rendered" is better, how would it open, and how does it fit the upstream-merge strategy?
 
 **Based on commits:** root `ca4f6ba`, Client-TS `5fd6cc3`, Engine-TS `8c4fa9ca`, Content `8535c3ee6`.
-**Phase 1 status: implemented** (see "Implementation status" at the end; Client-TS `ec49aa1`, Engine-TS `32537f36`).
+**Phase 1 and 2 status: implemented** (see "Implementation status" at the end; Client-TS `ec49aa1`, Engine-TS `32537f36`).
 **Method:** read code, then **built and ran** the existing world-map applet headlessly on Linux (Node 24.21.0, bun, headless Chromium). Nothing here is implemented yet; this is a design plus the evidence it rests on. Not run: a real game session with the map open, Windows/macOS, a production (`node.debug: false`) server.
 
 **Recommendation (details in "Recommendation"):** do not build a new map. The client repo already contains a complete world-map program (`MapView`) and the pack tool already builds its data file. Reuse it, add a player marker, and open it from the game with `::map` (plus an optional button) as a second view that receives the player's position. Phase 1 is almost all wiring.
@@ -148,3 +148,16 @@ Built as designed, option C1 (separate window). Commits: Client-TS `ec49aa1`, En
 3. The dungeon marker was checked with a synthetic position (3069, 10255) posted to the map page: area switched to the dungeon, marker drawn, [screenshot](../assets/world-map/marker-dungeon.png).
 
 **Not done / not covered:** edge arrow when the player is off screen, wheel zoom, live area switch when you walk into a dungeon after the map is already open (only the first position and `C` switch area; the marker is hidden while you are in a different area), the in-page overlay (C2), mobile, real GPU browsers. `mise run test` (server harness) was not run: nothing server-side changed except serving the jag.
+
+## Implementation status (Phase 2, done)
+
+Client-TS `2ea4280`, Engine-TS `7825ebda`. Tests first again: three new cases in `Client-TS/test/map-coords.test.ts` (`stepZoom`, `shouldFollowArea`, `clampToScreen`) failed on stubs (3 fail, 5 pass), then passed; `bun test` in Client-TS: 10 pass, `tsc --noEmit` clean.
+
+- **Follow into another area:** a position in a different map area than the previous one (for example down the ladder into the dungeon band) sets a flag; `mainloop` then runs `centreOnPlayer` (it is not run from the message callback, so the map data is never reloaded while a frame is drawing). Moving to a tile outside every area does nothing.
+- **Off-screen marker:** when the player's tile is outside the window, a dot and the word "You" are drawn on the nearest window edge (24 px margin), `clampToScreen`.
+- **Wheel zoom:** `MapView.mouseWheel` steps `targetZoom` through 3, 4, 6, 8 (the label fonts exist only for these), at most one step per 120 ms.
+- **"Level N" text** beside the marker (white with black shadow) when the player is above the ground floor.
+
+**Observed** (map page with positions posted over the channel, headless Chromium, real `worldmap.jag`): wheel up moved zoom from 50 % to 75 % ([screenshot](../assets/world-map/marker-edge.png), the 75 % button is lit); a Varrock position while the view showed Lumbridge produced the edge marker at the top ("You" beside it); a following dungeon position switched the map to the dungeon with the marker on the KBD antechamber ([screenshot](../assets/world-map/marker-follow-dungeon.png)); a level-1 position showed "Level 2". Positions were posted by a test script, not by the game client, in this round (the game-to-map feed was observed in Phase 1).
+
+**Still not done:** the in-page overlay (C2), mobile/touch zoom, real GPU browsers, a clean real-game capture of the marker in the dungeon. Marker "level" text assumes `minusedlevel` is the player's level (open question 103).
