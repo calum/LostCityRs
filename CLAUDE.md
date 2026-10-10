@@ -28,6 +28,19 @@ The user needs to *fully understand* the system. Wrong documentation is actively
 - Documentation goes in this container repo's `docs/`, not in the submodules.
 - Commit and push doc updates as part of the work. Commit other changes (for example `mise.toml` or other repo config) when the user asks for them.
 
+## Test-driven development (required for new behaviour)
+
+The headless harness (`mise run test`, how-to in `docs/setup/headless-test-harness.md`, tests in `tests/*.test.ts`) boots the real `World` in-process and drives bots through the engine's own packet handlers, so a behaviour test runs in seconds without a browser.
+
+- **Write the failing test first.** For any new or changed game behaviour (a mod, a relic, a content script change, an engine hook), add or extend a test in `tests/` before the implementation. Run `mise run test` and confirm it fails **for the expected reason** (an assertion about the new behaviour, not a typo or missing import). Then implement until it passes.
+- **Bug fixes start with a reproducing test.** Write the test that fails on the bug, then fix.
+- **Keep the whole suite green.** Run `mise run test` (and `mise run test:types` after touching `harness/` or `tests/`) before every commit that changes `mods/`, a hook, or the harness. Do not commit with a red test; if one fails for a reason unrelated to your change, say so in the commit message and in chat.
+- **Report what you ran.** In chat and in docs, state the failing run, the passing run and the test count. Do not claim "tested" for something only compiled or only read.
+- **Never weaken a test to get green** (no skipping, loosening an assertion or deleting the case) without telling the user why.
+- **What the harness cannot prove** is listed in `docs/setup/headless-test-harness.md` ("Differences from a real client"): rendering, the client route finder, packet bytes, real-time timing. For those, say "not covered by the harness" and use `scripts/headless-client.mjs` or a live run; record the gap in `docs/open-questions.md`.
+- **Exceptions** (docs-only changes, research notes, tracing existing behaviour) need no test. Say "no test: docs only" in the commit message when it is not obvious.
+- When a test reveals how the engine or a script really behaves, record that in `docs/` as usual.
+
 ## Documentation conventions
 
 - **Always keep the docs up to date.** Any new finding about server or client mechanics, RuneScript details, or important information about this repo (setup, tooling, conventions, layout) goes into `docs/` in the same piece of work, with citations as above. Add a new note or update the existing one, update the index in `docs/README.md`, and add or remove items in `docs/open-questions.md`. A finding that lives only in a chat answer is lost. Then commit and push it (see Git rules).

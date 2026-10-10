@@ -14,7 +14,7 @@
 The plan asks for a stopwatch run on a fresh character to replace the 10-hour estimate. That was **not done**: it needs hours of real play (every kill and skilling task, the level-gated ones included), which the headless driver cannot do in a reasonable time. So the estimate in the spec stays unvalidated. What this work did establish, as inputs for the run:
 
 - XP multipliers 8, 16, 32 and 64 times work (`docs/design/relics-m2-xp-energy.md`), run energy never drains.
-- Task tiers: 1 to 6, 7 to 13, 14 to 23, then the two bosses (`relic_current_tier`). Tier 2 tasks need Runecrafting at the law altar (task 8), Smithing silver (task 11), Herblore super attack (task 12) and Thieving paladins (task 13); whether a fresh character can reach each in reasonable time at 8x to 16x XP is **not checked**.
+- Task tiers (**no longer enforced**: the tier lock was removed on 2026-10-10, tasks count in any order, see `relics-m3-tasks.md` "Update: tier lock removed"; the tiers are kept only as a rough difficulty grouping): 1 to 6, 7 to 13, 14 to 23, then the two bosses (`relic_current_tier`). Tier 2 tasks need Runecrafting at the law altar (task 8), Smithing silver (task 11), Herblore super attack (task 12) and Thieving paladins (task 13); whether a fresh character can reach each in reasonable time at 8x to 16x XP is **not checked**.
 - Pool size (inference from the code in `relic_offer.rs2`): 18 one-time relics plus up to 3 XP tiers serve 23 task offers plus the first-login offer, so the last few offers will be empty or short, as the spec expects.
 - Quest Pass also grants the quests' XP rewards (see M7), which can skip a lot of leveling; Quickstrike and Executioner are untested against bosses.
 

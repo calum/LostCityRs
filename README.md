@@ -25,6 +25,8 @@ See [`CLAUDE.md`](CLAUDE.md) for the same rules as instructions to Claude Code.
 
 All submodules are checked out on a local branch named **`calum-research`**, branched from the upstream default branch at the time of adding.
 
+Each submodule's `origin` is Calum's fork (`github.com/calum/<name>`), not the upstream below. See [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md).
+
 | Directory | Upstream | Role (per upstream description) |
 |---|---|---|
 | `Engine-TS/` | https://github.com/LostCityRS/Engine-TS | RS engine behaviour in TypeScript. Contains the network protocol and data tools. |
@@ -35,20 +37,12 @@ All submodules are checked out on a local branch named **`calum-research`**, bra
 
 The Engine-TS README states that historical versions are organised as **branches** and that matching engine and content branches must be used together. Engine-TS, Content and Client-TS were all added at their `274` branch. How the client's revision relates to the engine's is still an open question (see `docs/open-questions.md`).
 
-### Safety: never push the submodules
+### Safety: push only to the forks, never to upstream
 
-Commits to this root repo are pushed to `calum/LostCityRs`. The submodules are owned by other developers and are never pushed. As a guard, every submodule's **push URL** has been set to the invalid value `DISABLED_NO_PUSH`, so `git push` inside a submodule fails by design. Do not undo this.
+The submodules point at Calum's forks (`github.com/calum/<name>`). Agents may push branches (`calum-research`, and `relic-mode` where relic hooks are added) to the fork (`origin`) and then commit and push the updated submodule pointer in this root repo. Never push to, or open PRs or issues against, the original `LostCityRS/*` upstreams. If you add an `upstream` remote, set its push URL to `DISABLED_NO_PUSH` (fetch-only). Steps for merging upstream changes into a fork are in [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md); the full rules are in [`CLAUDE.md`](CLAUDE.md).
 
-- Our modifications to upstream code (for example debug logging added to trace behaviour) stay local, on `calum-research`.
+- Our modifications to upstream code (debug logging, the relic-mode hooks, the client camera) are committed on the fork branches and listed in [`docs/local-changes.md`](docs/local-changes.md).
 - Our documentation lives in this container repo's `docs/`, not in the submodules.
-
-To re-apply the guard (for example after re-cloning):
-
-```sh
-git submodule foreach 'git remote set-url --push origin DISABLED_NO_PUSH'
-```
-
-This root repo's remote is https://github.com/calum/LostCityRs.
 
 ## Cloning this project elsewhere
 
@@ -58,7 +52,7 @@ cd LostCityRs
 git submodule update --init
 ```
 
-The submodule commits recorded here point at upstream commits. The local `calum-research` branches exist only in the clones where they were created.
+The submodule commits recorded here are on the forks' `calum-research` and `relic-mode` branches (the pointers can be ahead of upstream). If `git submodule update --init` cannot find a commit, see [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md).
 
 `Client-TS` has its own nested submodules under `3rdparty/` (`tinymidipcm`, `bzip2-wasm`, `emsdk`). They have **not** been initialised.
 
@@ -68,6 +62,9 @@ The submodule commits recorded here point at upstream commits. The local `calum-
 |---|---|
 | [`docs/README.md`](docs/README.md) | Index of all notes and the template every note follows |
 | [`docs/open-questions.md`](docs/open-questions.md) | Things not yet verified; the to-do list for research |
+| [`docs/local-changes.md`](docs/local-changes.md) | Every edit we made to upstream code (relic hooks, client camera) |
+| [`docs/setup/headless-test-harness.md`](docs/setup/headless-test-harness.md) | `mise run test`: fast in-process tests (`harness/`, `tests/`); new behaviour starts with a failing test (see `CLAUDE.md`) |
+| `mods/` | Our own RuneScript (the relic mode), synced into `Content/scripts/_mods/` |
 
 ## Research plan
 

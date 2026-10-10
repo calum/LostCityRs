@@ -6,6 +6,8 @@
 
 **Method:** read the spec and design doc, then read the code at the hook sites named below to confirm the proc signatures and anchor lines (`Engine-TS/src/engine/entity/Player.ts:701-713,1829-1830`, `Content/scripts/player/scripts/damage.rs2:1-7`, `npc_death.rs2:10`, `login.rs2:1-40`, `chat.rs2:149`, `npc_combat.rs2:391`, `magic.rs2:90`, `teleport.rs2:54,96`, `music.rs2:50`, `death.rs2:47`). **Nothing was compiled or run.** Hook sites not listed there come from the design doc and are not re-read; each milestone re-reads its sites before editing (rule 1 below).
 
+**Status (2026-10-10, root `ff51d3c`):** all eight milestones are built and on `main`; their results are in `relics-m1` to `relics-m8` (this plan is the original intent, so wording below such as "not yet read" or "Nothing was compiled or run" describes the plan, not the current state). Changes since the plan: the task-tier lock was removed ([relics-m3-tasks.md](relics-m3-tasks.md)); hooks live on the `relic-mode` branch of each fork (rule 3, confirmed by Calum); the hook inventory is [../local-changes.md](../local-changes.md); a headless test harness now covers some of the relic behaviour (`tests/relics.test.ts`, [../setup/headless-test-harness.md](../setup/headless-test-harness.md)). The 10-hour pacing was not measured.
+
 ## Working rules (apply to every milestone)
 
 1. **Read before hooking.** Re-open each hook site, re-grep the line number, and only then edit (`CLAUDE.md`). The design doc's line numbers date from the commits above.
