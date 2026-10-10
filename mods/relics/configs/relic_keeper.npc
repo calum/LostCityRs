@@ -1,0 +1,23 @@
+[relic_keeper]
+vislevel=hide
+name=Relic Keeper
+desc=Guards the relics of travellers.
+walkanim=human_walk_f,human_walk_b,human_walk_l,human_walk_r
+readyanim=human_ready
+op1=Talk-to
+recol1s=2340
+recol1d=40000
+recol2s=14724
+recol2d=43000
+recol3s=14801
+recol3d=44000
+model1=man_head_mediumhair
+model2=man_jaw_none
+model3=man_torso_basic
+model4=man_arms_basic
+model5=man_hands_basic
+model6=man_legs_basic
+model7=man_feet_basic
+head1=chat_male_head_mediumhair
+maxrange=1
+moverestrict=outdoors

@@ -1,0 +1,70 @@
+// Death: relic items are moved to the bank instead of dropping (hook in death.rs2). The Relic Keeper in Lumbridge
+// re-issues any relic item the player has lost. Items are identified by exact object, so a ring bought elsewhere is an ordinary ring.
+
+// $id is the relic that owns the item: 16 jewellery, 17 recall stone, 18 banker's stone.
+[proc,relic_item_relic](obj $item)(int)
+if ($item = ring_of_dueling_8 | $item = amulet_of_glory_4 | $item = necklace_of_minigames_8) {
+    return(16);
+}
+if ($item = relic_recall_stone) {
+    return(17);
+}
+if ($item = relic_banker_stone) {
+    return(18);
+}
+return(0);
+
+[proc,relic_stash_inv](inv $from)
+def_int $i = 0;
+def_int $size = inv_size($from);
+while ($i < $size) {
+    if (inv_getnum($from, $i) > 0) {
+        def_obj $item = inv_getobj($from, $i);
+        if (~relic_item_relic($item) ! 0) {
+            inv_moveitem($from, bank, $item, inv_getnum($from, $i));
+            if (inv_getnum($from, $i) > 0) {
+                ~relic_say("Your bank is full: <oc_name($item)> could not be kept safe.");
+            }
+        }
+    }
+    $i = calc($i + 1);
+}
+
+// death.rs2 hook: runs before the drops.
+[proc,relic_stash_items]
+~relic_stash_inv(inv);
+~relic_stash_inv(worn);
+
+// Give $item if the player has none anywhere. Returns 1 if given.
+[proc,relic_reissue](namedobj $item)(int)
+if (calc(inv_total(inv, $item) + inv_total(worn, $item) + inv_total(bank, $item)) > 0) {
+    return(0);
+}
+~relic_give_item($item);
+return(1);
+
+[opnpc1,relic_keeper]
+~chatnpc("<p,neutral>Greetings, adventurer. I keep watch over the relics of travellers.");
+def_int $given = 0;
+if (~relic_has(16) = 1) {
+    $given = calc($given + ~relic_reissue(ring_of_dueling_8));
+    $given = calc($given + ~relic_reissue(amulet_of_glory_4));
+    $given = calc($given + ~relic_reissue(necklace_of_minigames_8));
+}
+if (~relic_has(17) = 1) {
+    $given = calc($given + ~relic_reissue(relic_recall_stone));
+}
+if (~relic_has(18) = 1) {
+    $given = calc($given + ~relic_reissue(relic_banker_stone));
+}
+if ($given > 0) {
+    ~chatnpc("<p,happy>You had lost some of your relic items. I have replaced them.");
+} else {
+    ~chatnpc("<p,neutral>You have all of your relic items. Take care of them.");
+}
+
+// login hook: make sure exactly one keeper stands in Lumbridge.
+[proc,relic_ensure_keeper]
+if (npc_find(0_50_50_21_18, relic_keeper, 20, 0) = false) {
+    npc_add(map_findsquare(0_50_50_21_18, 0, 3, ^map_findsquare_lineofwalk), relic_keeper, 2000000000);
+}

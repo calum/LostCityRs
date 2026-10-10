@@ -229,6 +229,7 @@ queue(relic_offer_q, 0, 0);
 if (%tutorial < ^tutorial_complete) {
     return;
 }
+~relic_ensure_keeper;
 ~relic_first_offer;
 if (%relic_pending > 0) {
     queue(relic_offer_q, 0, 0);

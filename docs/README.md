@@ -38,6 +38,7 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 - [design/relics-m3-tasks.md](design/relics-m3-tasks.md): M3 of the relic plan, run in game: the `npc_death` kill hook, task tables, which death scripts bypass it, the protected-varp rule.
 - [design/relics-m4-offers.md](design/relics-m4-offers.md): M4 of the relic plan, run in game: the offer engine (seeded draw, 2-3 option dialogs, pending count), login and tutorial-complete hooks, celebration.
 - [design/relics-m5-easy-relics.md](design/relics-m5-easy-relics.md): M5 of the relic plan, run in game: damage, Phoenix, kill effects, free runes, everlasting jewellery, recall and bank stones (mod items work), Hoarder.
+- [design/relics-m6-death-keeper.md](design/relics-m6-death-keeper.md): M6 of the relic plan, run in game: relic items go to the bank on death, the Relic Keeper re-issues them once.
 - [design/roguelike-relics.md](design/roguelike-relics.md): design guidance for a relic-based roguelike mode. Part 2: 25 tasks, 3-choice offer mechanics and a 19-relic pool (21 pickable; 8x to 64x XP multiplier, infinite jewellery, last recall, task celebration) with hooks per relic. What a mod can and cannot do (no script override, one global XP rate, no kill or XP trigger), the verified hook points (`addXp`, `damage_self`, `npc_death`, login, mining, high alch, attack delay), a feasibility table per relic, and a patch-series approach to keep upstream merges easy (read from code, not run).
 
 ### Traced flows

@@ -140,3 +140,46 @@ if (p_finduid(uid) = false) {
     return;
 }
 @magic_teleport(^varrock_teleport);
+
+// ::~relic_where prints how many relic items are in inv, worn and bank.
+[debugproc,relic_where]
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("stone inv/bank: <tostring(inv_total(inv, relic_recall_stone))>/<tostring(inv_total(bank, relic_recall_stone))> banker inv/bank: <tostring(inv_total(inv, relic_banker_stone))>/<tostring(inv_total(bank, relic_banker_stone))>");
+~relic_say("ring inv/worn/bank: <tostring(inv_total(inv, ring_of_dueling_8))>/<tostring(inv_total(worn, ring_of_dueling_8))>/<tostring(inv_total(bank, ring_of_dueling_8))> hp <tostring(stat(hitpoints))>");
+
+// ::~relic_lose deletes every relic item the player has, anywhere.
+[debugproc,relic_lose]
+if (p_finduid(uid) = false) {
+    return;
+}
+inv_del(inv, relic_recall_stone, 100);
+inv_del(inv, relic_banker_stone, 100);
+inv_del(bank, relic_recall_stone, 100);
+inv_del(bank, relic_banker_stone, 100);
+inv_del(bank, ring_of_dueling_8, 100);
+inv_del(bank, amulet_of_glory_4, 100);
+inv_del(bank, necklace_of_minigames_8, 100);
+~relic_say("relic items deleted");
+
+// ::~relic_talk walks to and talks to the nearest Relic Keeper.
+[debugproc,relic_talk]
+if (p_finduid(uid) = false) {
+    return;
+}
+if (npc_find(coord, relic_keeper, 20, 0) = true) {
+    p_opnpc(1);
+}
+
+// ::~relic_keepers counts relic keepers within 60 tiles.
+[debugproc,relic_keepers]
+if (p_finduid(uid) = false) {
+    return;
+}
+def_int $n = 0;
+npc_findall(0_50_50_21_18, relic_keeper, 60, 0);
+while (npc_findnext = true) {
+    $n = calc($n + 1);
+}
+~relic_say("keepers in 60 tiles: <tostring($n)>");
