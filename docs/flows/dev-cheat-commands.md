@@ -24,6 +24,7 @@
 ### 2. Engine side: the handler and the staff level
 
 - `ClientCheatHandler.handle` lowercases the input, splits it on spaces, and takes the first word as the command (`ClientCheatHandler.ts:45-51`).
+- **Correction:** the debug-proc commands below (`maxme`, `help`, `coord`, `pos`, `zone`, and every name in `cheat_help.rs2`) are typed with the `~` prefix, e.g. `::~maxme`. An earlier version of this note listed `::maxme` without it. Only the engine commands in the table (`minme`, `setstat`, `give`, `tele`, ...) take no prefix.
 - Commands are grouped by the player's `staffModLevel` (`Engine-TS/src/engine/entity/Player.ts:376`):
 
 | Level check | Lines | Commands (as coded) |
@@ -50,8 +51,21 @@
 - A `::~name` command runs the script `[debugproc,name]` (`ClientCheatHandler.ts:60-62`). The `~` comes from `debugProcChar`, so `::~help` runs `[debugproc,help]`. Inferred from the char check at `:60`, the default at `WorldConfig.ts:106`, and `Client.ts:3094` sending everything after `::`.
 - Arguments are parsed by the debugproc's parameter types: strings, ints, obj/npc/loc/seq/stat/inv/coord/interface/spotanim/idkit names (`ClientCheatHandler.ts:67-148`). A bad argument returns `false` and nothing runs (`:142-145`).
 - The scripts live in `Content/scripts/_test/scripts/cheats/`. Examples: `cheat_help.rs2` (`[debugproc,help]`, the menu of commands), `cheat_maxme.rs2` (`[debugproc,maxme]`), `cheat_magic.rs2` (`[debugproc,giverunes]`), and `debug/` and `cheat_*` files for banks, teleports and more.
+- **The menu text is wrong about the prefix.** `cheat_help.rs2` writes the debug-proc commands without `~` (for example `::coord`, `::maxme`). The handler only runs a debug proc when the command starts with the `debugProcChar` (`ClientCheatHandler.ts:60-62`), so `::coord` is not dispatched to `[debugproc,coord]`; the `~` form is. Not fixed here: the script lives in the Content submodule, which is not edited (see `CLAUDE.md`).
 - `cheat_help.rs2` lists the commands by category: account (`::reset`, `::minme`, `::maxme`, `::setstat`, `::addxp`, `::setxp`, `::1hp`, `::foodbank`, `::energy`), item (`::bank`, `::bank_preset`, `::clearinv`, `::give`, `::fmtest`, `::fishtest`, `::giverunes`, `::magicbank`), teleport (`::tele`, `::home`, `::varrock`, `::falador`, ...), and engine (`::seq`, `::loc`, `::npc`, `::open`, `::close`, `::delay`) (`Content/scripts/_test/scripts/cheats/cheat_help.rs2:1-37`).
 - **Not verified:** the bodies of `cheat_maxme.rs2`, `cheat_magic.rs2` and the other cheat scripts were not read. The menu text is only a description of what the scripts were written to do.
+
+### 5. Viewing coordinates
+
+Read from code, not run. All three are debug procs, so they need the `~` prefix and staff level 4 with `production` off:
+
+| Type | Script | What it prints (from the script) |
+|---|---|---|
+| `::~pos` | `Content/scripts/_test/scripts/engine/debug_pos.rs2` | `Position: <x> <z> <level>` (`mes`, shown as a game message) |
+| `::~coord` | `.../engine/debug_coord.rs2` | `Coord: <level>_<mx>_<mz>_<lx>_<lz>` (Jagex format, via `coord_unpack`) |
+| `::~zone` | `.../engine/debug_zone.rs2` | `Zone: <x>_<z>`, where the zone is the coordinate divided by 8 (`pow(2, 3)`) |
+
+These print to the chat, not onto a map. The map editor at `/maped` is registered only in debug mode (`Engine-TS/src/web.ts:270`, inside the `if (Environment.node.debug)` block at `web.ts:254-298`; `debug` defaults to `true`, `WorldConfig.ts:101`). Its page (`Engine-TS/view/maped.ejs`) and script (`Engine-TS/public/maped/maped.js`) contain a status line that formats `Tile: <x>, <z> | Level: <n>` (the format string is in `maped.js`). **Not verified:** which tile the status line shows (presumably the one under the mouse) and whether the editor draws your position. The mousemove listener on the editor canvas only records the pointer position, and the function that feeds the status line was not traced. The page is also not known to load the Client-TS `MapView` (`Client-TS/src/mapview/MapView.ts`); no HTML in `Engine-TS/public` or `Engine-TS/view` references `mapview.js` (grep).
 
 ## Limits and caveats
 
