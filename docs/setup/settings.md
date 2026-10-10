@@ -65,7 +65,7 @@ What a bigger radius costs and what it cannot show (players and NPCs beyond 15 t
 
 ## Random events (off by default on this server)
 
-Not a `world.json` setting (there is none; searched `Engine-TS` and `Content` for random-event config, nothing found). It is a content constant: `^macro_events_enabled` in `Content/scripts/macro events/configs/macro_events.constant` (Content fork `eb68f73f9`). `0` = off, `1` = upstream behaviour. Edit it, then `mise run mods:sync` is not needed (it is in Content itself); just restart the server (or let live reload recompile). While off, `::~macro_event N` and `::~random_event` do nothing too. Verified by `tests/random-events.test.ts` (failed before the change, passes after; suite 168 passing). Not checked: a real client session.
+Not a `world.json` setting (there is none; searched `Engine-TS` and `Content` for random-event config, nothing found). It is a content constant: `^macro_events_enabled` in `Content/scripts/macro events/configs/macro_events.constant` (Content fork `eb68f73f9`). `0` = off, `1` = upstream behaviour. Edit it in Content, then restart the server (or let live reload recompile). While off, `::~macro_event N` and `::~random_event` do nothing too. Verified by `tests/random-events.test.ts` (failed before the change, passes after; suite 168 passing). Not checked: a real client session.
 
 ## Not a setting: the server's entity view distance
 
