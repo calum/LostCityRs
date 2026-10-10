@@ -44,6 +44,12 @@ theme:
 plugins:
   - search
 
+extra_css:
+  - assets/relic-tracker.css
+
+extra_javascript:
+  - assets/relic-tracker.js
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -54,6 +60,7 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.details
+  - md_in_html
 
 # Notes link to files outside docs/ (CLAUDE.md, mise.toml, submodule sources).
 # Those links cannot resolve on the site; report them without failing the build.

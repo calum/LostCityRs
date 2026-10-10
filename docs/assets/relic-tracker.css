@@ -1,0 +1,10 @@
+/* Relic tracker styling; uses Material theme variables so it follows light/dark mode. */
+.relic-tracker-bar { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; align-items: center; margin: .6rem 0; }
+.relic-tracker-bar .relic-count { font-weight: 700; }
+.relic-tracker-bar button { cursor: pointer; padding: .15rem .7rem; border: 1px solid var(--md-default-fg-color--lighter); border-radius: .2rem; background: var(--md-code-bg-color); color: var(--md-default-fg-color); }
+#relic-tracker-notes { display: flex; flex-direction: column; gap: .3rem; margin: .6rem 0 1rem; }
+#relic-tracker-notes textarea { width: 100%; box-sizing: border-box; padding: .4rem; font: inherit; background: var(--md-code-bg-color); color: var(--md-default-fg-color); border: 1px solid var(--md-default-fg-color--lighter); border-radius: .2rem; }
+.relic-table input[type="checkbox"] { width: 1.15rem; height: 1.15rem; cursor: pointer; }
+.md-typeset table.relic-table tr.relic-done td { opacity: .55; }
+.md-typeset table.relic-table tr.relic-locked td { opacity: .4; }
+.md-typeset table.relic-table tr.relic-hidden { display: none; }

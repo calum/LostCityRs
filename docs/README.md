@@ -27,6 +27,8 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 - [reference/coordinates.md](reference/coordinates.md): what a coord literal such as `0_41_51_39_38` means (`level_mapX_mapZ_localX_localZ`), how it packs, and how to turn a map square plus a tile on the map page into one. Read from code, not run.
 
+- [guide/relic-mode-player-guide.md](guide/relic-mode-player-guide.md): player-facing page for the relic mode with a table of every relic, a table of the 25 tasks with requirements (skill levels from the Content configs, combat levels, spawn areas from the map files) and a tick-box tracker saved in the browser (`docs/assets/relic-tracker.js`). Follows the plan and `mods/relics/` at root `8a83538`; read, not run in a live game.
+
 ### Design
 
 - [design/roguelike-relics-spec.md](design/roguelike-relics-spec.md): the agreed v1 specification for the relic mode (decisions, tasks, 19-relic pool, systems, upstream edits, out of scope, risks), written as the input for a development plan.
