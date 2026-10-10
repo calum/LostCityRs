@@ -1,0 +1,6 @@
+// relic_tasks_done bit = task number - 1. Tier masks cover the task bits of each tier.
+^relic_tier1_mask = 63
+^relic_tier2_mask = 8128
+^relic_tier3_mask = 8380416
+^relic_tier4_mask = 25165824
+^relic_task_count = 25

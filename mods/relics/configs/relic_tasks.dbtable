@@ -1,0 +1,11 @@
+// 25 tasks. Kill tasks: one row per npc type. Product tasks: one row per object.
+// Task 13 (pickpocket a paladin) is detected in the pickpocket script and has no row. Tiers: 1-6, 7-13, 14-23, 24-25.
+[relic_task_npc]
+column=task,int,REQUIRED
+column=npc,npc,INDEXED,REQUIRED
+column=tier,int,REQUIRED
+
+[relic_task_obj]
+column=task,int,REQUIRED
+column=obj,obj,INDEXED,REQUIRED
+column=tier,int,REQUIRED

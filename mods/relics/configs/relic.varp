@@ -12,3 +12,6 @@ scope=perm
 
 [relic_xp_factor]
 scope=perm
+
+[relic_tasks_done]
+scope=perm

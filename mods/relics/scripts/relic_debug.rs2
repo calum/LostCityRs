@@ -62,3 +62,36 @@ if (p_finduid(uid) = false) {
     return;
 }
 ~relic_say("runenergy <tostring(runenergy)>");
+
+// ::~relic_task <n> completes task n as if it had been done (respects tiers).
+[debugproc,relic_task](int $task)
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("manual task <tostring($task)> tier <tostring(~relic_current_tier(0))> done mask <tostring(%relic_tasks_done)>");
+~relic_task_try($task, 1);
+
+[debugproc,relic_tasks_reset]
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_tasks_done = 0;
+~relic_say("tasks reset");
+
+// ::~relic_spawn <npc> spawns a stationary npc one tile east of you (fight it to test kill tasks).
+[debugproc,relic_spawn](npc $npc)
+if (p_finduid(uid) = false) {
+    return;
+}
+npc_add(movecoord(coord, 1, 0, 0), $npc, 500);
+npc_setmode(none);
+
+// ::~relic_kill <npc> spawns the npc east of you, credits you with its damage and runs its real death script (ai_queue3).
+[debugproc,relic_kill](npc $npc)
+if (p_finduid(uid) = false) {
+    return;
+}
+npc_add(movecoord(coord, 1, 0, 0), $npc, 500);
+npc_heropoints(10);
+npc_setmode(none);
+npc_queue(3, 0, 0);

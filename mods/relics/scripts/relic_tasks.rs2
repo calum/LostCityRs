@@ -1,0 +1,55 @@
+// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tasks unlock in tiers: only
+// tasks of the lowest tier that still has an unfinished task count (tiers 1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25).
+
+[proc,relic_current_tier](int $dummy)(int)
+if (and(%relic_tasks_done, ^relic_tier1_mask) ! ^relic_tier1_mask) {
+    return(1);
+}
+if (and(%relic_tasks_done, ^relic_tier2_mask) ! ^relic_tier2_mask) {
+    return(2);
+}
+if (and(%relic_tasks_done, ^relic_tier3_mask) ! ^relic_tier3_mask) {
+    return(3);
+}
+return(4);
+
+// Called with the task number and its tier; queues the completion on the active player if it counts.
+// (Writing the varp here would fail: %relic_* varps need protected access and an npc death script has none.)
+[proc,relic_task_try](int $task, int $tier)
+if ($tier > ~relic_current_tier(0)) {
+    return;
+}
+if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
+    return;
+}
+queue(relic_task_done, 0, $task);
+
+// The one hook line in npc_death calls this: the dying npc is active.
+[proc,relic_on_kill]
+if (npc_findhero = ^false) {
+    return;
+}
+db_find(relic_task_npc:npc, npc_type);
+def_dbrow $row = db_findnext;
+while ($row ! null) {
+    ~relic_task_try(db_getfield($row, relic_task_npc:task, 0), db_getfield($row, relic_task_npc:tier, 0));
+    $row = db_findnext;
+}
+
+// For product tasks: called with the active player and the product object.
+[proc,relic_task_obj](obj $obj)
+db_find(relic_task_obj:obj, $obj);
+def_dbrow $row = db_findnext;
+while ($row ! null) {
+    ~relic_task_try(db_getfield($row, relic_task_obj:task, 0), db_getfield($row, relic_task_obj:tier, 0));
+    $row = db_findnext;
+}
+
+// Protected-access script on the player. M4 replaces the placeholder with the celebration and the offer.
+[queue,relic_task_done](int $task)
+// varps are protected: only a queued (protected) script may write them. Re-check in case two queues raced.
+if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
+    return;
+}
+%relic_tasks_done = setbit(%relic_tasks_done, calc($task - 1));
+~relic_say("Relic task <tostring($task)> complete.");
