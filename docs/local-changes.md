@@ -1,6 +1,6 @@
 # Local changes to upstream code (relic mode)
 
-Hooks live on branch `relic-mode` of each fork (branched from the pinned upstream commit), one commit per hook, so `git log relic-mode` in the submodule lists them. Check with `mise run relics:hooks` (it must list exactly the lines below). Logic lives in `mods/relics/`.
+Hooks live on `main` of each fork (fast-forwarded from the former `relic-mode` branch, which is kept; it branched from the pinned upstream commit), one commit per hook, so `git log 274..main` in the submodule lists them. Check with `mise run relics:hooks` (it must list exactly the lines below). Logic lives in `mods/relics/`.
 
 **Based on:** Engine-TS base `1d25566`, Content base `65b754f`.
 
@@ -38,9 +38,9 @@ Verified in game (M2, `docs/design/relics-m2-xp-energy.md`).
 
 M3 note: `Content/pack/dbrow.pack`, `dbtable.pack` and `param.pack` are gitignored in Content (generated server-side), so only `varp.pack` ids are committed.
 
-## Client-TS (`calum-research`, not relic mode)
+## Client-TS (not relic mode)
 
-Branch `calum-research` of `calum/Client-TS`, branched from upstream `274` at `7d6ca61`. Details and observations: [flows/client-camera.md](flows/client-camera.md).
+Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched from upstream `274` at `7d6ca61`. Details and observations: [flows/client-camera.md](flows/client-camera.md).
 
 | Repo | File | Change | Commit |
 |---|---|---|---|

@@ -23,7 +23,7 @@ See [`CLAUDE.md`](CLAUDE.md) for the same rules as instructions to Claude Code.
 
 ## Repositories (submodules)
 
-All submodules are checked out on a local branch named **`calum-research`**, branched from the upstream default branch at the time of adding.
+Each fork's **`main`** branch holds all of Calum's changes (relic hooks, client camera, earlier research), fast-forwarded from the former `relic-mode` / `calum-research` branches (kept for history, listed in [`docs/local-changes.md`](docs/local-changes.md)). `.gitmodules` sets `branch = main` for every submodule. Upstream-derived branches in the forks (e.g. `274`) are left as they are.
 
 Each submodule's `origin` is Calum's fork (`github.com/calum/<name>`), not the upstream below. See [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md).
 
@@ -39,7 +39,7 @@ The Engine-TS README states that historical versions are organised as **branches
 
 ### Safety: push only to the forks, never to upstream
 
-The submodules point at Calum's forks (`github.com/calum/<name>`). Agents may push branches (`calum-research`, and `relic-mode` where relic hooks are added) to the fork (`origin`) and then commit and push the updated submodule pointer in this root repo. Never push to, or open PRs or issues against, the original `LostCityRS/*` upstreams. If you add an `upstream` remote, set its push URL to `DISABLED_NO_PUSH` (fetch-only). Steps for merging upstream changes into a fork are in [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md); the full rules are in [`CLAUDE.md`](CLAUDE.md).
+The submodules point at Calum's forks (`github.com/calum/<name>`). Agents may push `main` (and other branches) to the fork (`origin`) and then commit and push the updated submodule pointer in this root repo. Never push to, or open PRs or issues against, the original `LostCityRS/*` upstreams. If you add an `upstream` remote, set its push URL to `DISABLED_NO_PUSH` (fetch-only). Steps for merging upstream changes into a fork are in [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md); the full rules are in [`CLAUDE.md`](CLAUDE.md).
 
 - Our modifications to upstream code (debug logging, the relic-mode hooks, the client camera) are committed on the fork branches and listed in [`docs/local-changes.md`](docs/local-changes.md).
 - Our documentation lives in this container repo's `docs/`, not in the submodules.
@@ -52,7 +52,7 @@ cd LostCityRs
 git submodule update --init
 ```
 
-The submodule commits recorded here are on the forks' `calum-research` and `relic-mode` branches (the pointers can be ahead of upstream). If `git submodule update --init` cannot find a commit, see [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md).
+The submodule commits recorded here are on the forks' `main` branches (the pointers can be ahead of upstream). If `git submodule update --init` cannot find a commit, see [`docs/setup/submodule-forks.md`](docs/setup/submodule-forks.md).
 
 `Client-TS` has its own nested submodules under `3rdparty/` (`tinymidipcm`, `bzip2-wasm`, `emsdk`). They have **not** been initialised.
 
