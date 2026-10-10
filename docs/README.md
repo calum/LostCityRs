@@ -26,6 +26,10 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 
 - [reference/coordinates.md](reference/coordinates.md): what a coord literal such as `0_41_51_39_38` means (`level_mapX_mapZ_localX_localZ`), how it packs, and how to turn a map square plus a tile on the map page into one. Read from code, not run.
 
+### Design
+
+- [design/roguelike-relics.md](design/roguelike-relics.md): design guidance for a relic-based roguelike mode. What a mod can and cannot do (no script override, one global XP rate, no kill or XP trigger), the verified hook points (`addXp`, `damage_self`, `npc_death`, login, mining, high alch, attack delay), a feasibility table per relic, and a patch-series approach to keep upstream merges easy (read from code, not run).
+
 ### Traced flows
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).
