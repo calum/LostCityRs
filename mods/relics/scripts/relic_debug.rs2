@@ -253,3 +253,11 @@ if (p_finduid(uid) = false) {
     return;
 }
 ~relic_say("quest points: <tostring(%qp)>");
+
+// ::~relic_alltasks marks tasks 1 to 23 as done (so the two final bosses count).
+[debugproc,relic_alltasks]
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_tasks_done = or(or(^relic_tier1_mask, ^relic_tier2_mask), ^relic_tier3_mask);
+~relic_say("tasks 1-23 done, mask <tostring(%relic_tasks_done)>");

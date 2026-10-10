@@ -208,7 +208,11 @@ if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
 ~relic_say("Relic task <tostring($task)> complete!");
 ~relic_celebrate;
 if ($task >= 24) {
-    ~relic_say("A final task is done.");
+    if (and(%relic_tasks_done, ^relic_tier4_mask) = ^relic_tier4_mask) {
+        ~relic_win;
+    } else {
+        ~relic_say("A final boss is down. Defeat the other one to win.");
+    }
     return;
 }
 %relic_pending = calc(%relic_pending + 1);
@@ -242,3 +246,8 @@ if (%relic_pending > 0) {
 // grants the quests' reward items and XP.
 [queue,relic_quest_pass]
 @complete_all_quests;
+
+// Both final bosses (tasks 24 King Black Dragon and 25 Kalphite Queen) are down: the run is won.
+[proc,relic_win]
+~relic_say("You have defeated both final bosses. You win the relic run!");
+~mesbox("@gre@Congratulations!|You have defeated the King Black Dragon and the Kalphite Queen.|You have won the relic run.");
