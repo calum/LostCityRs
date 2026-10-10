@@ -10,7 +10,7 @@ A single-player roguelike on top of LostCityRS (revision 274). The player comple
 
 ## 2. Constraints (from the repo rules and Calum)
 
-- Merge from upstream must stay easy. All logic lives in `mods/relics/` (RuneScript, configs). Upstream edits are limited to **one-line hook calls** (`~relic_*`) and two small engine edits, kept as patch files in this root repo and applied on pristine submodules. This departs from the repo rule "local submodule edits only for research", so **Calum must confirm the patch-series approach** before building it (decision pending).
+- Merge from upstream must stay easy. All logic lives in `mods/relics/` (RuneScript, configs). Upstream edits are limited to **one-line hook calls** (`~relic_*`) and two small engine edits, committed directly in Calum's submodule forks (`github.com/calum/*`), which `CLAUDE.md` now allows pushing to (never `LostCityRS/*`). Put them on a dedicated branch per fork (suggested `relic-mode`, branched from `calum-research`), one small commit per hook, so each can be found and re-applied when upstream is merged (`docs/setup/submodule-forks.md`). Record every hook in `docs/local-changes.md`, and after pushing in a submodule, commit and push the updated pointer in the root repo.
 - Never `git push` in a submodule. Commit and push the root repo straight to `main`. Docs go in `docs/` and are updated with each finding (`CLAUDE.md`).
 - A mod cannot redefine an upstream script (`[trigger,name] is already defined`, `RuneScriptTS/src/compiler/semantics/ScriptRegistration.ts:173`), has no login or NPC-death or XP trigger of its own (design doc findings 3, 7, 13), and `mods/` scripts must sit under a `scripts/` folder (`mods/README.md`).
 - Client-TS is not changed in v1. Everything is server-side, using existing dialogs and effects.
@@ -30,6 +30,7 @@ A single-player roguelike on top of LostCityRS (revision 274). The player comple
 | Tasks | The 25-task list in the design doc, unchanged (18 from Calum plus 7 added). Task 3 is "Giant" because no "Hill giant" NPC exists. Tasks 24 and 25 are the bosses and give no offer. |
 | Dropped | Scholar/Warlord (merged into XP Multiplier), Tutor, Prodigy, Free Teleports, Boss Key, Compass, Fleet Foot, Featherweight, Pathfinder, Reroll, Fast Hands, Smelter's Blessing. |
 | Pool size | A short pool is fine for v1: 19 relics = 21 pickable. |
+| Hooks | Committed in Calum's forks on a `relic-mode` branch (not patch files), per the coordinator update that forks are now pushable. |
 | Death | Relic items must survive death: stash them in the bank on death (one hook), plus a "Relic Keeper" NPC in Lumbridge that re-issues missing relic items. |
 
 ## 4. Relic pool (v1)
@@ -72,7 +73,7 @@ See the table in the design doc (Part 2, "The task list"). Detection: kills via 
 4. **Relic effects:** one `[proc,relic_*]` per relic, gated on the owned bitmask, called from the hooks.
 5. **Death handling:** stash relic items to the bank; Relic Keeper NPC (stateless re-issue across inv, worn, bank), spawned from the login hook with `npc_add`.
 6. **Dev tools:** `[debugproc,relic_*]` commands (grant, reset, set seed, complete task) usable as `::~relic_grant` etc.
-7. **Patches:** `patches/*.patch` plus `mise` tasks `patches:apply` and `patches:check` (`git apply --check` after each submodule bump).
+7. **Upstream merge routine:** `git fetch upstream` and merge into the fork branch as in `docs/setup/submodule-forks.md`; a conflict can only occur on a hook line. Add a `mise` task or script that lists all `relic_` hook lines (`git grep -n '~relic_'` in each submodule) so a merge can be checked quickly; and keep `docs/local-changes.md` as the hook inventory.
 
 ## 7. Upstream edits (approximately 25 one-line hooks in ~13 Content files, plus 2 engine lines)
 
@@ -93,4 +94,4 @@ Client changes or new interfaces; multiplayer; relics that skip level requiremen
 
 ## 10. What the development plan should cover
 
-Milestones in the order suggested in the design doc: (1) prove the mod loop with zero upstream edits (varp, debugproc, choice dialog, persistence across logout); (2) engine XP and run-energy lines plus the patch-apply tooling; (3) task engine and kill hook; (4) offer engine, first-login offer and celebration; (5) easy relics; (6) death stash and Relic Keeper; (7) medium relics; (8) boss run-through and pacing tuning. For each milestone: files, hooks, test via `::~relic_*` in a running server, docs updated, and a `patches:check` pass.
+Milestones in the order suggested in the design doc: (1) prove the mod loop with zero upstream edits (varp, debugproc, choice dialog, persistence across logout); (2) engine XP and run-energy lines plus the hook inventory (`docs/local-changes.md`) and the `git grep ~relic_` check; (3) task engine and kill hook; (4) offer engine, first-login offer and celebration; (5) easy relics; (6) death stash and Relic Keeper; (7) medium relics; (8) boss run-through and pacing tuning. For each milestone: files, hooks, test via `::~relic_*` in a running server, docs updated, and a check that every hook line is still present after any upstream merge.

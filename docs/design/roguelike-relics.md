@@ -12,7 +12,7 @@
 
 ## Verdict in one paragraph
 
-Almost everything can live in `mods/` (RuneScript + configs), because relic state is just perm varps and the choice UI is the existing chat-choice dialog. The mod cannot, however, *intercept* upstream behaviour: the engine has one global XP multiplier, the RuneScript compiler refuses to redefine an existing script, and there is no generic "NPC died" or "XP gained" trigger. So we need a **small, fixed set of one-line hook calls** in upstream files (about 10 lines in ~8 files, plus one engine line). Keep those as `.patch` files in this root repo applied on top of pristine submodules, never as hand edits, and everything else stays in `mods/`.
+Almost everything can live in `mods/` (RuneScript + configs), because relic state is just perm varps and the choice UI is the existing chat-choice dialog. The mod cannot, however, *intercept* upstream behaviour: the engine has one global XP multiplier, the RuneScript compiler refuses to redefine an existing script, and there is no generic "NPC died" or "XP gained" trigger. So we need a **small, fixed set of one-line hook calls** in upstream files (about 10 lines in ~8 files, plus one engine line). Commit each as its own small commit on a dedicated branch in Calum's submodule forks (see rule 2 below), and keep everything else in `mods/`.
 
 ## Findings: what the code allows
 
@@ -86,13 +86,13 @@ Almost everything can live in `mods/` (RuneScript + configs), because relic stat
 |---|---|---|---|
 | L0 data | relic definitions as a `dbtable`/consts, varps for owned/active relics, kill counter, run seed | `mods/relics/configs/` | none |
 | L1 logic | `[proc,relic_*]`, `[debugproc,relic_*]`, unlock + roll + menu, win detection | `mods/relics/scripts/` | none (new names only) |
-| L2 hooks | `~relic_on_kill;`, `~relic_on_login;`, damage/mining/delay hooks, 1 engine line | `patches/*.patch` in this repo, applied to the submodule working trees | low: only when upstream touches those exact lines |
+| L2 hooks | `~relic_on_kill;`, `~relic_on_login;`, damage/mining/delay hooks, 1 engine line | one small commit per hook on a `relic-mode` branch in Calum's forks of Engine-TS and Content | low: only when upstream touches those exact lines |
 
 Rules to keep merging easy:
 1. **Hook = one call, no logic.** Example: `damage.rs2` gets `$amount = ~relic_damage_taken($amount);`. All logic is in the mod, so an upstream conflict is a one-line re-apply.
-2. **Patch series in the root repo, not commits in submodules.** This repo's rule is never to push submodules, and `calum-research` local edits are meant for research logging (`CLAUDE.md`, "Git rules"). Proposal (not built): `patches/NN-name.patch`, a `mise run patches:apply` that does `git apply` and a `patches:check` that does `git apply --check` after every submodule bump, so breakage is found at bump time. Needs Calum's agreement because it departs from the "local edits only for research" rule; either way each hook must be recorded in `docs/local-changes.md`.
+2. **Hooks are commits in Calum's submodule forks (update).** An earlier draft proposed `.patch` files in this repo because submodules were not pushable. `CLAUDE.md` now allows pushing to the forks (`github.com/calum/*`, never `LostCityRS/*`; routine in `docs/setup/submodule-forks.md`). So put each hook in its own small commit on a `relic-mode` branch (suggested; branched from `calum-research`), merge `upstream/<branch>` into it, and let git report conflicts, which can only fall on hook lines. Record every hook in `docs/local-changes.md` and commit the new submodule pointer in the root repo. Searching for `~relic_` with `git grep` in each submodule lists every hook.
 3. **Prefix everything** with `relic_` (procs, varps, params) so mod names never collide with a future upstream name.
-4. **Pin the submodules** and bump deliberately (CLAUDE.md "Staleness check"); after a bump run `patches:check`, then re-check this note's citations.
+4. **Pin the submodules** and bump deliberately (CLAUDE.md "Staleness check"); after a bump check that every `~relic_` hook line is still present, then re-check this note's citations.
 5. **Do not override upstream scripts via type-specific scripts** (finding 2) except as a last resort.
 6. **Prefer a new relic that needs 0 patches** over one that needs a patch, until the core loop works.
 
