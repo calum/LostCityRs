@@ -124,12 +124,6 @@ data=task,6
 data=obj,magic_shortbow
 data=tier,1
 
-[relic_task07_yew_logs_obj]
-table=relic_task_obj
-data=task,7
-data=obj,yew_logs
-data=tier,2
-
 [relic_task08_lawrune_obj]
 table=relic_task_obj
 data=task,8

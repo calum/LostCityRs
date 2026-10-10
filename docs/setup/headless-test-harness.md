@@ -6,9 +6,9 @@
 
 | Repo | Commit |
 |---|---|
-| LostCityRs (container) | `7e04d97` + this branch (`claude/test-harness-xavwsl`) |
-| Engine-TS | `8c4fa9ca` (the `relic-mode` pointer at root `7e04d97`) |
-| Content | `73546549b` (`relic-mode`) |
+| LostCityRs (container) | branch `claude/test-harness-xavwsl`, merged with `main` at `5ed50cb` |
+| Engine-TS | `8c4fa9ca` (`relic-mode`) |
+| Content | `73546549b` (`relic-mode`, M6) when built; suite re-run green at `c8cff7b57` (M8, root `5ed50cb`) |
 
 **Method:** engine code read (citations below), then the harness was **built and run** on Linux with Node 24.21.0: the 16 tests in `tests/` pass, a deliberately failing test exits 1, and three runs of the same combat test gave the same tick count and XP. Not run on Windows or macOS.
 

@@ -23,6 +23,7 @@ return($amount);
 
 // npc_combat.rs2 hook (npc_max_dealt). 5 Glass Cannon: double damage dealt.
 [proc,relic_dealt](int $maxhit)(int)
+~relic_execute;
 if (~relic_has(5) = 1) {
     return(calc($maxhit * 2));
 }
@@ -84,3 +85,36 @@ if (~relic_has(9) = 1) {
         obj_add(npc_coord, bread, 1, ^lootdrop_duration);
     }
 }
+
+// attack-delay hooks (player_melee, player_ranged, player_special_attack, player_magic). 4 Quickstrike: half the delay, at least 1 tick.
+[proc,relic_delay](int $ticks)(int)
+if (~relic_has(4) = 1) {
+    return(max(1, calc(($ticks + 1) / 2)));
+}
+return($ticks);
+
+// alchemy.rs2 hook (end of the high alchemy label). 13 Midas Loop: cast again while the player still has the item.
+[proc,relic_midas](obj $item)(int)
+if (~relic_has(13) = 1 & inv_total(inv, $item) > 0) {
+    return(^true);
+}
+return(^false);
+
+// 8 Executioner, called from relic_dealt (a landed player hit on the active npc). The npc damage queue has no player, so the
+// decision is made here: if the npc is below 25% of its base hitpoints, queue its remaining hitpoints as damage and credit the
+// player (hero points and combat xp) as if the hit had dealt them.
+[proc,relic_execute]
+if (~relic_has(8) = 0) {
+    return;
+}
+def_int $hp = npc_stat(hitpoints);
+if ($hp > 0 & calc($hp * 4) < npc_basestat(hitpoints)) {
+    npc_heropoints($hp);
+    ~give_combat_experience(%damagestyle, $hp, %npc_combat_xp_multiplier);
+    npc_queue(2, $hp, 0);
+}
+
+// Repeats the cast from a weak queue: walking or clicking anything else clears the queue, which is how the player stops the loop
+// (a p_delay loop cannot be interrupted: observed, docs/design/relics-m7-medium-relics.md).
+[queue,relic_midas](obj $item)
+@magic_spell_high_alch(^highlvl_alchemy, $item);

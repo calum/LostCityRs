@@ -1,7 +1,7 @@
 # Relic mode: player guide and tracker
 
 !!! note "This page follows the current plan"
-    The relic mode is still being built. Everything below comes from the plan and the code in `mods/relics/` as of root commit `8a83538` (Content `6c7b18f`). Relics and tasks may change, and some relics are listed but **not built yet** (see the *Status* column). Nothing here was run in a live game by the author of this page.
+    This page follows the plan and the code in `mods/relics/` as of root commit `d136077` (all eight milestones are on `main`). Relics and tasks may still change. Everything is built, but only part of it was tested, and only with a scripted test client, never a full play-through (see the *Status* column). The author of this page ran nothing.
 
 ## The run in one minute
 
@@ -31,29 +31,43 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 
 | # | Relic | What it does | Status | How to use it |
 |---|---|---|---|---|
-| 1a | XP Multiplier I | XP rate 8x to **16x** | built | automatic |
-| 1b | XP Multiplier II | XP rate 16x to **32x** (needs I) | built | automatic |
-| 1c | XP Multiplier III | XP rate 32x to **64x** (needs II) | built | automatic |
-| 2 | Quest Pass | every quest is marked complete | planned (M7) | automatic |
-| 3 | Stoneskin | you take **half** the damage | built | automatic |
-| 4 | Quickstrike | you attack **twice as fast** | planned (M7) | automatic |
-| 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | built | automatic |
-| 6 | Phoenix | a lethal hit leaves you on 1 HP, once every **5 minutes** | built | automatic |
-| 7 | Vampire | you heal a little on **every kill** | built | automatic |
-| 8 | Executioner | NPCs below 25% HP die instantly | planned (M7) | automatic |
-| 9 | Bounty | every kill drops **coins plus one food**, bigger for tougher NPCs | built | pick the drop up |
-| 10 | Eternal Vein | ore rocks never run out and ore goes **straight to your bank** | planned (M7) | automatic |
-| 11 | Evergreen | trees never fall and logs go **straight to your bank** | planned (M7) | automatic |
-| 12 | Double Yield | gathering and cooking give **x2** items | planned (M7) | automatic |
-| 13 | Midas Loop | high alchemy keeps repeating on the same stack | planned (M7) | cast High Level Alchemy |
-| 14 | Philosopher's Coin | alchemy pays **x2** coins | built | cast an alchemy spell |
-| 15 | Infinite Runes | spells cost **no runes** | built | automatic |
-| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | built | use the jewellery |
-| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | built | a **Recall stone** item, op *Recall* |
-| 18 | Banker's Call | opens your bank from anywhere | built | a **Banker's stone** item, op *Open bank* |
-| 19 | Hoarder | one extra pick from relics you declined earlier | built | automatic, right after you take it |
+| 1a | XP Multiplier I | XP rate 8x to **16x** | tested | automatic |
+| 1b | XP Multiplier II | XP rate 16x to **32x** (needs I) | tested | automatic |
+| 1c | XP Multiplier III | XP rate 32x to **64x** (needs II) | tested | automatic |
+| 2 | Quest Pass | every quest is marked complete | tested, see note | automatic |
+| 3 | Stoneskin | you take **half** the damage | tested | automatic |
+| 4 | Quickstrike | you attack **twice as fast** | built, partly tested | automatic |
+| 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | partly tested | automatic |
+| 6 | Phoenix | a lethal hit leaves you on 1 HP, once every **5 minutes** | tested | automatic |
+| 7 | Vampire | you heal a little on **every kill** | tested | automatic |
+| 8 | Executioner | NPCs below 25% HP die instantly | built, partly tested | automatic |
+| 9 | Bounty | every kill drops **coins plus one food**, bigger for tougher NPCs | tested | pick the drop up |
+| 10 | Eternal Vein | ore rocks never run out and ore goes **straight to your bank** | tested with debug commands | automatic |
+| 11 | Evergreen | trees never fall and logs go **straight to your bank** | tested with debug commands | automatic |
+| 12 | Double Yield | gathering and cooking give **x2** items | tested with debug commands | automatic |
+| 13 | Midas Loop | high alchemy keeps repeating on the same stack | tested | cast High Level Alchemy |
+| 14 | Philosopher's Coin | alchemy pays **x2** coins | built, not tested | cast an alchemy spell |
+| 15 | Infinite Runes | spells cost **no runes** | tested | automatic |
+| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested (ring only) | use the jewellery |
+| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested (one trip) | a **Recall stone** item, op *Recall* |
+| 18 | Banker's Call | opens your bank from anywhere | tested | a **Banker's stone** item, op *Open bank* |
+| 19 | Hoarder | one extra pick from relics you declined earlier | partly tested | automatic, right after you take it |
 
-*Status* means "the code exists in `mods/relics/scripts/`" (built) or "is in the plan but its milestone is not done" (planned). "Built" is not the same as tested in a live game. For the details and the code, see [M5: easy relics](../design/relics-m5-easy-relics.md) and the [development plan](../design/roguelike-relics-dev-plan.md).
+*Status* says how far the relic was checked by the builder, using a scripted headless client (not a person playing). "Tested" means the effect was seen working once. "Debug commands" means the effect was triggered by test commands, not by real mining, chopping or cooking. Nothing was checked over a long session.
+
+Things worth knowing:
+
+- **Quest Pass** runs the engine's own "complete all quests" cheat script. It also hands out quest reward items and XP (quest points reached 135 in the test), so it is a big skill boost too. In the test, the final "Quest complete" scroll could not be closed by the test client; whether a real client can close it is not checked.
+- **Eternal Vein** stops after each ore, so click the rock again. Evergreen keeps chopping.
+- **Midas Loop** stops when you walk or click something else.
+- **Executioner** and **Quickstrike**: the effects ran, but the faster swing animation and the real attack speed were not checked.
+- **Everlasting Jewellery**: only the ring of dueling was tried; the glory amulet and games necklace use the same code shape.
+
+### If you die
+
+Relic items (the three jewellery items, the Recall stone and the Banker's stone) are moved to your bank on death. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (`0_50_50_21_18`, about (3221, 3218)); it re-issues each missing item once. Tested: one death, one keeper after login. Not checked: bank full, PvP death, long uptime. (`docs/design/relics-m6-death-keeper.md`)
+
+For the details and the code, see the notes [M5](../design/relics-m5-easy-relics.md), [M6](../design/relics-m6-death-keeper.md), [M7](../design/relics-m7-medium-relics.md) and the [development plan](../design/roguelike-relics-dev-plan.md).
 
 ## Tasks { #tasks }
 
@@ -95,7 +109,8 @@ Coordinates are `(x, z)` in game tiles. They are the **centre of the 64x64 map s
     - Whether every task is reachable on a fresh character, and what else you need to get to the location (quests, keys, items), was not checked. The law altar and the Kalphite lair in particular may have access rules.
     - Task 6: it is not settled whether cutting the unstrung bow or stringing it counts; make the finished bow to be safe.
     - Task 12: the plan says the exact super attack dose that counts is not settled (`docs/design/roguelike-relics.md`, task list); make a potion and keep it.
-    - Task 13 (pickpocket success) is not hooked in the mod yet; ticks for 4-13 and 19-20 depend on the "product" hooks in milestone 7.
+    - All task hooks exist now. The kill tasks and the mithril-ore task were seen completing in tests. The runecraft, bows, smelting, herblore, yew-burning and paladin hooks compiled but were never triggered, and real mining, woodcutting, fishing and cooking completions were not played through (`docs/design/relics-m7-medium-relics.md`, "Not checked").
+    - After you win (both bosses down) nothing resets, and pacing (the 10 hour target) was never measured (`docs/design/relics-m8-win-and-pacing.md`).
 
 ## Evidence
 
