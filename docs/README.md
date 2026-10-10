@@ -22,6 +22,10 @@ Rules: everything here must be evidenced and accurate. See [`../README.md`](../R
 - [setup/local-setup-with-mise.md](setup/local-setup-with-mise.md): installing mise, the services `npm start` brings up (world, game TCP, web, management) and the tasks in the root [`mise.toml`](../mise.toml) that build and run them. `mise run up` was run on Linux: server started and a headless browser logged in. Not run on Windows.
 - [setup/script-dev-loop.md](setup/script-dev-loop.md): writing your own RuneScript and running it live on your character. The engine already hot-reloads `.rs2`/config edits (`DevThread`, `World.reload`); observed edit, compile error and reload in a headless browser; the `mods/` folder and `mise run mods:sync|mods:watch|live` tasks; what is and is not known about client-side scripts.
 
+### Reference
+
+- [reference/coordinates.md](reference/coordinates.md): what a coord literal such as `0_41_51_39_38` means (`level_mapX_mapZ_localX_localZ`), how it packs, and how to turn a map square plus a tile on the map page into one. Read from code, not run.
+
 ### Traced flows
 
 - [flows/click-loc-woodcutting.md](flows/click-loc-woodcutting.md): clicking a tree. Client packet, engine decode/handler, interaction processing in the tick, and the Content script that runs (read from code, not run).
