@@ -53,9 +53,11 @@ run = [
 ]
 
 [tasks.start]
-description = "Pack the cache if needed, then start the world, game TCP server, web server and management server"
+description = "Sync mods, repack the cache from Content, then start the world, game TCP server, web server and management server"
 dir = "{{config_root}}/Engine-TS"
-run = ["node ../scripts/check-submodules.mjs Engine-TS Content", "node ../scripts/check-client-build.mjs", "npm start"]
+# The repack matters: app.ts only packs when the cache is missing, so Content or mods/ changes
+# (interfaces, configs) never reach the client otherwise (docs/setup/settings.md, Tasks/Relics buttons).
+run = ["node ../scripts/check-submodules.mjs Engine-TS Content", "node ../scripts/check-client-build.mjs", "node ../scripts/sync-mods.mjs", "npm run build", "npm start"]
 
 [tasks.dev]
 description = "Like start, but restarts when engine .ts files change"
@@ -89,6 +91,11 @@ depends = ["mods:watch", "start"]
 description = "Open the engine's setup page (http://localhost:8898/setup) to edit data/config/world.json"
 dir = "{{config_root}}/Engine-TS"
 run = "npm run setup"
+
+[tasks."engine:pack"]
+description = "Repack the cache from Content now (use when interfaces/configs changed but the game shows old data)"
+dir = "{{config_root}}/Engine-TS"
+run = ["node ../scripts/sync-mods.mjs", "npm run build"]
 
 [tasks."engine:clean-build"]
 description = "Delete packed data and repack the cache from Content"

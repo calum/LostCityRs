@@ -93,6 +93,8 @@ Observed 2026-10-10 on Windows (Content `8535c3ee6`, Engine-TS `8c4fa9c`, root `
 
 **Fix (run, worked):** `cd Engine-TS && npm run build` (`tools/pack/Build.ts` calls `packAll`, 6.3 s). `data/pack/client/interface` grew from 102899 to 103791 bytes. Then restart the server and hard refresh (Ctrl+Shift+R), relog. Use `mise run engine:clean-build` for a full rebuild.
 
+**Prevention (added, `mise.toml`):** `mise run engine:pack` syncs mods and repacks. `mise run start` (and so `live`) now runs the same two steps before `npm start`, so a restart always picks up Content and mods changes. Cost: the pack took 6.3 s and 26.2 s on two runs, added to each start. Not verified: a full `mise run start` end to end after this change.
+
 Not checked: that the buttons render in a browser (not run); `mods:sync` printed no errors and `Content/scripts/_mods/relics/interfaces/` has both menu files; which tab (`options` or `options_ld`) you use (`login.rs2:109` picks `options_ld` when `lowmem = true`), but both define the buttons.
 
 ## Not checked
