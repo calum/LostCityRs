@@ -39,14 +39,18 @@ git remote set-url --push upstream DISABLED_NO_PUSH
 ```sh
 cd Engine-TS
 git fetch upstream
-git checkout calum-research
+git checkout main
 git merge upstream/<branch>         # or rebase; resolve conflicts
-git push origin calum-research      # fork only
+git push origin main      # fork only
 cd ..
 git add Engine-TS && git commit -m "Update Engine-TS pointer" && git push origin main
 ```
 
 Upstream READMEs require Engine and Content on matching revision branches; merge both from the same upstream branch. After moving a pointer, re-check the commit hashes in docs (`docs/tools/check_citations.py`).
+
+## Branches in the forks (2026-10-10)
+
+Engine-TS, Content and Client-TS each had the upstream `274` branch plus Calum's branch (`relic-mode` for Engine-TS and Content, `calum-research` for Client-TS). Each was a pure fast-forward of `274` (2, 33 and 2 commits ahead, 0 behind; `git rev-list --count`), so `main` was created at the same commit with no merge: Engine-TS `8c4fa9ca`, Content `c8cff7b57`, Client-TS `93b19c3`. RuneScriptTS and Server only had `main`. The root's submodule pointers did not change. The old branches are kept; `274` was left untouched.
 
 ## Open questions
 

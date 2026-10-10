@@ -1,15 +1,20 @@
 [submodule "Engine-TS"]
 	path = Engine-TS
 	url = https://github.com/calum/Engine-TS.git
+	branch = main
 [submodule "Content"]
 	path = Content
 	url = https://github.com/calum/Content.git
+	branch = main
 [submodule "Client-TS"]
 	path = Client-TS
 	url = https://github.com/calum/Client-TS.git
+	branch = main
 [submodule "RuneScriptTS"]
 	path = RuneScriptTS
 	url = https://github.com/calum/RuneScriptTS.git
+	branch = main
 [submodule "Server"]
 	path = Server
 	url = https://github.com/calum/Server.git
+	branch = main

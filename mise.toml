@@ -24,7 +24,7 @@ depends = ["content:link", "engine:install", "client:install"]
 [tasks."submodules:init"]
 description = "Clone the Engine-TS, Content and Client-TS submodules (first clone only)"
 # Warning: on submodules that are already checked out, this moves them to the
-# commit recorded in this repo and detaches HEAD from calum-research.
+# commit recorded in this repo and detaches HEAD from main.
 run = "git submodule update --init Engine-TS Content Client-TS"
 
 [tasks."content:link"]
