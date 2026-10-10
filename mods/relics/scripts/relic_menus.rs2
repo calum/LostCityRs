@@ -185,3 +185,7 @@ if_close;
 if (%relic_pending > 0) {
     queue(relic_offer_q, 0, 0);
 }
+
+// levelup.rs2 hook: one chat line after the "Congratulations" message so the XP Multiplier shows up in play.
+[proc,relic_levelup_note]
+~relic_say("XP rate: <tostring(~relic_xp_rate(%relic_xp_tier))>x");

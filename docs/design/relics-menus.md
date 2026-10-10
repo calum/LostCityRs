@@ -12,6 +12,10 @@ The Game Options tab has two orange text buttons at the right of the "Split Priv
 - **Relics** (`relic_relicmenu.if`): XP rate (`8 * 2^tier`, base from `^relic_base_xp` in `relic.constant`, which must match `node.xpRate` in `config/world.json`), the unlocked relics (green) with their effect, the relics not yet unlocked (yellow), and, only when `%relic_pending > 0`, "N relic choices waiting" with a **Choose a relic now** button. The XP Multiplier shows "now 16x" in the unlocked list and "next 32x" in the other until it is maxed.
 - Each menu has a link to the other (`Relics >`, `Tasks >`) and the usual Close Window.
 
+## XP rate on level-up
+
+Every level-up adds one chat line `XP rate: 16x` (8x with no XP Multiplier) after the "Congratulations" line. Hook: one line in `Content/scripts/levelup/scripts/levelup.rs2` (`~relic_levelup_note`, Content `8535c3ee6`), proc in `relic_menus.rs2`, tests in `tests/relic-levelup.test.ts` (3, all pass; suite 165). It uses the same `8 * 2^tier` figure as the menu. Not checked in a real client.
+
 ## How it works (all in `mods/relics/scripts/relic_menus.rs2` unless noted)
 
 1. Button: `[if_button,options:relic_tasks]` (and the `options_ld:` twins) run `if_close;` then `~relic_taskmenu_open` / `~relic_relicmenu_open`, which call `if_openmain(...)` and fill the rows with `if_settext`. Same shape as `Content/scripts/player/scripts/skill_guide.rs2`: row components come from enums (`mods/relics/configs/relic_menus.enum`, `enum(int, component, relic_task_rows, $row)`), colours are `@gre@`/`@yel@`/`@whi@` tags in the text.

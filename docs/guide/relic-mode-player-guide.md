@@ -25,6 +25,7 @@ Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at 
 
 - **Tasks** lists all 25 tasks, green `[x]` when done. Click *Hide completed* to show only the open ones; the setting is remembered.
 - **Relics** shows your XP rate, the relics you have, and the relics you do not have yet. If you closed a relic choice by accident it says "relic choice waiting": click **Choose a relic now** and the same three relics come back, no relog needed.
+- Every level-up also prints your **XP rate** (for example "XP rate: 16x") in the chat.
 - Each menu has a link to the other one at the top.
 
 Seen working in a real browser client (high-detail tab). Details: [design/relics-menus.md](../design/relics-menus.md).
