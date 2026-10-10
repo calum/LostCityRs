@@ -45,8 +45,8 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 1a | XP Multiplier I | XP rate 8x to **16x** | tested | automatic |
 | 1b | XP Multiplier II | XP rate 16x to **32x** (needs I) | tested | automatic |
 | 1c | XP Multiplier III | XP rate 32x to **64x** (needs II) | tested | automatic |
-| 2 | Quest Pass | every quest is marked complete | tested, see note | automatic |
-| 3 | Stoneskin | you take **half** the damage | tested | automatic |
+| 2 | Quest Pass | every quest is marked complete | tested, see note | [(3016, 3849)](https://explv.github.io/?centreX=3016&centreY=3849&centreZ=0&zoom=9); [(2414, 4681)](https://explv.github.io/?centreX=2414&centreY=4681&centreZ=0&zoom=9); [Crandor (2834, 3279)](https://explv.github.io/?centreX=2834&centreY=3279&centreZ=0&zoom=9) |
+| 3 | Stoneskin | you take **half** the damage | tested | [Lava Maze (3106, 3858)](https://explv.github.io/?centreX=3106&centreY=3858&centreZ=0&zoom=9); [Tree Gnome Village (2533, 3147)](https://explv.github.io/?centreX=2533&centreY=3147&centreZ=0&zoom=9); [(3304, 3655)](https://explv.github.io/?centreX=3304&centreY=3655&centreZ=0&zoom=9) |
 | 4 | Quickstrike | you attack **twice as fast** | tested (melee, bow) | automatic |
 | 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | tested | automatic |
 | 6 | Phoenix | a lethal hit leaves you on 1 HP, once every **5 minutes** | tested | automatic |
@@ -57,11 +57,11 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 11 | Evergreen | trees never fall and logs go **straight to your bank** | tested | automatic |
 | 12 | Double Yield | gathering and cooking give **x2** items | tested (not fishing or cooking) | automatic |
 | 13 | Midas Loop | high alchemy keeps repeating on the same stack | tested | cast High Level Alchemy |
-| 14 | Philosopher's Coin | alchemy pays **x2** coins | tested | cast an alchemy spell |
-| 15 | Infinite Runes | **every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. The magic tab draws every spell you have the Magic level for as castable (needs the updated client) | tested | automatic |
-| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested | use the jewellery |
-| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested | a **Recall stone** item, op *Recall* |
-| 18 | Banker's Call | opens your bank from anywhere | tested | a **Banker's stone** item, op *Open bank* |
+| 14 | Philosopher's Coin | alchemy pays **x2** coins | tested | [Black Knights' Fortress (3045, 3570)](https://explv.github.io/?centreX=3045&centreY=3570&centreZ=0&zoom=9); [(3299, 3299)](https://explv.github.io/?centreX=3299&centreY=3299&centreZ=0&zoom=9); [Agility Arena (2860, 3163)](https://explv.github.io/?centreX=2860&centreY=3163&centreZ=0&zoom=9) |
+| 15 | Infinite Runes | **every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. The magic tab draws every spell you have the Magic level for as castable (needs the updated client) | tested | [Legends' Guild (2703, 3336)](https://explv.github.io/?centreX=2703&centreY=3336&centreZ=0&zoom=9); [Graveyard of Shadows (3113, 3669)](https://explv.github.io/?centreX=3113&centreY=3669&centreZ=0&zoom=9); [(2404, 3373)](https://explv.github.io/?centreX=2404&centreY=3373&centreZ=0&zoom=9) |
+| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested | [Karamja (2852, 3025)](https://explv.github.io/?centreX=2852&centreY=3025&centreZ=0&zoom=9); [(2921, 3022)](https://explv.github.io/?centreX=2921&centreY=3022&centreZ=0&zoom=9); [(2518, 4551)](https://explv.github.io/?centreX=2518&centreY=4551&centreZ=0&zoom=9) |
+| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested | [Lava Maze (3099, 3815)](https://explv.github.io/?centreX=3099&centreY=3815&centreZ=0&zoom=9) |
+| 18 | Banker's Call | opens your bank from anywhere | tested | [underground Wizards' Guild (2590, 9446)](https://explv.github.io/?centreX=2590&centreY=9446&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2590&centreY=3046&centreZ=0&zoom=9)); [underground Entrana (2900, 9800)](https://explv.github.io/?centreX=2900&centreY=9800&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2900&centreY=3400&centreZ=0&zoom=9)); [underground Heros' Guild (2908, 9905)](https://explv.github.io/?centreX=2908&centreY=9905&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2908&centreY=3505&centreZ=0&zoom=9)) |
 | 19 | Hoarder | one extra pick from relics you declined earlier | tested | automatic, right after you take it |
 
 *Status* says how the relic was checked. "Tested" means an automated test (with a control run without the relic) saw it work, using real client input where the test harness allows it. Not covered by any test: anything the client shows (dialogs, jingle, fireworks), Tutorial Island, real boss fights, and long sessions. (`docs/design/relics-e2e-tests.md`)
@@ -89,11 +89,11 @@ For the details and the code, see the notes [M5](../design/relics-m5-easy-relics
 
 Tasks count in any order. Ticking a task here does not affect any other row.
 
-| # | Task | Requirements | Where (from the map spawn data) |
+| # | Task | Requirements | Where (map links) |
 |---|---|---|---|
-| 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | Lumbridge (3232, 3232), Rimmington (2976, 3232), Goblin Village (2976, 3488) |
-| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | underground around (2848, 9568) |
-| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | underground around (3104, 9824), or in the Wilderness around (3104, 3872) |
+| 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | [Kingdom of Kandarin (2580, 3416)](https://explv.github.io/?centreX=2580&centreY=3416&centreZ=0&zoom=9); [Lumbridge (3248, 3241)](https://explv.github.io/?centreX=3248&centreY=3241&centreZ=0&zoom=9); [Goblin Village (2956, 3498)](https://explv.github.io/?centreX=2956&centreY=3498&centreZ=0&zoom=9); [Jail (3159, 3240)](https://explv.github.io/?centreX=3159&centreY=3240&centreZ=0&zoom=9) |
+| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | [(3016, 3849)](https://explv.github.io/?centreX=3016&centreY=3849&centreZ=0&zoom=9); [(2414, 4681)](https://explv.github.io/?centreX=2414&centreY=4681&centreZ=0&zoom=9); [Crandor (2834, 3279)](https://explv.github.io/?centreX=2834&centreY=3279&centreZ=0&zoom=9) |
+| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | [Lava Maze (3106, 3858)](https://explv.github.io/?centreX=3106&centreY=3858&centreZ=0&zoom=9); [Tree Gnome Village (2533, 3147)](https://explv.github.io/?centreX=2533&centreY=3147&centreZ=0&zoom=9); [(3304, 3655)](https://explv.github.io/?centreX=3304&centreY=3655&centreZ=0&zoom=9) |
 | 4 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
 | 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
 | 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
@@ -104,20 +104,20 @@ Tasks count in any order. Ticking a task here does not affect any other row.
 | 11 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
 | 12 | **Make a super attack potion** | Herblore 45, an unfinished Irit potion and an eye of newt | anywhere |
 | 13 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
-| 14 | Defeat a **scorpion** | combat level 14, 17 HP | around (3040, 3552), (3296, 3296) or (2848, 3168) |
-| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | brown: around (2720, 3360); dark: around (2976, 3488) |
-| 16 | Defeat a **monkey** | combat level 3, 6 HP | Karamja, around (2848, 3040) and (2912, 3104) |
-| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | Wilderness around (3104, 3808) |
-| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | underground around (2592, 9440) |
+| 14 | Defeat a **scorpion** | combat level 14, 17 HP | [Black Knights' Fortress (3045, 3570)](https://explv.github.io/?centreX=3045&centreY=3570&centreZ=0&zoom=9); [(3299, 3299)](https://explv.github.io/?centreX=3299&centreY=3299&centreZ=0&zoom=9); [Agility Arena (2860, 3163)](https://explv.github.io/?centreX=2860&centreY=3163&centreZ=0&zoom=9) |
+| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | [Legends' Guild (2703, 3336)](https://explv.github.io/?centreX=2703&centreY=3336&centreZ=0&zoom=9); [Graveyard of Shadows (3113, 3669)](https://explv.github.io/?centreX=3113&centreY=3669&centreZ=0&zoom=9); [(2404, 3373)](https://explv.github.io/?centreX=2404&centreY=3373&centreZ=0&zoom=9) |
+| 16 | Defeat a **monkey** | combat level 3, 6 HP | [Karamja (2852, 3025)](https://explv.github.io/?centreX=2852&centreY=3025&centreZ=0&zoom=9); [(2921, 3022)](https://explv.github.io/?centreX=2921&centreY=3022&centreZ=0&zoom=9); [(2518, 4551)](https://explv.github.io/?centreX=2518&centreY=4551&centreZ=0&zoom=9) |
+| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | [Lava Maze (3099, 3815)](https://explv.github.io/?centreX=3099&centreY=3815&centreZ=0&zoom=9) |
+| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | [underground Wizards' Guild (2590, 9446)](https://explv.github.io/?centreX=2590&centreY=9446&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2590&centreY=3046&centreZ=0&zoom=9)); [underground Entrana (2900, 9800)](https://explv.github.io/?centreX=2900&centreY=9800&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2900&centreY=3400&centreZ=0&zoom=9)); [underground Heros' Guild (2908, 9905)](https://explv.github.io/?centreX=2908&centreY=9905&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2908&centreY=3505&centreZ=0&zoom=9)) |
 | 19 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
 | 20 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
-| 21 | Defeat a **hellhound** | combat level 122, 116 HP | underground around (2848, 9824) or (2720, 9696) |
-| 22 | Defeat a **black demon** | combat level 172, 157 HP | underground around (2848, 9760) or (3104, 9952) |
-| 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | Kalphite lair, around (3488, 9504) (height level 2) |
-| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | underground around (2720, 9824) |
-| 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | Kalphite lair |
+| 21 | Defeat a **hellhound** | combat level 122, 116 HP | [underground Catherby (2861, 9843)](https://explv.github.io/?centreX=2861&centreY=9843&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2861&centreY=3443&centreZ=0&zoom=9)); [underground Fishing Platform (2734, 9690)](https://explv.github.io/?centreX=2734&centreY=9690&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2734&centreY=3290&centreZ=0&zoom=9)) |
+| 22 | Defeat a **black demon** | combat level 172, 157 HP | [underground Entrana (2862, 9776)](https://explv.github.io/?centreX=2862&centreY=9776&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2862&centreY=3376&centreZ=0&zoom=9)); [underground (3088, 9959)](https://explv.github.io/?centreX=3088&centreY=9959&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3088&centreY=3559&centreZ=0&zoom=9)) |
+| 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | [underground (3472, 9486)](https://explv.github.io/?centreX=3472&centreY=9486&centreZ=2&zoom=9) ([surface above](https://explv.github.io/?centreX=3472&centreY=3086&centreZ=0&zoom=9)) |
+| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | [underground Sorcerers' Tower (2716, 9817)](https://explv.github.io/?centreX=2716&centreY=9817&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2716&centreY=3417&centreZ=0&zoom=9)) Route (read from scripts, not walked): the ladder at (3017, 3849) in the Wilderness takes you to (3069, 10255), and the lever there teleports you into the lair at about (2717, 9802) ([notes](../reference/finding-npc-locations.md#worked-example-the-king-black-dragon)). |
+| 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | [underground (3474, 9496)](https://explv.github.io/?centreX=3474&centreY=9496&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3474&centreY=3096&centreZ=0&zoom=9)) (first form; the flying form appears when she transforms) |
 
-Coordinates are `(x, z)` in game tiles. They are the **centre of the 64x64 map square** that holds the spawns, so treat them as "around here", not an exact tile. A `z` of 6400 or more is an underground map square. I did not look up where the entrances are. Skill, level and combat numbers come from the game config files listed under *Evidence*.
+**Map links.** Each link opens [Explv's OSRS map](https://explv.github.io/) centred on the average tile of a group of spawns, with the nearest place name from this repo's own label list where one is within 60 tiles (names are a hint, not a verified area name). "Underground" means the map data puts the spawn in the dungeon band (z of 6400 or more); a second link shows the surface point directly above it. The links were built from the map files, not clicked: I could not reach the map site from the build environment. How to look up any NPC yourself: [Finding NPC locations](../reference/finding-npc-locations.md).
 
 !!! warning "Not verified"
     - Whether every task is reachable on a fresh character, and what else you need to get to the location (quests, keys, items), was not checked. The law altar and the Kalphite lair in particular may have access rules.
