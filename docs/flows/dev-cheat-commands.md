@@ -105,6 +105,29 @@ Method (read, and run over the `.npc` files at `65b754f76`, with a short script 
 
 Not checked: what `_unpack/` is and whether `nasty_tree` is used in play; whether the `hitpoints` value is the in-game maximum. Ties at 255 are ordered by name.
 
+### Ranking equipment by bonus
+
+Equipment is defined in `.obj` blocks. The stat bonuses are not top-level keys: they are `param=<name>,<value>` lines (for example `param=slashdefence,1` in `Content/scripts/areas/area_canifis/configs/canifis.obj:19`). The bonus names are declared in `Content/scripts/skill_combat/configs/combat.param` (for example `[strengthbonus]`, `[slashattack]`). The worn-item bonus totals are summed from these params in `Content/scripts/player/scripts/equip.rs2:226-262`, so the param value is the bonus that counts when the item is worn. The packer reads any `param=` line as a generic param (`Engine-TS/tools/pack/config/ObjConfig.ts:167`).
+
+Method (read, and run over `.obj` files at `65b754f76`, short script in the scratchpad, not committed): every `[name]` block with a `wearpos` line, sorted by the `strengthbonus` param (melee strength bonus). 678 wearable blocks. Top 10:
+
+| Rank | Name | strengthbonus | wearpos | File |
+|---|---|---|---|---|
+| 1 | `poisoned_dagger_p` | 255 | righthand | `skill_combat/configs/melee/daggers.obj` |
+| 2 | `dragon_halberd` | 89 | righthand | `skill_combat/configs/melee/polearms.obj` |
+| 3 | `dragon_battleaxe` | 85 | righthand | `skill_combat/configs/melee/battleaxes.obj` |
+| 4 | `dragon_longsword` | 71 | righthand | `skill_combat/configs/melee/longswords.obj` |
+| 5 | `rune_2h_sword` | 70 | righthand | `skill_combat/configs/melee/2hswords.obj` |
+| 6 | `rune_halberd` | 68 | righthand | `skill_combat/configs/melee/polearms.obj` |
+| 7 | `rune_battleaxe` | 64 | righthand | `skill_combat/configs/melee/battleaxes.obj` |
+| 8 | `dragon_spear` | 60 | righthand | `skill_combat/configs/melee/spears.obj` |
+| 9 | `dragon_spear_p` | 60 | righthand | `skill_combat/configs/melee/spears.obj` |
+| 10 | `tbwt_dragon_spear_kp` | 60 | righthand | `skill_combat/configs/melee/spears.obj` |
+
+- `poisoned_dagger_p` sets every attack and defence param to 255 (`daggers.obj:605-627`). `Content/scripts/player/scripts/appearance.rs2:100` gives it a special appearance for staff level 3 and above. It looks like a staff or test item. Not checked: how a player obtains it.
+- Not checked: whether `members`, `tradeable` or any other filter should apply, and the in-game effect of any bonus value (the script summation was read, not run).
+- The metric is one choice. Any other param name works the same way, e.g. `slashdefence` or `rangeattack`.
+
 ## Open questions
 
 - Do the `~` debugprocs `maxme`, `giverunes`, `bank`, `foodbank` and the rest do what `cheat_help.rs2` says? Needs their scripts read, or an in-game run.
