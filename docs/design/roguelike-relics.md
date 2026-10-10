@@ -130,3 +130,164 @@ Level 99 is 13,034,431 xp (finding 9). A skill whose training you can do at, say
 - Whether setting only each quest's main varp is enough for all quest-gated content (finding 18).
 - Client-TS: not read for this note. The claim "no client change needed for the core loop" rests on the server-side findings 16-17 only.
 - A 3-option choice proc and any existing sidebar/overlay interface that could display relic status were not looked for.
+
+---
+
+# Part 2: tasks, offers and the relic pool
+
+**Question answered:** which ~25 tasks drive the relic offers, how does a "pick 1 of 3" offer work, which ~30 game-breaking relics fill the pool (including infinite-charge jewellery and a "last recall"), and which hooks each needs?
+
+**Based on commits:** Engine-TS `1d25566`, Content `65b754f`, RuneScriptTS `c454554` (same as Part 1). **Method:** read and grepped, nothing run. All hook sites below are one-line calls (`~relic_*`) unless stated, following the Part 1 rules.
+
+## Part 2 findings (new facts)
+
+21. **Skilling tasks can be detected at the point the product is created**, because each skill gives its output in one place. Output sites (all `Content/scripts/`):
+    - mining: `skill_mining/scripts/mining.rs2:142,179` (`inv_add(inv, ...)`), gem rocks `:194`
+    - woodcutting: `skill_woodcutting/scripts/woodcut.rs2:134` (`inv_add(inv, $product, 1)`); depletion `loc_change` at `:137`
+    - fishing: `skill_fishing/scripts/fishing.rs2:52,65,81,95` (`$fish1`/`$fish2`)
+    - cooking: `skill_cooking/scripts/cooking.rs2:176` (`$cooked_item`); burnt result `:189`
+    - firemaking: `skill_firemaking/scripts/firemaking.rs2:121` (`stat_advance(firemaking, oc_param($log, productexp))`, so `$log` is the burnt log; no item is created)
+    - runecrafting: `skill_runecraft/scripts/runecraft.rs2:98` (`inv_add(inv, $rune, ...)`)
+    - fletching: `skill_fletching/scripts/bows.rs2:42` (`inv_add(inv, db_getfield($data, fletching_table:product, 0))`)
+    - smithing/smelting: `skill_smithing/scripts/smelting/smelting.rs2:222` (`inv_add(inv, $product, 1)`)
+    - herblore: `[proc,brew_potion]` in `skill_herblore/scripts/herblore.rs2:10`, product added at `:14` (`inv_add(inv, $mixture, 1)`)
+    - pickpocket: entry label `skill_thieving/scripts/pickpocketing/pickpocket.rs2:100` (`attempt_pick_pocket`); the success line was **not pinned** (open question 73). `thieving.rs2:99,135` are stall and chest paths, not pickpocket.
+    So a task is "object X produced by skill Y" and needs a hook `~relic_task_obj($obj)` at about 12 sites. An engine-level alternative (hook the `INV_ADD` opcode, `Engine-TS/src/engine/script/handlers/InvOps.ts:57-73`) would be one site, but it would also fire for shop buys, drops and rewards, so tasks could be cheesed; I recommend the explicit script hooks.
+22. **Kill tasks** use the Part 1 `npc_death` hook (finding 13) with `npc_type`. NPC type names found in config: `goblin` (plus `goblin_armed`, `goblin_helmet`, `goblin_greenarmour`), `lesser_demon`, `scorpion`, `monkey`, `green_dragon`, `blue_dragon`, `black_demon`, `hellhound`, `paladin`, `king_dragon` (KBD). Bears are `brownbear`/`darkbear` (name "Bear"). There is **no NPC named "Hill giant"** in the configs I grepped: the generic one is `giant` (name "Giant") plus `firegiant`, `icegiant`, `mossgiant`. So task 3 must be "Giant" (this is revision 274; whether the `giant` type spawns in the open world is not verified).
+23. **Items exist** by these debug names: `mithril_ore`, `runite_ore`, `maple_logs`, `yew_logs`, `magic_shortbow`, `lawrune`, `raw_swordfish`/`swordfish`, `raw_shark`/`shark`, `silver_bar`, and `4dose2attack` ("Super attack(4)"). Which dose `brew_potion` produces for super attack is not verified.
+24. **Teleports**: all seven teleport spells and the charged jewellery call `~pre_tele_checks(coord)` with the *origin* coord (spells: `skill_magic/scripts/spells/teleport.rs2:39`; the proc is at `:96`; 7 call sites by grep) and then `~player_teleport_normal(dest)` (`teleport.rs2:54`, 33 callers by grep). So recording the origin once at the end of `pre_tele_checks` captures "where you last teleported from" for every source. Caveat: it records even if a later check cancels the teleport (e.g. the `afk_event` return at `teleport.rs2:42-45`).
+25. **Jewellery charges** are item swaps: `inv_setslot(inv, $slot, oc_param($item, next_obj_stage), 1)` or delete when no next stage (ring of dueling: `general/scripts/enchanted_jewellry/ring_of_dueling.rs2` near the end; same pattern in `amulet_of_glory.rs2` and `necklace_of_minigames.rs2`; 3 `next_obj_stage` lines across the 6 files in that folder by grep). Rings of forging, life and recoil are also in the folder and charge differently (not read). "Infinite charges" = skip that swap in 3 places, via one proc `~relic_keep_charge`.
+26. **Rune cost** goes through `[proc,delete_spell_runes]` (`skill_magic/scripts/magic.rs2:90`, 14 callers by grep), so free casting is one hook. Whether combat spells use it too is not verified.
+27. **Damage dealt to NPCs** in melee, ranged, magic and the `pvm_*` specials is computed through `[proc,npc_max_dealt]` (`skill_combat/scripts/npc/npc_combat.rs2:391`; callers incl. `player_melee.rs2:28`, `player_ranged.rs2:51`, `player_magic.rs2:201`). One hook there scales damage dealt (and a "minimum hit" effect).
+28. **Utility opcodes exist**: `RUNENERGY`, `WEIGHT` (`Engine-TS/src/engine/script/ScriptOpcode.ts:168,206`), and a reusable `@openbank` label used by bank booths (`interface_bank/scripts/bank_booth.rs2:5`). What each does (read vs set) was not read.
+
+## The task list (25)
+
+Your 18 examples, plus 7 chosen by me. "Hook" = where the completion is detected. 1-3 and 14-25 are kills.
+
+| # | Task | Detect with | Notes |
+|---|---|---|---|
+| 1 | Defeat a goblin | `npc_death`, `npc_type` in the goblin set | several goblin types (finding 22) |
+| 2 | Defeat a lesser demon | `npc_death`, `lesser_demon` | |
+| 3 | Defeat a **Giant** | `npc_death`, `giant` | no "Hill giant" type exists |
+| 4 | Mine a mithril ore | mining output, `mithril_ore` | |
+| 5 | Chop a maple log | `woodcut.rs2:134`, `maple_logs` | |
+| 6 | Fletch a magic shortbow | `bows.rs2:42`, `magic_shortbow` | |
+| 7 | Burn a yew log | `firemaking.rs2:121`, `$log = yew_logs` | no item is created |
+| 8 | Craft a law rune | `runecraft.rs2:98`, `lawrune` | needs the altar and members flag; access gating not checked |
+| 9 | Harpoon a swordfish | `fishing.rs2` (4 sites), `raw_swordfish` | |
+| 10 | Cook a raw shark | `cooking.rs2:176`, `shark` | do not count the burnt result |
+| 11 | Smith a silver bar | `smelting.rs2:222`, `silver_bar` | |
+| 12 | Make a super attack potion | `herblore.rs2:14`, mixture is a super attack dose | dose not verified |
+| 13 | Pickpocket a paladin | pickpocket success path | line not pinned; data row exists (`skill_thieving/configs/pickpocking/pickpocket.dbrow:105`) |
+| 14 | Defeat a scorpion | `npc_death`, `scorpion` | |
+| 15 | Defeat a bear | `npc_death`, `brownbear`/`darkbear` | |
+| 16 | Defeat a monkey | `npc_death`, `monkey` | |
+| 17 | Defeat a green dragon | `npc_death`, `green_dragon` | |
+| 18 | Defeat a blue dragon | `npc_death`, `blue_dragon` | |
+| 19 | Mine a runite ore (added) | mining output, `runite_ore` | |
+| 20 | Chop a yew log (added) | `woodcut.rs2:134`, `yew_logs` | |
+| 21 | Defeat a hellhound (added) | `npc_death`, `hellhound` | |
+| 22 | Defeat a black demon (added) | `npc_death`, `black_demon` | |
+| 23 | Defeat a Kalphite soldier (added) | `npc_death` | exact npc type name to confirm |
+| 24 | Defeat the King Black Dragon | `npc_death`, `king_dragon` | final, no relic offer |
+| 25 | Defeat the Kalphite Queen | `npc_death` of `kalphite_flyingqueen` (finding 14) | final, no relic offer |
+
+Tasks 1-23 each trigger one offer (23 offers). Suggested order: tasks are *unlocked in tiers* (for example 1-6 first, then 7-13, then 14-23, then the two finals), but inside a tier the player picks any, which keeps routing interesting. The "accelerate toward a named NPC or action" goal is served by the task-aware relics below (Compass, Tutor, Boss Key).
+
+## Offer mechanics
+
+1. Each completed task triggers `~relic_offer`. It draws **3 distinct relics** with the run seed (`%relic_seed`, advanced each draw) from the *eligible pool*.
+2. Eligible pool = every relic not yet owned, plus stackable relics that have tiers left. The two relics not picked **stay in the pool**, so they can reappear (as you asked).
+3. Pick via `~p_choice3_header`-style dialog (the 2- and 5-option versions exist; a 3-option one is not verified, so use the 5-option with three entries if needed: `interface_chat/scripts/chat.rs2:149`).
+4. Optional weighting (cheap, mod only): bias the draw toward relics tagged for the task's category (combat task favours combat relics), and never offer a relic whose prerequisite is unmet (e.g. "auto-alch" before "free runes").
+5. **Balance warning (inference):** 23 offers x 1 pick = 23 relics, out of a pool of ~32. Most relics will eventually be owned, so the real choice is *order*, not *which*. To keep tension, either enlarge the pool to ~45, or make some relics mutually exclusive ("Glass Cannon" vs "Stoneskin"). Stackable tiers (XP surge I/II/III) naturally consume several offers.
+
+## The relic pool (32)
+
+Feasibility legend: **E** easy (mod + at most one hook line), **M** medium (several hook lines or tricky behaviour), **H** hard or high-maintenance (not recommended for v1). "Hooks" refer to Part 1 and findings 21-28.
+
+### XP and levels
+| # | Relic | Effect | Hook | |
+|---|---|---|---|---|
+| 1 | Scholar I / II / III | skilling XP x2, then x3, then x5 (stacking tiers, 3 offers) | engine `addXp` line (finding 5) | E |
+| 2 | Warlord I / II | combat-stat XP x2, then x3 | same engine line, switch on `stat` index | E |
+| 3 | Tutor | on each task completion, instantly gain XP in that task's skill (e.g. enough for ~10 levels) | mod only (`stat_advance` in `~relic_task_*`) | E |
+| 4 | Prodigy | one-time: set every skill needed for the next task tier to its requirement (see risk below) | mod only, table of requirements | M |
+| 5 | Quest Pass | auto-complete all quests | generated (varp, constant) table (Part 1 finding 18) | M |
+
+### Combat
+| # | Relic | Effect | Hook | |
+|---|---|---|---|---|
+| 6 | Stoneskin | 50% less damage taken | `damage_self` (Part 1 finding 10) | E |
+| 7 | Quickstrike | attacks twice as fast (halve attack delay) | ~9 `%action_delay` sites (Part 1 finding 11) | M |
+| 8 | Glass Cannon | damage dealt x2, damage taken x1.5 | `npc_max_dealt` + `damage_self` | E |
+| 9 | Phoenix | the first lethal hit in each 5-minute window leaves 1 HP | `damage_self` + timer | E |
+| 10 | Vampire | heal a % of max HP on every kill | `npc_death` hook | E |
+| 11 | Executioner | NPCs below 25% HP die instantly | `npc_max_dealt` (needs the target HP) | M |
+| 12 | Bounty | every kill drops coins and the bones/supplies of the NPC tier | `npc_death` hook, mod loot table | E |
+
+### Gathering and production
+| # | Relic | Effect | Hook | |
+|---|---|---|---|---|
+| 13 | Eternal Vein | ore rocks never deplete | skip `loc_change` at `mining.rs2:133,176,221` | M |
+| 14 | Deep Pockets | mined ore goes straight to the bank | `inv_add(bank, ...)` at `mining.rs2:142,179,194` | M |
+| 15 | Evergreen | trees never fall | skip `loc_change` at `woodcut.rs2:137` | M |
+| 16 | Double Yield | gathering and cooking give x2 items | change the `inv_add` counts at the Part 2 sites | M |
+| 17 | Fast Hands | one-click crafting: no repeat clicks, 1-tick action delay | many action-delay sites | **H** |
+| 18 | Smelter's Blessing | smelting, fletching, cooking and potions cannot fail and use half the inputs | several scripts | **H** |
+
+### Magic and money
+| # | Relic | Effect | Hook | |
+|---|---|---|---|---|
+| 19 | Midas Loop | high alchemy repeats on the same item stack | tail call at `alchemy.rs2:37` (interruption unverified) | M |
+| 20 | Philosopher's Coin | alchemy pays x2 | profit lines in `alchemy.rs2` (the `scale(6, 10, ...)` and `scale(4, 10, ...)` lines) | E |
+| 21 | Infinite Runes | spells cost no runes | `delete_spell_runes` (finding 26) | E |
+
+### Travel (your two requests)
+| # | Relic | Effect | Hook | |
+|---|---|---|---|---|
+| 22 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges or crumble | `~relic_keep_charge` in 3 files (finding 25) | E |
+| 23 | Last Recall | one use of an item or command teleports you back to where you *last teleported from* | record origin in `pre_tele_checks` (finding 24), then `~player_teleport_normal` | E |
+| 24 | Free Teleports | teleport spells and jewellery are instant and cost nothing | `player_teleport_normal` has a 2-tick `p_delay(2)` (`teleport.rs2:61`); the delay is shared by all, so trimming it is one line | M |
+| 25 | Boss Key | teleports straight to the KBD lair or Kalphite lair (one use per task tier) | mod table of coords (see `docs/reference/coordinates.md`) | E |
+| 26 | Compass | teleports you next to the current task's NPC or resource | mod table of 25 coords, hand-verified | M |
+| 27 | Banker's Call | open the bank from anywhere | reuse `@openbank` (finding 28), via an item op or command | E |
+
+**Last Recall details.** Store the origin in two perm varps. Because the recall itself goes through `pre_tele_checks`, it would overwrite the stored origin with the place you are leaving. That is a feature: recall then *ping-pongs* between the two places (to the shop and back, to the rock and back), which is the usual way people use it. How a player triggers it must be chosen at implementation time: either a granted item with an op handled by a type-specific script (finding 2, allowed since no upstream script exists for that new item), or the existing `::~` debug proc during development.
+
+### Utility
+| # | Relic | Effect | Hook | |
+|---|---|---|---|---|
+| 28 | Fleet Foot | unlimited run energy | `RUNENERGY` opcode, set in a timer (use not read) | M |
+| 29 | Featherweight | no carry weight | `WEIGHT` opcode (use not read) | M |
+| 30 | Pathfinder | removes wilderness-level teleport limits | `wilderness_level(coord) > 20` checks at `teleport.rs2:17` and ring of duelling | M |
+| 31 | Reroll | once per offer, reroll the 3 choices (consumable, recharged by task) | mod only | E |
+| 32 | Hoarder | pick any one earlier-unpicked relic you declined (second chance) | mod only, needs a "declined" list varp | E |
+
+Counts: 32 relics (#1 has three tiers and #2 two, so the pool has more offers than names), 2 hard (#17, #18). Only #1-2 need the engine line.
+
+## How much upstream surgery this adds (on top of Part 1)
+
+New one-line hooks:
+- ~12 task-detection calls at the finding 21 sites
+- `pre_tele_checks` (1), `delete_spell_runes` (1), `npc_max_dealt` (1)
+- 3 jewellery files
+- `alchemy.rs2` tail call and two profit lines
+- 3 mining labels (2 lines each), 1 woodcut line
+
+That is about 30 lines in ~15 Content files, plus the single engine line. Everything else (relic data, offer logic, tables, varps) is in `mods/relics/`. If you want the lowest upstream-merge risk, ship in this order: **E** relics only (#1-3, 6, 8-10, 12, 20-23, 25, 27, 31, 32), which needs the engine line, `damage_self`, `npc_death`, `npc_max_dealt`, `pre_tele_checks`, `delete_spell_runes`, and the 3 jewellery lines.
+
+## Risks to decide on
+
+- **Tutor/Prodigy vs level requirements.** Some tasks need levels (silver bar, mithril, magic shortbow, runecrafting at the law altar, paladin pickpocket). With ~10x to 100x XP the player will out-level them, but task order matters: tier the tasks so each tier's requirement is reachable with the XP relics already offered.
+- **Access gating.** Some task sites sit behind quests or members-only areas. I did not verify that every task site is reachable on a fresh character (for example the law altar and the Kalphite lair). That check needs a play-through or a read of each access path.
+- **Phoenix, Executioner and Quickstrike** change fight balance for the two bosses. Test against KBD and KQ before locking numbers.
+
+## Not checked (Part 2)
+
+- Which NPC types are spawned where, and whether each task is reachable without other quests.
+- The exact pickpocket success line, the super attack dose produced, the Kalphite soldier NPC name.
+- `RUNENERGY` and `WEIGHT` opcode semantics; whether combat spells call `delete_spell_runes`.
+- Whether an item can be granted from `mods/` with an op that has a mod-only script (config shape not tried).
+- Nothing was compiled or run.

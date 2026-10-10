@@ -70,3 +70,5 @@ Things not yet verified. Nothing here is a finding. Move an item into a note, wi
 | 70 | Is a new `scope=perm` varp defined in `mods/` saved and restored across logout, and does a live reload keep it? | Only the save loop (`Player.ts:215-224`) was read. Needs a run: set the varp, log out, log in. |
 | 71 | Is a `p_delay` loop at the end of the high-alchemy label interrupted by movement or other clicks? | Needed before building the auto-alch relic; `alchemy.rs2:37`. Needs a run. |
 | 72 | Is setting each quest's main varp to its complete constant enough for all quest-gated content (shops, areas, items)? | Only `quest_doric` and `count_questpoints` were read. |
+| 73 | Where exactly does a successful pickpocket complete (line in `Content/scripts/skill_thieving/scripts/`)? Also: which dose `brew_potion` makes for super attack, and the exact Kalphite soldier NPC type? | Needed to hook tasks 12, 13 and 23 in `docs/design/roguelike-relics.md` Part 2. |
+| 74 | Do `RUNENERGY` and `WEIGHT` let a script set the value, and do combat spells use `delete_spell_runes`? | Needed for relics 21, 28 and 29 in the same note. |
