@@ -46,3 +46,4 @@ Branch `calum-research` of `calum/Client-TS`, branched from upstream `274` at `7
 |---|---|---|---|
 | Client-TS | `src/client/GameShell.ts` | canvas `wheel` listener (`mouseWheel` hook); middle button goes to `middleMouseDown`/`middleMouseUp` instead of acting as a left click | `15ece4e` |
 | Client-TS | `src/client/Client.ts` | scroll-wheel zoom (`cameraZoom`, 0.5x to 2x of `pitch * 3 + 600`), visibility table rebuilt for the zoom (`resetVisCalc`), middle-mouse drag sets yaw/pitch and `sendCamera` | `15ece4e` |
+| Client-TS | `src/dash3d/World.ts`, `src/dash3d/Model.ts`, `src/client/Client.ts` | render radius setting `World.viewRadius` (upstream 25, default 32) with matching depth cut; `?radius=N`, `::radius N`; `::fpson` shows radius and scene draw time | `93b19c3` |
