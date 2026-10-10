@@ -1,9 +1,4 @@
 // M1 probes. Run with ::~relic_demo <bit>, ::~relic_show, ::~relic_choice, ::~relic_queue_choice
-// relic_say writes to the player's chat and to the server console (console is the way to observe in headless tests).
-[proc,relic_say](string $m)
-mes($m);
-console("[relic] <$m>");
-
 [debugproc,relic_demo](int $bit)
 if (p_finduid(uid) = false) {
     return;
@@ -95,3 +90,38 @@ npc_add(movecoord(coord, 1, 0, 0), $npc, 500);
 npc_heropoints(10);
 npc_setmode(none);
 npc_queue(3, 0, 0);
+
+// M4 debug: ::~relic_offer (owe and show an offer), ::~relic_seed <n>, ::~relic_grant <id>, ::~relic_reset (clear all relic state).
+[debugproc,relic_offer]
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_pending = calc(%relic_pending + 1);
+queue(relic_offer_q, 0, 0);
+
+[debugproc,relic_seed](int $seed)
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_seed = $seed;
+~relic_say("seed <tostring($seed)>");
+
+[debugproc,relic_grant](int $id)
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_grant($id);
+
+[debugproc,relic_reset]
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_owned = 0;
+%relic_declined = 0;
+%relic_tasks_done = 0;
+%relic_xp_tier = 0;
+%relic_seed = 0;
+%relic_started = 0;
+%relic_pending = 0;
+~relic_xp_recompute;
+~relic_say("relic state cleared");

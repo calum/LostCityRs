@@ -1,0 +1,205 @@
+// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..19 = bit n of %relic_owned.
+// %relic_pending counts offers the player has earned but not yet answered (a closed dialog leaves it set; login re-offers).
+// Everything here needs protected access: run it from a queue script (see relic_offer_q).
+
+[proc,relic_name](int $id)(string)
+switch_int ($id) {
+    case 1 : return("XP Multiplier");
+    case 2 : return("Quest Pass");
+    case 3 : return("Stoneskin");
+    case 4 : return("Quickstrike");
+    case 5 : return("Glass Cannon");
+    case 6 : return("Phoenix");
+    case 7 : return("Vampire");
+    case 8 : return("Executioner");
+    case 9 : return("Bounty");
+    case 10 : return("Eternal Vein");
+    case 11 : return("Evergreen");
+    case 12 : return("Double Yield");
+    case 13 : return("Midas Loop");
+    case 14 : return("Philosopher's Coin");
+    case 15 : return("Infinite Runes");
+    case 16 : return("Everlasting Jewellery");
+    case 17 : return("Last Recall");
+    case 18 : return("Banker's Call");
+    case 19 : return("Hoarder");
+    case default : return("Unknown relic");
+}
+
+[proc,relic_desc](int $id)(string)
+switch_int ($id) {
+    case 1 : return("XP rate doubles");
+    case 2 : return("all quests complete");
+    case 3 : return("half damage taken");
+    case 4 : return("attack twice as fast");
+    case 5 : return("deal double, take x1.5");
+    case 6 : return("survive one lethal hit");
+    case 7 : return("heal on kill");
+    case 8 : return("finish weak monsters");
+    case 9 : return("kills drop loot");
+    case 10 : return("rocks stay, ore to bank");
+    case 11 : return("trees stay, logs to bank");
+    case 12 : return("double gathering");
+    case 13 : return("high alch repeats");
+    case 14 : return("alchemy pays double");
+    case 15 : return("spells need no runes");
+    case 16 : return("jewellery never runs out");
+    case 17 : return("teleport back and forth");
+    case 18 : return("bank from anywhere");
+    case 19 : return("pick a declined relic");
+    case default : return("");
+}
+
+[proc,relic_eligible](int $id)(int)
+if ($id = 1) {
+    if (%relic_xp_tier < 3) {
+        return(1);
+    }
+    return(0);
+}
+if (testbit(%relic_owned, $id) = ^true) {
+    return(0);
+}
+return(1);
+
+// Number of eligible relics not in the $drawn bitmask.
+[proc,relic_pool_size](int $drawn)(int)
+def_int $size = 0;
+def_int $i = 1;
+while ($i <= 19) {
+    if (~relic_eligible($i) = 1 & testbit($drawn, $i) = ^false) {
+        $size = calc($size + 1);
+    }
+    $i = calc($i + 1);
+}
+return($size);
+
+// Advance the seed (small Lehmer-style generator so every intermediate stays exact) and return the k-th
+// eligible relic not in $drawn, or 0 if none is left.
+[proc,relic_draw](int $drawn)(int)
+def_int $size = ~relic_pool_size($drawn);
+if ($size = 0) {
+    return(0);
+}
+%relic_seed = calc((%relic_seed * 75 + 74) % 65537);
+def_int $k = calc(%relic_seed % $size);
+def_int $i = 1;
+while ($i <= 19) {
+    if (~relic_eligible($i) = 1 & testbit($drawn, $i) = ^false) {
+        if ($k = 0) {
+            return($i);
+        }
+        $k = calc($k - 1);
+    }
+    $i = calc($i + 1);
+}
+return(0);
+
+[proc,relic_option](int $id)(string)
+return("<~relic_name($id)>: <~relic_desc($id)>");
+
+[proc,relic_grant](int $id)
+if ($id = 1) {
+    %relic_xp_tier = calc(%relic_xp_tier + 1);
+    ~relic_xp_recompute;
+} else {
+    %relic_owned = setbit(%relic_owned, $id);
+}
+%relic_declined = clearbit(%relic_declined, $id);
+~relic_say("You gained the relic: <~relic_name($id)>.");
+
+// Draw up to 3 relics, ask, grant. Returns 1 if a relic was granted, 0 if the pool was empty.
+[proc,relic_offer_once](int $dummy)(int)
+def_int $drawn = 0;
+def_int $a = ~relic_draw($drawn);
+if ($a = 0) {
+    return(0);
+}
+$drawn = setbit($drawn, $a);
+def_int $b = ~relic_draw($drawn);
+if ($b ! 0) {
+    $drawn = setbit($drawn, $b);
+}
+def_int $c = 0;
+if ($b ! 0) {
+    $c = ~relic_draw($drawn);
+    if ($c ! 0) {
+        $drawn = setbit($drawn, $c);
+    }
+}
+def_int $pick = 0;
+if ($c ! 0) {
+    $pick = ~p_choice3_header(~relic_option($a), $a, ~relic_option($b), $b, ~relic_option($c), $c, "Choose a relic");
+} else if ($b ! 0) {
+    $pick = ~p_choice2_header(~relic_option($a), $a, ~relic_option($b), $b, "Choose a relic");
+} else {
+    $pick = ~p_choice2_header(~relic_option($a), $a, "No thanks", 0, "Take this relic?");
+}
+// everything offered and not picked can come back and feeds the Hoarder relic
+def_int $i = 1;
+while ($i <= 19) {
+    if (testbit($drawn, $i) = ^true & $i ! $pick) {
+        %relic_declined = setbit(%relic_declined, $i);
+    }
+    $i = calc($i + 1);
+}
+if ($pick ! 0) {
+    ~relic_grant($pick);
+}
+return(1);
+
+// Answer every pending offer. An empty pool just clears the pending count.
+[proc,relic_offer_pending]
+while (%relic_pending > 0) {
+    def_int $granted = ~relic_offer_once(0);
+    %relic_pending = calc(%relic_pending - 1);
+}
+
+[queue,relic_offer_q]
+~relic_offer_pending;
+
+// Fireworks and the level-up jingle, as levelup.rs2 does (levelup.rs2:33,50).
+[proc,relic_celebrate]
+spotanim_pl(levelup_anim, 124, 0);
+db_find(levelup:stat, attack);
+def_dbrow $row = db_findnext;
+if ($row ! null) {
+    ~music_jingle(db_getfield($row, levelup:levelup_jingle, 0));
+}
+
+// The completion of a task: celebrate, then (tasks 24 and 25 are the finals) owe an offer.
+[queue,relic_task_done](int $task)
+if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
+    return;
+}
+%relic_tasks_done = setbit(%relic_tasks_done, calc($task - 1));
+~relic_say("Relic task <tostring($task)> complete!");
+~relic_celebrate;
+if ($task >= 24) {
+    ~relic_say("A final task is done.");
+    return;
+}
+%relic_pending = calc(%relic_pending + 1);
+~relic_offer_pending;
+
+// First offer of a run: start the run, seed it, owe one offer.
+[proc,relic_first_offer]
+if (%relic_started = 1) {
+    return;
+}
+%relic_started = 1;
+if (%relic_seed = 0) {
+    %relic_seed = calc(random(65535) + 1);
+}
+%relic_pending = calc(%relic_pending + 1);
+queue(relic_offer_q, 0, 0);
+
+// login.rs2 hook: characters that already finished the tutorial start their run, others wait for the tutorial hook.
+[proc,relic_on_login]
+if (%tutorial < ^tutorial_complete) {
+    return;
+}
+~relic_first_offer;
+if (%relic_pending > 0) {
+    queue(relic_offer_q, 0, 0);
+}

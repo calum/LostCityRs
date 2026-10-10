@@ -15,3 +15,12 @@ scope=perm
 
 [relic_tasks_done]
 scope=perm
+
+[relic_declined]
+scope=perm
+
+[relic_started]
+scope=perm
+
+[relic_pending]
+scope=perm

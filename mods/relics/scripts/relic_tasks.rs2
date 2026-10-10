@@ -44,12 +44,3 @@ while ($row ! null) {
     ~relic_task_try(db_getfield($row, relic_task_obj:task, 0), db_getfield($row, relic_task_obj:tier, 0));
     $row = db_findnext;
 }
-
-// Protected-access script on the player. M4 replaces the placeholder with the celebration and the offer.
-[queue,relic_task_done](int $task)
-// varps are protected: only a queued (protected) script may write them. Re-check in case two queues raced.
-if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
-    return;
-}
-%relic_tasks_done = setbit(%relic_tasks_done, calc($task - 1));
-~relic_say("Relic task <tostring($task)> complete.");
