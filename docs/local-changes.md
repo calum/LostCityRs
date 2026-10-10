@@ -37,3 +37,12 @@ Not a code hook: `config/world.json` (copied to `Engine-TS/data/config/world.jso
 Verified in game (M2, `docs/design/relics-m2-xp-energy.md`).
 
 M3 note: `Content/pack/dbrow.pack`, `dbtable.pack` and `param.pack` are gitignored in Content (generated server-side), so only `varp.pack` ids are committed.
+
+## Client-TS (`calum-research`, not relic mode)
+
+Branch `calum-research` of `calum/Client-TS`, branched from upstream `274` at `7d6ca61`. Details and observations: [flows/client-camera.md](flows/client-camera.md).
+
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Client-TS | `src/client/GameShell.ts` | canvas `wheel` listener (`mouseWheel` hook); middle button goes to `middleMouseDown`/`middleMouseUp` instead of acting as a left click | `15ece4e` |
+| Client-TS | `src/client/Client.ts` | scroll-wheel zoom (`cameraZoom`, 0.5x to 2x of `pitch * 3 + 600`), visibility table rebuilt for the zoom (`resetVisCalc`), middle-mouse drag sets yaw/pitch and `sendCamera` | `15ece4e` |
