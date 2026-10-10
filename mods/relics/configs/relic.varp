@@ -1,0 +1,8 @@
+[relic_test]
+scope=perm
+
+[relic_owned]
+scope=perm
+
+[relic_seed]
+scope=perm

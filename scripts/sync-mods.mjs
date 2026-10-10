@@ -65,7 +65,42 @@ function sync() {
     if (changed) console.log(`[mods] synced ${changed} file(s) -> ${DEST}`);
 }
 
+// Config names need an id in Content/pack/<type>.pack (observed: the pack step fails with
+// "Missing varp pack IDs for" otherwise, Engine-TS/tools/pack/PackFile.ts:164-173). Append any
+// missing `[name]` from mods/**/configs/*.<ext> with the next free id. This edits the Content
+// submodule's tracked pack files: commit the result on Content's relic-mode branch.
+const PACK_EXTS = ['varp', 'varbit', 'varn', 'vars', 'inv', 'obj', 'npc', 'loc', 'param', 'dbtable', 'dbrow', 'enum', 'struct', 'seq', 'spotanim', 'category', 'hunt', 'mesanim', 'idk'];
+function ensurePackIds() {
+    if (!fs.existsSync(SRC)) return;
+    const names = {};
+    for (const rel of walk(SRC)) {
+        const ext = path.extname(rel).slice(1);
+        if (!PACK_EXTS.includes(ext) || !rel.includes('configs')) continue;
+        for (const m of fs.readFileSync(path.join(SRC, rel), 'utf8').matchAll(/^\[([^\]]+)\]/gm)) (names[ext] ??= []).push(m[1]);
+    }
+    for (const [ext, list] of Object.entries(names)) {
+        const file = path.join('Content', 'pack', `${ext}.pack`);
+        if (!fs.existsSync(file)) continue;
+        const text = fs.readFileSync(file, 'utf8');
+        const have = new Set();
+        let max = -1;
+        for (const line of text.split(/\r?\n/)) {
+            const [id, name] = line.split('=');
+            if (name === undefined) continue;
+            have.add(name);
+            max = Math.max(max, Number(id));
+        }
+        const add = list.filter((n) => !have.has(n));
+        if (!add.length) continue;
+        const eol = text.includes('\r\n') ? '\r\n' : '\n';
+        const lines = add.map((n) => `${++max}=${n}`);
+        fs.appendFileSync(file, (text.endsWith('\n') ? '' : eol) + lines.join(eol) + eol);
+        console.log(`[mods] ${file}: added ${lines.join(', ')}`);
+    }
+}
+
 excludeFromContentGit();
+ensurePackIds();
 sync();
 
 if (process.argv.includes('--watch')) {
@@ -73,6 +108,6 @@ if (process.argv.includes('--watch')) {
     let t;
     fs.watch(SRC, { recursive: true }, () => {
         clearTimeout(t);
-        t = setTimeout(sync, 300);
+        t = setTimeout(() => { ensurePackIds(); sync(); }, 300);
     });
 }

@@ -1,0 +1,40 @@
+// M1 probes. Run with ::~relic_demo <bit>, ::~relic_show, ::~relic_choice, ::~relic_queue_choice
+// relic_say writes to the player's chat and to the server console (console is the way to observe in headless tests).
+[proc,relic_say](string $m)
+mes($m);
+console("[relic] <$m>");
+
+[debugproc,relic_demo](int $bit)
+if (p_finduid(uid) = false) {
+    return;
+}
+%relic_owned = setbit(%relic_owned, $bit);
+%relic_test = add(%relic_test, 1);
+~relic_say("demo owned=<tostring(%relic_owned)> test=<tostring(%relic_test)>");
+
+[debugproc,relic_show]
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_say("show owned=<tostring(%relic_owned)> test=<tostring(%relic_test)> seed=<tostring(%relic_seed)>");
+
+[debugproc,relic_choice]
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_choice_run;
+
+[proc,relic_choice_run]
+def_int $pick = ~p_choice3_header("Relic A", 1, "Relic B", 2, "Relic C", 3, "Choose a relic");
+%relic_test = $pick;
+~relic_say("picked <tostring($pick)>");
+
+[debugproc,relic_queue_choice]
+if (p_finduid(uid) = false) {
+    return;
+}
+queue(relic_choice_q, 0, 0);
+
+[queue,relic_choice_q]
+~relic_say("queue started");
+~relic_choice_run;

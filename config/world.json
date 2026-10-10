@@ -1,0 +1,4 @@
+{
+    "build": { "verify": false },
+    "node": { "xpRate": 8 }
+}

@@ -1,0 +1,22 @@
+# Relic mode M1: what a mod needs to run (observed)
+
+**Question answered:** can configs and scripts under `mods/` define persistent varps, open a choice dialog, and hot reload, and what exactly does it take?
+
+**Based on commits:** root `315f6ee` + this work; Engine-TS `1d25566`; Content `65b754f` (+ branch `relic-mode` `2b5ffe4a2`); RuneScriptTS `c454554`. **Method:** read, then **ran** on Linux (node 24.21.0, headless Chromium driver `scripts/headless-client.mjs`, server via `npx tsx src/app.ts`). Not run on Windows.
+
+## Findings (all observed unless marked)
+
+1. **New config names need pack ids.** `mods/relics/configs/relic.varp` alone fails the pack: `Missing varp pack IDs for: [relic_test] ...  You may need to edit ../content/pack/varp.pack` (`Engine-TS/tools/pack/PackFile.ts:164-173`). Fix: append `<id>=<name>` lines to `Content/pack/varp.pack`. `scripts/sync-mods.mjs` now does this for the config types listed in its `PACK_EXTS`, and the result is committed on Content's `relic-mode` branch (commit `2b5ffe4a2`). Only varp was exercised.
+2. **Varps need `BUILD_VERIFY=false`.** With verify on, the next step fails with `.varp checksum mismatch! You can disable this safety check by setting BUILD_VERIFY=false` (`Engine-TS/tools/pack/config/PackShared.ts:313-314`). The engine reads settings from `Engine-TS/data/config/world.json` (gitignored; `WorldConfig.ts:72,295-309`), merged over defaults. This repo keeps the intended file at `config/world.json` (`{"build":{"verify":false},"node":{"xpRate":8}}`); copy it to `Engine-TS/data/config/world.json` and restart. (Answers the "where is XP rate set" part of Q69: `node.xpRate` in that file, key read at `WorldConfig.ts:237` for the legacy env; JSON key path from the `config.node.xpRate` field. Effect on XP not yet tested, M2.)
+3. **A varp added by a live reload is not usable by players already logged in.** After the reload the script compiled, but `%relic_owned = setbit(...)` then read back 0 for the already-connected player. After logging that player out and in again, writes stuck (`owned=8`, then `40` for bits 3 and 5). **Inference** (not verified in code): the player's `vars` array was sized at login before the varp existed, so the write is dropped. Rule: after adding a varp, restart or re-login.
+4. **Perm varps from `mods/` persist.** Value `owned=40 test=3` survived logout/login (`Engine-TS/data/players/main/relic3.sav` written). Answers Q70.
+5. **Hot reload of script edits works for mod files** (observed several times: `Packing changes`, then `Reloading with changes`, about 10 s), as in `docs/setup/script-dev-loop.md`.
+6. **`::~name` accepts arguments**: `::~relic_demo 3` passed `$bit = 3` (`ClientCheatHandler.ts:64-90` int branch).
+7. **A debugproc has no active player.** `%var` access in a bare debugproc fails to compile: `Attempt to access uninitialized pointer [ 'p_active_player' ]`. Start the body with `if (p_finduid(uid) = false) { return; }` (the pattern in `Content/scripts/_test/scripts/cheats/cheat_interactions.rs2:24-26`).
+8. **Observing results headlessly:** `console("text")` prints to the server stdout (`Engine-TS/src/engine/script/handlers/DebugOps.ts:10`). `mes` output is hard to read in screenshots on Tutorial Island (it shows as a click-to-continue dialog).
+9. **Choice dialogs work:** `~p_choice3_header("Relic A", 1, ...)` showed a 3-option dialog and returned the clicked value (picked 2, then 3), both from a debugproc and from a `queue(...)` script, and also while still on Tutorial Island (new character, after the design screen). Partial answer to Q77: the dialog itself is fine; the real `[login,_]` path is not yet tested (M4).
+10. **Tutorial state:** a new character starts on Tutorial Island with the design screen modal, which swallows chat input until Accept is clicked (client pixel about 260,286). `::setvar tutorial 1000` plus `::tele 0,50,50,22,22` moves to Lumbridge but leaves the client-side tutorial text pane open (not closed by the setvar).
+11. **Environment notes:** `node` must be 24 (`#/...` import specifiers fail on node 22: `ERR_INVALID_MODULE_SPECIFIER`). `Engine-TS/public/client/` ships a prebuilt client, so the client does not need building for these tests. Never `pkill -f` a pattern that appears in your own command line.
+
+## Not checked
+- Whether a script suspended during reload survives (Q65); non-varp config types (param, dbtable, npc, obj) from mods; whether the `.sav` write happens on logout vs periodic save (it was present after logout).
