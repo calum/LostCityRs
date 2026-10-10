@@ -76,6 +76,14 @@ These print to the chat, not onto a map. The map editor at `/maped` is registere
 - `::locadd` and `::npcadd` spawn with `EntityLifeCycle.DESPAWN` at the player's tile (`:503`, `:515`).
 - Level 4 also enables `reload` and `rebuild`, which reload or rebuild content while the world runs (`:149-153`).
 
+## Finding NPC and obj names for `::npcadd`, `::give`
+
+Read from code, not run. There is no in-game command that lists NPCs. The internal names come from two places:
+
+- `Content/pack/npc.pack` maps numeric IDs to names, one `id=name` per line (`1359` lines at `65b754f76`; first entry `0=hans`). This is the list the server uses to assign IDs.
+- The `.npc` config files under `Content/scripts/**/configs/` hold the `[name]` headers (`1359` headers in `138` files at `65b754f76`). The header is the name `::npcadd` takes; `name=` is the display name, and is not used for the lookup. Example: `[borderguard1]` with `name=Border Guard` in `Content/scripts/areas/area_alkharid/configs/border_guard.npc:1-2`.
+- How `npc.pack` relates to the configs: `validateConfigPack` crawls the config names with `crawlConfigNames` and registers each new name with the next free ID (`pack.register(pack.max++, names[i])`) (`Engine-TS/tools/pack/PackFile.ts:131-151`, `:366`; `NpcPack` at `:295`; the pack path is listed in `Engine-TS/tools/pack/PackAll.ts:55`). **Not verified:** the step that saves the updated `npc.pack`, and whether the list is rewritten on every pack run.
+
 ## Open questions
 
 - Do the `~` debugprocs `maxme`, `giverunes`, `bank`, `foodbank` and the rest do what `cheat_help.rs2` says? Needs their scripts read, or an in-game run.
