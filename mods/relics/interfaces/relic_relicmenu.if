@@ -109,10 +109,19 @@ shadowed=yes
 text=Not yet unlocked
 colour=0xFFFF00
 
-[unlocked_1]
-type=text
+[unlocked_list]
+type=layer
 x=8
 y=80
+width=250
+height=250
+scroll=352
+
+[unlocked_1]
+layer=unlocked_list
+type=text
+x=0
+y=2
 width=250
 height=12
 font=p11_full
@@ -121,9 +130,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_2]
+layer=unlocked_list
 type=text
-x=8
-y=92
+x=0
+y=14
 width=250
 height=12
 font=p11_full
@@ -132,9 +142,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_3]
+layer=unlocked_list
 type=text
-x=8
-y=104
+x=0
+y=26
 width=250
 height=12
 font=p11_full
@@ -143,9 +154,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_4]
+layer=unlocked_list
 type=text
-x=8
-y=116
+x=0
+y=38
 width=250
 height=12
 font=p11_full
@@ -154,9 +166,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_5]
+layer=unlocked_list
 type=text
-x=8
-y=128
+x=0
+y=50
 width=250
 height=12
 font=p11_full
@@ -165,9 +178,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_6]
+layer=unlocked_list
 type=text
-x=8
-y=140
+x=0
+y=62
 width=250
 height=12
 font=p11_full
@@ -176,9 +190,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_7]
+layer=unlocked_list
 type=text
-x=8
-y=152
+x=0
+y=74
 width=250
 height=12
 font=p11_full
@@ -187,9 +202,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_8]
+layer=unlocked_list
 type=text
-x=8
-y=164
+x=0
+y=86
 width=250
 height=12
 font=p11_full
@@ -198,9 +214,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_9]
+layer=unlocked_list
 type=text
-x=8
-y=176
+x=0
+y=98
 width=250
 height=12
 font=p11_full
@@ -209,9 +226,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_10]
+layer=unlocked_list
 type=text
-x=8
-y=188
+x=0
+y=110
 width=250
 height=12
 font=p11_full
@@ -220,9 +238,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_11]
+layer=unlocked_list
 type=text
-x=8
-y=200
+x=0
+y=122
 width=250
 height=12
 font=p11_full
@@ -231,9 +250,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_12]
+layer=unlocked_list
 type=text
-x=8
-y=212
+x=0
+y=134
 width=250
 height=12
 font=p11_full
@@ -242,9 +262,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_13]
+layer=unlocked_list
 type=text
-x=8
-y=224
+x=0
+y=146
 width=250
 height=12
 font=p11_full
@@ -253,9 +274,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_14]
+layer=unlocked_list
 type=text
-x=8
-y=236
+x=0
+y=158
 width=250
 height=12
 font=p11_full
@@ -264,9 +286,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_15]
+layer=unlocked_list
 type=text
-x=8
-y=248
+x=0
+y=170
 width=250
 height=12
 font=p11_full
@@ -275,9 +298,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_16]
+layer=unlocked_list
 type=text
-x=8
-y=260
+x=0
+y=182
 width=250
 height=12
 font=p11_full
@@ -286,9 +310,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_17]
+layer=unlocked_list
 type=text
-x=8
-y=272
+x=0
+y=194
 width=250
 height=12
 font=p11_full
@@ -297,9 +322,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_18]
+layer=unlocked_list
 type=text
-x=8
-y=284
+x=0
+y=206
 width=250
 height=12
 font=p11_full
@@ -308,9 +334,10 @@ text=
 colour=0xFFFFFF
 
 [unlocked_19]
+layer=unlocked_list
 type=text
-x=8
-y=296
+x=0
+y=218
 width=250
 height=12
 font=p11_full
@@ -318,10 +345,139 @@ shadowed=yes
 text=
 colour=0xFFFFFF
 
-[available_1]
+[unlocked_20]
+layer=unlocked_list
 type=text
+x=0
+y=230
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_21]
+layer=unlocked_list
+type=text
+x=0
+y=242
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_22]
+layer=unlocked_list
+type=text
+x=0
+y=254
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_23]
+layer=unlocked_list
+type=text
+x=0
+y=266
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_24]
+layer=unlocked_list
+type=text
+x=0
+y=278
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_25]
+layer=unlocked_list
+type=text
+x=0
+y=290
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_26]
+layer=unlocked_list
+type=text
+x=0
+y=302
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_27]
+layer=unlocked_list
+type=text
+x=0
+y=314
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_28]
+layer=unlocked_list
+type=text
+x=0
+y=326
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[unlocked_29]
+layer=unlocked_list
+type=text
+x=0
+y=338
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_list]
+type=layer
 x=260
 y=80
+width=250
+height=250
+scroll=352
+
+[available_1]
+layer=available_list
+type=text
+x=0
+y=2
 width=250
 height=12
 font=p11_full
@@ -330,9 +486,10 @@ text=
 colour=0xFFFFFF
 
 [available_2]
+layer=available_list
 type=text
-x=260
-y=92
+x=0
+y=14
 width=250
 height=12
 font=p11_full
@@ -341,9 +498,10 @@ text=
 colour=0xFFFFFF
 
 [available_3]
+layer=available_list
 type=text
-x=260
-y=104
+x=0
+y=26
 width=250
 height=12
 font=p11_full
@@ -352,9 +510,10 @@ text=
 colour=0xFFFFFF
 
 [available_4]
+layer=available_list
 type=text
-x=260
-y=116
+x=0
+y=38
 width=250
 height=12
 font=p11_full
@@ -363,9 +522,10 @@ text=
 colour=0xFFFFFF
 
 [available_5]
+layer=available_list
 type=text
-x=260
-y=128
+x=0
+y=50
 width=250
 height=12
 font=p11_full
@@ -374,9 +534,10 @@ text=
 colour=0xFFFFFF
 
 [available_6]
+layer=available_list
 type=text
-x=260
-y=140
+x=0
+y=62
 width=250
 height=12
 font=p11_full
@@ -385,9 +546,10 @@ text=
 colour=0xFFFFFF
 
 [available_7]
+layer=available_list
 type=text
-x=260
-y=152
+x=0
+y=74
 width=250
 height=12
 font=p11_full
@@ -396,9 +558,10 @@ text=
 colour=0xFFFFFF
 
 [available_8]
+layer=available_list
 type=text
-x=260
-y=164
+x=0
+y=86
 width=250
 height=12
 font=p11_full
@@ -407,9 +570,10 @@ text=
 colour=0xFFFFFF
 
 [available_9]
+layer=available_list
 type=text
-x=260
-y=176
+x=0
+y=98
 width=250
 height=12
 font=p11_full
@@ -418,9 +582,10 @@ text=
 colour=0xFFFFFF
 
 [available_10]
+layer=available_list
 type=text
-x=260
-y=188
+x=0
+y=110
 width=250
 height=12
 font=p11_full
@@ -429,9 +594,10 @@ text=
 colour=0xFFFFFF
 
 [available_11]
+layer=available_list
 type=text
-x=260
-y=200
+x=0
+y=122
 width=250
 height=12
 font=p11_full
@@ -440,9 +606,10 @@ text=
 colour=0xFFFFFF
 
 [available_12]
+layer=available_list
 type=text
-x=260
-y=212
+x=0
+y=134
 width=250
 height=12
 font=p11_full
@@ -451,9 +618,10 @@ text=
 colour=0xFFFFFF
 
 [available_13]
+layer=available_list
 type=text
-x=260
-y=224
+x=0
+y=146
 width=250
 height=12
 font=p11_full
@@ -462,9 +630,10 @@ text=
 colour=0xFFFFFF
 
 [available_14]
+layer=available_list
 type=text
-x=260
-y=236
+x=0
+y=158
 width=250
 height=12
 font=p11_full
@@ -473,9 +642,10 @@ text=
 colour=0xFFFFFF
 
 [available_15]
+layer=available_list
 type=text
-x=260
-y=248
+x=0
+y=170
 width=250
 height=12
 font=p11_full
@@ -484,9 +654,10 @@ text=
 colour=0xFFFFFF
 
 [available_16]
+layer=available_list
 type=text
-x=260
-y=260
+x=0
+y=182
 width=250
 height=12
 font=p11_full
@@ -495,9 +666,10 @@ text=
 colour=0xFFFFFF
 
 [available_17]
+layer=available_list
 type=text
-x=260
-y=272
+x=0
+y=194
 width=250
 height=12
 font=p11_full
@@ -506,9 +678,10 @@ text=
 colour=0xFFFFFF
 
 [available_18]
+layer=available_list
 type=text
-x=260
-y=284
+x=0
+y=206
 width=250
 height=12
 font=p11_full
@@ -517,9 +690,130 @@ text=
 colour=0xFFFFFF
 
 [available_19]
+layer=available_list
 type=text
-x=260
-y=296
+x=0
+y=218
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_20]
+layer=available_list
+type=text
+x=0
+y=230
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_21]
+layer=available_list
+type=text
+x=0
+y=242
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_22]
+layer=available_list
+type=text
+x=0
+y=254
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_23]
+layer=available_list
+type=text
+x=0
+y=266
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_24]
+layer=available_list
+type=text
+x=0
+y=278
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_25]
+layer=available_list
+type=text
+x=0
+y=290
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_26]
+layer=available_list
+type=text
+x=0
+y=302
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_27]
+layer=available_list
+type=text
+x=0
+y=314
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_28]
+layer=available_list
+type=text
+x=0
+y=326
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_29]
+layer=available_list
+type=text
+x=0
+y=338
 width=250
 height=12
 font=p11_full

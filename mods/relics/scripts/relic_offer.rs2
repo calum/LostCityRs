@@ -53,9 +53,9 @@ switch_int ($id) {
 }
 
 // 1 for an id that is a relic today. 15 (Infinite Runes) was retired; 20 to 23 are reserved for relics other work packages add
-// and are removed from this list by the work that adds them.
+// and are removed from this list by the work that adds them. 25 to 29 are reserved for the skilling relics (the menus list up to 29).
 [proc,relic_exists](int $id)(int)
-if ($id = 15 | ($id >= 20 & $id <= 23)) {
+if ($id = 15 | ($id >= 20 & $id <= 23) | $id >= 25) {
     return(0);
 }
 return(1);

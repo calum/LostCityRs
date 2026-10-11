@@ -145,7 +145,7 @@ def_int $u = 0;
 def_int $a = 0;
 def_int $id = 1;
 def_component $com = null;
-while ($id <= 24) {
+while ($id <= 29) {
     if (~relic_unlocked($id) = 1) {
         $com = enum(int, component, relic_unlocked_rows, $u);
         if_settext($com, ~relic_menu_line($id, 1));
@@ -159,13 +159,13 @@ while ($id <= 24) {
     $id = calc($id + 1);
 }
 def_int $free = $u;
-while ($free < 19) {
+while ($free < 29) {
     $com = enum(int, component, relic_unlocked_rows, $free);
     if_settext($com, "");
     $free = calc($free + 1);
 }
 $free = $a;
-while ($free < 19) {
+while ($free < 29) {
     $com = enum(int, component, relic_available_rows, $free);
     if_settext($com, "");
     $free = calc($free + 1);

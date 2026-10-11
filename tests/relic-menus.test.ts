@@ -48,9 +48,12 @@ function openRelics(bot: Bot) {
     assert.equal(bot.mainModal, 'relic_relicmenu');
 }
 
+/** Rows per list in the relic menu: room for relic ids 1 to 29 (the lists scroll). */
+const RELIC_ROWS = 29;
+
 // if_sethide only hides layers in the client (Client-TS Client.ts IF_SETHIDE sets .hide, drawing checks it for type 0), so the choose button sits in a layer.
 function relicRows(bot: Bot, list: 'unlocked' | 'available') {
-    return Array.from({ length: 19 }, (_, i) => text(bot, `relic_relicmenu:${list}_${i + 1}`)).filter(r => r !== '');
+    return Array.from({ length: RELIC_ROWS }, (_, i) => text(bot, `relic_relicmenu:${list}_${i + 1}`)).filter(r => r !== '');
 }
 
 test('the settings tab has a Tasks and a Relics button that open the menus', t => {
@@ -214,4 +217,14 @@ test('relic menu: a pending choice shows the button, and clicking it re-opens th
     openRelics(bot);
     assert.equal(hidden(bot, 'relic_relicmenu:choose_box'), true);
     assert.ok(relicRows(bot, 'unlocked').length >= 1);
+});
+
+test('relic menu: both lists have a row for every relic id up to 29, scroll in a layer, and unused rows are blank', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_started: 1 } });
+    openRelics(bot);
+    assert.equal(text(bot, 'relic_relicmenu:unlocked_29'), '');
+    assert.equal(text(bot, 'relic_relicmenu:available_29'), '');
+    assert.notEqual(Component.getId('relic_relicmenu:unlocked_list'), -1);
+    assert.notEqual(Component.getId('relic_relicmenu:available_list'), -1);
 });
