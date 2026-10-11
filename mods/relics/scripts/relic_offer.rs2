@@ -1,4 +1,4 @@
-// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..14, 16..19 and 21..30 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
+// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..14, 16..30 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
 // %relic_pending counts offers the player has earned but not yet answered (a closed dialog leaves it set; login re-offers).
 // Everything here needs protected access: run it from a queue script (see relic_offer_q).
 
@@ -32,6 +32,7 @@ switch_int ($id) {
     case 28 : return("Fletcher's Echo");
     case 29 : return("Hunter's Haul");
     case 30 : return("Light Fingers");
+    case 20 : return("Green Thumb");
     case default : return("Unknown relic");
 }
 
@@ -65,12 +66,13 @@ switch_int ($id) {
     case 28 : return("fletching: 50% extra");
     case 29 : return("hides: 3 tanned, to the bank, gems");
     case 30 : return("pickpockets never fail and repeat, stalls never empty");
+    case 20 : return("boosts never drain, secondaries stay, XP grows herbs");
     case default : return("");
 }
 
-// 1 for an id that is a relic today. 15 (Infinite Runes) was retired and 20 was never used; a new relic id is hidden here until its work lands.
+// 1 for an id that is a relic today. 15 (Infinite Runes) was retired; a new relic id is hidden here until its work lands.
 [proc,relic_exists](int $id)(int)
-if ($id = 15 | $id = 20) {
+if ($id = 15) {
     return(0);
 }
 return(1);
@@ -155,6 +157,8 @@ if ($id = 16) {
     ~relic_give_item(relic_network_stone);
 } else if ($id = 21) {
     ~relic_give_item(relic_wellspring_talisman);
+} else if ($id = 20) {
+    ~relic_herblore_starter;
 } else if ($id = 2) {
     queue(relic_quest_pass, 0, 0);
 } else if ($id = 19) {

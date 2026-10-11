@@ -125,3 +125,12 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Repo | File | Change | Commit |
 |---|---|---|---|
 | Engine-TS | `src/util/AccessCode.ts` (new), `src/util/WorldConfig.ts` (`node.accessCode`, default `''`, legacy `NODE_ACCESS_CODE`), `src/engine/World.ts` (login handler, after the password length check) | When `node.accessCode` is set, a login whose password is not the code gets reply 3. Test: `tests/access-code.test.ts`. See `docs/setup/hosting-for-friends.md` | `53ed3a49` |
+
+## Green Thumb (relic 20) and tasks 43-45 (2026-10-11)
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Engine-TS | `src/engine/entity/Player.ts` (`addXp`, new `relicGreenThumb`) | adds the raw XP gained to `%relic_herb_xp` and queues `[queue,relic_herbs]` when bit 20 of `%relic_owned` is set (not Herblore). Test: `tests/relic-greenthumb.test.ts` | `33564f19` |
+| Content | `scripts/player/scripts/stat.rs2` (`[timer,stat_boost_restore]`) | `& ~relic_boost_stays = 0` added to the drain condition `// relic hook` | `a274da743` |
+| Content | `scripts/skill_herblore/scripts/herblore.rs2` (`[proc,brew_potion]`) | `inv_del` of the ingredient only when `~relic_keeps_secondary($ingredient, $solvent) = 0` `// relic hook` | `63824af58` |
+| Content | `pack/varp.pack`, `pack/interface.pack`, `pack/interface.order` | pack ids for `relic_herb_xp` and `relic_taskmenu:row_43..45` | `514e71556` |
+| root | `mods/relics/` | `relic_herblore.rs2`, `.enum`, `.constant`, tasks 43-45 rows, names, menus. Design: [design/relics-green-thumb.md](design/relics-green-thumb.md) | `HEAD` of this change |

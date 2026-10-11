@@ -1,5 +1,5 @@
-// 42 tasks (26-42: skilling and thieving tasks added after the two final bosses, 24 and 25; tasks 32 and up are stored in %relic_tasks_done2, bit = task - 32).
-// Tasks 38 and 39 (cast High Level Alchemy, Camelot Teleport) are detected in ~relic_task_spell, task 40 (reach level 99 in any skill) in ~relic_level99 / ~relic_check_99, task 41 (steal from a gem stall) in ~relic_task_steal and task 42 (pickpocket a guard) in ~relic_task_pickpocket; none has a row. Kill tasks: one row per npc type. Product tasks: one row per object.
+// 45 tasks (26-45: skilling, thieving and herblore tasks added after the two final bosses, 24 and 25; tasks 32 and up are stored in %relic_tasks_done2, bit = task - 32).
+// Tasks 38 and 39 (cast High Level Alchemy, Camelot Teleport) are detected in ~relic_task_spell, task 40 (reach level 99 in any skill) in ~relic_level99 / ~relic_check_99, task 41 (steal from a gem stall) in ~relic_task_steal and task 42 (pickpocket a guard) in ~relic_task_pickpocket; none has a row. Tasks 43 (super strength potion), 44 (antifire potion) and 45 (ranging potion) are product rows. Kill tasks: one row per npc type. Product tasks: one row per object.
 // Tasks 7 (burn yew, firemaking.rs2) and 13 (pickpocket a paladin) are detected in their scripts and have no row. Tiers: 1-6, 7-13, 14-23, 24-25.
 [relic_task_npc]
 column=task,int,REQUIRED

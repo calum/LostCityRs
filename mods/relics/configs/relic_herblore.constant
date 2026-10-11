@@ -1,0 +1,4 @@
+// Relic 20 Green Thumb. Raw XP (before the engine XP rate and the XP Multiplier relic) in tenths that pays one herb: 5000 = 500 XP.
+^relic_herb_xp_per_herb = 5000
+// Most herbs one claim hands out; what is left stays owed and the claim queues itself again.
+^relic_herb_max_claim = 200

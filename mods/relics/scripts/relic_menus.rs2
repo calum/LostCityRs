@@ -69,6 +69,9 @@ switch_int ($n) {
     case 40 : return("Reach level 99 in any skill");
     case 41 : return("Steal from a gem stall");
     case 42 : return("Pickpocket a guard");
+    case 43 : return("Make a super strength potion");
+    case 44 : return("Make an antifire potion");
+    case 45 : return("Make a ranging potion");
     case default : return("Unknown task");
 }
 
@@ -77,7 +80,7 @@ if_openmain(relic_taskmenu);
 if_setscrollpos(relic_taskmenu:list, 0);
 ~relic_taskmenu_refresh;
 
-// Fill the 42 rows: every task in menu order (relic_task_order, easiest first), or (hide completed on) only the open ones packed to the top.
+// Fill the 45 rows: every task in menu order (relic_task_order, easiest first), or (hide completed on) only the open ones packed to the top.
 [proc,relic_taskmenu_refresh]
 def_int $row = 0;
 def_int $done_count = 0;

@@ -35,7 +35,7 @@ const NAMES = [
     'Last Recall',
     "Banker's Call",
     'Hoarder',
-    '',
+    'Green Thumb',
     'Rune Wellspring',
     'Archmage',
     'Endless Quiver',

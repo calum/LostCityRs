@@ -12,7 +12,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **41 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- There are **44 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
@@ -23,7 +23,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 1. **Do the tasks in any order**, including the bosses.
 2. **A task only counts once.**
 3. **Relics you turn down can come back** in later offers. If only 1 or 2 are left, you get just those. If none are left, the task still completes but there is no pick.
-4. **The pool runs out.** About 28 picks exist (the XP Multiplier counts three times), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
+4. **The pool runs out.** About 30 picks exist (the XP Multiplier counts three times), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
 5. **Two fixed rules.** Your **10th finished task** (whichever task it is) always gives you the **Quest Pass** straight away, with no choice. Quest Pass can never show up in an ordinary offer and you cannot get it earlier or later. Every **5th finished task** (5th, 15th, 20th, 25th, 30th, 35th) always has an **XP Multiplier** in its choice while you can still take one.
 6. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
 
@@ -31,7 +31,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 41 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 44 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - **Relics** also shows how long you have played ("Time played"). The game counts the time you are logged in. When you beat both final bosses it prints your final challenge time in the chat and the menu keeps showing it ("Final challenge done in ..."), so you can see how long the run took. Characters that already existed start counting from zero.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
@@ -68,6 +68,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 17 | Last Recall | Teleports you back to where you last teleported **from**. Use it again to swap between the two places. | use the Recall stone |
 | 18 | Banker's Call | Opens your bank from anywhere. | use the Banker's stone |
 | 19 | Hoarder | One extra pick from relics you declined earlier. Happens right after you take it. | automatic |
+| 20 | Green Thumb | Three things for potion makers. **Stat boosts never wear off** (potions, kebabs, special attacks), so one super strength potion lasts until you are drained. **Secondaries are never used up**: finishing a potion keeps the eye of newt, limpwurt root, red spiders' eggs, dragon scale dust and the rest in your backpack (the herb and the vial are still used). **XP grows herbs**: every 500 XP you gain, before the XP rate and the XP Multiplier (in any skill except Herblore), a random identified herb you have the Herblore level for goes **straight to your bank**, picked evenly from guam leaf up to dwarf weed. Taking it also puts **one of every potion secondary in your bank**. | automatic |
 | 24 | Teleport Network | Opens a list of cities (Lumbridge, Varrock, Falador, Edgeville, Draynor Village, Al Kharid, Camelot, Ardougne, Karamja). Click one to teleport there, free of runes. The usual teleport rules still apply (for example, not on Tutorial Island). | use the Network stone |
 | 21 | Rune Wellspring | Every 100 XP you gain (in any skill except Runecrafting) gives you a **Rune essence bundle** (100 essence). Use bundles on a runecrafting altar to craft them all at once. You also get a **Wellspring talisman**: its *Altars* option (or *Locate* on any real talisman) opens a list of altars to teleport to. The Relic Keeper replaces it if you lose it. | use bundles on an altar; Altars on the talisman |
 | 25 | Prospector's Pick | Mining, woodcutting and fishing roll for a result **every 2 game ticks**, whatever pickaxe, axe or fishing tool you use. Your first swing at a fishing spot still takes the normal time. | automatic |
@@ -122,13 +123,16 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 9 | **Harpoon a swordfish** | Fishing 50 and a harpoon | harpoon fishing spots |
 | 8 | **Craft a law rune** | Runecrafting 54, **members** world, a law talisman and essence | law altar around (2858, 3381), on Entrana |
 | 4 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
+| 43 | **Make a super strength potion** | Herblore 55: a kwuarm herb, a vial of water and a limpwurt root. Herbs and secondaries are hard to find, see *Herblore supplies* below | anywhere |
 | 38 | **Cast High Level Alchemy** | Magic 55, 1 nature rune and 5 fire runes, and an item to alchemise (the item is used up) | anywhere |
 | 7 | **Burn a yew log** | Firemaking 60 and yew logs | anywhere you can light a fire |
 | 20 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
 | 34 | **Craft a green dragonhide body** | Crafting 63, 3 green dragon leather, a needle and thread, **members** world | anywhere |
 | 13 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
+| 44 | **Make an antifire potion** | Herblore 69: a lantadyme herb, a vial of water and dragon scale dust (grind a blue dragon scale with a pestle and mortar). Blue dragon scales lie on the ground in the Taverley dungeon, [around (2906, 9803)](https://explv.github.io/?centreX=2906&centreY=9803&centreZ=0&zoom=9) | anywhere |
 | 31 | **Mine an adamantite ore** | Mining 70 and a pickaxe | adamantite rocks, for example [Lumbridge Swamp (3242, 3165)](https://explv.github.io/?centreX=3242&centreY=3165&centreZ=0&zoom=9) |
 | 32 | **Make a yew longbow** | Fletching 70, an unstrung yew longbow and a bow string (use the string on the bow) | anywhere |
+| 45 | **Make a ranging potion** | Herblore 72: a dwarf weed herb, a vial of water and a wine of Zamorak. The wine lies in the Chaos temple, [around (2930, 3515)](https://explv.github.io/?centreX=2930&centreY=3515&centreZ=0&zoom=9) (taking it hurts), and Canifis citizens sometimes drop it | anywhere |
 | 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | use the Recall stone |
 | 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
 | 41 | **Steal from a gem stall** | Thieving 75, **members** world. The only gem stall is in Ardougne market, [around (2667, 3303)](https://explv.github.io/?centreX=2667&centreY=3303&centreZ=0&zoom=9). The gem seller and the guards or knights nearby stop you if they see you. Watch out for them | Ardougne market |
@@ -147,6 +151,16 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | [underground (3474, 9496)](https://explv.github.io/?centreX=3474&centreY=9496&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3474&centreY=3096&centreZ=0&zoom=9)) (first form; the flying form appears when she transforms) |
 
 **Map links** open [Explv's OSRS map](https://explv.github.io/) centred on the spots where that monster spawns. "Underground" means the spawn is in a dungeon; a second link shows the surface point directly above it.
+
+### Herblore supplies { #herblore }
+
+The three herblore tasks (43 to 45) need things this game hands out sparingly. From the scripts:
+
+- **Herbs** drop from monsters (men, goblins, hobgoblins, giants, druids, dragons, demons and many more). They arrive **unidentified**: click one to identify it, which needs the Herblore level of that herb (guam 3, kwuarm 54, lantadyme 67, dwarf weed 70). No shop sells herbs and there is no farming.
+- **Vials of water** are sold in several shops. **Limpwurt roots** only drop from monsters. **Dragon scale dust** is a blue dragon scale ground with a pestle and mortar, and the only blue dragon scales lie on the floor in the Taverley dungeon. **Wine of Zamorak** is one bottle in the Chaos temple, plus a rare Canifis citizen drop.
+- **Green Thumb** gives you identified herbs from XP, keeps your secondaries, and starts you with one of each.
+
+Details and sources: [herblore-relic-research.md](https://github.com/calum/LostCityRs/blob/main/docs/design/herblore-relic-research.md).
 
 !!! warning "Not checked"
     Whether every task is reachable on a fresh character (quests, keys or items needed to get there) has not been checked. The law altar and the Kalphite lair in particular may have access rules.

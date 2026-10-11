@@ -1,7 +1,7 @@
 # Herblore: where herbs and secondaries come from, and a relic proposal
 
 **Question it answers:** how does a player obtain herbs and potion secondaries in this content set, and what herblore relic and tasks would fit?
-**Commits:** root `efbe8e9`; Content `9a5b2466a`; Engine-TS `82f83af0`. **Method:** code and data files read, plus a script that listed ground spawns from `Content/maps/*.jm2`. Nothing was run in a client or the harness. The relic section is a proposal only; nothing is implemented.
+**Commits:** root `efbe8e9`; Content `9a5b2466a`; Engine-TS `82f83af0`. **Method:** code and data files read, plus a script that listed ground spawns from `Content/maps/*.jm2`. Nothing was run in a client or the harness. The relic section is the proposal; it was built afterwards as relic 20 (id 20, not 31) with tasks 43-45, see [relics-green-thumb.md](relics-green-thumb.md).
 
 ## Findings: herbs
 

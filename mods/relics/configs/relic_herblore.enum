@@ -1,0 +1,16 @@
+// Relic 20 Green Thumb: the herbs the XP can turn into, the eleven of [proc,randomherb] (Content drop tables/scripts/shared_droptables.rs2).
+// Ordered by identify level (herbs.obj, identified_herb_level) because ~relic_herbs_claim takes the herbs the player can identify as a prefix of this list.
+[relic_herb_list]
+inputtype=int
+outputtype=namedobj
+val=0,guam_leaf
+val=1,marentill
+val=2,tarromin
+val=3,harralander
+val=4,ranarr_weed
+val=5,irit_leaf
+val=6,avantoe
+val=7,kwuarm
+val=8,cadantine
+val=9,lantadyme
+val=10,dwarf_weed
