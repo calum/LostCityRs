@@ -251,7 +251,7 @@ test('double yield + evergreen with a FULL backpack: 2 logs still reach the bank
 // (high, alchemy.rs2:25) or scale(4, 10, cost) (low, alchemy.rs2:65); SCALE is a*c/b truncated by toInt32
 // (Engine-TS NumberOps.ts SCALE, ScriptState.pushInt). High 21, low 14; doubled 42 and 28.
 function alch(relics: number[], spell: 'highlvl_alchemy' | 'lowlvl_alchemy'): number {
-    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 | (1 << 8) } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger').give('naturerune', 1).give('firerune', 5);
     for (const r of relics) bot.debugproc('relic_grant', r);
     castOnHeld(bot, `magic:${spell}`, 'iron_dagger');
@@ -276,7 +276,7 @@ test("philosopher's coin: low alchemy pays 28 instead of 14 for an iron dagger",
 // ---------------------------------------------------------------- 13 Midas Loop
 
 test('midas loop control: without the relic one cast alchs one item', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 | (1 << 8) } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger', 3).give('naturerune', 10).give('firerune', 50);
     castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
     bot.tick(20);
@@ -285,7 +285,7 @@ test('midas loop control: without the relic one cast alchs one item', () => {
 });
 
 test('midas loop: one cast keeps alching while the item remains, then stops', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 | (1 << 8) } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger', 4).give('naturerune', 10).give('firerune', 50);
     bot.debugproc('relic_grant', 13);
     castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
@@ -301,7 +301,7 @@ test('midas loop: one cast keeps alching while the item remains, then stops', ()
 });
 
 test('midas loop: walking clears the weak queue and stops the loop', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 | (1 << 8) } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger', 6).give('naturerune', 10).give('firerune', 50);
     bot.debugproc('relic_grant', 13);
     castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');

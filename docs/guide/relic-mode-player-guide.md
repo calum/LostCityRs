@@ -9,7 +9,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **39 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- There are **40 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
@@ -28,7 +28,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 39 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 40 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
 
@@ -94,7 +94,7 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone and
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order. Tasks 26 to 39 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 39 each give a relic offer. Ticking a task here does not affect any other row.
+Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order. Tasks 26 to 40 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 40 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
@@ -132,6 +132,7 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 19 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
 | 28 | **Smith an adamant platebody** | Smithing 88, five adamantite bars (smelted, or banked by Eternal Vein), a hammer and an anvil | any anvil |
 | 29 | **Smith a rune scimitar** | Smithing 90, two runite bars, a hammer and an anvil | any anvil |
+| 40 | **Reach level 99 in any skill** | one skill at level 99. If you already have a 99, the task completes the next time you log in (or level up) | any skill |
 | 18 | Defeat a **blue dragon** | combat level 111, 105 HP | use the Banker's stone |
 | 21 | Defeat a **hellhound** | combat level 122, 116 HP | [underground Catherby (2861, 9843)](https://explv.github.io/?centreX=2861&centreY=9843&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2861&centreY=3443&centreZ=0&zoom=9)); [underground Fishing Platform (2734, 9690)](https://explv.github.io/?centreX=2734&centreY=9690&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2734&centreY=3290&centreZ=0&zoom=9)) |
 | 22 | Defeat a **black demon** | combat level 172, 157 HP | [underground Entrana (2862, 9776)](https://explv.github.io/?centreX=2862&centreY=9776&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2862&centreY=3376&centreZ=0&zoom=9)); [underground (3088, 9959)](https://explv.github.io/?centreX=3088&centreY=9959&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3088&centreY=3559&centreZ=0&zoom=9)) |

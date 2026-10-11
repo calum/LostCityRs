@@ -41,6 +41,7 @@ val=relic_taskmenu:row_36
 val=relic_taskmenu:row_37
 val=relic_taskmenu:row_38
 val=relic_taskmenu:row_39
+val=relic_taskmenu:row_40
 
 // Menu order of the tasks, easiest first (lowest requirement level or monster combat level). Position (from 0) -> task number.
 [relic_task_order]
@@ -81,6 +82,7 @@ val=23
 val=19
 val=28
 val=29
+val=40
 val=18
 val=21
 val=22

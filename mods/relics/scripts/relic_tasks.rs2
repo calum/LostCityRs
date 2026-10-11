@@ -76,3 +76,15 @@ if ($spell = ^highlvl_alchemy) {
 } else if ($spell = ^camelot_teleport) {
     ~relic_task_try(39, 3);
 }
+
+// levelup.rs2 hook (after a level-up): task 40, reach level 99 in any skill.
+[proc,relic_level99](int $level)
+if ($level >= 99) {
+    ~relic_task_try(40, 4);
+}
+
+// Login hook: a character that already has a 99 (levelled before the task existed) gets task 40 on login.
+[proc,relic_check_99]
+if (stat_base(attack) >= 99 | stat_base(strength) >= 99 | stat_base(ranged) >= 99 | stat_base(magic) >= 99 | stat_base(defence) >= 99 | stat_base(hitpoints) >= 99 | stat_base(prayer) >= 99 | stat_base(agility) >= 99 | stat_base(herblore) >= 99 | stat_base(thieving) >= 99 | stat_base(crafting) >= 99 | stat_base(runecraft) >= 99 | stat_base(mining) >= 99 | stat_base(smithing) >= 99 | stat_base(fishing) >= 99 | stat_base(cooking) >= 99 | stat_base(firemaking) >= 99 | stat_base(woodcutting) >= 99 | stat_base(fletching) >= 99) {
+    ~relic_task_try(40, 4);
+}

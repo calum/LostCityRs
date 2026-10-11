@@ -330,6 +330,7 @@ if (%tutorial < ^tutorial_complete) {
     return;
 }
 ~relic_ensure_keeper;
+~relic_check_99;
 // Relic 15 Infinite Runes was retired: take the bit away and owe one new offer in its place.
 if (testbit(%relic_owned, 15) = ^true) {
     %relic_owned = clearbit(%relic_owned, 15);

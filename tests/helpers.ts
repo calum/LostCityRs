@@ -12,7 +12,9 @@ export function useVanillaWorld() {
     useWorld();
     before(() => {
         if (hasVarp('relic_started')) {
-            Bot.defaults = { varps: { relic_started: 1 } };
+            // relic_tasks_done2 bit 8 = task 40 (reach level 99 in any skill) done: bots with a 99 would otherwise be given it at login and
+            // have a relic offer open over the test. The task 40 tests clear it themselves.
+            Bot.defaults = { varps: { relic_started: 1, relic_tasks_done2: 1 << 8 } };
         }
     });
 }

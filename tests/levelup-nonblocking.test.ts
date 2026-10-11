@@ -29,7 +29,7 @@ test('a level-up opens no chat dialog and does not interrupt the player', t => {
 
 // Evergreen keeps the tree standing, so the chopping loop (p_oploc(3), woodcut.rs2) runs on its own: a level-up must not break it.
 test('a woodcutting level-up mid-chop does not stop the chopping loop', () => {
-    const bot = Bot.spawn({ levels: { woodcutting: 1, hitpoints: 99 } });
+    const bot = Bot.spawn({ levels: { woodcutting: 1, hitpoints: 99 }, varps: { relic_tasks_done2: 1 << 8 } });
     bot.clearInv().give('bronze_axe');
     bot.debugproc('relic_grant', 11);
     bot.opLoc(bot.findLoc('tree', 40), 1);
@@ -41,7 +41,7 @@ test('a woodcutting level-up mid-chop does not stop the chopping loop', () => {
 
 // Eternal Vein keeps the rock, so one click keeps mining (like Evergreen). Smithing 1: the autosmelt XP levels smithing mid-loop.
 test('eternal vein: one click keeps mining through a smithing level-up', () => {
-    const bot = Bot.spawn({ at: { x: 3299, z: 3311, level: 0 }, levels: { mining: 99, smithing: 1, hitpoints: 99 } });
+    const bot = Bot.spawn({ at: { x: 3299, z: 3311, level: 0 }, levels: { mining: 99, smithing: 1, hitpoints: 99 }, varps: { relic_tasks_done2: 1 << 8 } });
     bot.clearInv().give('rune_pickaxe');
     bot.debugproc('relic_grant', 10);
     bot.opLoc(bot.findLoc('copperrock1', 20), 1);

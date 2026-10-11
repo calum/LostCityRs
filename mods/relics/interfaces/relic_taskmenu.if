@@ -74,7 +74,7 @@ x=8
 y=50
 width=496
 height=276
-scroll=558
+scroll=572
 
 [row_1]
 layer=list
@@ -537,6 +537,18 @@ layer=list
 type=text
 x=6
 y=536
+width=470
+height=14
+font=p12_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[row_40]
+layer=list
+type=text
+x=6
+y=550
 width=470
 height=14
 font=p12_full

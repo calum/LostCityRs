@@ -1,4 +1,4 @@
-# Skilling tasks 26-39 (relic mode)
+# Skilling tasks 26-40 (relic mode)
 
 **Question this answers:** how were the seven skilling tasks added after the two final bosses, and what keeps them completable with every relic owned?
 
@@ -50,3 +50,10 @@
 - Task menu: rows 32-39 (`relic_taskmenu.if`, scroll 442 to 558).
 - Tests: `tests/relic-skilling-task-flows.ts` (both worlds): real stringing and dart making, `::~relic_leather` for the dragonhide label (the interface clicks are not driven), real chisel use on a diamond, real spell casts (OPHELDT for alchemy, the Camelot button), table rows for the two runes via the gather hook. Alchemy tests in `relic-skilling.test.ts` preset task 38 as done: finishing it opens a relic offer that would hold their dialogue.
 - Not checked: real altar runecrafting for 36 and 37 (the existing hook at `runecraft.rs2:99` is the one task 8 uses; the tests use the gather hook), the dragonhide interface clicks.
+
+## Task 40: reach level 99 in any skill (Calum, 2026-10-11)
+
+- Hook task (no row). `[proc,relic_level99]($level)` in `relic_tasks.rs2` calls `~relic_task_try(40, 4)` when the new level is 99 or more; it is called from `[label,levelup]` in `levelup.rs2` after `~relic_levelup_note` (Content fork, `// relic hook`). Bit 8 of `%relic_tasks_done2`.
+- Existing 99s: `[proc,relic_check_99]` checks all 19 base levels and runs from `[proc,relic_on_login]` (after the tutorial check), so a character that already has a 99 gets the task, and an offer, on the next login.
+- Rerolls: the count is one per 7 tasks done, so a fully done list (40) gives 5 earned rerolls (7, 14, 21, 28, 35) plus the starting one; the sixth would need 42.
+- Menu: `relic_taskmenu:row_40` (scroll 572), enum `relic_task_order` places 40 after task 29. Test default: `tests/helpers.ts` presets bit 8 of `relic_tasks_done2` so bots with a 99 skill do not get an offer mid-test; the tests in `relic-skilling-task-flows.ts` clear it (and spawn with the save, since `relog()` re-applies the defaults).

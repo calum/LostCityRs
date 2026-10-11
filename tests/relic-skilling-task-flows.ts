@@ -5,8 +5,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { ids } from '../harness/src/index.js';
-import type { Bot } from '../harness/src/index.js';
+import { getExpByLevel } from '../Engine-TS/src/engine/entity/Player.js';
+import { Bot, ids } from '../harness/src/index.js';
 import ClientGameProt from '../Engine-TS/src/network/game/client/ClientGameProt.js';
 import OpHeldT from '../Engine-TS/src/network/game/client/model/OpHeldT.js';
 import type { CoordLike } from '../harness/src/index.js';
@@ -164,5 +164,41 @@ export function defineSkillingTaskTests(prefix: string, spawn: SpawnFn, skip: ()
         bot.clickButton('magic:camelot_teleport');
         bot.waitUntil(() => isDone(bot, 39), 20, 'task 39');
         doneMsg(bot, 39);
+    });
+
+    // ------------------------------------------------------------ task 40 (reach level 99 in any skill)
+
+    test(`${prefix}: a real level-up to 99 completes task 40`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ fletching: 98 });
+        bot.clearInv().setVar('relic_tasks_done2', 0); // the test default has task 40 done (helpers.ts)
+        bot.player.stats[ids.stat('fletching')] = getExpByLevel(99) - 5; // five points short of 99
+        assert.ok(!isDone(bot, 40));
+        bot.debugproc('relic_xptest'); // +1000 fletching xp (relic_debug.rs2): crosses level 99
+        bot.waitUntil(() => isDone(bot, 40), 20, 'task 40');
+        doneMsg(bot, 40);
+    });
+
+    test(`${prefix}: level 98 in every skill does not complete task 40`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ fletching: 98, mining: 98 });
+        bot.setVar('relic_tasks_done2', 0);
+        bot.debugproc('relic_xptest');
+        bot.tick(10);
+        assert.ok(!isDone(bot, 40));
+    });
+
+    test(`${prefix}: a character that already has a 99 gets task 40 on login`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const before = spawn({ mining: 99 }); // the test default has task 40 done (helpers.ts): clear it, then log in again
+        before.setVar('relic_tasks_done2', 0);
+        assert.ok(!isDone(before, 40));
+        const name = before.player.username;
+        const save = before.save();
+        before.remove();
+        before.tick();
+        const bot = Bot.spawn({ name, save, varps: { relic_tasks_done2: 0 } }); // relog() would re-apply the default varps
+        bot.waitUntil(() => isDone(bot, 40), 20, 'task 40 on login');
+        doneMsg(bot, 40);
     });
 }
