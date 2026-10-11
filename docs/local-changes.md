@@ -105,3 +105,4 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Content | `skill_fletching/scripts/{arrows,bolts,bows,cut_logs,darts}.rs2` | `~relic_fletch_echo` after the product (Fletcher's Echo) | `38c204a97` |
 | Content | `drop tables/scripts/{cow,green_dragon,blue_dragon,red_dragon,black_dragon}.rs2` | hide `obj_add` replaced by `~relic_drop_hide` (Hunter's Haul) | `a15fcce66` |
 | root | `mods/relics/` | `relic_skilling.rs2`, `relic_gather.rs2` (fish bank id 27, Forge Echo per bar), names in `relic_offer.rs2`. Design: [design/relics-skilling-routes.md](design/relics-skilling-routes.md) | `HEAD` of this change |
+| Engine-TS | `src/engine/entity/Player.ts` (`addXp`), `src/engine/entity/PlayerLoading.ts` | clamp XP to the 200m cap before storing in the Int32Array (it wrapped negative); saved negative values load as the cap. Test: `tests/xp-overflow.test.ts` | this commit |

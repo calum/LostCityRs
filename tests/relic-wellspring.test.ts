@@ -205,3 +205,17 @@ test('wellspring: the Relic Keeper replaces a lost talisman', t => {
     bot.waitUntilIdle(10);
     assert.equal(bot.count('relic_wellspring_talisman'), 1);
 });
+
+test('wellspring: one use crafts at most 25 bundles, so a huge stack cannot jump straight to level 99', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = owner();
+    bot.clearInv().give(BUNDLE, 300000);
+    bot.setVar('relic_xp_factor', 3); // 30x
+    bot.teleport(AIR_TEMPLE).tick(2);
+    bot.useOnLoc(BUNDLE, bot.findLoc('air_altar'));
+    bot.waitUntil(() => bot.count(BUNDLE) < 300000, 40, 'bundles used');
+    bot.waitUntilIdle(40);
+    assert.equal(bot.count(BUNDLE), 300000 - 25);
+    assert.ok(bot.baseLevel('runecraft') < 99);
+    assert.ok(bot.xp('runecraft') > 0);
+});

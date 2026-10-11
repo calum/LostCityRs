@@ -5,7 +5,7 @@
 
 ## Behaviour (player view)
 - **XP becomes bundles.** Every XP gain in any skill except Runecrafting adds *Rune essence bundles* (stackable, 100 essence each): 1 bundle per 100 XP gained. The XP counted is what the player sees (after the engine XP rate and the XP Multiplier relic). Bundles go to the backpack, or the bank if the backpack cannot take them. A remainder carries over (and is saved with the character).
-- **Bundle on an altar.** Using bundles on a runecrafting altar crafts every bundle in the backpack (up to 10,000 per use) at once: 100 essence each, same level check, runes per essence and XP as normal crafting. The crafting XP does not pay new bundles.
+- **Bundle on an altar.** Using bundles on a runecrafting altar crafts bundles from the backpack (up to 25 per use): 100 essence each, same level check, runes per essence and XP as normal crafting. The crafting XP does not pay new bundles.
 - **Talisman Locate.** With the relic, the *Locate* op of any talisman (instead of the compass hint) opens a list of the 11 altars; a row teleports next to that altar (same place as holding its talisman to the ruins), with the normal teleport checks and a members-world check for members altars.
 
 - **Talisman granted.** Taking the relic also gives a *Wellspring talisman* (`relic_wellspring_talisman`, option "Altars") that opens the altar list at once, so no real talisman is needed. It is a relic item like the Recall stone: moved to the bank on death and re-issued by the Relic Keeper (`relic_death.rs2`). Tests: grant, option and Keeper in `tests/relic-wellspring.test.ts`, death in `tests/relic-death-win.test.ts`.
@@ -19,7 +19,7 @@
 ## Defaults chosen (Calum can change these)
 - Runecrafting XP excluded, otherwise bundles would pay for more bundles without end.
 - XP counted after the multipliers (the number on the XP drop). At 270x a single ore gives many bundles; to count base XP instead, change the hook. `^relic_wellspring_xp_per_bundle` tunes the rate.
-- A used stack crafts all bundles, not one.
+- One use crafts up to 25 bundles (was 10,000, which took a level 1 character to 99 in one click when Calum had 300k bundles). At 30x XP, air runes give 375,000 XP per use, so level 99 is about 35 uses; at 270x about 4. Change `^relic_wellspring_max_craft` to tune.
 - Teleport goes inside the temple (the `enter_coord` of the runecraft table), not to the outside ruins.
 - Relic bit 21 fits the owned bitmask (bits to 30 are fine in a 32-bit int; answers the brief's open question for this relic).
 
@@ -28,3 +28,6 @@ Offer pool and relic menu loops still run to 19, so the relic cannot be offered 
 
 ## Not checked
 Real client display of the bundle and of the altar list; all 11 altars teleport (only air and mind tested; chaos `enter_coord` begins `3_` and death's equals `0_50_50_21_18` in the Content table, read, not investigated); members worlds.
+
+## XP overflow bug (found with Wellspring, fixed for every XP gain)
+`Player.stats` is an `Int32Array`. `addXp` did `this.stats[stat] += xp * multi` and capped afterwards, so a gain past 2^31 wrapped negative before the cap check; the level then read as 1 (Calum's nature rune craft). Now the sum is clamped before it is stored (`Engine-TS` `Player.ts` addXp), and `PlayerLoading.ts` reads a negative saved value as the 200m cap (it can only be a wrapped value). Tests: `tests/xp-overflow.test.ts` (3, failed first). A character who already trained the skill back up from level 1 keeps the new, smaller value: the lost XP cannot be recovered.

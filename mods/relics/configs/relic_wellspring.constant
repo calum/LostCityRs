@@ -2,5 +2,6 @@
 ^relic_wellspring_xp_per_bundle = 1000
 // Rune essence in one bundle.
 ^relic_wellspring_essence = 100
-// Most bundles crafted by one use on an altar (keeps XP and rune counts inside 32 bits; use again for the rest).
-^relic_wellspring_max_craft = 10000
+// Most bundles crafted by one use on an altar (tamed from 10000: 300k bundles took level 1 straight to 99). At 25, air runes at
+// 30x XP give 25 * 100 * 5 * 30 = 375,000 XP a use, so level 99 (13M XP) is about 35 uses; the cap also keeps XP inside 32 bits.
+^relic_wellspring_max_craft = 25
