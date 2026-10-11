@@ -64,3 +64,12 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 |---|---|---|---|
 | Content | `scripts/levelup/scripts/levelup.rs2`, `scripts/levelup/configs/levelup.constant` (new) | level-up chat line with the new level; blocking dialog and unlock boxes skipped unless `^levelup_dialogs = 1` ([design/levelup-nonblocking.md](design/levelup-nonblocking.md)) | `975ff13d5` |
 | Content | `scripts/skill_mining/scripts/mining.rs2` | `~relic_mine_again` hook before the `return` after a mined ore (Eternal Vein keeps swinging) | `e9c938b6c` |
+
+
+## Shared relic kill credit
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Engine-TS | `src/engine/script/ScriptOpcode.ts` (`NPC_FINDHEROAT`, after `DB_LISTALL`), `ScriptOpcodePointers.ts`, `handlers/NpcOps.ts`, `entity/HeroPoints.ts` (`findHeroAt`) | new script command `npc_findheroat(rank)`: sets `active_player` to the player with the rank-th most damage on the active npc; false for an empty rank or an offline player | `04db3dc2` |
+| Content | `scripts/engine.rs2` | declaration of `npc_findheroat` | `d2cd75318` |
+| root | `mods/relics/scripts/relic_tasks.rs2` (`relic_on_kill`, new `relic_kill_tasks`) | loops ranks 0 to 15 and gives each online damager the kill tasks; Bounty (`relic_kill_effects`) stays with the top damager (`npc_findhero`). Test: `tests/relic-shared-kill.test.ts` | this commit |
+

@@ -22,11 +22,22 @@ if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
 queue(relic_task_done, 0, $task);
 
 // The one hook line in npc_death calls this: the dying npc is active.
+// Shared credit: every online player who dealt damage (npc_heropoints) gets the kill task, so friends can kill a boss together.
+// Loot and the kill effects below still go to the top damager (npc_findhero) only.
 [proc,relic_on_kill]
-if (npc_findhero = ^false) {
-    return;
+if (npc_findhero = ^true) {
+    ~relic_kill_effects;
 }
-~relic_kill_effects;
+def_int $rank = 0;
+while ($rank < 16) {
+    if (npc_findheroat($rank) = ^true) {
+        ~relic_kill_tasks;
+    }
+    $rank = calc($rank + 1);
+}
+
+// The active player gets every kill task listed for the dying npc.
+[proc,relic_kill_tasks]
 db_find(relic_task_npc:npc, npc_type);
 def_dbrow $row = db_findnext;
 while ($row ! null) {

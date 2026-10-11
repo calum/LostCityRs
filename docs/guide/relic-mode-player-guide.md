@@ -12,6 +12,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 - There are **25 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - The last two tasks are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
+- **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
 - Your first offer comes when you first log in (after Tutorial Island, or straight away if you skip it).
 
 ### Rules worth knowing
