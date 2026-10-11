@@ -110,7 +110,7 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 26 | **Mine a coal** | Mining 30 and a pickaxe. With Eternal Vein the coal goes to your bank as coal (it is never smelted on its own) | coal rocks, for example [near Seers' Village (2575, 3479)](https://explv.github.io/?centreX=2575&centreY=3479&centreZ=0&zoom=9) |
 | 27 | **Smelt a steel bar** | Smithing 30, one iron ore and two coal in a furnace (choose *steel bar* in the furnace menu). With Eternal Vein, mined iron ore already arrives as a steel bar and counts | any furnace |
 | 30 | **Catch a lobster** | Fishing 40 and a lobster pot. With Double Yield the lobster arrives cooked and still counts | lobster pot fishing spots |
-| 42 | **Pickpocket a guard** | Thieving 40. A failed attempt stuns and hurts you. Guards in Falador, Varrock, Ardougne and other towns all count | town guards |
+| 42 | **Pickpocket a guard** | Thieving 40. A failed attempt stuns and hurts you. Guards in Varrock, Falador, Edgeville and Ardougne all count | town guards |
 | 35 | **Cut a diamond** | Crafting 43, an uncut diamond and a chisel. A cut can fail and crush the gem, so bring a few | anywhere |
 | 36 | **Craft a nature rune** | Runecrafting 44, **members** world, a nature talisman and essence | nature altar |
 | 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
