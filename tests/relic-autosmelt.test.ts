@@ -133,10 +133,11 @@ test('autosmelt: a real copper rock gives a bronze bar in the bank and the rock 
 
     bot.opLoc(rock, 1);
     bot.waitForMessage(/You manage to mine some/, 300);
-    bot.waitUntilIdle(20);
+    // the smithing level-up no longer opens a dialog, so the mining loop is not stopped: it keeps swinging (levelup-nonblocking.test.ts)
+    bot.waitUntil(() => bot.count('bronze_bar', 'bank') >= 1, 20, 'a bronze bar in the bank');
+    const bars = bot.count('bronze_bar', 'bank');
 
-    assert.equal(bot.count('bronze_bar', 'bank'), 1);
     assert.equal(bot.count('copper_ore', 'bank') + bot.count('copper_ore'), 0);
     assert.equal(rock.type, type);
-    assert.equal(bot.xp('smithing') - xp0, 62 * xpMulti(bot));
+    assert.equal(bot.xp('smithing') - xp0, bars * 62 * xpMulti(bot));
 });

@@ -58,3 +58,8 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Client-TS | `src/client/Client.ts` | relic mode: `clientVar` clientcode 100 (`%relic_owned`, bit 15 = Infinite Runes) sets `relicFreeRunes`; `getIfVar` opcode 4 (inv_count) returns 999999999 for objects whose name ends in `rune`, so the magic tab draws spells as castable. Display only, the server still decides | `a822635` |
 | Client-TS | `src/mapview/MapCoords.ts` (new), `src/mapview/MapView.ts`, `src/client/Client.ts`, `test/map-coords.test.ts` | world map: player marker, centre-on-player (`C`), auto area switch on first position, `::map` opens `/worldmap.html`, position posted once a second on `BroadcastChannel('lostcity-worldmap')`; phase 2: follow into another area, off-screen edge marker, wheel zoom steps ([design/world-map.md](design/world-map.md)) | `ec49aa1` |
 | Engine-TS | `src/web.ts`, `public/worldmap.html` (new), `public/client/mapview.js` (new, prebuilt), `public/client/client.js` (rebuilt) | `/worldmap.jag` served outside debug mode; map page and prebuilt map program | `32537f36` |
+
+## Level-ups without the dialog
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Content | `scripts/levelup/scripts/levelup.rs2`, `scripts/levelup/configs/levelup.constant` (new) | level-up chat line with the new level; blocking dialog and unlock boxes skipped unless `^levelup_dialogs = 1` ([design/levelup-nonblocking.md](design/levelup-nonblocking.md)) | `975ff13d5` |
