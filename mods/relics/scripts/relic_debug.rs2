@@ -158,6 +158,8 @@ inv_del(inv, relic_recall_stone, 100);
 inv_del(inv, relic_banker_stone, 100);
 inv_del(bank, relic_recall_stone, 100);
 inv_del(bank, relic_banker_stone, 100);
+inv_del(inv, relic_network_stone, 100);
+inv_del(bank, relic_network_stone, 100);
 inv_del(bank, ring_of_dueling_8, 100);
 inv_del(bank, amulet_of_glory_4, 100);
 inv_del(bank, necklace_of_minigames_8, 100);

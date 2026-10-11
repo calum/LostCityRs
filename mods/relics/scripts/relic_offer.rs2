@@ -1,4 +1,4 @@
-// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..19 = bit n of %relic_owned.
+// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..14, 16..19 and 24 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
 // %relic_pending counts offers the player has earned but not yet answered (a closed dialog leaves it set; login re-offers).
 // Everything here needs protected access: run it from a queue script (see relic_offer_q).
 
@@ -18,11 +18,11 @@ switch_int ($id) {
     case 12 : return("Double Yield");
     case 13 : return("Midas Loop");
     case 14 : return("Philosopher's Coin");
-    case 15 : return("Infinite Runes");
     case 16 : return("Everlasting Jewellery");
     case 17 : return("Last Recall");
     case 18 : return("Banker's Call");
     case 19 : return("Hoarder");
+    case 24 : return("Teleport Network");
     case default : return("Unknown relic");
 }
 
@@ -42,13 +42,21 @@ switch_int ($id) {
     case 12 : return("double ore, fish and XP");
     case 13 : return("high alch repeats");
     case 14 : return("alchemy pays double");
-    case 15 : return("spells need no runes");
     case 16 : return("jewellery never runs out");
     case 17 : return("teleport back and forth");
     case 18 : return("bank from anywhere");
     case 19 : return("pick a declined relic");
+    case 24 : return("teleport to the main cities");
     case default : return("");
 }
+
+// 1 for an id that is a relic today. 15 (Infinite Runes) was retired; 20 to 23 are reserved for relics other work packages add
+// and are removed from this list by the work that adds them.
+[proc,relic_exists](int $id)(int)
+if ($id = 15 | ($id >= 20 & $id <= 23)) {
+    return(0);
+}
+return(1);
 
 [proc,relic_eligible](int $id)(int)
 if ($id = 1) {
@@ -60,7 +68,7 @@ if ($id = 1) {
 if (testbit(%relic_owned, $id) = ^true) {
     return(0);
 }
-return(1);
+return(~relic_exists($id));
 
 // $mode 0: every eligible relic. $mode 1: only eligible relics the player declined earlier (Hoarder).
 [proc,relic_in_pool](int $id, int $drawn, int $mode)(int)
@@ -76,7 +84,7 @@ return(1);
 [proc,relic_pool_size](int $drawn, int $mode)(int)
 def_int $size = 0;
 def_int $i = 1;
-while ($i <= 19) {
+while ($i <= 24) {
     if (~relic_in_pool($i, $drawn, $mode) = 1) {
         $size = calc($size + 1);
     }
@@ -94,7 +102,7 @@ if ($size = 0) {
 %relic_seed = calc((%relic_seed * 75 + 74) % 65537);
 def_int $k = calc(%relic_seed % $size);
 def_int $i = 1;
-while ($i <= 19) {
+while ($i <= 24) {
     if (~relic_in_pool($i, $drawn, $mode) = 1) {
         if ($k = 0) {
             return($i);
@@ -125,6 +133,8 @@ if ($id = 16) {
     ~relic_give_item(relic_recall_stone);
 } else if ($id = 18) {
     ~relic_give_item(relic_banker_stone);
+} else if ($id = 24) {
+    ~relic_give_item(relic_network_stone);
 } else if ($id = 2) {
     queue(relic_quest_pass, 0, 0);
 } else if ($id = 19) {
@@ -166,7 +176,7 @@ if ($c ! 0) {
 %relic_seed = $seed_after;
 // everything offered and not picked can come back and feeds the Hoarder relic
 def_int $i = 1;
-while ($i <= 19) {
+while ($i <= 24) {
     if (testbit($drawn, $i) = ^true & $i ! $pick) {
         %relic_declined = setbit(%relic_declined, $i);
     }
@@ -244,6 +254,13 @@ if (%tutorial < ^tutorial_complete) {
     return;
 }
 ~relic_ensure_keeper;
+// Relic 15 Infinite Runes was retired: take the bit away and owe one new offer in its place.
+if (testbit(%relic_owned, 15) = ^true) {
+    %relic_owned = clearbit(%relic_owned, 15);
+    %relic_declined = clearbit(%relic_declined, 15);
+    %relic_pending = calc(%relic_pending + 1);
+    ~relic_say("The Infinite Runes relic has been retired. You have a new relic choice instead.");
+}
 if (%relic_started = 0) {
     ~relic_first_offer; // queues the offer itself
     return;

@@ -29,15 +29,20 @@ const NAMES = [
     'Double Yield',
     'Midas Loop',
     "Philosopher's Coin",
-    'Infinite Runes',
+    '',
     'Everlasting Jewellery',
     'Last Recall',
     "Banker's Call",
-    'Hoarder'
+    'Hoarder',
+    '',
+    '',
+    '',
+    '',
+    'Teleport Network'
 ];
 
-/** Every bit relic (2..19) owned: bits 2..19 of %relic_owned. */
-const ALL_BITS = (1 << 20) - 4;
+/** Every bit relic owned: ids 2..14, 16..19 and 24 (15 is retired; 20 to 23 do not exist yet). */
+const ALL_BITS = (((1 << 20) - 4) & ~(1 << 15)) | (1 << 24);
 const bit = (id: number) => 1 << id;
 const ownedExcept = (...ids: number[]) => ids.reduce((m, id) => m & ~bit(id), ALL_BITS);
 
@@ -50,8 +55,9 @@ function predictOffer(seed: number, owned: number, xpTier: number, declinedOnly 
     const drawn: number[] = [];
     for (let n = 0; n < 3; n++) {
         const pool: number[] = [];
-        for (let id = 1; id <= 19; id++) {
-            const eligible = id === 1 ? xpTier < 3 : (owned & bit(id)) === 0;
+        for (let id = 1; id <= 24; id++) {
+            const exists = id !== 15 && !(id >= 20 && id <= 23);
+            const eligible = exists && (id === 1 ? xpTier < 3 : (owned & bit(id)) === 0);
             const inMode = declinedOnly === -1 || (declinedOnly & bit(id)) !== 0;
             if (eligible && inMode && !drawn.includes(id)) pool.push(id);
         }
@@ -114,8 +120,9 @@ test('first login after the tutorial: three relics from the seed, the pick is gr
     assert.equal(bot.varp('relic_pending'), 1);
 
     const expected = predictOffer(5, 0, 0);
-    // seed 5 gives Midas Loop, Hoarder, Eternal Vein (observed by hand in relics-m4-offers.md, Observed 3)
-    assert.deepEqual(expected.ids, [13, 19, 10]);
+    // seed 5 gave Midas Loop, Hoarder, Eternal Vein (relics-m4-offers.md, Observed 3) until Infinite Runes (15) left the pool and
+    // Teleport Network (24) joined it: the same draws now land one place further along the list, on Teleport Network
+    assert.deepEqual(expected.ids, [13, 24, 10]);
     assert.deepEqual(offeredIds(bot), expected.ids);
     assert.equal(choiceTexts(bot)[0], 'Midas Loop: high alch repeats');
     assert.match(bot.dialogText, /Choose a relic/);
@@ -127,7 +134,7 @@ test('first login after the tutorial: three relics from the seed, the pick is gr
     bot.expectMessage('You gained the relic: Midas Loop.');
     assert.equal(bot.varp('relic_seed'), expected.seed);
     assert.equal(bot.varp('relic_owned'), bit(13));
-    assert.equal(bot.varp('relic_declined'), bit(19) | bit(10));
+    assert.equal(bot.varp('relic_declined'), bit(24) | bit(10));
     assert.equal(bot.varp('relic_pending'), 0);
     assert.equal(bot.varp('relic_xp_tier'), 0);
     assert.equal(bot.chatModal, null);

@@ -138,7 +138,7 @@ def_int $u = 0;
 def_int $a = 0;
 def_int $id = 1;
 def_component $com = null;
-while ($id <= 19) {
+while ($id <= 24) {
     if (~relic_unlocked($id) = 1) {
         $com = enum(int, component, relic_unlocked_rows, $u);
         if_settext($com, ~relic_menu_line($id, 1));

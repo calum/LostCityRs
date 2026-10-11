@@ -59,14 +59,15 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 12 | Double Yield | Mining, woodcutting, fishing and cooking give **double** items. Mining, fishing and smelting (with Eternal Vein) give **double XP** too. Fish are caught already **cooked** (never burnt) and give their cooking XP as well. | automatic |
 | 13 | Midas Loop | High Level Alchemy keeps repeating on the same stack. | cast High Level Alchemy |
 | 14 | Philosopher's Coin | Alchemy pays **double** coins. | cast High Level Alchemy |
-| 15 | Infinite Runes | **Every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. | automatic |
 | 16 | Everlasting Jewellery | Duelling ring, glory amulet and games necklace never lose charges. One of each is put in your bank when you take it. | automatic |
 | 17 | Last Recall | Teleports you back to where you last teleported **from**. Use it again to swap between the two places. | use the Recall stone |
 | 18 | Banker's Call | Opens your bank from anywhere. | use the Banker's stone |
 | 19 | Hoarder | One extra pick from relics you declined earlier. Happens right after you take it. | automatic |
+| 24 | Teleport Network | Opens a list of cities (Lumbridge, Varrock, Falador, Edgeville, Draynor Village, Al Kharid, Camelot, Ardougne, Karamja). Click one to teleport there, free of runes. The usual teleport rules still apply (for example, not on Tutorial Island). | use the Network stone |
 
 Good to know:
 
+- **Infinite Runes** was removed. A character that already had it loses it at the next login and gets one new relic choice instead.
 - **Quest Pass** also hands out the quest rewards and XP, so it is a big skill boost too.
 - **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
 - **Midas Loop** stops when you walk or click something else.
@@ -76,7 +77,7 @@ Good to know:
 
 ### If you die
 
-Relic items (the three jewellery items, the Recall stone and the Banker's stone) are moved to your bank when you die. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (about (3221, 3218)) and they will give each missing item back once.
+Relic items (the three jewellery items, the Recall stone, the Banker's stone and the Network stone) are moved to your bank when you die. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (about (3221, 3218)) and they will give each missing item back once.
 
 ## Tasks { #tasks }
 

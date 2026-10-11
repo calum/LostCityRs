@@ -17,3 +17,13 @@ model=inv_cosmicrune
 2dxan=516
 weight=0g
 iop1=Open bank
+
+[relic_network_stone]
+name=Network stone
+desc=Opens a list of cities to teleport to.
+model=inv_naturerune
+2dyof=1
+2dzoom=740
+2dxan=516
+weight=0g
+iop1=Teleport

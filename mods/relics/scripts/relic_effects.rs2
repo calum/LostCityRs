@@ -49,11 +49,9 @@ if (~relic_has(14) = 1) {
 }
 return($profit);
 
-// magic.rs2 hook (staff_runes). 15 Infinite Runes: every rune count becomes 0, so spells check and consume nothing.
+// magic.rs2 hook (staff_runes): every rune count passes through here. Relic 15 Infinite Runes was retired, so it returns the count
+// unchanged; the hook stays so a magic relic can change rune use again.
 [proc,relic_rune_count](int $count)(int)
-if (~relic_has(15) = 1) {
-    return(0);
-}
 return($count);
 
 // jewellery hooks. 16 Everlasting Jewellery: skip the charge swap (item moving to its next, lower-charge stage).
@@ -79,6 +77,43 @@ if (~pre_tele_checks(coord) = false) {
 
 [opheld1,relic_banker_stone]
 @openbank;
+
+// 24 Teleport Network: the stone opens a list of cities, a click teleports the player there.
+[opheld1,relic_network_stone]
+if_openmain(relic_teleportmenu);
+
+[proc,relic_network_go](coord $dest)
+if (~pre_tele_checks(coord) = false) {
+    return;
+}
+~player_teleport_normal($dest);
+
+[if_button,relic_teleportmenu:lumbridge]
+~relic_network_go(0_50_50_21_18);
+
+[if_button,relic_teleportmenu:varrock]
+~relic_network_go(0_50_53_13_32);
+
+[if_button,relic_teleportmenu:falador]
+~relic_network_go(0_46_52_21_50);
+
+[if_button,relic_teleportmenu:edgeville]
+~relic_network_go(0_48_54_15_40);
+
+[if_button,relic_teleportmenu:draynor]
+~relic_network_go(0_48_50_33_51);
+
+[if_button,relic_teleportmenu:alkharid]
+~relic_network_go(0_51_49_29_27);
+
+[if_button,relic_teleportmenu:camelot]
+~relic_network_go(0_43_54_5_22);
+
+[if_button,relic_teleportmenu:ardougne]
+~relic_network_go(0_41_51_37_37);
+
+[if_button,relic_teleportmenu:karamja]
+~relic_network_go(0_45_49_38_40);
 
 // 7 Vampire, called from give_combat_experience (every player-vs-npc hit, with the damage actually dealt): heals floor(10%) of
 // it as hitpoints and as prayer points, capped at the base levels by stat_heal.

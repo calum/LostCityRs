@@ -13,7 +13,7 @@ useVanillaWorld(); // relic_started = 1 on every bot: no first-login offer
 
 const skip = () => (hasVarp('relic_tasks_done') ? false : 'relic mod not loaded');
 
-const RELIC_ITEMS = ['relic_recall_stone', 'relic_banker_stone', 'ring_of_dueling_8', 'amulet_of_glory_4', 'necklace_of_minigames_8'];
+const RELIC_ITEMS = ['relic_recall_stone', 'relic_banker_stone', 'relic_network_stone', 'ring_of_dueling_8', 'amulet_of_glory_4', 'necklace_of_minigames_8'];
 // [proc,player_death] respawn square: map_findsquare(0_50_50_21_18, 0, 2, ...) (death.rs2)
 const RESPAWN = { x: 3221, z: 3218 };
 
@@ -68,6 +68,7 @@ test('death: relic items in the backpack and worn go to the bank; ordinary items
     bot.debugproc('relic_grant', 16); // ring_of_dueling_8, amulet_of_glory_4, necklace_of_minigames_8
     bot.debugproc('relic_grant', 17); // relic_recall_stone
     bot.debugproc('relic_grant', 18); // relic_banker_stone
+    bot.debugproc('relic_grant', 24); // relic_network_stone
     for (const item of RELIC_ITEMS) assert.equal(bot.count(item), 1, item);
 
     bot.opHeld('ring_of_dueling_8', 2).tick(); // "Wear"
@@ -160,6 +161,15 @@ test('Relic Keeper: re-issues a missing item only for an owned relic, then says 
     const second = talkToKeeper(bot);
     assert.ok(said(second, 'You have all of your relic items. Take care of them.'), second.join(' / '));
     assert.equal(bot.count('relic_recall_stone'), 1, 'not given twice');
+});
+
+test('Relic Keeper: re-issues a lost Network stone for Teleport Network (24)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_owned: 1 << 24 } });
+    bot.clearInv();
+    const seen = talkToKeeper(bot);
+    assert.ok(said(seen, 'I have replaced them'), seen.join(' / '));
+    assert.equal(bot.count('relic_network_stone'), 1);
 });
 
 test('Relic Keeper: an item kept in the bank or worn counts as not lost; only the missing jewellery is replaced', t => {

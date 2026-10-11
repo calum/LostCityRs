@@ -1,5 +1,5 @@
-// Relics 15 Infinite Runes, 16 Everlasting Jewellery, 17 Last Recall, 18 Banker's Call, end to end.
-// Mod code: mods/relics/scripts/relic_effects.rs2 (~relic_rune_count, ~relic_keep_charge, ~relic_record_origin,
+// Relics 16 Everlasting Jewellery, 17 Last Recall, 18 Banker's Call, end to end.
+// Mod code: mods/relics/scripts/relic_effects.rs2 (~relic_keep_charge, ~relic_record_origin,
 // [opheld1,relic_recall_stone], [opheld1,relic_banker_stone]) and relic_offer.rs2 ([proc,relic_grant], [proc,relic_give_item]).
 // Content hooks: skill_magic/scripts/magic.rs2 (staff_runes), skill_magic/scripts/spells/teleport.rs2 (pre_tele_checks),
 // general/scripts/enchanted_jewellry/{ring_of_dueling,amulet_of_glory,necklace_of_minigames}.rs2.
@@ -49,76 +49,15 @@ function castVarrockTeleport(bot: Bot) {
     bot.clickButton('magic:varrock_teleport'); // [if_button,magic:varrock_teleport] teleport.rs2:1
 }
 
+/** Varrock Teleport: runesrequired firerune,1,airrune,3,lawrune,1 (magic_spells.dbrow). */
+function giveVarrockRunes(bot: Bot) {
+    bot.give('firerune', 5).give('airrune', 15).give('lawrune', 5);
+}
+
 function fillInv(bot: Bot) {
     const free = bot.player.getInventory(ids.inv('inv'))!.freeSlotCount;
     if (free > 0) bot.give('bronze_dagger', free);
 }
-
-// ---------------------------------------------------------------- 15 Infinite Runes
-
-test('infinite runes control: without runes Varrock Teleport fails with the rune message', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
-    bot.clearInv();
-    castVarrockTeleport(bot);
-    bot.tick(5);
-    // runesrequired firerune,1,airrune,3,lawrune,1: the first missing rune is reported (magic.rs2:34-35)
-    bot.expectMessage('You do not have enough Fire Runes to cast this spell.');
-    assert.ok(near(bot, { x: 3222, z: 3218 }, 0), 'did not move');
-});
-
-test('infinite runes: Varrock Teleport with no runes', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
-    bot.clearInv();
-    bot.debugproc('relic_grant', 15);
-    const xp0 = bot.xp('magic');
-    castVarrockTeleport(bot);
-    bot.waitUntil(() => near(bot, VARROCK), 10, 'arrival in Varrock');
-    assert.ok(bot.xp('magic') > xp0);
-});
-
-test('infinite runes control: high alchemy without runes fails', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
-    bot.clearInv().give('iron_dagger');
-    castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
-    bot.tick(3);
-    bot.expectMessage('You do not have enough Nature Runes to cast this spell.');
-    assert.equal(bot.count('iron_dagger'), 1);
-});
-
-test('infinite runes: high alchemy with no runes', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
-    bot.clearInv().give('iron_dagger');
-    bot.debugproc('relic_grant', 15);
-    castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
-    bot.waitUntil(() => bot.count('iron_dagger') === 0, 5, 'the alch');
-    assert.equal(bot.count('coins'), 21); // iron_dagger cost 35 -> scale(6, 10, 35) = 21
-});
-
-test('infinite runes control: Wind Strike on a chicken without runes fails', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
-    bot.clearInv();
-    const chicken = spawnNpc('chicken', { x: bot.x + 3, z: bot.z });
-    bot.tick();
-    const xp0 = bot.xp('magic');
-    castOnNpc(bot, 'magic:wind_strike', chicken);
-    bot.tick(5);
-    // runesrequired mindrune,1,airrune,1 (magic_combat_spells.dbrow)
-    bot.expectMessage('You do not have enough Mind Runes to cast this spell.');
-    assert.equal(bot.xp('magic'), xp0);
-});
-
-test('infinite runes: Wind Strike on a chicken with no runes', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
-    bot.clearInv();
-    bot.debugproc('relic_grant', 15);
-    const chicken = spawnNpc('chicken', { x: bot.x + 3, z: bot.z });
-    bot.tick();
-    const xp0 = bot.xp('magic');
-    castOnNpc(bot, 'magic:wind_strike', chicken);
-    // ~pvm_spell_cast gives the base spell XP whether or not the spell then hits (player_magic.rs2:156-158)
-    bot.waitUntil(() => bot.xp('magic') > xp0, 10, 'the cast');
-    bot.expectNoMessage(/You do not have enough/);
-});
 
 // ---------------------------------------------------------------- 16 Everlasting Jewellery
 
@@ -202,7 +141,7 @@ test('last recall: the stone says so before any teleport', () => {
 test('last recall control: a stone without the relic records nothing, so a teleport cannot be recalled', () => {
     const bot = Bot.spawn({ levels: { magic: 99 } });
     bot.clearInv().give('relic_recall_stone');
-    bot.debugproc('relic_grant', 15); // no runes needed
+    giveVarrockRunes(bot);
     castVarrockTeleport(bot);
     bot.waitUntil(() => near(bot, VARROCK), 10, 'arrival in Varrock');
     bot.waitUntilIdle(10);
@@ -215,7 +154,7 @@ test('last recall control: a stone without the relic records nothing, so a telep
 test('last recall: Lumbridge -> Varrock by spell, the stone returns to the exact origin, and a second use goes back to Varrock', () => {
     const bot = Bot.spawn({ levels: { magic: 99 } });
     bot.clearInv();
-    bot.debugproc('relic_grant', 15);
+    giveVarrockRunes(bot);
     bot.debugproc('relic_grant', 17);
     const origin = bot.pos;
 

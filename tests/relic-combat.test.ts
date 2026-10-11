@@ -555,8 +555,8 @@ test('every combat relic (3-9) gives +50% to the attack roll of every style, and
     const plain = relicBot(SPOT.taken, []);
     const rolls = [1000, 777, 3, 1, 0];
     for (const id of [3, 4, 5, 6, 7, 8, 9, 3 + 100]) {
-        // id 103 is not a relic: control that a non-combat relic (15 Infinite Runes) does nothing
-        const relics = id === 103 ? [15] : [id];
+        // id 103 is not a relic: control that a non-combat relic (14 Philosopher's Coin) does nothing
+        const relics = id === 103 ? [14] : [id];
         const bot = relicBot(SPOT.taken, relics);
         for (let style = 0; style < 5; style++) {
             for (const roll of rolls) {
