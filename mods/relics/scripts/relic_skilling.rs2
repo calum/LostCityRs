@@ -1,0 +1,78 @@
+// Skilling relics (work package A). 25 Prospector's Pick, 26 Forge Echo, 27 Endless Shoal, 28 Fletcher's Echo, 29 Hunter's Haul.
+// Hook sites are listed in docs/local-changes.md; docs/design/relics-skilling-routes.md explains each relic.
+
+// 25 Prospector's Pick. Mining (mining.rs2), woodcutting (woodcut.rs2) and fishing (fishing_spots/*.rs2) set
+// %action_delay = map_clock + <n>. The roll happens when the clock reaches that value and the loop then waits <n> more ticks,
+// so the interval between rolls is <n> + 1 ticks (observed: tests/relic-skilling-routes.test.ts). A delay of 1 gives a roll every 2 ticks.
+[proc,relic_gather_delay](int $ticks)(int)
+if (~relic_has(25) = 1) {
+    return(1);
+}
+return($ticks);
+
+// Puts an extra product where the relics send products: the bank, else the backpack, else nowhere (lost).
+[proc,relic_bank_extra](namedobj $obj, int $count)
+if (inv_itemspace(bank, $obj, $count, inv_size(bank)) = ^true) {
+    inv_add(bank, $obj, $count);
+} else if (inv_itemspace(inv, $obj, $count, inv_size(inv)) = ^true) {
+    inv_add(inv, $obj, $count);
+}
+
+// 26 Forge Echo, called after a smelt or smithing product is made ($count items, $xp as given to stat_advance).
+// Half the time one more batch of the same size arrives in the bank, with the same smithing XP.
+[proc,relic_forge_echo](namedobj $product, int $count, int $xp)
+if (~relic_has(26) = 0 | random(2) = 0) {
+    return;
+}
+~relic_bank_extra($product, $count);
+stat_advance(smithing, $xp);
+mes("Forge Echo: you make an extra <lowercase(oc_name($product))>.");
+
+// 28 Fletcher's Echo, same for fletching products.
+[proc,relic_fletch_echo](namedobj $product, int $count, int $xp)
+if (~relic_has(28) = 0 | random(2) = 0) {
+    return;
+}
+~relic_bank_extra($product, $count);
+stat_advance(fletching, $xp);
+mes("Fletcher's Echo: you make an extra <lowercase(oc_name($product))>.");
+
+// 29 Hunter's Haul, replaces obj_add(npc_coord, <hide>, 1, ...) in the cow and dragon drop tables ($hide dropped as before without
+// the relic). With it: three tanned hides to the bank, and half the time a random uncut gem as well. The death queue has no
+// protected access to the killer's inventories (inv_add to the bank is refused), so the items are added from player queues.
+[proc,relic_drop_hide](namedobj $hide, namedobj $leather)
+if (~relic_has(29) = 0) {
+    obj_add(npc_coord, $hide, 1, ^lootdrop_duration);
+    return;
+}
+queue*(relic_haul_hide, 0)($leather);
+if (random(2) = 1) {
+    def_int $gem = random(4);
+    if ($gem = 0) {
+        queue*(relic_haul_gem, 0)(uncut_sapphire);
+    } else if ($gem = 1) {
+        queue*(relic_haul_gem, 0)(uncut_emerald);
+    } else if ($gem = 2) {
+        queue*(relic_haul_gem, 0)(uncut_ruby);
+    } else {
+        queue*(relic_haul_gem, 0)(uncut_diamond);
+    }
+}
+
+[queue,relic_haul_hide](namedobj $leather)
+~relic_bank_extra($leather, 3);
+mes("Hunter's Haul: the hide is tanned and sent to your bank.");
+
+[queue,relic_haul_gem](namedobj $gem)
+~relic_bank_extra($gem, 1);
+
+// 27 Endless Shoal, fishing_movement.rs2 hook: 1 when a player with the relic stands within 3 tiles of this fishing spot,
+// so the spot's move timer does nothing. Called from the spot's [ai_timer] (no player active), so it looks players up.
+[proc,relic_spot_held](coord $c)(int)
+huntall($c, 3, 0);
+while (.huntnext = true) {
+    if (testbit(.%relic_owned, 27) = ^true) {
+        return(1);
+    }
+}
+return(0);

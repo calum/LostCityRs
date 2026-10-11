@@ -21,6 +21,12 @@ if ($bar ! null) {
     ~relic_task_obj($bar);
     // XP is the normal smelting XP of the bar (smelting.struct productexp), once per bar. No level or coal needed.
     stat_advance(smithing, multiply(struct_param(oc_param($bar, smelting_struct), productexp), $n));
+    // 26 Forge Echo rolls once per bar made
+    def_int $echo = 0;
+    while ($echo < $n) {
+        ~relic_forge_echo($bar, 1, struct_param(oc_param($bar, smelting_struct), productexp));
+        $echo = calc($echo + 1);
+    }
 }
 // to the bank when the skill relic sends it there and the bank can take it (2, else 1 with Double Yield)
 if ($relic > 0 & ~relic_has($relic) = 1) {
@@ -47,12 +53,12 @@ if (~relic_has(12) = 1 & $fish ! tbwt_raw_karambwan) {
     def_dbrow $data = db_findnext;
     if ($data ! null) {
         ~relic_task_obj($fish);
-        def_int $n = ~relic_gathered(db_getfield($data, cooking_generic:cooked, 0), 0);
+        def_int $n = ~relic_gathered(db_getfield($data, cooking_generic:cooked, 0), 27);
         stat_advance(cooking, multiply(db_getfield($data, cooking_generic:experience, 0), $n));
         return($n);
     }
 }
-return(~relic_gathered($fish, 0));
+return(~relic_gathered($fish, 27));
 
 // Ore to bar for Eternal Vein. Iron gives steel; coal, clay, gems and other rock products return null (banked unchanged).
 [proc,relic_smelt_ore](namedobj $ore)(namedobj)

@@ -138,18 +138,18 @@ test('task menu: a button jumps to the relic menu', t => {
     assert.equal(bot.mainModal, 'relic_taskmenu');
 });
 
-test('relic menu: nothing owned: XP rate 10x, empty unlocked list, all 19 available', t => {
+test('relic menu: nothing owned: XP rate 10x, empty unlocked list, all 24 available', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     openRelics(bot);
     assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 10x/);
     assert.deepEqual(relicRows(bot, 'unlocked'), []);
     const available = relicRows(bot, 'available');
-    assert.equal(available.length, 19);
+    assert.equal(available.length, 24); // ids 1-14, 16-19, 24-29 (15 retired, 20-23 not offered yet)
     assert.match(available[0], /XP Multiplier/);
     assert.match(available[0], /30x/, 'the XP Multiplier row names the next rate');
     assert.match(text(bot, 'relic_relicmenu:unlocked_title'), /\(0\)/);
-    assert.match(text(bot, 'relic_relicmenu:available_title'), /\(19\)/);
+    assert.match(text(bot, 'relic_relicmenu:available_title'), /\(24\)/);
 });
 
 test('relic menu: owned relics and the XP tier move to the unlocked list', t => {
@@ -166,7 +166,7 @@ test('relic menu: owned relics and the XP tier move to the unlocked list', t => 
     assert.match(unlocked[1], /half damage taken/);
     assert.match(unlocked[2], /Phoenix/);
     const available = relicRows(bot, 'available');
-    assert.equal(available.length, 17); // 19 - Stoneskin - Phoenix; XP Multiplier still has tier 3 to go
+    assert.equal(available.length, 22); // 24 - Stoneskin - Phoenix; XP Multiplier still has tier 3 to go
     assert.ok(!available.some(r => /Stoneskin|Phoenix/.test(r)));
     assert.match(available[0], /XP Multiplier/);
     assert.match(available[0], /270x/);
@@ -178,7 +178,7 @@ test('relic menu: a maxed XP multiplier leaves the available list', t => {
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 3, relic_xp_factor: 27 } });
     openRelics(bot);
     assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 270x/);
-    assert.equal(relicRows(bot, 'available').length, 18);
+    assert.equal(relicRows(bot, 'available').length, 23);
     assert.ok(!relicRows(bot, 'available').some(r => /XP Multiplier/.test(r)));
 });
 
@@ -208,7 +208,7 @@ test('relic menu: a pending choice shows the button, and clicking it re-opens th
     assert.equal(bot.mainModal, null, 'the menu closes so the offer can show');
     assert.match(bot.dialogText, /Choose a relic/);
     assert.equal(bot.choices.length, 3);
-    bot.choose(1);
+    bot.choose(bot.choices.findIndex(c => !c.startsWith('Hoarder')) + 1); // Hoarder would open a second offer
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_pending'), 0);
     assert.ok(bot.varp('relic_owned') !== 0 || bot.varp('relic_xp_tier') !== 0, 'the pick was granted');

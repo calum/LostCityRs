@@ -26,6 +26,11 @@ switch_int ($id) {
     case 23 : return("Endless Quiver");
     case 24 : return("Teleport Network");
     case 21 : return("Rune Wellspring");
+    case 25 : return("Prospector's Pick");
+    case 26 : return("Forge Echo");
+    case 27 : return("Endless Shoal");
+    case 28 : return("Fletcher's Echo");
+    case 29 : return("Hunter's Haul");
     case default : return("Unknown relic");
 }
 
@@ -53,13 +58,18 @@ switch_int ($id) {
     case 23 : return("ammo never runs out, +50% ranged");
     case 24 : return("teleport to the main cities");
     case 21 : return("XP pays rune essence, talisman teleports");
+    case 25 : return("mine, chop and fish every 2 ticks");
+    case 26 : return("smelt and smith: 50% extra");
+    case 27 : return("fish go to the bank, spots stay");
+    case 28 : return("fletching: 50% extra");
+    case 29 : return("hides: 3 tanned, to the bank, gems");
     case default : return("");
 }
 
 // 1 for an id that is a relic today. 15 (Infinite Runes) was retired; 20 to 23 are reserved for relics other work packages add
-// and are removed from this list by the work that adds them. 25 to 29 are reserved for the skilling relics (the menus list up to 29).
+// and are removed from this list by the work that adds them.
 [proc,relic_exists](int $id)(int)
-if ($id = 15 | ($id >= 20 & $id <= 23) | $id >= 25) {
+if ($id = 15 | ($id >= 20 & $id <= 23)) {
     return(0);
 }
 return(1);
@@ -90,7 +100,7 @@ return(1);
 [proc,relic_pool_size](int $drawn, int $mode)(int)
 def_int $size = 0;
 def_int $i = 1;
-while ($i <= 24) {
+while ($i <= 29) {
     if (~relic_in_pool($i, $drawn, $mode) = 1) {
         $size = calc($size + 1);
     }
@@ -108,7 +118,7 @@ if ($size = 0) {
 %relic_seed = calc((%relic_seed * 75 + 74) % 65537);
 def_int $k = calc(%relic_seed % $size);
 def_int $i = 1;
-while ($i <= 24) {
+while ($i <= 29) {
     if (~relic_in_pool($i, $drawn, $mode) = 1) {
         if ($k = 0) {
             return($i);
@@ -182,7 +192,7 @@ if ($c ! 0) {
 %relic_seed = $seed_after;
 // everything offered and not picked can come back and feeds the Hoarder relic
 def_int $i = 1;
-while ($i <= 24) {
+while ($i <= 29) {
     if (testbit($drawn, $i) = ^true & $i ! $pick) {
         %relic_declined = setbit(%relic_declined, $i);
     }

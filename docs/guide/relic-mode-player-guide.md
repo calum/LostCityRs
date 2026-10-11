@@ -65,12 +65,19 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 19 | Hoarder | One extra pick from relics you declined earlier. Happens right after you take it. | automatic |
 | 24 | Teleport Network | Opens a list of cities (Lumbridge, Varrock, Falador, Edgeville, Draynor Village, Al Kharid, Camelot, Ardougne, Karamja). Click one to teleport there, free of runes. The usual teleport rules still apply (for example, not on Tutorial Island). | use the Network stone |
 | 21 | Rune Wellspring | Every 100 XP you gain (in any skill except Runecrafting) gives you a **Rune essence bundle** (100 essence). Use bundles on a runecrafting altar to craft them all at once. Clicking *Locate* on any talisman opens a list of altars to teleport to. | use bundles on an altar; Locate on a talisman |
+| 25 | Prospector's Pick | Mining, woodcutting and fishing roll for a result **every 2 game ticks**, whatever pickaxe, axe or fishing tool you use. Your first swing at a fishing spot still takes the normal time. | automatic |
+| 26 | Forge Echo | Smelting a bar or smithing an item has a **50% chance** to make one more, sent to your bank, with the same Smithing XP. With Eternal Vein each ore smelted for you rolls separately. | automatic |
+| 27 | Endless Shoal | Fish go **straight to your bank** (cooked, if you have Double Yield) and a full backpack never stops you fishing. A fishing spot does not move away while you stand within 3 tiles of it. | automatic |
+| 28 | Fletcher's Echo | Fletching (cutting logs, arrows, bolts, darts, stringing bows) has a **50% chance** to make one more batch, sent to your bank, with the same Fletching XP. | automatic |
+| 29 | Hunter's Haul | When a cow or a dragon (green, blue, red, black) drops a hide, you get **three tanned hides** in your bank instead, and a **50% chance** of a random uncut gem (sapphire, emerald, ruby or diamond) too. | kill the animal |
 
 Good to know:
 
 - **Infinite Runes** was removed. A character that already had it loses it at the next login and gets one new relic choice instead.
 - **Quest Pass** also hands out the quest rewards and XP, so it is a big skill boost too.
 - **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
+- **Forge Echo, Fletcher's Echo and Hunter's Haul**: if your bank is full the extra items go to your backpack, and are lost if that is full too.
+- **Endless Shoal** only keeps a spot still while you are close; walk away and it moves on like any other.
 - **Midas Loop** stops when you walk or click something else.
 - **Executioner** finishes an NPC below 25% HP on your next landed hit. It gives slightly too much attack XP.
 - **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge.

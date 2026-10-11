@@ -38,11 +38,16 @@ const NAMES = [
     '',
     '',
     '',
-    'Teleport Network'
+    'Teleport Network',
+    "Prospector's Pick",
+    'Forge Echo',
+    'Endless Shoal',
+    "Fletcher's Echo",
+    "Hunter's Haul"
 ];
 
-/** Every bit relic owned: ids 2..14, 16..19 and 24 (15 is retired; 20 to 23 do not exist yet). */
-const ALL_BITS = (((1 << 20) - 4) & ~(1 << 15)) | (1 << 24);
+/** Every bit relic owned: ids 2..14, 16..19 and 24..29 (15 is retired; 20 to 23 do not exist yet). */
+const ALL_BITS = (((1 << 20) - 4) & ~(1 << 15)) | (((1 << 30) - 1) & ~((1 << 24) - 1));
 const bit = (id: number) => 1 << id;
 const ownedExcept = (...ids: number[]) => ids.reduce((m, id) => m & ~bit(id), ALL_BITS);
 
@@ -55,7 +60,7 @@ function predictOffer(seed: number, owned: number, xpTier: number, declinedOnly 
     const drawn: number[] = [];
     for (let n = 0; n < 3; n++) {
         const pool: number[] = [];
-        for (let id = 1; id <= 24; id++) {
+        for (let id = 1; id <= 29; id++) {
             const exists = id !== 15 && !(id >= 20 && id <= 23);
             const eligible = exists && (id === 1 ? xpTier < 3 : (owned & bit(id)) === 0);
             const inMode = declinedOnly === -1 || (declinedOnly & bit(id)) !== 0;
@@ -122,9 +127,9 @@ test('first login after the tutorial: three relics from the seed, the pick is gr
     const expected = predictOffer(5, 0, 0);
     // seed 5 gave Midas Loop, Hoarder, Eternal Vein (relics-m4-offers.md, Observed 3) until Infinite Runes (15) left the pool and
     // Teleport Network (24) joined it: the same draws now land one place further along the list, on Teleport Network
-    assert.deepEqual(expected.ids, [13, 24, 10]);
+    assert.deepEqual(expected.ids, [19, 9, 13]); // and again when ids 25-29 (skilling relics) joined: Hoarder, Bounty, Midas Loop
     assert.deepEqual(offeredIds(bot), expected.ids);
-    assert.equal(choiceTexts(bot)[0], 'Midas Loop: high alch repeats');
+    assert.equal(choiceTexts(bot)[2], 'Midas Loop: high alch repeats');
     assert.match(bot.dialogText, /Choose a relic/);
     // the advanced seed is only stored once the offer is answered, so closing it cannot reroll it
     assert.equal(bot.varp('relic_seed'), 5);
@@ -134,7 +139,7 @@ test('first login after the tutorial: three relics from the seed, the pick is gr
     bot.expectMessage('You gained the relic: Midas Loop.');
     assert.equal(bot.varp('relic_seed'), expected.seed);
     assert.equal(bot.varp('relic_owned'), bit(13));
-    assert.equal(bot.varp('relic_declined'), bit(24) | bit(10));
+    assert.equal(bot.varp('relic_declined'), bit(19) | bit(9));
     assert.equal(bot.varp('relic_pending'), 0);
     assert.equal(bot.varp('relic_xp_tier'), 0);
     assert.equal(bot.chatModal, null);
@@ -225,11 +230,12 @@ test('closing an offer keeps it pending and unchanged; the next login shows the 
     waitForOffer(again);
     // no reroll: the re-offer shows the same three relics
     assert.deepEqual(offeredIds(again), first.ids);
-    pick(again, 1);
+    const take = first.ids.findIndex(id => id !== 19); // not Hoarder: it opens a second offer
+    pick(again, take + 1);
     again.waitUntilIdle(20);
     assert.equal(again.varp('relic_pending'), 0);
     assert.equal(again.varp('relic_seed'), first.seed);
-    again.expectMessage(`You gained the relic: ${NAMES[first.ids[0]]}.`);
+    again.expectMessage(`You gained the relic: ${NAMES[first.ids[take]]}.`);
 });
 
 test('first login queues the offer once: closing it leaves it owed until a relog', t => {
@@ -257,13 +263,14 @@ test('several pending offers are answered one after another', t => {
     waitForOffer(bot);
     const one = predictOffer(5, 0, 0);
     assert.deepEqual(offeredIds(bot), one.ids);
-    pick(bot, 1); // Midas Loop (13)
+    pick(bot, 'Midas Loop'); // 13 (first offer is Hoarder, Bounty, Midas Loop)
     waitForOffer(bot);
     assert.equal(bot.varp('relic_pending'), 1);
 
     const two = predictOffer(one.seed, bit(13), 0);
     assert.deepEqual(offeredIds(bot), two.ids);
     assert.ok(!two.ids.includes(13));
+    assert.notEqual(two.ids[0], 19, 'Hoarder would open another offer: pick another seed');
     pick(bot, 1);
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_pending'), 0);

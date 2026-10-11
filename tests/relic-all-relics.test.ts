@@ -123,7 +123,9 @@ test('all relics: mining silver ore (banked as a bar) completes task 11', t => {
     bot.debugproc('relic_gather', 'silver_ore', 10);
     bot.waitUntil(() => isDone(bot, 11), 15, 'task 11');
     expectDone(bot, 11);
-    assert.equal(bot.count('silver_bar', 'bank'), 2, 'Double Yield: two bars in the bank');
+    // Double Yield: two bars; Forge Echo (26) rolls once per bar and adds one more bar each time, so 2 to 4
+    const bars = bot.count('silver_bar', 'bank');
+    assert.ok(bars >= 2 && bars <= 4, `${bars} bars in the bank`);
 });
 
 test('all relics: a real silver rock gives task 11 and bars in the bank', t => {
