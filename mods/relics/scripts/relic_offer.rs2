@@ -156,46 +156,90 @@ if ($id = 16) {
     def_int $extra = ~relic_offer_mode(1);
 }
 
+// Tasks done, over both task varps (tasks 1-31 in %relic_tasks_done, 32 and up in %relic_tasks_done2).
+[proc,relic_tasks_done_count]()(int)
+def_int $n = 1;
+def_int $count = 0;
+while ($n <= ^relic_task_count) {
+    if (~relic_task_is_done($n) = ^true) {
+        $count = calc($count + 1);
+    }
+    $n = calc($n + 1);
+}
+return($count);
+
+// Rerolls an account has earned in total: 1 to start, one more per 7 tasks done. Existing characters get the same count from the tasks they already did.
+[proc,relic_rerolls_earned]()(int)
+return(calc(1 + ~relic_tasks_done_count / 7));
+
+[proc,relic_rerolls_left]()(int)
+return(calc(~relic_rerolls_earned - %relic_rerolls_used));
+
 // Draw up to 3 relics (see relic_in_pool for $mode), ask, grant. Returns 1 if something was offered, 0 if the pool was empty.
+// While rerolls are left (mode 0 only, and only if relics that were not shown yet remain) the dialogue has a fourth option, "Reroll":
+// it spends one, counts the shown relics as declined and draws three new ones that were not shown before in this offer.
 // The seed advanced by the draws is stored only once the player answers: closing the dialog drops this script
-// (Player.closeModal), so the seed stays where it was and the next login shows the same offer (no reroll).
+// (Player.closeModal), so the seed stays where it was and the next login shows the same offer (no reroll for free).
+// A reroll stores the advanced seed and the spent reroll straight away, so a relog after it shows the rerolled offer.
 [proc,relic_offer_mode](int $mode)(int)
-def_int $seed_before = %relic_seed;
-def_int $drawn = 0;
-def_int $a = ~relic_draw($drawn, $mode);
-if ($a = 0) {
-    return(0);
-}
-$drawn = setbit($drawn, $a);
-def_int $b = ~relic_draw($drawn, $mode);
-if ($b ! 0) {
-    $drawn = setbit($drawn, $b);
-}
-def_int $c = 0;
-if ($b ! 0) {
-    $c = ~relic_draw($drawn, $mode);
+def_int $shown = 0;
+def_int $offered = 0;
+def_int $pick = 99;
+while ($pick = 99) {
+    def_int $seed_before = %relic_seed;
+    def_int $drawn = $shown;
+    def_int $a = ~relic_draw($drawn, $mode);
+    if ($a = 0) {
+        return($offered);
+    }
+    $offered = 1;
+    $drawn = setbit($drawn, $a);
+    def_int $b = ~relic_draw($drawn, $mode);
+    if ($b ! 0) {
+        $drawn = setbit($drawn, $b);
+    }
+    def_int $c = 0;
+    if ($b ! 0) {
+        $c = ~relic_draw($drawn, $mode);
+        if ($c ! 0) {
+            $drawn = setbit($drawn, $c);
+        }
+    }
+    def_int $seed_after = %relic_seed;
+    %relic_seed = $seed_before;
+    def_int $can_reroll = 0;
+    if ($mode = 0 & $b ! 0 & ~relic_rerolls_left > 0 & ~relic_pool_size($drawn, 0) > 0) {
+        $can_reroll = 1;
+    }
+    def_string $reroll = "Reroll (<tostring(~relic_rerolls_left)> left)";
     if ($c ! 0) {
-        $drawn = setbit($drawn, $c);
+        if ($can_reroll = 1) {
+            $pick = ~p_choice4_header(~relic_option($a), $a, ~relic_option($b), $b, ~relic_option($c), $c, $reroll, 99, "Choose a relic");
+        } else {
+            $pick = ~p_choice3_header(~relic_option($a), $a, ~relic_option($b), $b, ~relic_option($c), $c, "Choose a relic");
+        }
+    } else if ($b ! 0) {
+        if ($can_reroll = 1) {
+            $pick = ~p_choice3_header(~relic_option($a), $a, ~relic_option($b), $b, $reroll, 99, "Choose a relic");
+        } else {
+            $pick = ~p_choice2_header(~relic_option($a), $a, ~relic_option($b), $b, "Choose a relic");
+        }
+    } else {
+        $pick = ~p_choice2_header(~relic_option($a), $a, "No thanks", 0, "Take this relic?");
     }
-}
-def_int $seed_after = %relic_seed;
-%relic_seed = $seed_before;
-def_int $pick = 0;
-if ($c ! 0) {
-    $pick = ~p_choice3_header(~relic_option($a), $a, ~relic_option($b), $b, ~relic_option($c), $c, "Choose a relic");
-} else if ($b ! 0) {
-    $pick = ~p_choice2_header(~relic_option($a), $a, ~relic_option($b), $b, "Choose a relic");
-} else {
-    $pick = ~p_choice2_header(~relic_option($a), $a, "No thanks", 0, "Take this relic?");
-}
-%relic_seed = $seed_after;
-// everything offered and not picked can come back and feeds the Hoarder relic
-def_int $i = 1;
-while ($i <= 29) {
-    if (testbit($drawn, $i) = ^true & $i ! $pick) {
-        %relic_declined = setbit(%relic_declined, $i);
+    %relic_seed = $seed_after;
+    // everything offered and not picked can come back and feeds the Hoarder relic
+    def_int $i = 1;
+    while ($i <= 29) {
+        if (testbit($drawn, $i) = ^true & testbit($shown, $i) = ^false & $i ! $pick) {
+            %relic_declined = setbit(%relic_declined, $i);
+        }
+        $i = calc($i + 1);
     }
-    $i = calc($i + 1);
+    if ($pick = 99) {
+        %relic_rerolls_used = calc(%relic_rerolls_used + 1);
+        $shown = $drawn;
+    }
 }
 if ($pick ! 0) {
     ~relic_grant($pick);
@@ -238,6 +282,9 @@ if (~relic_task_is_done($task) = 1) {
 ~relic_task_mark($task);
 ~relic_say("Relic task <tostring($task)> complete!");
 ~relic_celebrate;
+if (calc(~relic_tasks_done_count % 7) = 0) {
+    ~relic_say("You earned a relic reroll (<tostring(~relic_rerolls_left)> available).");
+}
 if ($task = 24 | $task = 25) {
     if (and(%relic_tasks_done, ^relic_tier4_mask) = ^relic_tier4_mask) {
         ~relic_win;

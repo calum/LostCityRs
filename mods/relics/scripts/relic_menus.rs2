@@ -182,6 +182,7 @@ while ($free < 29) {
 if_settext(relic_relicmenu:xp, "XP rate: <tostring(~relic_xp_rate(%relic_xp_tier))>x (base <tostring(^relic_base_xp)>x, XP Multiplier tier <tostring(%relic_xp_tier)> of 3)");
 if_settext(relic_relicmenu:unlocked_title, "Unlocked relics (<tostring($u)>)");
 if_settext(relic_relicmenu:available_title, "Not yet unlocked (<tostring($a)>)");
+if_settext(relic_relicmenu:title, "Relics (Rerolls left: <tostring(~relic_rerolls_left)>)");
 if (%relic_pending > 0) {
     if (%relic_pending = 1) {
         if_settext(relic_relicmenu:pending, "@gre@1 relic choice waiting");

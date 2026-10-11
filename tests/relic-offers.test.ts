@@ -105,7 +105,7 @@ function pick(bot: Bot, option: number | string): void {
 
 /** The ids of the relics in the open offer, read from the choice texts ("Name: effect"). */
 function offeredIds(bot: Bot): number[] {
-    return choiceTexts(bot).map(c => {
+    return choiceTexts(bot).filter(c => !c.startsWith('Reroll')).map(c => {
         if (c === 'No thanks') return 0;
         const id = NAMES.indexOf(c.split(':')[0]);
         assert.ok(id > 0, `unexpected choice text "${c}"`);
@@ -154,7 +154,7 @@ test('first login with a fresh character rolls a non-zero seed', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn();
     waitForOffer(bot);
-    assert.equal(choiceTexts(bot).length, 3);
+    assert.equal(choiceTexts(bot).length, 4, 'three relics and Reroll');
     assert.notEqual(bot.varp('relic_seed'), 0);
     assert.equal(new Set(offeredIds(bot)).size, 3, 'three distinct relics');
 });

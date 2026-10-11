@@ -42,10 +42,10 @@ test('bot.choices lists only the open dialog when one script asks twice (two pen
     // relic_offer_pending loops while %relic_pending > 0, so one script pauses on two choice dialogs.
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 2, relic_seed: 5 } });
     bot.waitUntil(() => bot.choices.length >= 2, 10, 'the first offer');
-    assert.equal(bot.choices.length, 3);
+    assert.equal(bot.choices.length, 4);
     bot.choose(bot.choices.findIndex(c => !c.startsWith('Hoarder')) + 1); // Hoarder would open a second offer
     bot.waitUntil(() => bot.varp('relic_pending') === 1, 5, 'the second offer');
-    assert.equal(bot.choices.length, 3, `stale buttons from the first dialog: ${JSON.stringify(bot.choices)}`);
+    assert.equal(bot.choices.length, 4, `stale buttons from the first dialog: ${JSON.stringify(bot.choices)}`);
     bot.choose(bot.choices.findIndex(c => !c.startsWith('Hoarder')) + 1); // Hoarder would open a second offer
     bot.waitUntil(() => bot.varp('relic_pending') === 0, 5, 'both offers answered');
 });

@@ -21,7 +21,8 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 2. **A task only counts once.**
 3. **Relics you turn down can come back** in later offers. If only 1 or 2 are left, you get just those. If none are left, the task still completes but there is no pick.
 4. **There are 21 pickable relics** (the XP Multiplier counts three times) for 23 offers, so the last offers of a full run are empty.
-5. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
+5. **Rerolls.** If none of the three relics suits you, pick **Reroll** (the last choice, it shows how many are left). You get three different relics, and you can reroll again while you have rerolls. Every character starts with **1 reroll** and earns **one more for every 7 tasks** you finish (7, 14, 21, 28, 35), so at most 6 in a full run. The game tells you when you earn one, and the Relics menu title shows how many you have. The relics you reroll away are counted as turned down (rule 3). Reroll is only in the choice, not a relic, and it is not shown when there are no other relics left to see.
+6. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
 
 ## In-game menus { #menus }
 
