@@ -109,8 +109,8 @@ test('eternal vein control: without the relic a mined rock depletes and the ore 
     assert.notEqual(rock.type, before, 'rock should have turned into its empty stage');
 });
 
-test('eternal vein: the rock never depletes, ore goes to the bank, and a full backpack does not stop mining', () => {
-    const bot = Bot.spawn({ at: MINE, levels: { mining: 99 } });
+test('eternal vein: the rock never depletes, ore is smelted into a bronze bar in the bank, and a full backpack does not stop mining', () => {
+    const bot = Bot.spawn({ at: MINE, levels: { mining: 99, smithing: 99 } }); // smithing 99: no level-up dialog mid-test
     bot.clearInv().give('rune_pickaxe');
     bot.debugproc('relic_grant', 10);
     const rock = nearestLoc(bot, ROCKS);
@@ -120,27 +120,28 @@ test('eternal vein: the rock never depletes, ore goes to the bank, and a full ba
     assert.equal(rock.type, type, 'rock must not change');
     mineOnce(bot, rock); // the same rock again
     assert.equal(rock.type, type);
-    assert.equal(ores(bot, 'bank'), 2);
-    assert.equal(ores(bot), 0);
+    // copper and tin ore become bronze bars (relic_smelt_ore, tests/relic-autosmelt.test.ts)
+    assert.equal(bot.count('bronze_bar', 'bank'), 2);
+    assert.equal(ores(bot, 'bank') + ores(bot), 0);
 
     // A full backpack no longer blocks the first swing (mining.rs2:32 `& ~relic_has(10) = 0`).
     fillInv(bot);
     mineOnce(bot, rock);
-    assert.equal(ores(bot, 'bank'), 3);
+    assert.equal(bot.count('bronze_bar', 'bank'), 3);
     bot.expectNoMessage(/inventory is too full/i);
 });
 
-test('eternal vein: with the bank full the ore falls back to the backpack', () => {
-    const bot = Bot.spawn({ at: MINE, levels: { mining: 99 } });
+test('eternal vein: with the bank full the bar falls back to the backpack', () => {
+    const bot = Bot.spawn({ at: MINE, levels: { mining: 99, smithing: 99 } }); // smithing 99: no level-up dialog mid-test
     bot.clearInv().give('rune_pickaxe');
     bot.debugproc('relic_grant', 10);
-    fillBank(bot, [...ORES, 'rune_pickaxe']);
+    fillBank(bot, [...ORES, 'bronze_bar', 'rune_pickaxe']);
     const rock = nearestLoc(bot, ROCKS);
 
     mineOnce(bot, rock);
 
-    assert.equal(ores(bot), 1);
-    assert.equal(ores(bot, 'bank'), 0);
+    assert.equal(bot.count('bronze_bar'), 1);
+    assert.equal(ores(bot, 'bank') + bot.count('bronze_bar', 'bank'), 0);
 });
 
 // ---------------------------------------------------------------- 11 Evergreen

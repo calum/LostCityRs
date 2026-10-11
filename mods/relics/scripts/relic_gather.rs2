@@ -3,11 +3,21 @@
 // Replaces inv_add(inv, $obj, 1) at gathering and cooking sites. $relic is the skill relic (10 mining, 11 woodcutting, 0 none):
 // with it the product goes straight to the bank (falls back to the inventory if the bank cannot take it).
 // Double Yield (12) doubles the count when it fits. Also counts the product for tasks.
+// With Eternal Vein (10) a mined ore is smelted on the spot: the bar replaces the ore and its smithing XP is granted per bar.
 [proc,relic_gathered](namedobj $obj, int $relic)
 ~relic_task_obj($obj);
 def_int $n = 1;
 if (~relic_has(12) = 1) {
     $n = 2;
+}
+def_namedobj $bar = null;
+if ($relic = 10 & ~relic_has(10) = 1) {
+    $bar = ~relic_smelt_ore($obj);
+}
+if ($bar ! null) {
+    $obj = $bar;
+    // XP is the normal smelting XP of the bar (smelting.struct productexp), once per bar. No level or coal needed.
+    stat_advance(smithing, multiply(struct_param(oc_param($bar, smelting_struct), productexp), $n));
 }
 // to the bank when the skill relic sends it there and the bank can take it (2, else 1 with Double Yield)
 if ($relic > 0 & ~relic_has($relic) = 1) {
@@ -23,6 +33,20 @@ if ($n = 2 & inv_itemspace(inv, $obj, 2, inv_size(inv)) = ^false) {
     $n = 1;
 }
 inv_add(inv, $obj, $n);
+
+// Ore to bar for Eternal Vein. Iron gives steel; coal, clay, gems and other rock products return null (banked unchanged).
+[proc,relic_smelt_ore](namedobj $ore)(namedobj)
+switch_obj ($ore) {
+    case copper_ore, tin_ore : return(bronze_bar);
+    case iron_ore : return(steel_bar);
+    case silver_ore : return(silver_bar);
+    case gold_ore : return(gold_bar);
+    case perfect_gold_ore : return(perfect_gold_bar);
+    case mithril_ore : return(mithril_bar);
+    case adamantite_ore : return(adamantite_bar);
+    case runite_ore : return(runite_bar);
+    case default : return(null);
+}
 
 // mining.rs2 hooks. 10 Eternal Vein: rocks never deplete.
 [proc,relic_loc_change](loc $new_loc, int $duration)
