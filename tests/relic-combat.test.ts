@@ -548,7 +548,7 @@ function callProc(bot: Bot, name: string, ...args: number[]): number {
     return state.isp > 0 ? state.popInt() : NaN;
 }
 
-test('every combat relic (3-9) gives +50% to the attack roll of every style, not stacked', t => {
+test('every combat relic (3-9) gives +50% to the attack roll of every style, and they stack additively', t => {
     if (skip()) return t.skip(String(skip()));
     // style ids: Content/scripts/skill_combat/configs/combat_damagetypes.constant (stab 0, slash 1, crush 2, ranged 3, magic 4)
     const varps = ['com_stabattack', 'com_slashattack', 'com_crushattack', 'com_rangeattack', 'com_magicattack'];
@@ -570,8 +570,10 @@ test('every combat relic (3-9) gives +50% to the attack roll of every style, not
             }
         }
     }
-    // owning several combat relics does not stack
-    const many = relicBot(SPOT.taken, [3, 5, 8]);
-    many.player.setVar(ids.varp('com_rangeattack'), 1000);
-    assert.equal(callProc(many, 'player_attack_roll_specific', 3), 1500);
+    // each combat relic adds its own +50% (additive: 2 relics x2.0, 3 relics x2.5, all 7 x4.5)
+    for (const [relics, pct] of [[[3, 5], 200], [[3, 5, 8], 250], [[3, 4, 5, 6, 7, 8, 9], 450]] as [number[], number][]) {
+        const many = relicBot(SPOT.taken, relics);
+        many.player.setVar(ids.varp('com_rangeattack'), 1000);
+        assert.equal(callProc(many, 'player_attack_roll_specific', 3), pct * 10, `${relics.length} combat relics`);
+    }
 });

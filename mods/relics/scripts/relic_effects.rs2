@@ -29,13 +29,18 @@ if (~relic_has(5) = 1) {
 }
 return($maxhit);
 
-// player_combat.rs2 hook (player_attack_roll_specific, every PvM/PvP/special attack roll). Any combat relic (3 to 9) gives
-// +50% to the player's attack roll for all styles. Not stacked: owning several still gives +50% once.
+// player_combat.rs2 hook (player_attack_roll_specific, every PvM/PvP/special attack roll). Each combat relic (3 to 9) owned
+// adds +50% to the player's attack roll for all styles. Additive: n relics give x(1 + 0.5n).
 [proc,relic_accuracy](int $roll)(int)
-if (~relic_has(3) = 1 | ~relic_has(4) = 1 | ~relic_has(5) = 1 | ~relic_has(6) = 1 | ~relic_has(7) = 1 | ~relic_has(8) = 1 | ~relic_has(9) = 1) {
-    return(scale(150, 100, $roll));
+def_int $pct = 100;
+def_int $id = 3;
+while ($id <= 9) {
+    if (~relic_has($id) = 1) {
+        $pct = calc($pct + 50);
+    }
+    $id = calc($id + 1);
 }
-return($roll);
+return(scale($pct, 100, $roll));
 
 // alchemy.rs2 hooks. 14 Philosopher's Coin: alchemy pays double.
 [proc,relic_alch_profit](int $profit)(int)
