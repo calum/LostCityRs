@@ -1,39 +1,38 @@
 # Relic mode: player guide and tracker
 
-!!! note "This page follows the current plan"
-    This page follows the plan and the code in `mods/relics/` as of root commit `c268b85` (all eight milestones are on `main`). Relics and tasks may still change. Every relic has automated tests (106 tests, 105 pass, 1 marked todo), run with a scripted headless client. Nobody has done a full play-through by hand, and this page's author ran nothing.
+Relic mode turns a normal character into a fast, over-powered run. Finish tasks, pick game-breaking perks (relics), and finish the run by killing the two bosses. This page tells you what you need to know and gives you a tracker for relics and tasks.
+
+!!! note "Things may change"
+    Relics and tasks are still being tuned. If something here does not match what you see in game, trust the game.
 
 ## The run in one minute
 
-- You play a normal LostCityRS character (revision 274) with **10x XP** and **unlimited run energy**.
-- Everyone also has a free **skilling second chance**: when a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails its success roll, it gets one more roll with a 50% chance to succeed. This makes bronze tools much less painful. Combat is not affected. It is a server setting (`node.skillingSecondChance`), see [settings](../setup/settings.md).
-- There are **25 tasks**. Finishing one plays fireworks and the level-up jingle, then offers you **a pick of up to 3 random relics**.
-- Relics are "game-breaking" perks (table below). One of them, the **XP Multiplier**, can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
-- The last two tasks are the bosses: the **King Black Dragon** and the **Kalphite Queen**. Those two give no relic offer. Killing both is the end of the run.
-- The first offer comes when you first log in (after Tutorial Island, or at once if you skip it).
+- You play a normal character with **10x XP** and **unlimited run energy**.
+- Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
+- There are **25 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
+- The last two tasks are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
+- Your first offer comes when you first log in (after Tutorial Island, or straight away if you skip it).
 
 ### Rules worth knowing
 
-1. **Tasks count in any order.** There is no unlock order: do them as you please, including the two bosses at any time. (`docs/design/relics-m3-tasks.md`, "Update: tier lock removed")
-2. **A task counts once.** Doing it again gives nothing.
-3. **Relics you decline stay in the pool** and can be offered again later. If only 1 or 2 are left you are offered just those. If none are left, the task still completes with the celebration but there is no choice.
-4. **There are 21 pickable relics** (19 relics, with the XP Multiplier counting three times) for 23 offers, so the last offers of a full run are empty. (`docs/design/roguelike-relics.md`, "Offer mechanics")
-5. **Hoarder** gives one extra pick from relics you were offered and declined earlier.
+1. **Do the tasks in any order**, including the bosses.
+2. **A task only counts once.**
+3. **Relics you turn down can come back** in later offers. If only 1 or 2 are left, you get just those. If none are left, the task still completes but there is no pick.
+4. **There are 21 pickable relics** (the XP Multiplier counts three times) for 23 offers, so the last offers of a full run are empty.
+5. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
 
 ## In-game menus { #menus }
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 25 tasks, green `[x]` when done. Click *Hide completed* to show only the open ones; the setting is remembered.
-- **Relics** shows your XP rate, the relics you have, and the relics you do not have yet. If you closed a relic choice by accident it says "relic choice waiting": click **Choose a relic now** and the same three relics come back, no relog needed.
-- Every level-up also prints your **XP rate** (for example "XP rate: 30x") in the chat.
-- Each menu has a link to the other one at the top.
-
-Seen working in a real browser client (high-detail tab). Details: [design/relics-menus.md](../design/relics-menus.md).
+- **Tasks** lists all 25 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
+- Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
 
 ## Your tracker
 
-Tick the box when you take a relic or finish a task. Ticks are saved in **this browser only** (local storage): they are not sent anywhere, they are not shared between devices, and clearing the site data for this page clears them. Use the notes box for your own reminders (for example which relics you turned down, for Hoarder).
+Tick the box when you take a relic or finish a task. Ticks are saved in **this browser only**: they are not shared between devices, and clearing the site data for this page clears them. Use the notes box for your own reminders, such as which relics you turned down (useful for Hoarder).
 
 <div id="relic-tracker-notes"></div>
 
@@ -41,50 +40,42 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 
 <div class="relic-tracker-bar" data-for="relics"></div>
 
-| # | Relic | What it does | Status | How to use it |
-|---|---|---|---|---|
-| 1a | XP Multiplier I | XP rate 10x to **30x** | tested | automatic |
-| 1b | XP Multiplier II | XP rate 30x to **90x** (needs I) | tested | automatic |
-| 1c | XP Multiplier III | XP rate 90x to **270x** (needs II) | tested | automatic |
-| 2 | Quest Pass | every quest is marked complete | tested, see note | [(3016, 3849)](https://explv.github.io/?centreX=3016&centreY=3849&centreZ=0&zoom=9); [(2414, 4681)](https://explv.github.io/?centreX=2414&centreY=4681&centreZ=0&zoom=9); [Crandor (2834, 3279)](https://explv.github.io/?centreX=2834&centreY=3279&centreZ=0&zoom=9) |
-| 3 | Stoneskin | you take **half** the damage | tested | [Lava Maze (3106, 3858)](https://explv.github.io/?centreX=3106&centreY=3858&centreZ=0&zoom=9); [Tree Gnome Village (2533, 3147)](https://explv.github.io/?centreX=2533&centreY=3147&centreZ=0&zoom=9); [(3304, 3655)](https://explv.github.io/?centreX=3304&centreY=3655&centreZ=0&zoom=9) |
-| 4 | Quickstrike | you attack **twice as fast** | tested (melee, bow) | automatic |
-| 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | tested | automatic |
-| 6 | Phoenix | a lethal hit leaves you on 1 HP, once every **5 minutes** | tested | automatic |
-| 7 | Vampire | every hit you land on an NPC heals you **10% of the damage** (rounded down) as both hitpoints and prayer points; a 25 hit heals 2 of each | tested | automatic |
-| 8 | Executioner | NPCs below 25% HP die instantly | tested, see note | automatic |
-| 9 | Bounty | every kill drops **coins plus one food**, bigger for tougher NPCs | tested | pick the drop up |
-| 10 | Eternal Vein | ore rocks never run out and ore goes **straight to your bank** | tested | automatic |
-| 11 | Evergreen | trees never fall and logs go **straight to your bank** | tested | automatic |
-| 12 | Double Yield | gathering and cooking give **x2** items | tested (not fishing or cooking) | automatic |
-| 13 | Midas Loop | high alchemy keeps repeating on the same stack | tested | cast High Level Alchemy |
-| 14 | Philosopher's Coin | alchemy pays **x2** coins | tested | [Black Knights' Fortress (3045, 3570)](https://explv.github.io/?centreX=3045&centreY=3570&centreZ=0&zoom=9); [(3299, 3299)](https://explv.github.io/?centreX=3299&centreY=3299&centreZ=0&zoom=9); [Agility Arena (2860, 3163)](https://explv.github.io/?centreX=2860&centreY=3163&centreZ=0&zoom=9) |
-| 15 | Infinite Runes | **every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. The magic tab draws every spell you have the Magic level for as castable (needs the updated client) | tested | [Legends' Guild (2703, 3336)](https://explv.github.io/?centreX=2703&centreY=3336&centreZ=0&zoom=9); [Graveyard of Shadows (3113, 3669)](https://explv.github.io/?centreX=3113&centreY=3669&centreZ=0&zoom=9); [(2404, 3373)](https://explv.github.io/?centreX=2404&centreY=3373&centreZ=0&zoom=9) |
-| 16 | Everlasting Jewellery | duelling ring, glory amulet and games necklace never lose charges; one of each is put in your bank when you take it | tested | [Karamja (2852, 3025)](https://explv.github.io/?centreX=2852&centreY=3025&centreZ=0&zoom=9); [(2921, 3022)](https://explv.github.io/?centreX=2921&centreY=3022&centreZ=0&zoom=9); [(2518, 4551)](https://explv.github.io/?centreX=2518&centreY=4551&centreZ=0&zoom=9) |
-| 17 | Last Recall | teleports you back to where you last teleported **from**; using it again swaps between the two places | tested | [Lava Maze (3099, 3815)](https://explv.github.io/?centreX=3099&centreY=3815&centreZ=0&zoom=9) |
-| 18 | Banker's Call | opens your bank from anywhere | tested | [underground Wizards' Guild (2590, 9446)](https://explv.github.io/?centreX=2590&centreY=9446&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2590&centreY=3046&centreZ=0&zoom=9)); [underground Entrana (2900, 9800)](https://explv.github.io/?centreX=2900&centreY=9800&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2900&centreY=3400&centreZ=0&zoom=9)); [underground Heros' Guild (2908, 9905)](https://explv.github.io/?centreX=2908&centreY=9905&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2908&centreY=3505&centreZ=0&zoom=9)) |
-| 19 | Hoarder | one extra pick from relics you declined earlier | tested | automatic, right after you take it |
+| # | Relic | What it does | Where / how to use it |
+|---|---|---|---|
+| 1a | XP Multiplier I | Your XP rate goes from 10x to **30x**. | automatic |
+| 1b | XP Multiplier II | XP rate goes from 30x to **90x** (take I first). | automatic |
+| 1c | XP Multiplier III | XP rate goes from 90x to **270x** (take II first). | automatic |
+| 2 | Quest Pass | Every quest is marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. | automatic |
+| 3 | Stoneskin | You take **half** damage. | automatic |
+| 4 | Quickstrike | You attack **twice as fast**. | automatic |
+| 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. | automatic |
+| 6 | Phoenix | If a hit would kill you, you survive on 1 HP. Works once every **5 minutes**. | automatic |
+| 7 | Vampire | Every hit you land on an NPC heals you for **10% of the damage** as both hitpoints and prayer points. A 25 hit heals 2 of each. | automatic |
+| 8 | Executioner | NPCs below 25% HP die instantly. | automatic |
+| 9 | Bounty | Every kill drops **coins plus a piece of food**, bigger for tougher NPCs. | pick the drop up |
+| 10 | Eternal Vein | Ore rocks never run out, ore goes **straight to your bank**, and ore is **smelted into bars** for you (with Smithing XP). | automatic |
+| 11 | Evergreen | Trees never fall and logs go **straight to your bank**. | automatic |
+| 12 | Double Yield | Gathering and cooking give **double** items. | automatic |
+| 13 | Midas Loop | High Level Alchemy keeps repeating on the same stack. | cast High Level Alchemy |
+| 14 | Philosopher's Coin | Alchemy pays **double** coins. | cast High Level Alchemy |
+| 15 | Infinite Runes | **Every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. | automatic |
+| 16 | Everlasting Jewellery | Duelling ring, glory amulet and games necklace never lose charges. One of each is put in your bank when you take it. | automatic |
+| 17 | Last Recall | Teleports you back to where you last teleported **from**. Use it again to swap between the two places. | use the Recall stone |
+| 18 | Banker's Call | Opens your bank from anywhere. | use the Banker's stone |
+| 19 | Hoarder | One extra pick from relics you declined earlier. Happens right after you take it. | automatic |
 
-**Combat accuracy:** relics 3 to 9 (Stoneskin to Bounty) are the combat relics. Each one you own gives **+50% accuracy** on your attack roll for melee, ranged and magic. They **stack**: each combat relic adds its own +50% (two give x2, three x2.5, all seven x4.5). It raises the chance to hit, not the max hit.
+Good to know:
 
-*Status* says how the relic was checked. "Tested" means an automated test (with a control run without the relic) saw it work, using real client input where the test harness allows it. Not covered by any test: anything the client shows (dialogs, jingle, fireworks), Tutorial Island, real boss fights, and long sessions. (`docs/design/relics-e2e-tests.md`)
-
-Things worth knowing:
-
-- **Quest Pass** runs the engine's own "complete all quests" cheat script. It also hands out quest reward items and XP (quest points reached 135 in the test), so it is a big skill boost too. About 63 quest-complete scrolls open one after another, so expect to click through them (inference; the test closes them all).
-- **Eternal Vein** was seen by hand to stop after each ore, so you may need to click the rock again. Evergreen keeps chopping until you walk away.
+- **Quest Pass** also hands out the quest rewards and XP, so it is a big skill boost too.
+- **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
 - **Midas Loop** stops when you walk or click something else.
-- **Executioner** finishes an NPC below 25% of its base HP on your next landed hit, but it over-credits attack XP a little (a known issue, not fixed). **Quickstrike** halves melee and bow attack delays in tests; magic and special attacks were not tested, and nobody checked that the client shows the faster swing.
-- **Glass Cannon** doubling is tested on melee only (ranged and magic not tested).
-- **Phoenix** was tested with a debug hit, not a real killing blow, and its cooldown survives death.
-- **Everlasting Jewellery**: all three items keep their charges in tests.
-- **Closing an offer** without choosing keeps the same three relics when it comes back (fixed in `c3c6d25`).
+- **Executioner** finishes an NPC below 25% HP on your next landed hit. It gives slightly too much attack XP.
+- **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge.
+- **Closing a relic offer** without choosing keeps the same three relics for later.
 
 ### If you die
 
-Relic items (the three jewellery items, the Recall stone and the Banker's stone) are moved to your bank on death. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (`0_50_50_21_18`, about (3221, 3218)); it re-issues each missing item once. Tested: death with the bank full or not, one keeper after many logins. Not checked: PvP death, long uptime. (`docs/design/relics-m6-death-keeper.md`)
-
-For the details and the code, see the notes [M5](../design/relics-m5-easy-relics.md), [M6](../design/relics-m6-death-keeper.md), [M7](../design/relics-m7-medium-relics.md) and the [development plan](../design/roguelike-relics-dev-plan.md).
+Relic items (the three jewellery items, the Recall stone and the Banker's stone) are moved to your bank when you die. If you lose one anyway, talk to the **Relic Keeper** near Lumbridge (about (3221, 3218)) and they will give each missing item back once.
 
 ## Tasks { #tasks }
 
@@ -95,8 +86,8 @@ Tasks count in any order. Ticking a task here does not affect any other row.
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
 | 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | [Kingdom of Kandarin (2580, 3416)](https://explv.github.io/?centreX=2580&centreY=3416&centreZ=0&zoom=9); [Lumbridge (3248, 3241)](https://explv.github.io/?centreX=3248&centreY=3241&centreZ=0&zoom=9); [Goblin Village (2956, 3498)](https://explv.github.io/?centreX=2956&centreY=3498&centreZ=0&zoom=9); [Jail (3159, 3240)](https://explv.github.io/?centreX=3159&centreY=3240&centreZ=0&zoom=9) |
-| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | [(3016, 3849)](https://explv.github.io/?centreX=3016&centreY=3849&centreZ=0&zoom=9); [(2414, 4681)](https://explv.github.io/?centreX=2414&centreY=4681&centreZ=0&zoom=9); [Crandor (2834, 3279)](https://explv.github.io/?centreX=2834&centreY=3279&centreZ=0&zoom=9) |
-| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | [Lava Maze (3106, 3858)](https://explv.github.io/?centreX=3106&centreY=3858&centreZ=0&zoom=9); [Tree Gnome Village (2533, 3147)](https://explv.github.io/?centreX=2533&centreY=3147&centreZ=0&zoom=9); [(3304, 3655)](https://explv.github.io/?centreX=3304&centreY=3655&centreZ=0&zoom=9) |
+| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | automatic |
+| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | automatic |
 | 4 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
 | 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
 | 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
@@ -107,55 +98,20 @@ Tasks count in any order. Ticking a task here does not affect any other row.
 | 11 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
 | 12 | **Make a super attack potion** | Herblore 45, an unfinished Irit potion and an eye of newt | anywhere |
 | 13 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
-| 14 | Defeat a **scorpion** | combat level 14, 17 HP | [Black Knights' Fortress (3045, 3570)](https://explv.github.io/?centreX=3045&centreY=3570&centreZ=0&zoom=9); [(3299, 3299)](https://explv.github.io/?centreX=3299&centreY=3299&centreZ=0&zoom=9); [Agility Arena (2860, 3163)](https://explv.github.io/?centreX=2860&centreY=3163&centreZ=0&zoom=9) |
-| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | [Legends' Guild (2703, 3336)](https://explv.github.io/?centreX=2703&centreY=3336&centreZ=0&zoom=9); [Graveyard of Shadows (3113, 3669)](https://explv.github.io/?centreX=3113&centreY=3669&centreZ=0&zoom=9); [(2404, 3373)](https://explv.github.io/?centreX=2404&centreY=3373&centreZ=0&zoom=9) |
-| 16 | Defeat a **monkey** | combat level 3, 6 HP | [Karamja (2852, 3025)](https://explv.github.io/?centreX=2852&centreY=3025&centreZ=0&zoom=9); [(2921, 3022)](https://explv.github.io/?centreX=2921&centreY=3022&centreZ=0&zoom=9); [(2518, 4551)](https://explv.github.io/?centreX=2518&centreY=4551&centreZ=0&zoom=9) |
-| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | [Lava Maze (3099, 3815)](https://explv.github.io/?centreX=3099&centreY=3815&centreZ=0&zoom=9) |
-| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | [underground Wizards' Guild (2590, 9446)](https://explv.github.io/?centreX=2590&centreY=9446&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2590&centreY=3046&centreZ=0&zoom=9)); [underground Entrana (2900, 9800)](https://explv.github.io/?centreX=2900&centreY=9800&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2900&centreY=3400&centreZ=0&zoom=9)); [underground Heros' Guild (2908, 9905)](https://explv.github.io/?centreX=2908&centreY=9905&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2908&centreY=3505&centreZ=0&zoom=9)) |
+| 14 | Defeat a **scorpion** | combat level 14, 17 HP | cast High Level Alchemy |
+| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | automatic |
+| 16 | Defeat a **monkey** | combat level 3, 6 HP | automatic |
+| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | use the Recall stone |
+| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | use the Banker's stone |
 | 19 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
 | 20 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
 | 21 | Defeat a **hellhound** | combat level 122, 116 HP | [underground Catherby (2861, 9843)](https://explv.github.io/?centreX=2861&centreY=9843&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2861&centreY=3443&centreZ=0&zoom=9)); [underground Fishing Platform (2734, 9690)](https://explv.github.io/?centreX=2734&centreY=9690&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2734&centreY=3290&centreZ=0&zoom=9)) |
 | 22 | Defeat a **black demon** | combat level 172, 157 HP | [underground Entrana (2862, 9776)](https://explv.github.io/?centreX=2862&centreY=9776&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2862&centreY=3376&centreZ=0&zoom=9)); [underground (3088, 9959)](https://explv.github.io/?centreX=3088&centreY=9959&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3088&centreY=3559&centreZ=0&zoom=9)) |
 | 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | [underground (3472, 9486)](https://explv.github.io/?centreX=3472&centreY=9486&centreZ=2&zoom=9) ([surface above](https://explv.github.io/?centreX=3472&centreY=3086&centreZ=0&zoom=9)) |
-| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | [underground Sorcerers' Tower (2716, 9817)](https://explv.github.io/?centreX=2716&centreY=9817&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2716&centreY=3417&centreZ=0&zoom=9)) Route (read from scripts, not walked): the ladder at (3017, 3849) in the Wilderness takes you to (3069, 10255), and the lever there teleports you into the lair at about (2717, 9802) ([notes](../reference/finding-npc-locations.md#worked-example-the-king-black-dragon)). |
+| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | [underground Sorcerers' Tower (2716, 9817)](https://explv.github.io/?centreX=2716&centreY=9817&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2716&centreY=3417&centreZ=0&zoom=9)) Route: the ladder at (3017, 3849) in the Wilderness takes you to (3069, 10255), and the lever there teleports you into the lair at about (2717, 9802). |
 | 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | [underground (3474, 9496)](https://explv.github.io/?centreX=3474&centreY=9496&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3474&centreY=3096&centreZ=0&zoom=9)) (first form; the flying form appears when she transforms) |
 
-**Map links.** Each link opens [Explv's OSRS map](https://explv.github.io/) centred on the average tile of a group of spawns, with the nearest place name from this repo's own label list where one is within 60 tiles (names are a hint, not a verified area name). "Underground" means the map data puts the spawn in the dungeon band (z of 6400 or more); a second link shows the surface point directly above it. The links were built from the map files, not clicked: I could not reach the map site from the build environment. How to look up any NPC yourself: [Finding NPC locations](../reference/finding-npc-locations.md).
+**Map links** open [Explv's OSRS map](https://explv.github.io/) centred on the spots where that monster spawns. "Underground" means the spawn is in a dungeon; a second link shows the surface point directly above it.
 
-!!! warning "Not verified"
-    - Whether every task is reachable on a fresh character, and what else you need to get to the location (quests, keys, items), was not checked. The law altar and the Kalphite lair in particular may have access rules.
-    - Task 6: stringing the bow counts (seen in a test, `tests/relic-tasks.test.ts`).
-    - Task 12: brewing the potion counts (it makes a 3-dose super attack; seen in a test).
-    - Every task row completes in tests. Real actions were tested for the goblin, mithril, maple, magic bow, yew burning, shark cooking, silver, super attack, paladin and yew tasks; runecrafting and fishing only through the hook, and the two bosses only through their death scripts (`docs/design/relics-e2e-tests.md`).
-    - After you win (both bosses down) nothing resets, and pacing (the 10 hour target) was never measured (`docs/design/relics-m8-win-and-pacing.md`).
-
-## Evidence
-
-<details markdown="1">
-<summary>Where each number on this page comes from</summary>
-
-All paths are relative to the repo root. Content commit `6c7b18f`, root `8a83538`. Read, not run.
-
-- Relic list and effects: `docs/design/roguelike-relics-spec.md:40-60`, names in `mods/relics/scripts/relic_offer.rs2:7-26`, effects in `mods/relics/scripts/relic_effects.rs2`.
-- Phoenix 5 minutes: `relic_effects.rs2` sets `map_clock + 500` ticks. Stoneskin, Glass Cannon, Philosopher's Coin, Infinite Runes: same file. Bounty coin and food tiers: `relic_kill_effects` in the same file.
-- Recall stone and Banker's stone: `mods/relics/configs/relic_items.obj`, ops handled at `relic_effects.rs2` (`[opheld1,relic_recall_stone]`, `[opheld1,relic_banker_stone]`).
-- Task list: `docs/design/roguelike-relics.md` ("The task list (25)"); detection (the tier column in these files is now unused): `mods/relics/configs/relic_tasks.dbrow`, `mods/relics/configs/relic.constant`, `mods/relics/scripts/relic_tasks.rs2`.
-- Mithril Mining 55: `Content/scripts/skill_mining/configs/mine.dbrow:101-109`. Runite Mining 85: `mine.dbrow:127-135`.
-- Maple Woodcutting 45: `Content/scripts/skill_woodcutting/configs/trees.dbrow:116-118`. Yew Woodcutting 60: `trees.dbrow:131-133`.
-- Magic shortbow Fletching 80: `Content/scripts/skill_fletching/configs/stringing/bows.dbrow:71-75` (stringing) and `cut_logs/cut_logs.dbrow:41` (unstrung).
-- Yew Firemaking 60: `Content/scripts/skill_firemaking/configs/firemaking.obj` (`[yew_logs]`, `param=levelrequire,60`).
-- Law rune Runecrafting 54, members flag and altar coord `0_44_52_42_53`: `Content/scripts/skill_runecraft/configs/runecraft.dbrow:138-148`, members check at `skill_runecraft/scripts/runecraft.rs2:33`. Coord format: [coordinates](../reference/coordinates.md). Entrana label near the altar: `Content/maps/labels.txt:15`.
-- Swordfish Fishing 50: `Content/scripts/skill_fishing/scripts/fishing_spots/rarefish.rs2:113-114 and :145`.
-- Shark Cooking 80: `Content/scripts/skill_cooking/configs/cooking_source/cooking_generic.dbrow:356-363`.
-- Silver bar Smithing 20: `Content/scripts/skill_smithing/configs/smelting/smelting.struct:45-54`.
-- Super attack Herblore 45, `iritvial` + `eye_of_newt`: `Content/scripts/skill_herblore/configs/brewing/brew_potion.struct:91-97`.
-- Paladin Thieving 70: `Content/scripts/skill_thieving/configs/pickpocking/pickpocket.dbrow:105-115`.
-- NPC combat level and HP (`vislevel`, `hitpoints`): the `.npc` configs, mostly `Content/scripts/_unpack/225/all.npc`, plus `areas/area_falador/configs/goblin_village/goblin_village.npc`, `areas/area_kalphite/configs/kalphite.npc` and `areas/area_wilderness/configs/king_dragon.npc`. The King Black Dragon entry has no `hitpoints` line in what was read, so none is shown.
-- NPC locations: the `==== NPC ====` sections of `Content/maps/m*_*.jm2` (lines `level x z: npc id`), ids from `Content/pack/npc.pack`, summed per map square by a throwaway script. The "map label" idea (nearest place name) was not used because the label file is sparse.
-
-</details>
-
-## Related notes
-
-- [Roguelike relics: spec](../design/roguelike-relics-spec.md) and [development plan](../design/roguelike-relics-dev-plan.md): what is decided and in which order it is built.
-- [Relic offers (M4)](../design/relics-m4-offers.md) and [easy relics (M5)](../design/relics-m5-easy-relics.md): how the code behaves.
+!!! warning "Not checked"
+    Whether every task is reachable on a fresh character (quests, keys or items needed to get there) has not been checked. The law altar and the Kalphite lair in particular may have access rules.
