@@ -17,6 +17,6 @@ Replace `custom-sounds/chop_suey.mp3` or `halo_theme.mp3` (keep the name; `.ogg`
 
 - It follows the music volume in the Options tab and is silent when music is off. If it is too loud or quiet, change `CUSTOM_MUSIC_GAIN_DB` in `Client-TS/src/sound/CustomMusic.ts` (default -3 dB; not tuned by ear).
 - The music-tab buttons "Attack3" and "Insect Queen" play your recordings too, because the client swaps those two songs everywhere.
-- Leaving fades the recording out over 2 seconds. A level-up jingle cuts it, and it restarts from the start afterwards.
+- Leaving fades the recording out over 2 seconds. Jingles (level up, quest complete, death) are silenced while it plays, so the track carries on unbroken.
 - The recordings are about 6 MB together and every player downloads them once when the page loads (friends on a tunnel too). They are committed to the repo; remove them before making the repo public if you do not own the rights.
 - Low-memory mode has no music at all.
