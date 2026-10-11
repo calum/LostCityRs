@@ -62,7 +62,7 @@ function predictOffer(seed: number, owned: number, xpTier: number, declinedOnly 
     for (let n = 0; n < 3; n++) {
         const pool: number[] = [];
         for (let id = 1; id <= 29; id++) {
-            const exists = relicExists(id);
+            const exists = relicExists(id) && id !== 2; // Quest Pass (2) is never drawn: the 10th task done grants it (relic_in_pool)
             const eligible = exists && (id === 1 ? xpTier < 3 : (owned & bit(id)) === 0);
             const inMode = declinedOnly === -1 || (declinedOnly & bit(id)) !== 0;
             if (eligible && inMode && !drawn.includes(id)) pool.push(id);

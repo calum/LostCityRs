@@ -86,8 +86,9 @@ if (testbit(%relic_owned, $id) = ^true) {
 return(~relic_exists($id));
 
 // $mode 0: every eligible relic. $mode 1: only eligible relics the player declined earlier (Hoarder).
+// Quest Pass (2) is never drawn: it is granted only by the 10th task done (relic_task_done).
 [proc,relic_in_pool](int $id, int $drawn, int $mode)(int)
-if (~relic_eligible($id) = 0 | testbit($drawn, $id) = ^true) {
+if ($id = 2 | ~relic_eligible($id) = 0 | testbit($drawn, $id) = ^true) {
     return(0);
 }
 if ($mode = 1 & testbit(%relic_declined, $id) = ^false) {
@@ -281,13 +282,21 @@ if ($task = 24 | $task = 25) {
     } else {
         ~relic_say("A final boss is down. Defeat the other one to win.");
     }
+}
+// Special offers by tasks done. The 10th task done, whichever task it is, is the Quest Pass (if not owned): granted directly,
+// never earlier or later. Every 5th task done guarantees the XP Multiplier option. Final bosses owe no ordinary offer.
+def_int $count = ~relic_tasks_done_count;
+if ($count = 10 & testbit(%relic_owned, 2) = ^false) {
+    %relic_quest_owed = calc(%relic_quest_owed + 1);
+    %relic_pending = calc(%relic_pending + 1);
+    queue(relic_offer_q, 3, 0);
+    return;
+}
+if ($task = 24 | $task = 25) {
     return;
 }
 %relic_pending = calc(%relic_pending + 1);
-// Special offers by tasks done: the 10th (and every 10th after) is the Quest Pass if not owned yet, every other 5th guarantees the XP Multiplier option.
-if (calc(~relic_tasks_done_count % 10) = 0 & testbit(%relic_owned, 2) = ^false) {
-    %relic_quest_owed = calc(%relic_quest_owed + 1);
-} else if (calc(~relic_tasks_done_count % 5) = 0) {
+if (calc($count % 5) = 0) {
     %relic_xp_owed = calc(%relic_xp_owed + 1);
 }
 // Not shown here: a kill task completes inside npc_death while the npc is still swinging, and a melee npc's

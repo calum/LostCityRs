@@ -20,8 +20,8 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 1. **Do the tasks in any order**, including the bosses.
 2. **A task only counts once.**
 3. **Relics you turn down can come back** in later offers. If only 1 or 2 are left, you get just those. If none are left, the task still completes but there is no pick.
-4. **There are 21 pickable relics** (the XP Multiplier counts three times) for 23 offers, so the last offers of a full run are empty.
-5. **Guaranteed offers.** Your **10th finished task** gives you the **Quest Pass** relic straight away (no choice), if you do not have it yet. Every **5th finished task** (5, 15, 25, 35, and the 10th, 20th, 30th and 40th once you own Quest Pass) always has an **XP Multiplier** in its choice while you can still take one.
+4. **The pool runs out.** About 27 picks exist (the XP Multiplier counts three times), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
+5. **Two fixed rules.** Your **10th finished task** (whichever task it is) always gives you the **Quest Pass** straight away, with no choice. Quest Pass can never show up in an ordinary offer and you cannot get it earlier or later. Every **5th finished task** (5th, 15th, 20th, 25th, 30th, 35th) always has an **XP Multiplier** in its choice while you can still take one.
 6. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
 
 ## In-game menus { #menus }
@@ -48,7 +48,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 1a | XP Multiplier I | Your XP rate goes from 10x to **30x**. | automatic |
 | 1b | XP Multiplier II | XP rate goes from 30x to **90x** (take I first). | automatic |
 | 1c | XP Multiplier III | XP rate goes from 90x to **270x** (take II first). | automatic |
-| 2 | Quest Pass | Every quest is marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. | automatic |
+| 2 | Quest Pass | Every quest is marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. **Given only by your 10th finished task**, never offered. | automatic |
 | 3 | Stoneskin | You take **half** damage. | automatic |
 | 4 | Quickstrike | You attack **twice as fast**. | automatic |
 | 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. | automatic |

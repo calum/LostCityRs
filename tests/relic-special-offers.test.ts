@@ -80,3 +80,40 @@ test('the 10th task done with Quest Pass already owned: an ordinary offer that g
     waitOffer(bot);
     assert.ok(hasXp(bot));
 });
+
+test('Quest Pass is never in an ordinary offer (30 seeds, first-login offers)', t => {
+    if (skip()) return t.skip(String(skip()));
+    for (let seed = 1; seed <= 30; seed++) {
+        const bot = Bot.spawn({ varps: { relic_seed: seed * 2111 } });
+        waitOffer(bot);
+        assert.ok(!bot.choices.some(c => c.startsWith('Quest Pass')), `seed ${seed * 2111}: ${JSON.stringify(bot.choices)}`);
+    }
+});
+
+test('the 9th and 11th task done do not grant Quest Pass', t => {
+    if (skip()) return t.skip(String(skip()));
+    for (const [done, task] of [[0xff, 9], [0x3ff, 11]]) {
+        const bot = spawnAt(done, 5);
+        doTask(bot, task);
+        waitOffer(bot);
+        assert.equal(((bot.varp('relic_owned') as number) >> 2) & 1, 0);
+        assert.ok(!bot.choices.some(c => c.startsWith('Quest Pass')));
+    }
+});
+
+test('the 20th task done does not grant Quest Pass (only the 10th does); it guarantees the XP Multiplier', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = spawnAt(0x7ffff, 5); // 19 done
+    doTask(bot, 20);
+    waitOffer(bot);
+    assert.equal(((bot.varp('relic_owned') as number) >> 2) & 1, 0);
+    assert.ok(hasXp(bot));
+});
+
+test('the 10th task done grants Quest Pass even when that task is a final boss (no other offer)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = spawnAt(0x1ff, 5); // 9 done (tasks 1-9)
+    doTask(bot, 24);
+    bot.waitForMessage('You gained the relic: Quest Pass.', 30);
+    assert.equal(((bot.varp('relic_owned') as number) >> 2) & 1, 1);
+});
