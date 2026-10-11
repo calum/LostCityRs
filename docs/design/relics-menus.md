@@ -43,3 +43,8 @@ Every level-up adds one chat line `XP rate: 30x` (10x with no XP Multiplier) aft
 ## Room for 29 relics (2026-10-11)
 
 Both lists of the relic menu (`relic_relicmenu.if`) now sit in scrolling layers (`unlocked_list`, `available_list`, scroll 352) with 29 rows each (`relic_menus.enum`), and `relic_relicmenu_refresh` loops relic ids 1 to 29. Ids that are not relics yet are hidden by `relic_exists` (`relic_offer.rs2`; 20 was never used, 25 and up are reserved there until the skilling relics land and remove the hide). Relics 21-24 are in the pool and menu since 2026-10-11. Test: `tests/relic-menus.test.ts` (last test). Content pack ids `relic_relicmenu:unlocked_list`, `available_list`, `unlocked_20..29`, `available_20..29` are on the fork branch `skilling-tasks`. Not seen in a real client: the layer scroll (same mechanism as the task menu).
+
+
+## Task order (2026-10-11)
+
+The task menu lists tasks from easiest to hardest (lowest skill level or monster combat level first, the two compared as plain numbers; the two bosses last). The order is the enum `relic_task_order` (`relic_menus.enum`, position -> task number) read by `relic_taskmenu_refresh`; task numbers (and the bits in the varps) did not change, so the numbers shown are out of order. The player guide table uses the same order. Test: `tests/relic-menus.test.ts` (`TASK_ORDER`). Ties and the mix of skill and combat levels are a judgement call, not a computed difficulty.

@@ -93,49 +93,49 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone and
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. Tasks 26 to 39 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 39 each give a relic offer. Ticking a task here does not affect any other row.
+Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order. Tasks 26 to 39 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 39 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
 | 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | [Kingdom of Kandarin (2580, 3416)](https://explv.github.io/?centreX=2580&centreY=3416&centreZ=0&zoom=9); [Lumbridge (3248, 3241)](https://explv.github.io/?centreX=3248&centreY=3241&centreZ=0&zoom=9); [Goblin Village (2956, 3498)](https://explv.github.io/?centreX=2956&centreY=3498&centreZ=0&zoom=9); [Jail (3159, 3240)](https://explv.github.io/?centreX=3159&centreY=3240&centreZ=0&zoom=9) |
-| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | automatic |
-| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | automatic |
-| 4 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
-| 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
-| 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
-| 7 | **Burn a yew log** | Firemaking 60 and yew logs | anywhere you can light a fire |
-| 8 | **Craft a law rune** | Runecrafting 54, **members** world, a law talisman and essence | law altar around (2858, 3381), on Entrana |
-| 9 | **Harpoon a swordfish** | Fishing 50 and a harpoon | harpoon fishing spots |
-| 10 | **Cook a raw shark** | Cooking 80. The cooked shark counts, a burnt one does not | any fire or range |
-| 11 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
-| 12 | **Make a super attack potion** | Herblore 45, an unfinished Irit potion and an eye of newt | anywhere |
-| 13 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
-| 14 | Defeat a **scorpion** | combat level 14, 17 HP | cast High Level Alchemy |
-| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | automatic |
 | 16 | Defeat a **monkey** | combat level 3, 6 HP | automatic |
-| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | use the Recall stone |
-| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | use the Banker's stone |
-| 19 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
-| 20 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
-| 21 | Defeat a **hellhound** | combat level 122, 116 HP | [underground Catherby (2861, 9843)](https://explv.github.io/?centreX=2861&centreY=9843&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2861&centreY=3443&centreZ=0&zoom=9)); [underground Fishing Platform (2734, 9690)](https://explv.github.io/?centreX=2734&centreY=9690&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2734&centreY=3290&centreZ=0&zoom=9)) |
-| 22 | Defeat a **black demon** | combat level 172, 157 HP | [underground Entrana (2862, 9776)](https://explv.github.io/?centreX=2862&centreY=9776&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2862&centreY=3376&centreZ=0&zoom=9)); [underground (3088, 9959)](https://explv.github.io/?centreX=3088&centreY=9959&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3088&centreY=3559&centreZ=0&zoom=9)) |
-| 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | [underground (3472, 9486)](https://explv.github.io/?centreX=3472&centreY=9486&centreZ=2&zoom=9) ([surface above](https://explv.github.io/?centreX=3472&centreY=3086&centreZ=0&zoom=9)) |
-| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | [underground Sorcerers' Tower (2716, 9817)](https://explv.github.io/?centreX=2716&centreY=9817&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2716&centreY=3417&centreZ=0&zoom=9)) Route: the ladder at (3017, 3849) in the Wilderness takes you to (3069, 10255), and the lever there teleports you into the lair at about (2717, 9802). |
-| 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | [underground (3474, 9496)](https://explv.github.io/?centreX=3474&centreY=9496&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3474&centreY=3096&centreZ=0&zoom=9)) (first form; the flying form appears when she transforms) |
+| 14 | Defeat a **scorpion** | combat level 14, 17 HP | cast High Level Alchemy |
+| 11 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
+| 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | automatic |
+| 3 | Defeat a **giant** | combat level 28, 35 HP. There is no "Hill giant" NPC; the plain *Giant* counts | automatic |
 | 26 | **Mine a coal** | Mining 30 and a pickaxe. With Eternal Vein the coal goes to your bank as coal (it is never smelted on its own) | coal rocks, for example [near Seers' Village (2575, 3479)](https://explv.github.io/?centreX=2575&centreY=3479&centreZ=0&zoom=9) |
 | 27 | **Smelt a steel bar** | Smithing 30, one iron ore and two coal in a furnace (choose *steel bar* in the furnace menu). With Eternal Vein, mined iron ore already arrives as a steel bar and counts | any furnace |
-| 28 | **Smith an adamant platebody** | Smithing 88, five adamantite bars (smelted, or banked by Eternal Vein), a hammer and an anvil | any anvil |
-| 29 | **Smith a rune scimitar** | Smithing 90, two runite bars, a hammer and an anvil | any anvil |
 | 30 | **Catch a lobster** | Fishing 40 and a lobster pot. With Double Yield the lobster arrives cooked and still counts | lobster pot fishing spots |
-| 31 | **Mine an adamantite ore** | Mining 70 and a pickaxe | adamantite rocks, for example [Lumbridge Swamp (3242, 3165)](https://explv.github.io/?centreX=3242&centreY=3165&centreZ=0&zoom=9) |
-| 32 | **Make a yew longbow** | Fletching 70, an unstrung yew longbow and a bow string (use the string on the bow) | anywhere |
-| 33 | **Make rune darts** | Fletching 81, rune dart tips and feathers (use one on the other) | anywhere |
-| 34 | **Craft a green dragonhide body** | Crafting 63, 3 green dragon leather, a needle and thread, **members** world | anywhere |
 | 35 | **Cut a diamond** | Crafting 43, an uncut diamond and a chisel. A cut can fail and crush the gem, so bring a few | anywhere |
 | 36 | **Craft a nature rune** | Runecrafting 44, **members** world, a nature talisman and essence | nature altar |
-| 37 | **Craft a death rune** | Runecrafting 65, **members** world, a death talisman and essence | death altar |
-| 38 | **Cast High Level Alchemy** | Magic 55, 1 nature rune and 5 fire runes, and an item to alchemise (the item is used up) | anywhere |
+| 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
+| 12 | **Make a super attack potion** | Herblore 45, an unfinished Irit potion and an eye of newt | anywhere |
 | 39 | **Cast Camelot Teleport** | Magic 45, **members** world, 1 law rune and 5 air runes | anywhere |
+| 9 | **Harpoon a swordfish** | Fishing 50 and a harpoon | harpoon fishing spots |
+| 8 | **Craft a law rune** | Runecrafting 54, **members** world, a law talisman and essence | law altar around (2858, 3381), on Entrana |
+| 4 | **Mine a mithril ore** | Mining 55 and a pickaxe | mithril rocks |
+| 38 | **Cast High Level Alchemy** | Magic 55, 1 nature rune and 5 fire runes, and an item to alchemise (the item is used up) | anywhere |
+| 7 | **Burn a yew log** | Firemaking 60 and yew logs | anywhere you can light a fire |
+| 20 | **Chop a yew log** | Woodcutting 60 and an axe | yew trees |
+| 34 | **Craft a green dragonhide body** | Crafting 63, 3 green dragon leather, a needle and thread, **members** world | anywhere |
+| 37 | **Craft a death rune** | Runecrafting 65, **members** world, a death talisman and essence | death altar |
+| 13 | **Pickpocket a paladin** | Thieving 70. A failed attempt stuns and hurts you | paladins |
+| 31 | **Mine an adamantite ore** | Mining 70 and a pickaxe | adamantite rocks, for example [Lumbridge Swamp (3242, 3165)](https://explv.github.io/?centreX=3242&centreY=3165&centreZ=0&zoom=9) |
+| 32 | **Make a yew longbow** | Fletching 70, an unstrung yew longbow and a bow string (use the string on the bow) | anywhere |
+| 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | use the Recall stone |
+| 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
+| 10 | **Cook a raw shark** | Cooking 80. The cooked shark counts, a burnt one does not | any fire or range |
+| 33 | **Make rune darts** | Fletching 81, rune dart tips and feathers (use one on the other) | anywhere |
+| 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | automatic |
+| 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | [underground (3472, 9486)](https://explv.github.io/?centreX=3472&centreY=9486&centreZ=2&zoom=9) ([surface above](https://explv.github.io/?centreX=3472&centreY=3086&centreZ=0&zoom=9)) |
+| 19 | **Mine a runite ore** | Mining 85 and a pickaxe | runite rocks |
+| 28 | **Smith an adamant platebody** | Smithing 88, five adamantite bars (smelted, or banked by Eternal Vein), a hammer and an anvil | any anvil |
+| 29 | **Smith a rune scimitar** | Smithing 90, two runite bars, a hammer and an anvil | any anvil |
+| 18 | Defeat a **blue dragon** | combat level 111, 105 HP | use the Banker's stone |
+| 21 | Defeat a **hellhound** | combat level 122, 116 HP | [underground Catherby (2861, 9843)](https://explv.github.io/?centreX=2861&centreY=9843&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2861&centreY=3443&centreZ=0&zoom=9)); [underground Fishing Platform (2734, 9690)](https://explv.github.io/?centreX=2734&centreY=9690&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2734&centreY=3290&centreZ=0&zoom=9)) |
+| 22 | Defeat a **black demon** | combat level 172, 157 HP | [underground Entrana (2862, 9776)](https://explv.github.io/?centreX=2862&centreY=9776&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2862&centreY=3376&centreZ=0&zoom=9)); [underground (3088, 9959)](https://explv.github.io/?centreX=3088&centreY=9959&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3088&centreY=3559&centreZ=0&zoom=9)) |
+| 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | [underground Sorcerers' Tower (2716, 9817)](https://explv.github.io/?centreX=2716&centreY=9817&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2716&centreY=3417&centreZ=0&zoom=9)) Route: the ladder at (3017, 3849) in the Wilderness takes you to (3069, 10255), and the lever there teleports you into the lair at about (2717, 9802). |
+| 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | [underground (3474, 9496)](https://explv.github.io/?centreX=3474&centreY=9496&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3474&centreY=3096&centreZ=0&zoom=9)) (first form; the flying form appears when she transforms) |
 
 **Map links** open [Explv's OSRS map](https://explv.github.io/) centred on the spots where that monster spawns. "Underground" means the spawn is in a dungeon; a second link shows the surface point directly above it.
 
