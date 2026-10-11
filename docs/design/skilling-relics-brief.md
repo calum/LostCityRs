@@ -32,7 +32,7 @@ Note: with Eternal Vein, iron smelts to steel and gems/coal stay unsmelted (`rel
 4. **Fletcher's Echo**: fletching has a 50% chance of an extra product, banked, with XP.
 5. **Hunter's Haul**: NPC hide drops come as triple hides, auto-tanned, straight to the bank, plus 50% chance of a random uncut gem.
 6. **Rune Wellspring**: a talisman teleports to any runecrafting altar (widget). Every XP gain in any skill adds stackable Rune Essence Bundles to the inventory (bank if full); default 1 bundle per 100 XP gained. Using a bundle on an altar crafts 100 pure essence into runes at once.
-7. **Archmage**: spell damage x2, half cast time. Replaces Infinite Runes as the magic relic.
+7. **Archmage**: spell damage x2, half cast time, and a 50% chance each cast to not use up runes. Replaces Infinite Runes as the magic relic.
 8. **Endless Quiver**: ammo never used up, +50% attack roll and +50% damage (matches the combat relics).
 9. **Teleport Network**: opens a widget listing the main cities; clicking one teleports there. Replaces Infinite Runes' slot.
 
