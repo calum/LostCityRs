@@ -68,3 +68,18 @@ Each fix was made test first: the test failed for the expected reason, then pass
 **Infinite Runes sweep (2026-10-10, Content `0bd36bfa3`, root `c5da4f1`).** Every rune check goes through `[proc,check_spell_requirements]` and `[proc,staff_runes]` in `Content/scripts/skill_magic/scripts/magic.rs2`, which the `~relic_rune_count` hook zeroes (hook commit `30ede1e59`, 2026-10-10 16:10 UTC). `grep` found no other rune check: all 12 callers of `check_spell_requirements` (combat, pvp, autocast, crumble undead, alchemy, teleport, enchant, superheat, charge, charge orb, bones, telegrab) use it. The sweep test casts each spell from an empty backpack, with and without the relic; all pass. Not covered: Charge, Charge Orb and Telekinetic Grab (set-up needs the Mage Arena varp, an obelisk and a floor item), PvP magic. The client only greys the spell icon and shows rune counts in red (`Client-TS/src/client/Client.ts` `getIfActive`, callers at 10096-10252 and 10616 only draw); it does not stop a click.
 
 **Client display (Client-TS `a822635`).** `%relic_owned` is now `transmit=yes, clientcode=100` (`mods/relics/configs/relic.varp`). `Client.ts` `clientVar` sets `relicFreeRunes` from bit 15 and `getIfVar` opcode 4 reports infinite for `* rune` objects, so `getIfActive` treats the rune conditions as met. Verified: client typechecks (`tsc --noEmit`) and builds (`bun run build`); the varp flags are asserted by tests. Not verified: the actual drawing in a browser.
+
+## All relics at once (2026-10-11)
+
+Question: can every relic task still be completed when the player owns every relic? Method: ran (headless harness, Node 24.11.1), root `6a0d090`, Content `d2cd7531`.
+
+`tests/relic-all-relics.test.ts` (42 tests) spawns bots with `relic_owned` set to every bit found in `[proc,relic_name]` (`mods/relics/scripts/relic_offer.rs2`) and `relic_xp_tier = 3`, so relics added later are included automatically. It covers:
+
+- every row of `relic_tasks.dbrow` (kill rows through `::~relic_kill`, product rows through `::~relic_gather` with the relic argument the real site passes: mining 10, woodcutting 11, others 0), and asserts no offer opens (pool empty);
+- real flows with all relics: mithril rock, silver rock, maple, yew, burning a yew log, stringing a magic shortbow, brewing, smelting silver at a furnace, cooking a shark, pickpocketing a paladin, a melee goblin kill;
+- a check that every task number up to `^relic_task_count` has a table row or is in `HOOK_TASKS` (7 and 13 are hard-coded hooks);
+- one character completing every task, ending with all bits set. When a new task or relic lands, this test must still pass: add a driver if its task is not a table row.
+
+Bug found and fixed (failing test first): **task 11 (silver bar) could not be completed with Eternal Vein.** `~relic_gathered` (`mods/relics/scripts/relic_gather.rs2`) called `~relic_task_obj` only with the mined `silver_ore`, then replaced it with `silver_bar` and banked it; the ore never reaches the inventory to be smelted, so the bar row never fired. The bar is now also passed to `~relic_task_obj`. Mithril (task 4) and runite (task 19) were not affected: the task rows are keyed on the ore, which is checked first.
+
+Findings from writing it: winning (both final bosses) opens a message box, and while it is open later queued completions are held back, so the test completes tasks 24 and 25 last. Tests share one world, so each fire-lighting test uses its own tile. Not covered: a real runite rock and a real law-altar runecraft (hook level only), real fights against bosses with all relics.

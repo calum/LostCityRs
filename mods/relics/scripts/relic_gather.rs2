@@ -17,6 +17,8 @@ if ($relic = 10 & ~relic_has(10) = 1) {
 }
 if ($bar ! null) {
     $obj = $bar;
+    // the bar counts for product tasks too (task 11, silver bar): the ore never reaches the inventory to be smelted by hand
+    ~relic_task_obj($bar);
     // XP is the normal smelting XP of the bar (smelting.struct productexp), once per bar. No level or coal needed.
     stat_advance(smithing, multiply(struct_param(oc_param($bar, smelting_struct), productexp), $n));
 }
