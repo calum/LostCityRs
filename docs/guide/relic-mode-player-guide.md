@@ -51,7 +51,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 4 | Quickstrike | you attack **twice as fast** | tested (melee, bow) | automatic |
 | 5 | Glass Cannon | you deal **x2** damage to NPCs and take **x1.5** | tested | automatic |
 | 6 | Phoenix | a lethal hit leaves you on 1 HP, once every **5 minutes** | tested | automatic |
-| 7 | Vampire | you heal a little on **every kill** | tested | automatic |
+| 7 | Vampire | every hit you land on an NPC heals you **10% of the damage** (rounded down) as both hitpoints and prayer points; a 25 hit heals 2 of each | tested | automatic |
 | 8 | Executioner | NPCs below 25% HP die instantly | tested, see note | automatic |
 | 9 | Bounty | every kill drops **coins plus one food**, bigger for tougher NPCs | tested | pick the drop up |
 | 10 | Eternal Vein | ore rocks never run out and ore goes **straight to your bank** | tested | automatic |

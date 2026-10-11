@@ -45,7 +45,7 @@ E = easy (mod plus at most one hook line), M = medium. Hook sites are in the des
 | 4 | Quickstrike | attacks twice as fast | M |
 | 5 | Glass Cannon | damage dealt x2, taken x1.5 | E |
 | 6 | Phoenix | first lethal hit per 5-minute window leaves 1 HP | E |
-| 7 | Vampire | heal on every kill | E |
+| 7 | Vampire | heal 10% of damage dealt (rounded down) as hitpoints and prayer, per hit | E |
 | 8 | Executioner | NPCs below 25% HP die instantly | M |
 | 9 | Bounty | kills drop coins and supplies by NPC tier | E |
 | 10 | Eternal Vein | ore rocks never deplete and ore goes straight to the bank | M |

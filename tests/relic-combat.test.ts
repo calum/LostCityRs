@@ -294,44 +294,74 @@ test('Quickstrike halves the ranged interval (shortbow, attackrate default 4 -> 
 
 // ----------------------------------------------------------------------- 7 Vampire
 
-test('Vampire heals 1 + 10% of base HP on a kill (stat_heal(hitpoints,1,10)), capped at base', t => {
+/** Run give_combat_experience (called by every player-vs-npc hit with the damage actually dealt) as `bot` against `npc`. */
+function dealt(bot: Bot, npc: Npc, damage: number) {
+    callWithNpc(bot, 'give_combat_experience', npc, 0, damage, 1); // style 0 = ^style_melee_accurate
+}
+
+test('Vampire heals floor(10% of damage dealt) as hitpoints and prayer on each hit, capped at base', t => {
     if (skip()) return t.skip(String(skip()));
-    const plain = relicBot(SPOT.vampire, [], { hitpoints: 50 });
-    const vamp = relicBot(SPOT.vampire, [7], { hitpoints: 50 });
-    plain.debugproc('relic_hit', 30);
-    vamp.debugproc('relic_hit', 30);
-    assert.equal(vamp.stat('hitpoints'), 20);
-
-    // ::~relic_kill chicken: credits 10 hero points and runs the death queue (relic_debug.rs2).
-    plain.debugproc('relic_kill', 'chicken').tick(3);
-    vamp.debugproc('relic_kill', 'chicken').tick(3);
+    const plain = relicBot(SPOT.vampire, [], { hitpoints: 50, prayer: 50 });
+    const vamp = relicBot(SPOT.vampire, [7], { hitpoints: 50, prayer: 50 });
+    const npc = spawnNpc('giant', { x: SPOT.vampire.x + 3, z: SPOT.vampire.z });
+    vamp.tick();
+    for (const b of [plain, vamp]) {
+        b.player.levels[ids.stat('hitpoints')] = 20;
+        b.player.levels[ids.stat('prayer')] = 20;
+    }
+    dealt(plain, npc, 25);
+    dealt(vamp, npc, 25);
     assert.equal(plain.stat('hitpoints'), 20);
-    assert.equal(vamp.stat('hitpoints'), 26); // 20 + 1 + 50*10/100
+    assert.equal(plain.stat('prayer'), 20);
+    assert.equal(vamp.stat('hitpoints'), 22); // floor(25 / 10) = 2
+    assert.equal(vamp.stat('prayer'), 22);
 
-    // Base 99: 1 + 9 = 10. At 95 the heal caps at base.
-    const big = relicBot(SPOT.vampire, [7], { hitpoints: 99 });
-    big.debugproc('relic_hit', 4);
-    big.debugproc('relic_kill', 'chicken').tick(3);
-    assert.equal(big.stat('hitpoints'), 99);
+    dealt(vamp, npc, 9); // rounds down to 0
+    assert.equal(vamp.stat('hitpoints'), 22);
+    assert.equal(vamp.stat('prayer'), 22);
+    dealt(vamp, npc, 30);
+    assert.equal(vamp.stat('hitpoints'), 25);
+    assert.equal(vamp.stat('prayer'), 25);
+
+    // capped at base level
+    vamp.player.levels[ids.stat('hitpoints')] = 49;
+    vamp.player.levels[ids.stat('prayer')] = 49;
+    dealt(vamp, npc, 60);
+    assert.equal(vamp.stat('hitpoints'), 50);
+    assert.equal(vamp.stat('prayer'), 50);
+    retire(npc);
 });
 
-test('Vampire in real melee: killing a chicken heals the killer', t => {
+test('Vampire no longer heals on an npc death', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = relicBot(SPOT.vampire, [7], { attack: 99, strength: 99, defence: 99, hitpoints: 50 });
-    bot.debugproc('relic_hit', 30);
-    const chicken = spawnNpc('chicken', { x: SPOT.vampire.x + 2, z: SPOT.vampire.z });
+    const vamp = relicBot(SPOT.vampire, [7], { hitpoints: 50 });
+    vamp.debugproc('relic_hit', 30);
+    vamp.debugproc('relic_kill', 'chicken').tick(3); // ::~relic_kill: hero points + death queue, no hit through give_combat_experience
+    assert.equal(vamp.stat('hitpoints'), 20);
+});
+
+test('Vampire in real melee: each landed hit heals floor(damage / 10)', t => {
+    if (skip()) return t.skip(String(skip()));
+    // Glass Cannon (5) doubles the max hit so that a 10+ hit comes up quickly; its damage is what give_combat_experience sees.
+    const bot = relicBot(SPOT.vampire, [7, 5], { attack: 99, strength: 99, defence: 99, hitpoints: 99, prayer: 99 });
+    bot.player.levels[ids.stat('prayer')] = 10; // hitpoints stay full: the giant hits back
+    const giant = spawnNpc('giant', { x: SPOT.vampire.x + 2, z: SPOT.vampire.z });
     bot.tick();
-    bot.opNpc(chicken, 2);
-    let hpBefore = bot.stat('hitpoints');
-    bot.waitUntil(
-        () => {
-            if (chicken.levels[HP] > 0) hpBefore = bot.stat('hitpoints');
-            return chicken.levels[HP] === 0 && bot.stat('hitpoints') !== hpBefore;
-        },
-        100,
-        'the chicken to die and the heal'
-    );
-    assert.equal(bot.stat('hitpoints') - hpBefore, 6);
+    bot.opNpc(giant, 2);
+    // The giant loses hp two ticks after the hit (npc_queue(2, ...)); prayer is healed on the hit itself, so tick a few more after.
+    let last = giant.levels[HP];
+    let expected = 0;
+    for (let i = 0; i < 200 && expected < 3; i++) {
+        bot.tick();
+        const d = last - giant.levels[HP];
+        if (d > 0) expected += Math.floor(d / 10);
+        last = giant.levels[HP];
+    }
+    bot.tick(4);
+    last = giant.levels[HP];
+    assert.ok(expected > 0, 'expected at least one hit of 10+ damage');
+    assert.equal(bot.stat('prayer') - 10, expected); // giants do not drain prayer, so all of the change is Vampire
+    retire(giant);
 });
 
 // ----------------------------------------------------------------------- 8 Executioner

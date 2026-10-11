@@ -75,11 +75,17 @@ if (~pre_tele_checks(coord) = false) {
 [opheld1,relic_banker_stone]
 @openbank;
 
-// Called from relic_on_kill (npc_death hook) with the killer active. 7 Vampire heals, 9 Bounty drops coins and food by npc toughness.
-[proc,relic_kill_effects]
-if (~relic_has(7) = 1) {
-    stat_heal(hitpoints, 1, 10);
+// 7 Vampire, called from give_combat_experience (every player-vs-npc hit, with the damage actually dealt): heals floor(10%) of
+// it as hitpoints and as prayer points, capped at the base levels by stat_heal.
+[proc,relic_vampire](int $damage)
+if (~relic_has(7) = 1 & $damage >= 10) {
+    def_int $heal = calc($damage / 10);
+    stat_heal(hitpoints, $heal, 0);
+    stat_heal(prayer, $heal, 0);
 }
+
+// Called from relic_on_kill (npc_death hook) with the killer active. 9 Bounty drops coins and food by npc toughness.
+[proc,relic_kill_effects]
 if (~relic_has(9) = 1) {
     def_int $hp = npc_basestat(hitpoints);
     obj_add(npc_coord, coins, calc(5 + $hp * 3), ^lootdrop_duration);
