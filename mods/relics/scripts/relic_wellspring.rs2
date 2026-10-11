@@ -77,6 +77,10 @@ if (~relic_has(21) = 0) {
 ~relic_altarmenu_open;
 return(^true);
 
+// Option "Altars" of the talisman the relic grants (kept safe on death, re-issued by the Relic Keeper like the other relic items).
+[opheld1,relic_wellspring_talisman]
+~relic_altarmenu_open;
+
 [proc,relic_altarmenu_open]
 def_int $type = 1;
 def_dbrow $data = null;

@@ -28,6 +28,18 @@ model=inv_naturerune
 weight=0g
 iop1=Teleport
 
+[relic_wellspring_talisman]
+name=Wellspring talisman
+desc=Opens a list of runecrafting altars to teleport to.
+model=inv_runetalisman_air
+2dxof=2
+2dyof=20
+2dzoom=1160
+2dyan=160
+2dxan=352
+weight=0g
+iop1=Altars
+
 [relic_essence_bundle]
 name=Rune essence bundle
 desc=100 rune essence. Use it on a runecrafting altar.

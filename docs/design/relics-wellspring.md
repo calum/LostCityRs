@@ -8,6 +8,8 @@
 - **Bundle on an altar.** Using bundles on a runecrafting altar crafts every bundle in the backpack (up to 10,000 per use) at once: 100 essence each, same level check, runes per essence and XP as normal crafting. The crafting XP does not pay new bundles.
 - **Talisman Locate.** With the relic, the *Locate* op of any talisman (instead of the compass hint) opens a list of the 11 altars; a row teleports next to that altar (same place as holding its talisman to the ruins), with the normal teleport checks and a members-world check for members altars.
 
+- **Talisman granted.** Taking the relic also gives a *Wellspring talisman* (`relic_wellspring_talisman`, option "Altars") that opens the altar list at once, so no real talisman is needed. It is a relic item like the Recall stone: moved to the bank on death and re-issued by the Relic Keeper (`relic_death.rs2`). Tests: grant, option and Keeper in `tests/relic-wellspring.test.ts`, death in `tests/relic-death-win.test.ts`.
+
 ## Mechanism
 - Engine hook `Player.relicWellspring` (called from `Player.addXp` right after `this.stats[stat] += xp * multi`): if bit 21 of `%relic_owned` is set and the stat is not Runecrafting, it adds the gained tenths to perm varp `relic_wellspring_xp` and puts `[queue,relic_wellspring]` on the engine queue (once; the engine queue waits until the player can be accessed).
 - `[proc,relic_wellspring_claim]` (`mods/relics/scripts/relic_wellspring.rs2`) pays `owed / ^relic_wellspring_xp_per_bundle` bundles (constant 1000 tenths = 100 XP in `relic_wellspring.constant`). If neither backpack nor bank has room the XP stays owed.

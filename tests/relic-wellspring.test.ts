@@ -179,3 +179,29 @@ test('wellspring: the first row of the list is the air temple', t => {
     bot.clickButton('relic_altarmenu:row_1');
     bot.waitUntil(() => near(bot, AIR_TEMPLE), 20, 'teleport to the air temple');
 });
+
+test('wellspring: taking the relic gives a talisman whose option opens the altar list at once', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn();
+    bot.clearInv();
+    bot.debugproc('relic_grant', RELIC).tick(2);
+    assert.equal(bot.count('relic_wellspring_talisman'), 1);
+    bot.opHeld('relic_wellspring_talisman', 1);
+    bot.waitUntil(() => bot.mainModal === 'relic_altarmenu', 10, 'altar menu');
+    bot.clickButton('relic_altarmenu:row_1');
+    bot.waitUntil(() => near(bot, AIR_TEMPLE), 20, 'teleport to the air temple');
+});
+
+test('wellspring: the Relic Keeper replaces a lost talisman', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn();
+    bot.clearInv();
+    bot.debugproc('relic_grant', RELIC).tick(2);
+    bot.clearInv();
+    bot.teleport({ x: 3222, z: 3218, level: 0 }).tick(2);
+    bot.opNpc(bot.findNpc('relic_keeper', 20), 1);
+    bot.waitUntil(() => bot.inDialog, 30, 'the keeper to talk');
+    bot.skipDialog();
+    bot.waitUntilIdle(10);
+    assert.equal(bot.count('relic_wellspring_talisman'), 1);
+});

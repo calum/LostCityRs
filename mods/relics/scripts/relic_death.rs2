@@ -1,7 +1,7 @@
 // Death: relic items are moved to the bank instead of dropping (hook in death.rs2). The Relic Keeper in Lumbridge
 // re-issues any relic item the player has lost. Items are identified by exact object, so a ring bought elsewhere is an ordinary ring.
 
-// $id is the relic that owns the item: 16 jewellery, 17 recall stone, 18 banker's stone, 24 network stone.
+// $id is the relic that owns the item: 16 jewellery, 17 recall stone, 18 banker's stone, 24 network stone, 21 Wellspring talisman.
 [proc,relic_item_relic](obj $item)(int)
 if ($item = ring_of_dueling_8 | $item = amulet_of_glory_4 | $item = necklace_of_minigames_8) {
     return(16);
@@ -14,6 +14,9 @@ if ($item = relic_banker_stone) {
 }
 if ($item = relic_network_stone) {
     return(24);
+}
+if ($item = relic_wellspring_talisman) {
+    return(21);
 }
 return(0);
 
@@ -65,6 +68,9 @@ if (~relic_has(18) = 1) {
 }
 if (~relic_has(24) = 1) {
     $given = calc($given + ~relic_reissue(relic_network_stone));
+}
+if (~relic_has(21) = 1) {
+    $given = calc($given + ~relic_reissue(relic_wellspring_talisman));
 }
 if ($given > 0) {
     ~chatnpc("<p,happy>You had lost some of your relic items. I have replaced them.");

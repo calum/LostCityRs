@@ -150,6 +150,8 @@ if ($id = 16) {
     ~relic_give_item(relic_banker_stone);
 } else if ($id = 24) {
     ~relic_give_item(relic_network_stone);
+} else if ($id = 21) {
+    ~relic_give_item(relic_wellspring_talisman);
 } else if ($id = 2) {
     queue(relic_quest_pass, 0, 0);
 } else if ($id = 19) {
