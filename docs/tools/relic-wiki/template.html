@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Relic Mode – LostCityRS</title>
 <meta name="description" content="Relics, tasks and a progress tracker for the LostCityRS relic game mode.">
+<!-- The overview panel is hand-written; relics, tasks, the death note and the herblore hints come from the guide. -->
 <style>
 /* Styled after the OSRS Wiki (tan page, beige content panel, tan table headers, blue links, serif headings).
    Colours are from memory of that site, not copied from its CSS (the host was unreachable when this was written). */
@@ -79,19 +80,27 @@ footer{padding:1.5rem 0 2.5rem;color:var(--muted);border-top:1px solid var(--bor
 <div class="page">
 <header class="hero"><div class="wrap">
   <h1>Relic Mode</h1>
-  <p>Finish tasks, pick game-breaking relics, and slay the King Black Dragon and the Kalphite Queen. Your guide to all {{NRELICS}} relics and {{NTASKS}} tasks.</p>
+  <p>{{NRELICS}} relics, {{NTASKS}} tasks.</p>
 </div></header>
 
 <nav class="top"><div class="wrap">
-  <a href="#intro">How it works</a><a href="#relics">Relics</a><a href="#tasks">Tasks</a><a href="#notes">Notes</a>
+  <a href="#intro">Overview</a><a href="#relics">Relics</a><a href="#tasks">Tasks</a><a href="#notes">Notes</a>
   <span class="prog">Relics <b id="p-relics">0/{{NRELICS}}</b> · Tasks <b id="p-tasks">0/{{NTASKS}}</b></span>
 </div></nav>
 
 <section id="intro"><div class="wrap">
-  <h2>How it works</h2>
-  <div class="cols">
-    <div class="panel">{{INTRO}}{{RUN}}</div>
-    <div class="panel">{{MENUS}}</div>
+  <h2>Overview</h2>
+  <div class="panel">
+    <ul>
+      <li>Finish any of the <b>{{NTASKS}} tasks</b> for a pick of up to <b>3 random relics</b>. There are more tasks than relics, so choose your own path.</li>
+      <li>Kill the <b>King Black Dragon</b> and the <b>Kalphite Queen</b> (tasks 24 and 25) to finish the run. They give no relic.</li>
+      <li>You start with <b>10x XP</b> and unlimited run energy. The XP Multiplier relic triples your rate each time you take it: <b>30x, 90x, 270x</b>.</li>
+      <li>Failed skilling attempts get a second 50% roll. Combat is not affected.</li>
+      <li>Your <b>10th task</b> always gives <b>Quest Pass</b>. Every <b>5th task</b> offers an <b>XP Multiplier</b>.</li>
+      <li>Combat relics 3 to 9 each add <b>+50% accuracy</b> and stack.</li>
+      <li>With friends, everyone who hits a boss before it dies gets the kill.</li>
+      <li>Game Options tab (wrench): <b>Tasks</b> and <b>Relics</b> buttons show your progress.</li>
+    </ul>
   </div>
 </div></section>
 
@@ -103,15 +112,13 @@ footer{padding:1.5rem 0 2.5rem;color:var(--muted);border-top:1px solid var(--bor
     <span class="count" id="c-relics"></span>
     <button type="button" id="reset-relics">Reset relics</button>
   </div>
-  <p class="note">Tick a relic when you take it. Ticks are saved in this browser only.</p>
+  
   <div class="grid" id="grid-relics">{{RELIC_CARDS}}</div>
-  <div class="panel" style="margin-top:1.2rem">{{RELIC_AFTER}}</div>
   <div class="panel" style="margin-top:1rem"><h3>If you die</h3>{{DIE}}</div>
 </div></section>
 
 <section id="tasks"><div class="wrap">
   <h2>Tasks</h2>
-  <div class="panel" style="margin-bottom:1rem">{{TASK_BEFORE}}</div>
   <div class="tools">
     <input type="search" id="q-tasks" placeholder="Search tasks…" aria-label="Search tasks">
     <label><input type="checkbox" id="hide-tasks"> hide done</label>
@@ -127,7 +134,7 @@ footer{padding:1.5rem 0 2.5rem;color:var(--muted);border-top:1px solid var(--bor
 
 <section id="notes"><div class="wrap">
   <h2>Your notes</h2>
-  <p class="note">Declined relics, plans, anything. Saved in this browser only.</p>
+  <p class="note">Ticks and notes are saved in this browser only.</p>
   <textarea id="notes-box" rows="5" style="width:100%;font:inherit;background:var(--box);color:var(--text);border:1px solid var(--border);padding:.6rem" aria-label="Your notes"></textarea>
 </div></section>
 

@@ -102,6 +102,7 @@ def build():
     task_md = secs["Tasks"].replace('<div class="relic-tracker-bar" data-for="tasks"></div>', "")
     trows, trest = table_rows(task_md)
     task_before, task_after = trest.split("@@TABLE@@")
+    task_after = re.sub(r'^!!! warning "Not checked".*\Z', "", task_after, flags=re.M | re.S)
     tasks_html = task_rows(trows)
 
     page = (HERE / "template.html").read_text(encoding="utf-8")
