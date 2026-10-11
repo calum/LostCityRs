@@ -73,10 +73,10 @@ Each fix was made test first: the test failed for the expected reason, then pass
 
 Question: can every relic task still be completed when the player owns every relic? Method: ran (headless harness, Node 24.11.1), root `6a0d090`, Content `d2cd7531`.
 
-`tests/relic-all-relics.test.ts` (42 tests) spawns bots with `relic_owned` set to every bit found in `[proc,relic_name]` (`mods/relics/scripts/relic_offer.rs2`) and `relic_xp_tier = 3`, so relics added later are included automatically. It covers:
+`tests/relic-all-relics.test.ts` (43 tests) spawns bots with `relic_owned` set to every bit found in `[proc,relic_name]` (`mods/relics/scripts/relic_offer.rs2`) and `relic_xp_tier = 3`, so relics added later are included automatically. It covers:
 
 - every row of `relic_tasks.dbrow` (kill rows through `::~relic_kill`, product rows through `::~relic_gather` with the relic argument the real site passes: mining 10, woodcutting 11, others 0), and asserts no offer opens (pool empty);
-- real flows with all relics: mithril rock, silver rock, maple, yew, burning a yew log, stringing a magic shortbow, brewing, smelting silver at a furnace, cooking a shark, pickpocketing a paladin, a melee goblin kill;
+- the fishing hook (swordfish task 9, shark task 10, which Double Yield hands over cooked), and real flows with all relics: mithril rock, silver rock, maple, yew, burning a yew log, stringing a magic shortbow, brewing, smelting silver at a furnace, cooking a shark, pickpocketing a paladin, a melee goblin kill;
 - a check that every task number up to `^relic_task_count` has a table row or is in `HOOK_TASKS` (7 and 13 are hard-coded hooks);
 - one character completing every task, ending with all bits set. When a new task or relic lands, this test must still pass: add a driver if its task is not a table row.
 

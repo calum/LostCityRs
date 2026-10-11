@@ -97,6 +97,20 @@ for (const row of dbrows()) {
     });
 }
 
+// ---------------------------------------------------------------- fishing with Double Yield (fish arrive cooked)
+
+test('all relics: catching a swordfish (task 9) and a shark (task 10) through the fishing hook, which hands them over cooked', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = spawn();
+    bot.clearInv();
+    bot.debugproc('relic_fish', 'raw_swordfish'); // relic_debug.rs2: ~relic_fished, the call the four fishing.rs2 sites make
+    bot.waitUntil(() => isDone(bot, 9), 15, 'task 9');
+    bot.debugproc('relic_fish', 'raw_shark');
+    bot.waitUntil(() => isDone(bot, 10), 15, 'task 10');
+    expectDone(bot, 9);
+    expectDone(bot, 10);
+});
+
 // ---------------------------------------------------------------- mining with Eternal Vein (ore goes to the bank as a bar)
 
 // Was a bug: the task hook was only called with the ore, and Eternal Vein turns silver_ore into silver_bar
