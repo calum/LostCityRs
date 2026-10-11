@@ -63,7 +63,7 @@ if (p_finduid(uid) = false) {
 if (p_finduid(uid) = false) {
     return;
 }
-~relic_say("manual task <tostring($task)> tier <tostring(~relic_current_tier(0))> done mask <tostring(%relic_tasks_done)>");
+~relic_say("manual task <tostring($task)> tier <tostring(~relic_current_tier(0))> done mask <tostring(%relic_tasks_done)> / <tostring(%relic_tasks_done2)>");
 ~relic_task_try($task, 1);
 
 [debugproc,relic_tasks_reset]
@@ -71,6 +71,7 @@ if (p_finduid(uid) = false) {
     return;
 }
 %relic_tasks_done = 0;
+%relic_tasks_done2 = 0;
 ~relic_say("tasks reset");
 
 // ::~relic_spawn <npc> spawns a stationary npc one tile east of you (fight it to test kill tasks).
@@ -119,6 +120,7 @@ if (p_finduid(uid) = false) {
 %relic_owned = 0;
 %relic_declined = 0;
 %relic_tasks_done = 0;
+%relic_tasks_done2 = 0;
 %relic_xp_tier = 0;
 %relic_seed = 0;
 %relic_started = 0;
@@ -212,6 +214,14 @@ def_dbrow $data = db_findnext;
 if ($data ! null) {
     ~smithing_anvil($data, 1);
 }
+
+// ::~relic_leather <product> crafts one leather or dragonhide product as the crafting interface does after choosing it (Content leather.rs2
+// [label,craft_leather]): needs the leather, a needle and thread in the inventory.
+[debugproc,relic_leather](namedobj $o)
+if (p_finduid(uid) = false) {
+    return;
+}
+@craft_leather($o, 1);
 
 // ::~relic_fish <raw fish> runs the fishing hook as if the player had just caught it (no fishing XP; cooking XP with Double Yield).
 [debugproc,relic_fish](namedobj $o)

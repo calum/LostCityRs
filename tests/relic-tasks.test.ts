@@ -34,6 +34,7 @@ function tasksDone(bot: Bot): number {
 }
 
 function isDone(bot: Bot, task: number): boolean {
+    if (task >= 32) return ((((bot.varp('relic_tasks_done2') as number) >>> (task - 32)) & 1) === 1); // second varp, bit = task - 32
     return ((tasksDone(bot) >>> (task - 1)) & 1) === 1; // bit = task - 1 (relic_tasks.rs2:1)
 }
 
@@ -192,7 +193,12 @@ test('every relic_task_npc row: the real death script ([ai_queue3] via ::~relic_
         try {
             bot.waitUntil(() => isDone(bot, row.task), 15, `task ${row.task}`);
             bot.expectMessage(`Relic task ${row.task} complete!`);
-            assert.equal(tasksDone(bot), 1 << (row.task - 1), `${row.key} set only bit ${row.task - 1}`);
+            if (row.task >= 32) {
+                assert.equal(tasksDone(bot), 0);
+                assert.equal(bot.varp('relic_tasks_done2'), 1 << (row.task - 32), `${row.key} set only bit ${row.task - 32} of the second varp`);
+            } else {
+                assert.equal(tasksDone(bot), 1 << (row.task - 1), `${row.key} set only bit ${row.task - 1}`);
+            }
         } catch (e) {
             failed.push(`${row.name} (${row.key} -> task ${row.task}): ${(e as Error).message.split('\n')[0]}`);
         }
@@ -416,6 +422,6 @@ test('tasks count in any order: tier 3 and tier 2 tasks complete with no tier 1 
     assert.equal(bot.messages.filter(m => m.startsWith('You gained the relic:')).length, 4);
 });
 
-// ---------------------------------------------------------------- tasks 26-31 (skilling), no relics owned
+// ---------------------------------------------------------------- tasks 26-39 (skilling), no relics owned
 
 defineSkillingTaskTests('skilling tasks', spawn, skip);

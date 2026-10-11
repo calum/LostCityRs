@@ -232,10 +232,10 @@ if (inv_freespace(inv) > 0) {
 
 // The completion of a task: celebrate, then (tasks 24 and 25 are the finals, they owe no offer) owe an offer.
 [queue,relic_task_done](int $task)
-if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
+if (~relic_task_is_done($task) = 1) {
     return;
 }
-%relic_tasks_done = setbit(%relic_tasks_done, calc($task - 1));
+~relic_task_mark($task);
 ~relic_say("Relic task <tostring($task)> complete!");
 ~relic_celebrate;
 if ($task = 24 | $task = 25) {

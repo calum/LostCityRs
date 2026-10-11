@@ -77,8 +77,8 @@ test('all relics: every task number 1..count has a driver below or a table row',
     assert.deepEqual(missing, [], 'tasks with no table row and no entry in HOOK_TASKS');
 });
 
-/** Tasks that are hard-coded in script hooks, not table rows (relic_gather.rs2 relic_task_burn, relic_task_pickpocket). */
-const HOOK_TASKS = new Set([7, 13]);
+/** Tasks that are hard-coded in script hooks, not table rows (relic_gather.rs2 relic_task_burn, relic_task_pickpocket, relic_task_spell). */
+const HOOK_TASKS = new Set([7, 13, 38, 39]);
 
 // ---------------------------------------------------------------- table rows
 
@@ -262,9 +262,13 @@ test('all relics: every task, one after another on one character, ends with all 
     }
     bot.debugproc('relic_gather', 'silver_ore', 10);
     bot.tick(10);
-    // 7 and 13 are hook tasks (real sites are tested above): complete them with the debug proc
-    bot.debugproc('relic_task', 7).debugproc('relic_task', 13).tick(10);
-    // compare the full mask as signed 32-bit values (a 32-task mask would use the sign bit)
-    const full = (2 ** taskCount() - 1) | 0;
-    assert.equal(tasksDone(bot) | 0, full, `done ${(tasksDone(bot) >>> 0).toString(2)} of ${(full >>> 0).toString(2)}`);
+    // 7, 13, 38 and 39 are hook tasks (real sites are tested above): complete them with the debug proc
+    for (const task of [7, 13, 38, 39]) bot.debugproc('relic_task', task);
+    bot.tick(10);
+    // tasks 1-31 fill the first varp (bits 0-30), 32 and up the second (bit = task - 32)
+    const count = taskCount();
+    const full1 = (2 ** Math.min(count, 31) - 1) | 0;
+    assert.equal(tasksDone(bot) | 0, full1, `done ${(tasksDone(bot) >>> 0).toString(2)} of ${(full1 >>> 0).toString(2)}`);
+    const full2 = 2 ** (count - 31) - 1;
+    assert.equal(bot.varp('relic_tasks_done2'), full2, 'second varp');
 });

@@ -13,7 +13,13 @@ export function tasksDone(bot: Bot): number {
     return bot.varp('relic_tasks_done') as number;
 }
 
+/** Tasks 32 and up live in the second varp, bit = task - 32 (relic_tasks.rs2). */
+export function tasksDone2(bot: Bot): number {
+    return bot.varp('relic_tasks_done2') as number;
+}
+
 export function isDone(bot: Bot, task: number): boolean {
+    if (task >= 32) return ((tasksDone2(bot) >>> (task - 32)) & 1) === 1;
     return ((tasksDone(bot) >>> (task - 1)) & 1) === 1; // bit = task - 1 (relic_tasks.rs2:1)
 }
 

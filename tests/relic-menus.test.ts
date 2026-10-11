@@ -36,7 +36,7 @@ function hidden(bot: Bot, com: string): boolean | undefined {
     return out;
 }
 
-const taskRows = (bot: Bot) => Array.from({ length: 31 }, (_, i) => text(bot, `relic_taskmenu:row_${i + 1}`));
+const taskRows = (bot: Bot) => Array.from({ length: 39 }, (_, i) => text(bot, `relic_taskmenu:row_${i + 1}`));
 const shownTasks = (bot: Bot) => taskRows(bot).filter(r => r !== '');
 
 function openTasks(bot: Bot) {
@@ -79,22 +79,22 @@ test('the low detail settings tab has the same two buttons', t => {
     assert.equal(bot.mainModal, 'relic_relicmenu');
 });
 
-test('task menu: all 31 tasks listed with done and not done marks, and a count', t => {
+test('task menu: all 39 tasks listed with done and not done marks, and a count', t => {
     if (skip()) return t.skip(String(skip()));
     // tasks 1 (goblin) and 3 (giant) done: bits 0 and 2
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: bit(0) | bit(2) } });
     openTasks(bot);
     const rows = taskRows(bot);
-    assert.equal(rows.length, 31);
+    assert.equal(rows.length, 39);
     assert.ok(rows.every(r => r !== ''));
     assert.match(rows[0], /^@gre@\[x\] 1\. Defeat a goblin$/);
     assert.match(rows[1], /^@whi@\[ \] 2\. Defeat a lesser demon$/);
     assert.match(rows[2], /^@gre@\[x\] 3\. Defeat a giant$/);
     assert.match(rows[24], /^@whi@\[ \] 25\. Defeat the Kalphite Queen$/);
-    // the skilling tasks added after the two final bosses (26-31)
-    const skilling = ['Mine a coal', 'Smelt a steel bar', 'Smith an adamant platebody', 'Smith a rune scimitar', 'Catch a lobster', 'Mine an adamantite ore'];
+    // the skilling tasks added after the two final bosses (26-39)
+    const skilling = ['Mine a coal', 'Smelt a steel bar', 'Smith an adamant platebody', 'Smith a rune scimitar', 'Catch a lobster', 'Mine an adamantite ore', 'Make a yew longbow', 'Make rune darts', 'Make a green dragonhide body', 'Cut a diamond', 'Craft a nature rune', 'Craft a death rune', 'Cast High Level Alchemy', 'Cast Camelot Teleport'];
     skilling.forEach((name, i) => assert.equal(rows[25 + i], `@whi@[ ] ${26 + i}. ${name}`));
-    assert.match(text(bot, 'relic_taskmenu:summary'), /2 of 31/);
+    assert.match(text(bot, 'relic_taskmenu:summary'), /2 of 39/);
     assert.match(text(bot, 'relic_taskmenu:toggle'), /Hide completed: Off/);
 });
 
@@ -107,17 +107,17 @@ test('task menu: the toggle hides completed tasks and packs the rest to the top'
     assert.equal(bot.varp('relic_hide_done'), 1);
     assert.match(text(bot, 'relic_taskmenu:toggle'), /Hide completed: On/);
     const shown = shownTasks(bot);
-    assert.equal(shown.length, 29);
+    assert.equal(shown.length, 37);
     assert.match(shown[0], /^@whi@\[ \] 2\. Defeat a lesser demon$/);
     assert.match(shown[1], /^@whi@\[ \] 4\. /);
     assert.ok(shown.every(r => r.startsWith('@whi@')));
     // rows are packed: no empty row sits between two shown rows
     const rows = taskRows(bot);
-    assert.deepEqual(rows.slice(29), ['', '']);
+    assert.deepEqual(rows.slice(37), ['', '']);
     // toggling back shows everything again
     bot.clickButton('relic_taskmenu:toggle').tick();
     assert.equal(bot.varp('relic_hide_done'), 0);
-    assert.equal(shownTasks(bot).length, 31);
+    assert.equal(shownTasks(bot).length, 39);
 });
 
 test('task menu: the hide setting is remembered across relog', t => {
@@ -128,7 +128,7 @@ test('task menu: the hide setting is remembered across relog', t => {
     const again = bot.relog();
     assert.equal(again.varp('relic_hide_done'), 1);
     openTasks(again);
-    assert.equal(shownTasks(again).length, 30);
+    assert.equal(shownTasks(again).length, 38);
     assert.match(text(again, 'relic_taskmenu:toggle'), /Hide completed: On/);
 });
 

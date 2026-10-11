@@ -9,7 +9,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **31 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- There are **39 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
@@ -27,7 +27,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 31 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 39 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
 
@@ -93,7 +93,7 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone and
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. Tasks 26 to 31 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 31 each give a relic offer. Ticking a task here does not affect any other row.
+Tasks count in any order. Tasks 26 to 39 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 39 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
@@ -128,6 +128,14 @@ Tasks count in any order. Tasks 26 to 31 were added after the bosses, so the two
 | 29 | **Smith a rune scimitar** | Smithing 90, two runite bars, a hammer and an anvil | any anvil |
 | 30 | **Catch a lobster** | Fishing 40 and a lobster pot. With Double Yield the lobster arrives cooked and still counts | lobster pot fishing spots |
 | 31 | **Mine an adamantite ore** | Mining 70 and a pickaxe | adamantite rocks, for example [Lumbridge Swamp (3242, 3165)](https://explv.github.io/?centreX=3242&centreY=3165&centreZ=0&zoom=9) |
+| 32 | **Make a yew longbow** | Fletching 70, an unstrung yew longbow and a bow string (use the string on the bow) | anywhere |
+| 33 | **Make rune darts** | Fletching 81, rune dart tips and feathers (use one on the other) | anywhere |
+| 34 | **Craft a green dragonhide body** | Crafting 63, 3 green dragon leather, a needle and thread, **members** world | anywhere |
+| 35 | **Cut a diamond** | Crafting 43, an uncut diamond and a chisel. A cut can fail and crush the gem, so bring a few | anywhere |
+| 36 | **Craft a nature rune** | Runecrafting 44, **members** world, a nature talisman and essence | nature altar |
+| 37 | **Craft a death rune** | Runecrafting 65, **members** world, a death talisman and essence | death altar |
+| 38 | **Cast High Level Alchemy** | Magic 55, 1 nature rune and 5 fire runes, and an item to alchemise (the item is used up) | anywhere |
+| 39 | **Cast Camelot Teleport** | Magic 45, **members** world, 1 law rune and 5 air runes | anywhere |
 
 **Map links** open [Explv's OSRS map](https://explv.github.io/) centred on the spots where that monster spawns. "Underground" means the spawn is in a dungeon; a second link shows the surface point directly above it.
 

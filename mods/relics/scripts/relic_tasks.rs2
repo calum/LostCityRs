@@ -1,4 +1,4 @@
-// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tiers (1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25) are no longer enforced in v1, see relic_task_try. Tasks 26-31 (skilling) have no tier mask.
+// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tiers (1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25) are no longer enforced in v1, see relic_task_try. Tasks 26-39 (skilling) have no tier mask. Tasks 32 and up are stored in %relic_tasks_done2 (bit = task - 32).
 
 [proc,relic_current_tier](int $dummy)(int)
 if (and(%relic_tasks_done, ^relic_tier1_mask) ! ^relic_tier1_mask) {
@@ -16,7 +16,7 @@ return(4);
 // (Writing the varp here would fail: %relic_* varps need protected access and an npc death script has none.)
 [proc,relic_task_try](int $task, int $tier)
 // v1: no tier lock, any task can be done in any order ($tier is kept in the data but ignored).
-if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
+if (~relic_task_is_done($task) = 1) {
     return;
 }
 queue(relic_task_done, 0, $task);
@@ -52,4 +52,27 @@ def_dbrow $row = db_findnext;
 while ($row ! null) {
     ~relic_task_try(db_getfield($row, relic_task_obj:task, 0), db_getfield($row, relic_task_obj:tier, 0));
     $row = db_findnext;
+}
+
+// 1 if the task is done. Tasks 1-31 are bits 0-30 of %relic_tasks_done, tasks 32 and up are bits 0.. of %relic_tasks_done2.
+[proc,relic_task_is_done](int $task)(int)
+if ($task >= 32) {
+    return(testbit(%relic_tasks_done2, calc($task - 32)));
+}
+return(testbit(%relic_tasks_done, calc($task - 1)));
+
+// Sets the task's bit (the caller has protected access: the relic_task_done queue).
+[proc,relic_task_mark](int $task)
+if ($task >= 32) {
+    %relic_tasks_done2 = setbit(%relic_tasks_done2, calc($task - 32));
+} else {
+    %relic_tasks_done = setbit(%relic_tasks_done, calc($task - 1));
+}
+
+// Magic hooks (teleport.rs2, alchemy.rs2) after a successful cast. Task 38: High Level Alchemy. Task 39: Camelot Teleport.
+[proc,relic_task_spell](int $spell)
+if ($spell = ^highlvl_alchemy) {
+    ~relic_task_try(38, 3);
+} else if ($spell = ^camelot_teleport) {
+    ~relic_task_try(39, 3);
 }

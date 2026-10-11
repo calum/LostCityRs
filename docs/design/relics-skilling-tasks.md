@@ -1,4 +1,4 @@
-# Skilling tasks 26-31 (relic mode)
+# Skilling tasks 26-39 (relic mode)
 
 **Question this answers:** how were the seven skilling tasks added after the two final bosses, and what keeps them completable with every relic owned?
 
@@ -32,3 +32,21 @@
 
 - The anvil tests call `~smithing_anvil`, not the real interface click (the harness has no inventory-slot button). Fishing tests call the hook, not a real fishing spot (same as tasks 9 and 10).
 - No second varp yet: tasks beyond 32 (one bit, 32, is free) need `relic_tasks_done2`. See the proposals thread reply for the fletching, crafting, runecrafting and magic tasks awaiting Calum's pick.
+
+## Extra tasks 32-39 (Calum approved the whole list, 2026-10-11)
+
+| # | Task | Detected by | Level (Content config) |
+|---|---|---|---|
+| 32 | Make a yew longbow | existing `~relic_task_obj` in `bows.rs2` (stringing), row `yew_longbow` | Fletching 70 (`stringing` dbrow) |
+| 33 | Make rune darts | new `~relic_task_obj` in `darts.rs2`, row `rune_dart` | Fletching 81 |
+| 34 | Craft a green dragonhide body | new hook in the dragonhide branch of `craft_leather` (`leather.rs2`), row `dragonhide_body` | Crafting 63, 3 dragon leather |
+| 35 | Cut a diamond | new hook in `uncut_gem.rs2` (after the crush check), row `diamond` | Crafting 43 |
+| 36 | Craft a nature rune | existing hook in `runecraft.rs2` (`~relic_task_obj($rune)`), row `naturerune` | Runecrafting 44, members |
+| 37 | Craft a death rune | same, row `deathrune` | Runecrafting 65, members |
+| 38 | Cast High Level Alchemy | `~relic_task_spell` after the cast in `alchemy.rs2` (hook task, no row) | Magic 55 |
+| 39 | Cast Camelot Teleport | `~relic_task_spell` after `~give_spell_xp` in `teleport.rs2` (hook task, no row) | Magic 45, members |
+
+- **Second varp:** `%relic_tasks_done2` (`relic.varp`, id 372 in `Content/pack/varp.pack`). Tasks 1-31 are bits 0-30 of `%relic_tasks_done`; task N >= 32 is bit N-32 of `%relic_tasks_done2`. `[proc,relic_task_is_done]` and `[proc,relic_task_mark]` (`relic_tasks.rs2`) hide the split; the menu, `relic_task_try` and `[queue,relic_task_done]` use them. `::~relic_reset` and `::~relic_tasks_reset` clear both. Existing characters are unaffected (new perm varp starts at 0).
+- Task menu: rows 32-39 (`relic_taskmenu.if`, scroll 442 to 558).
+- Tests: `tests/relic-skilling-task-flows.ts` (both worlds): real stringing and dart making, `::~relic_leather` for the dragonhide label (the interface clicks are not driven), real chisel use on a diamond, real spell casts (OPHELDT for alchemy, the Camelot button), table rows for the two runes via the gather hook. Alchemy tests in `relic-skilling.test.ts` preset task 38 as done: finishing it opens a relic offer that would hold their dialogue.
+- Not checked: real altar runecrafting for 36 and 37 (the existing hook at `runecraft.rs2:99` is the one task 8 uses; the tests use the gather hook), the dragonhide interface clicks.

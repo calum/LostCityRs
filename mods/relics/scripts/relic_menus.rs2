@@ -59,6 +59,14 @@ switch_int ($n) {
     case 29 : return("Smith a rune scimitar");
     case 30 : return("Catch a lobster");
     case 31 : return("Mine an adamantite ore");
+    case 32 : return("Make a yew longbow");
+    case 33 : return("Make rune darts");
+    case 34 : return("Make a green dragonhide body");
+    case 35 : return("Cut a diamond");
+    case 36 : return("Craft a nature rune");
+    case 37 : return("Craft a death rune");
+    case 38 : return("Cast High Level Alchemy");
+    case 39 : return("Cast Camelot Teleport");
     case default : return("Unknown task");
 }
 
@@ -67,7 +75,7 @@ if_openmain(relic_taskmenu);
 if_setscrollpos(relic_taskmenu:list, 0);
 ~relic_taskmenu_refresh;
 
-// Fill the 31 rows: every task in order, or (hide completed on) only the open ones packed to the top.
+// Fill the 39 rows: every task in order, or (hide completed on) only the open ones packed to the top.
 [proc,relic_taskmenu_refresh]
 def_int $row = 0;
 def_int $done_count = 0;
@@ -75,7 +83,7 @@ def_int $n = 1;
 def_int $done = 0;
 def_component $com = null;
 while ($n <= ^relic_task_count) {
-    $done = testbit(%relic_tasks_done, calc($n - 1));
+    $done = ~relic_task_is_done($n);
     if ($done = ^true) {
         $done_count = calc($done_count + 1);
     }

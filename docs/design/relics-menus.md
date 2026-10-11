@@ -8,7 +8,7 @@
 
 The Game Options tab has two orange text buttons at the right of the "Split Private-chat" row, **Tasks** and **Relics** (`Content/scripts/interface_options/interfaces/options.if` and `options_ld.if`, components `relic_tasks`, `relic_relics`; Content commit `d61913385`). Each opens a full-size main interface.
 
-- **Relic Tasks** (`mods/relics/interfaces/relic_taskmenu.if`): "Tasks done: N of 31", a scrolling list of all 31 tasks (`@gre@[x] 1. Defeat a goblin` done, `@whi@[ ] 2. ...` open) and a toggle **Hide completed**. With it on, the done tasks are dropped and the open ones are packed to the top; the choice is stored in the perm varp `relic_hide_done` (`mods/relics/configs/relic.varp`) so it survives relog.
+- **Relic Tasks** (`mods/relics/interfaces/relic_taskmenu.if`): "Tasks done: N of 39", a scrolling list of all 39 tasks (`@gre@[x] 1. Defeat a goblin` done, `@whi@[ ] 2. ...` open) and a toggle **Hide completed**. With it on, the done tasks are dropped and the open ones are packed to the top; the choice is stored in the perm varp `relic_hide_done` (`mods/relics/configs/relic.varp`) so it survives relog.
 - **Relics** (`relic_relicmenu.if`): XP rate (`10 * 3^tier`, base from `^relic_base_xp` in `relic.constant`, which must match `node.xpRate` in `config/world.json`), the unlocked relics (green) with their effect, the relics not yet unlocked (yellow), and, only when `%relic_pending > 0`, "N relic choices waiting" with a **Choose a relic now** button. The XP Multiplier shows "now 30x" in the unlocked list and "next 90x" in the other until it is maxed.
 - Each menu has a link to the other (`Relics >`, `Tasks >`) and the usual Close Window.
 

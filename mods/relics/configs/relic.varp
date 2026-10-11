@@ -16,6 +16,9 @@ scope=perm
 [relic_tasks_done]
 scope=perm
 
+[relic_tasks_done2]
+scope=perm
+
 [relic_declined]
 scope=perm
 

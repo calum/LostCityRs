@@ -19,6 +19,9 @@ import OpHeldT from '../Engine-TS/src/network/game/client/model/OpHeldT.js';
 useVanillaWorld();
 
 // Al Kharid mine, south end: copper (copperrock) and tin rocks at 3296-3302,3314-3318 in this cache (read from the loaded map). Trees: the Lumbridge spawn (nearest normal tree about 30 tiles east).
+/** Task 38 (cast High Level Alchemy) already done: casting it must not open a relic offer in the alchemy tests. */
+const TASK_38 = 1 << 6;
+
 const MINE = { x: 3299, z: 3311, level: 0 };
 const ROCKS = ['copperrock1', 'copperrock2', 'tinrock1', 'tinrock2'];
 const ORES = ['copper_ore', 'tin_ore'];
@@ -248,7 +251,7 @@ test('double yield + evergreen with a FULL backpack: 2 logs still reach the bank
 // (high, alchemy.rs2:25) or scale(4, 10, cost) (low, alchemy.rs2:65); SCALE is a*c/b truncated by toInt32
 // (Engine-TS NumberOps.ts SCALE, ScriptState.pushInt). High 21, low 14; doubled 42 and 28.
 function alch(relics: number[], spell: 'highlvl_alchemy' | 'lowlvl_alchemy'): number {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger').give('naturerune', 1).give('firerune', 5);
     for (const r of relics) bot.debugproc('relic_grant', r);
     castOnHeld(bot, `magic:${spell}`, 'iron_dagger');
@@ -273,7 +276,7 @@ test("philosopher's coin: low alchemy pays 28 instead of 14 for an iron dagger",
 // ---------------------------------------------------------------- 13 Midas Loop
 
 test('midas loop control: without the relic one cast alchs one item', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger', 3).give('naturerune', 10).give('firerune', 50);
     castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
     bot.tick(20);
@@ -282,7 +285,7 @@ test('midas loop control: without the relic one cast alchs one item', () => {
 });
 
 test('midas loop: one cast keeps alching while the item remains, then stops', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger', 4).give('naturerune', 10).give('firerune', 50);
     bot.debugproc('relic_grant', 13);
     castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
@@ -298,7 +301,7 @@ test('midas loop: one cast keeps alching while the item remains, then stops', ()
 });
 
 test('midas loop: walking clears the weak queue and stops the loop', () => {
-    const bot = Bot.spawn({ levels: { magic: 99 } });
+    const bot = Bot.spawn({ levels: { magic: 99 }, varps: { relic_tasks_done2: TASK_38 } }); // task 38 done: its relic offer would hold the dialogue
     bot.clearInv().give('iron_dagger', 6).give('naturerune', 10).give('firerune', 50);
     bot.debugproc('relic_grant', 13);
     castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');

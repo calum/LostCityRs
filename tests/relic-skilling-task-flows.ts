@@ -1,13 +1,33 @@
-// Relic tasks 26-31 (the skilling tasks added after the two final bosses), driven through the real skilling scripts where
+// Relic tasks 26-39 (the skilling tasks added after the two final bosses), driven through the real skilling scripts where
 // that is cheap. Shared by relic-tasks.test.ts (no relics) and relic-all-relics.test.ts (every relic owned), so each task
 // is proven in both worlds: with Eternal Vein, Evergreen and Double Yield owned an ore turns into a bar before it reaches
 // the inventory, and a fish arrives cooked, so a task keyed on the item can silently stop firing.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
+import { ids } from '../harness/src/index.js';
 import type { Bot } from '../harness/src/index.js';
+import ClientGameProt from '../Engine-TS/src/network/game/client/ClientGameProt.js';
+import OpHeldT from '../Engine-TS/src/network/game/client/model/OpHeldT.js';
 import type { CoordLike } from '../harness/src/index.js';
 import { isDone, locNear, standNear } from './relic-helpers.js';
+
+/** Cast a spell on a backpack item (OPHELDT), as the client does. */
+function castOnHeld(bot: Bot, spell: string, obj: string) {
+    const objId = ids.obj(obj);
+    const invId = ids.inv('inv');
+    const listener = bot.player.invListeners.find(l => l && l.type === invId && l.source !== -1)!;
+    const inv = bot.player.getInventory(invId)!;
+    let slot = -1;
+    for (let i = 0; i < inv.capacity; i++) {
+        if (inv.hasAt(i, objId)) {
+            slot = i;
+            break;
+        }
+    }
+    assert.ok(slot >= 0, `no ${obj} in the backpack`);
+    bot.player.send('OPHELDT', ClientGameProt.OPHELDT, new OpHeldT(objId, slot, listener.com, ids.com(spell)));
+}
 
 export type SpawnFn = (levels?: Record<string, number>, at?: CoordLike) => Bot;
 
@@ -76,4 +96,73 @@ export function defineSkillingTaskTests(prefix: string, spawn: SpawnFn, skip: ()
             doneMsg(bot, task);
         });
     }
+
+    // ------------------------------------------------------------ tasks 32-39 (second varp)
+
+    test(`${prefix}: stringing a yew longbow completes task 32`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ fletching: 99 });
+        bot.clearInv().give('unstrung_yew_longbow').give('bow_string');
+        bot.useOnHeld('bow_string', 'unstrung_yew_longbow');
+        bot.waitUntil(() => isDone(bot, 32), 20, 'task 32');
+        doneMsg(bot, 32);
+    });
+
+    test(`${prefix}: making rune darts completes task 33`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ fletching: 99 });
+        bot.clearInv().give('rune_dart_tip', 10).give('feather', 10);
+        bot.useOnHeld('feather', 'rune_dart_tip');
+        bot.waitUntil(() => isDone(bot, 33), 20, 'task 33');
+        doneMsg(bot, 33);
+    });
+
+    test(`${prefix}: crafting a green dragonhide body completes task 34`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ crafting: 99 });
+        bot.clearInv().give('needle').give('thread', 5).give('dragon_leather', 3);
+        bot.debugproc('relic_leather', 'dragonhide_body'); // relic_debug.rs2: the craft_leather label the dragonhide interface ends in
+        bot.waitUntil(() => isDone(bot, 34), 30, 'task 34');
+        doneMsg(bot, 34);
+        assert.equal(bot.count('dragonhide_body'), 1);
+    });
+
+    test(`${prefix}: cutting a diamond completes task 35`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ crafting: 99 });
+        bot.clearInv().give('chisel').give('uncut_diamond', 5);
+        bot.useOnHeld('chisel', 'uncut_diamond');
+        for (let i = 0; i < 6 && !isDone(bot, 35); i++) bot.tick(6); // a cut can fail at low odds, retry
+        bot.waitUntil(() => isDone(bot, 35), 20, 'task 35');
+        doneMsg(bot, 35);
+    });
+
+    for (const [task, rune] of [[36, 'naturerune'], [37, 'deathrune']] as const) {
+        test(`${prefix}: the ${rune} product row completes task ${task}`, t => {
+            if (skip()) return t.skip(String(skip()));
+            const bot = spawn();
+            bot.clearInv();
+            bot.debugproc('relic_gather', rune, 0);
+            bot.waitUntil(() => isDone(bot, task), 15, `task ${task}`);
+            doneMsg(bot, task);
+        });
+    }
+
+    test(`${prefix}: casting High Level Alchemy completes task 38`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ magic: 99 });
+        bot.clearInv().give('naturerune', 5).give('firerune', 10).give('iron_dagger');
+        castOnHeld(bot, 'magic:highlvl_alchemy', 'iron_dagger');
+        bot.waitUntil(() => isDone(bot, 38), 20, 'task 38');
+        doneMsg(bot, 38);
+    });
+
+    test(`${prefix}: casting Camelot Teleport completes task 39`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = spawn({ magic: 99 });
+        bot.clearInv().give('lawrune', 5).give('airrune', 10);
+        bot.clickButton('magic:camelot_teleport');
+        bot.waitUntil(() => isDone(bot, 39), 20, 'task 39');
+        doneMsg(bot, 39);
+    });
 }
