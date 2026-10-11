@@ -132,30 +132,30 @@ test('task menu: a button jumps to the relic menu', t => {
     assert.equal(bot.mainModal, 'relic_taskmenu');
 });
 
-test('relic menu: nothing owned: XP rate 8x, empty unlocked list, all 19 available', t => {
+test('relic menu: nothing owned: XP rate 10x, empty unlocked list, all 19 available', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     openRelics(bot);
-    assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 8x/);
+    assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 10x/);
     assert.deepEqual(relicRows(bot, 'unlocked'), []);
     const available = relicRows(bot, 'available');
     assert.equal(available.length, 19);
     assert.match(available[0], /XP Multiplier/);
-    assert.match(available[0], /16x/, 'the XP Multiplier row names the next rate');
+    assert.match(available[0], /30x/, 'the XP Multiplier row names the next rate');
     assert.match(text(bot, 'relic_relicmenu:unlocked_title'), /\(0\)/);
     assert.match(text(bot, 'relic_relicmenu:available_title'), /\(19\)/);
 });
 
 test('relic menu: owned relics and the XP tier move to the unlocked list', t => {
     if (skip()) return t.skip(String(skip()));
-    // Stoneskin (3) and Phoenix (6), and XP Multiplier tier 2 (8x * 4 = 32x)
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_owned: bit(3) | bit(6), relic_xp_tier: 2, relic_xp_factor: 4 } });
+    // Stoneskin (3) and Phoenix (6), and XP Multiplier tier 2 (10x * 9 = 90x)
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_owned: bit(3) | bit(6), relic_xp_tier: 2, relic_xp_factor: 9 } });
     openRelics(bot);
-    assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 32x/);
+    assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 90x/);
     const unlocked = relicRows(bot, 'unlocked');
     assert.equal(unlocked.length, 3);
     assert.match(unlocked[0], /XP Multiplier/);
-    assert.match(unlocked[0], /32x/);
+    assert.match(unlocked[0], /90x/);
     assert.match(unlocked[1], /Stoneskin/);
     assert.match(unlocked[1], /half damage taken/);
     assert.match(unlocked[2], /Phoenix/);
@@ -163,15 +163,15 @@ test('relic menu: owned relics and the XP tier move to the unlocked list', t => 
     assert.equal(available.length, 17); // 19 - Stoneskin - Phoenix; XP Multiplier still has tier 3 to go
     assert.ok(!available.some(r => /Stoneskin|Phoenix/.test(r)));
     assert.match(available[0], /XP Multiplier/);
-    assert.match(available[0], /64x/);
+    assert.match(available[0], /270x/);
     assert.match(text(bot, 'relic_relicmenu:unlocked_title'), /\(3\)/);
 });
 
 test('relic menu: a maxed XP multiplier leaves the available list', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 3, relic_xp_factor: 8 } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 3, relic_xp_factor: 27 } });
     openRelics(bot);
-    assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 64x/);
+    assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 270x/);
     assert.equal(relicRows(bot, 'available').length, 18);
     assert.ok(!relicRows(bot, 'available').some(r => /XP Multiplier/.test(r)));
 });

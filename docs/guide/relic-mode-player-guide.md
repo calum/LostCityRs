@@ -5,10 +5,10 @@
 
 ## The run in one minute
 
-- You play a normal LostCityRS character (revision 274) with **8x XP** and **unlimited run energy**.
+- You play a normal LostCityRS character (revision 274) with **10x XP** and **unlimited run energy**.
 - Everyone also has a free **skilling second chance**: when a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails its success roll, it gets one more roll with a 50% chance to succeed. This makes bronze tools much less painful. Combat is not affected. It is a server setting (`node.skillingSecondChance`), see [settings](../setup/settings.md).
 - There are **25 tasks**. Finishing one plays fireworks and the level-up jingle, then offers you **a pick of up to 3 random relics**.
-- Relics are "game-breaking" perks (table below). One of them, the **XP Multiplier**, can be taken three times and lifts your XP rate to **16x, 32x, then 64x**.
+- Relics are "game-breaking" perks (table below). One of them, the **XP Multiplier**, can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - The last two tasks are the bosses: the **King Black Dragon** and the **Kalphite Queen**. Those two give no relic offer. Killing both is the end of the run.
 - The first offer comes when you first log in (after Tutorial Island, or at once if you skip it).
 
@@ -26,7 +26,7 @@ Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at 
 
 - **Tasks** lists all 25 tasks, green `[x]` when done. Click *Hide completed* to show only the open ones; the setting is remembered.
 - **Relics** shows your XP rate, the relics you have, and the relics you do not have yet. If you closed a relic choice by accident it says "relic choice waiting": click **Choose a relic now** and the same three relics come back, no relog needed.
-- Every level-up also prints your **XP rate** (for example "XP rate: 16x") in the chat.
+- Every level-up also prints your **XP rate** (for example "XP rate: 30x") in the chat.
 - Each menu has a link to the other one at the top.
 
 Seen working in a real browser client (high-detail tab). Details: [design/relics-menus.md](../design/relics-menus.md).
@@ -43,9 +43,9 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 
 | # | Relic | What it does | Status | How to use it |
 |---|---|---|---|---|
-| 1a | XP Multiplier I | XP rate 8x to **16x** | tested | automatic |
-| 1b | XP Multiplier II | XP rate 16x to **32x** (needs I) | tested | automatic |
-| 1c | XP Multiplier III | XP rate 32x to **64x** (needs II) | tested | automatic |
+| 1a | XP Multiplier I | XP rate 10x to **30x** | tested | automatic |
+| 1b | XP Multiplier II | XP rate 30x to **90x** (needs I) | tested | automatic |
+| 1c | XP Multiplier III | XP rate 90x to **270x** (needs II) | tested | automatic |
 | 2 | Quest Pass | every quest is marked complete | tested, see note | [(3016, 3849)](https://explv.github.io/?centreX=3016&centreY=3849&centreZ=0&zoom=9); [(2414, 4681)](https://explv.github.io/?centreX=2414&centreY=4681&centreZ=0&zoom=9); [Crandor (2834, 3279)](https://explv.github.io/?centreX=2834&centreY=3279&centreZ=0&zoom=9) |
 | 3 | Stoneskin | you take **half** the damage | tested | [Lava Maze (3106, 3858)](https://explv.github.io/?centreX=3106&centreY=3858&centreZ=0&zoom=9); [Tree Gnome Village (2533, 3147)](https://explv.github.io/?centreX=2533&centreY=3147&centreZ=0&zoom=9); [(3304, 3655)](https://explv.github.io/?centreX=3304&centreY=3655&centreZ=0&zoom=9) |
 | 4 | Quickstrike | you attack **twice as fast** | tested (melee, bow) | automatic |

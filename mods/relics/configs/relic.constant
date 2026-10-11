@@ -5,4 +5,4 @@
 ^relic_tier4_mask = 25165824
 ^relic_task_count = 25
 // engine base XP rate, node.xpRate in config/world.json (only used to show the rate in the relics menu)
-^relic_base_xp = 8
+^relic_base_xp = 10

@@ -63,7 +63,7 @@ What a bigger radius costs and what it cannot show (players and NPCs beyond 15 t
    - While the server runs, open `http://localhost:8898/setup` (`web.ts:323`), save, then restart.
    - With the server stopped, `mise run configure` runs `npm run setup` (`Engine-TS/src/setup.ts`), which serves the same page on the management port (`setup.ts:244`, URL built at `:275`).
 6. **Environment variables are ignored.** A legacy `Engine-TS/.env` is read only when `world.json` does not exist yet, and is then converted into `world.json` once (`WorldConfig.ts:311-316`). See [setup/local-setup-with-mise.md](local-setup-with-mise.md).
-7. **`mise run relics:config` overwrites the whole file** with this repo's `config/world.json` (`build.verify=false`, `node.xpRate=8`). It copies the file rather than merging, so any other keys you set are lost. Re-add them after running it.
+7. **`mise run relics:config` overwrites the whole file** with this repo's `config/world.json` (`build.verify=false`, `node.xpRate=10`). It copies the file rather than merging, so any other keys you set are lost. Re-add them after running it.
 
 ## Skilling second chance (on by default on this server)
 

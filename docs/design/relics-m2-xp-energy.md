@@ -15,3 +15,9 @@
 Other `addXp` callers with `allowMulti=false`; the cap logic at `Player.ts:1834-1836` with a 64x factor (not reached).
 
 **Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.
+
+## Update 2026-10-11: 10x base, x3 per tier
+
+Calum changed the numbers: base `node.xpRate` is now **10** (`config/world.json`, `^relic_base_xp = 10` in `mods/relics/configs/relic.constant`) and each XP Multiplier tier multiplies by **3** (`%relic_xp_factor = pow(3, %relic_xp_tier)` in `mods/relics/scripts/relic_state.rs2`; the menu figure `relic_xp_rate` in `relic_menus.rs2` uses `pow(3, $tier)`). Overall rates: 10x, 30x, 90x, 270x (factor 1, 3, 9, 27). The engine hook (`Player.ts:1831`) is unchanged. The sections above describe the earlier 8x/2x numbers.
+
+Existing characters keep their stored `relic_xp_factor` (1, 2, 4 or 8) until it is recomputed (the next XP Multiplier pick or `::~relic_setxp`); `::~relic_reset` and `::~relic_setxp N` recompute it. Tests changed: `relics`, `relic-levelup`, `relic-menus`, `relic-offers` (all updated first and failing on the old values). Run: 171 individual tests pass; the 14 failures are the known file-level worker-load errors, one per file.

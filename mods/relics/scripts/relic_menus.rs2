@@ -113,9 +113,9 @@ if ($id = 1) {
 }
 return(testbit(%relic_owned, $id));
 
-// XP rate shown for XP Multiplier tier $tier: engine base * 2^tier.
+// XP rate shown for XP Multiplier tier $tier: engine base * 3^tier.
 [proc,relic_xp_rate](int $tier)(int)
-return(calc(^relic_base_xp * pow(2, $tier)));
+return(calc(^relic_base_xp * pow(3, $tier)));
 
 [proc,relic_menu_line](int $id, int $have)(string)
 if ($id = 1) {

@@ -9,12 +9,12 @@
 The Game Options tab has two orange text buttons at the right of the "Split Private-chat" row, **Tasks** and **Relics** (`Content/scripts/interface_options/interfaces/options.if` and `options_ld.if`, components `relic_tasks`, `relic_relics`; Content commit `d61913385`). Each opens a full-size main interface.
 
 - **Relic Tasks** (`mods/relics/interfaces/relic_taskmenu.if`): "Tasks done: N of 25", a scrolling list of all 25 tasks (`@gre@[x] 1. Defeat a goblin` done, `@whi@[ ] 2. ...` open) and a toggle **Hide completed**. With it on, the done tasks are dropped and the open ones are packed to the top; the choice is stored in the perm varp `relic_hide_done` (`mods/relics/configs/relic.varp`) so it survives relog.
-- **Relics** (`relic_relicmenu.if`): XP rate (`8 * 2^tier`, base from `^relic_base_xp` in `relic.constant`, which must match `node.xpRate` in `config/world.json`), the unlocked relics (green) with their effect, the relics not yet unlocked (yellow), and, only when `%relic_pending > 0`, "N relic choices waiting" with a **Choose a relic now** button. The XP Multiplier shows "now 16x" in the unlocked list and "next 32x" in the other until it is maxed.
+- **Relics** (`relic_relicmenu.if`): XP rate (`10 * 3^tier`, base from `^relic_base_xp` in `relic.constant`, which must match `node.xpRate` in `config/world.json`), the unlocked relics (green) with their effect, the relics not yet unlocked (yellow), and, only when `%relic_pending > 0`, "N relic choices waiting" with a **Choose a relic now** button. The XP Multiplier shows "now 30x" in the unlocked list and "next 90x" in the other until it is maxed.
 - Each menu has a link to the other (`Relics >`, `Tasks >`) and the usual Close Window.
 
 ## XP rate on level-up
 
-Every level-up adds one chat line `XP rate: 16x` (8x with no XP Multiplier) after the "Congratulations" line. Hook: one line in `Content/scripts/levelup/scripts/levelup.rs2` (`~relic_levelup_note`, Content `8535c3ee6`), proc in `relic_menus.rs2`, tests in `tests/relic-levelup.test.ts` (3, all pass; suite 165). It uses the same `8 * 2^tier` figure as the menu. Not checked in a real client.
+Every level-up adds one chat line `XP rate: 30x` (10x with no XP Multiplier) after the "Congratulations" line. Hook: one line in `Content/scripts/levelup/scripts/levelup.rs2` (`~relic_levelup_note`, Content `8535c3ee6`), proc in `relic_menus.rs2`, tests in `tests/relic-levelup.test.ts` (3, all pass; suite 165). It uses the same `10 * 3^tier` figure as the menu. Not checked in a real client.
 
 ## How it works (all in `mods/relics/scripts/relic_menus.rs2` unless noted)
 

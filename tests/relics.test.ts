@@ -29,12 +29,12 @@ test('XP tier multiplies stat_advance (engine hook in Player.addXp)', t => {
     const boosted = Bot.spawn({ varps: { relic_started: 1 } });
 
     boosted.debugproc('relic_setxp', 3);
-    boosted.expectMessage('xp tier 3 factor 8');
+    boosted.expectMessage('xp tier 3 factor 27');
 
     plain.debugproc('relic_xptest');
     boosted.debugproc('relic_xptest');
     assert.ok(plain.xp('fletching') > 0);
-    assert.equal(boosted.xp('fletching'), plain.xp('fletching') * 8);
+    assert.equal(boosted.xp('fletching'), plain.xp('fletching') * 27);
 });
 
 test('bot.choices lists only the open dialog when one script asks twice (two pending offers)', t => {

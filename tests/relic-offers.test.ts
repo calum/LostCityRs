@@ -153,7 +153,7 @@ test('picking XP Multiplier on the first offer raises the tier instead of an own
     pick(bot, 'XP Multiplier');
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_xp_tier'), 1);
-    assert.equal(bot.varp('relic_xp_factor'), 2);
+    assert.equal(bot.varp('relic_xp_factor'), 3);
     assert.equal(bot.varp('relic_owned'), 0);
     assert.equal((bot.varp('relic_declined') as number) & bit(1), 0);
 });
@@ -286,7 +286,7 @@ test('owned relics are never offered', t => {
 test('pool shrinking: two left gives two options, one left gives "No thanks", none left gives no dialog', t => {
     if (skip()) return t.skip(String(skip()));
     // XP tier 3 removes XP Multiplier from the pool (relic_eligible)
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 9, relic_xp_tier: 3, relic_xp_factor: 8, relic_owned: ownedExcept(11, 18) } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 9, relic_xp_tier: 3, relic_xp_factor: 27, relic_owned: ownedExcept(11, 18) } });
 
     bot.debugproc('relic_offer');
     waitForOffer(bot);
@@ -321,14 +321,14 @@ test('pool shrinking: two left gives two options, one left gives "No thanks", no
 
 test('XP Multiplier is offered until tier 3, then never', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 3, relic_owned: ALL_BITS, relic_xp_tier: 2, relic_xp_factor: 4 } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 3, relic_owned: ALL_BITS, relic_xp_tier: 2, relic_xp_factor: 9 } });
     bot.debugproc('relic_offer');
     waitForOffer(bot);
-    assert.deepEqual(choiceTexts(bot), ['XP Multiplier: XP rate doubles', 'No thanks']);
+    assert.deepEqual(choiceTexts(bot), ['XP Multiplier: XP rate triples', 'No thanks']);
     pick(bot, 'XP Multiplier');
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_xp_tier'), 3);
-    assert.equal(bot.varp('relic_xp_factor'), 8);
+    assert.equal(bot.varp('relic_xp_factor'), 27);
 
     bot.debugproc('relic_offer');
     bot.tick(3);
@@ -336,7 +336,7 @@ test('XP Multiplier is offered until tier 3, then never', t => {
     assert.equal(bot.varp('relic_pending'), 0);
 });
 
-test('XP Multiplier grants: each raises the tier and sets factor 2^tier', t => {
+test('XP Multiplier grants: each raises the tier and sets factor 3^tier', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     assert.equal(bot.varp('relic_xp_tier'), 0);
@@ -344,14 +344,14 @@ test('XP Multiplier grants: each raises the tier and sets factor 2^tier', t => {
         bot.debugproc('relic_grant', 1);
         bot.expectMessage('You gained the relic: XP Multiplier.');
         assert.equal(bot.varp('relic_xp_tier'), tier);
-        assert.equal(bot.varp('relic_xp_factor'), 2 ** tier);
+        assert.equal(bot.varp('relic_xp_factor'), 3 ** tier);
     }
     assert.equal(bot.varp('relic_owned'), 0);
 });
 
-test('XP tiers 1 and 2 give 2x and 4x the XP of tier 0 for the same stat_advance', t => {
+test('XP tiers 1 and 2 give 3x and 9x the XP of tier 0 for the same stat_advance', t => {
     if (skip()) return t.skip(String(skip()));
-    // tier 3 (8x) is covered in tests/relics.test.ts
+    // tier 3 (270x) is covered in tests/relics.test.ts
     const plain = Bot.spawn({ varps: { relic_started: 1 } });
     const t1 = Bot.spawn({ varps: { relic_started: 1 } });
     const t2 = Bot.spawn({ varps: { relic_started: 1 } });
@@ -360,14 +360,14 @@ test('XP tiers 1 and 2 give 2x and 4x the XP of tier 0 for the same stat_advance
 
     for (const b of [plain, t1, t2]) b.debugproc('relic_xptest'); // stat_advance(fletching, 1000)
     assert.ok(plain.xp('fletching') > 0);
-    assert.equal(t1.xp('fletching'), plain.xp('fletching') * 2);
-    assert.equal(t2.xp('fletching'), plain.xp('fletching') * 4);
+    assert.equal(t1.xp('fletching'), plain.xp('fletching') * 3);
+    assert.equal(t2.xp('fletching'), plain.xp('fletching') * 9);
 });
 
-test('XP tier 2 gives 4x prayer XP for burying bones (a real skill action)', t => {
+test('XP tier 2 gives 9x prayer XP for burying bones (a real skill action)', t => {
     if (skip()) return t.skip(String(skip()));
     const plain = Bot.spawn({ varps: { relic_started: 1 } });
-    const boosted = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 2, relic_xp_factor: 4 } });
+    const boosted = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 2, relic_xp_factor: 9 } });
     for (const b of [plain, boosted]) {
         const before = b.xp('prayer');
         b.clearInv().give('bones');
@@ -376,13 +376,13 @@ test('XP tier 2 gives 4x prayer XP for burying bones (a real skill action)', t =
         b.waitUntil(() => b.xp('prayer') > before, 5, 'prayer xp');
     }
     assert.ok(plain.xp('prayer') > 0);
-    assert.equal(boosted.xp('prayer'), plain.xp('prayer') * 4);
+    assert.equal(boosted.xp('prayer'), plain.xp('prayer') * 9);
 });
 
 test('Hoarder opens a second offer drawn only from declined relics; the pick leaves the declined set', t => {
     if (skip()) return t.skip(String(skip()));
     // pool is exactly {3, 4, 19}: everything else owned and XP at tier 3
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 11, relic_xp_tier: 3, relic_xp_factor: 8, relic_owned: ownedExcept(3, 4, 19) } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 11, relic_xp_tier: 3, relic_xp_factor: 27, relic_owned: ownedExcept(3, 4, 19) } });
     bot.debugproc('relic_offer');
     waitForOffer(bot);
     assert.deepEqual([...offeredIds(bot)].sort((a, b) => a - b), [3, 4, 19]);
@@ -410,7 +410,7 @@ test('Hoarder second offer skips declined relics that are owned since, and offer
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 2, relic_owned: bit(5), relic_declined: bit(1) | bit(5) } });
     bot.debugproc('relic_grant', 19);
     waitForOffer(bot);
-    assert.deepEqual(choiceTexts(bot), ['XP Multiplier: XP rate doubles', 'No thanks']);
+    assert.deepEqual(choiceTexts(bot), ['XP Multiplier: XP rate triples', 'No thanks']);
     pick(bot, 'XP Multiplier');
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_xp_tier'), 1);

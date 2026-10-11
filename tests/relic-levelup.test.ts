@@ -11,19 +11,19 @@ useWorld();
 const skip = () => (hasVarp('relic_started') ? false : 'relic mod not loaded');
 
 // ::~relic_xptest advances 1000 xp in fletching (a level-up at every tier), see relic_debug.rs2
-test('a level-up says the XP rate: 8x with no XP Multiplier', t => {
+test('a level-up says the XP rate: 10x with no XP Multiplier', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     bot.debugproc('relic_xptest').tick(2);
     bot.expectMessage(/Congratulations.*Fletching/i);
-    bot.expectMessage('XP rate: 8x');
+    bot.expectMessage('XP rate: 10x');
 });
 
 test('a level-up says the raised XP rate with the XP Multiplier', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 2, relic_xp_factor: 4 } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 2, relic_xp_factor: 9 } });
     bot.debugproc('relic_xptest').tick(2);
-    bot.expectMessage('XP rate: 32x');
+    bot.expectMessage('XP rate: 90x');
 });
 
 test('no level-up, no XP rate line', t => {

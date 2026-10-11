@@ -28,7 +28,7 @@ switch_int ($id) {
 
 [proc,relic_desc](int $id)(string)
 switch_int ($id) {
-    case 1 : return("XP rate doubles");
+    case 1 : return("XP rate triples");
     case 2 : return("all quests complete");
     case 3 : return("half damage taken, +50% accuracy");
     case 4 : return("attack twice as fast, +50% accuracy");
