@@ -24,5 +24,6 @@ huntall(coord, ^relic_fellowship_radius, 0);
 while (huntnext = true) {
     if (uid ! $self) {
         stat_heal(hitpoints, $share, 0);
+        spotanim_pl(relic_fellowship_heal, 0, 0);
     }
 }

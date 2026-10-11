@@ -50,6 +50,8 @@ Hooks live on `main` of each fork (fast-forwarded from the former `relic-mode` b
 | Endless Quiver | Content | `player_combat.rs2` (`[proc,player_attack_roll_specific]`) | `~relic_accuracy(roll)` becomes `~relic_accuracy(roll, $damagetype)`; ranged attacks get another +50% with relic 23 | same |
 
 | Fellowship | Engine-TS | `src/engine/entity/Player.ts` (`addXp` 4th parameter `shared`, new `relicFellowship`, constants `RELIC_FELLOWSHIP_*`) | shares 50% of an owner's XP gain with players within 5 tiles. Test: `tests/relic-fellowship.test.ts` | `a5d259ac` |
+| Fellowship glow | Engine-TS | `src/engine/entity/Player.ts` (`relicFellowshipGlow`, `relicGlowTick`, `RELIC_FELLOWSHIP_GLOW_TICKS`) | gold spotanim on a receiver of shared XP | `cfd025fe` |
+| Fellowship glow | Content | `pack/spotanim.pack` | pack ids 313-314 | `589afed39` |
 | Fellowship | Content | `scripts/player/scripts/consumption/effects/scripts/consume_effects.rs2` (`[proc,consume_effect_apply]`, after the stat-heal loop), `pack/interface.pack`, `pack/interface.order` | `~relic_fellowship_heal($hitpoints); // relic hook`; pack ids 11192-11193 for relic menu row 30 | `d1d052a46` |
 
 Not a code hook: `config/world.json` (copied to `Engine-TS/data/config/world.json` by `mise run relics:config`) sets `build.verify=false` and `node.xpRate=8`.

@@ -159,7 +159,7 @@ The three herblore tasks (43 to 45) need things this game hands out sparingly. F
 
 - **Herbs** drop from monsters (men, goblins, hobgoblins, giants, druids, dragons, demons and many more). They arrive **unidentified**: click one to identify it, which needs the Herblore level of that herb (guam 3, kwuarm 54, lantadyme 67, dwarf weed 70). No shop sells herbs and there is no farming.
 - **Vials of water** are sold in several shops. **Limpwurt roots** only drop from monsters. **Dragon scale dust** is a blue dragon scale ground with a pestle and mortar, and the only blue dragon scales lie on the floor in the Taverley dungeon. **Wine of Zamorak** is one bottle in the Chaos temple, plus a rare Canifis citizen drop.
-- **Fellowship** only gives, it does not need your friends to own it; they must stay within 5 tiles (same floor). Shared XP does not pass on again.
+- **Fellowship** only gives, it does not need your friends to own it; they must stay within 5 tiles (same floor). Shared XP does not pass on again. Friends who receive your XP get a **gold ring** at their feet, and a **green ring** when they receive healing.
 - **Green Thumb** gives you identified herbs from XP, keeps your secondaries, and starts you with one of each.
 
 Details and sources: [herblore-relic-research.md](https://github.com/calum/LostCityRs/blob/main/docs/design/herblore-relic-research.md).

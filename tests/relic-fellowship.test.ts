@@ -5,6 +5,10 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { Bot, ids } from '../harness/src/index.js';
+import SpotanimType from '../Engine-TS/src/cache/config/SpotanimType.js';
+import World from '../Engine-TS/src/engine/World.js';
+import ScriptProvider from '../Engine-TS/src/engine/script/ScriptProvider.js';
+import ScriptRunner from '../Engine-TS/src/engine/script/ScriptRunner.js';
 import { hasVarp, useVanillaWorld } from './helpers.js';
 
 useVanillaWorld(); // relic_started = 1 on every bot: no first-login offer
@@ -22,7 +26,9 @@ const SPOT = {
     level: { x: 3232, z: 3224 },
     heal: { x: 3200, z: 3250 },
     healStack: { x: 3216, z: 3256 },
-    cap: { x: 3240, z: 3236 }
+    cap: { x: 3240, z: 3236 },
+    glow: { x: 3248, z: 3260 },
+    glowHeal: { x: 3232, z: 3264 }
 };
 
 const owner = (at: { x: number; z: number; level?: number }) => Bot.spawn({ at, varps: { relic_started: 1, relic_owned: FELLOWSHIP } });
@@ -174,4 +180,55 @@ test('shared healing: owners stack and a heal is capped at base level', t => {
     d.give('lobster');
     d.opHeld('lobster', 1).tick(4);
     assert.equal(e.stat('hitpoints'), 70);
+});
+
+// ---------------------------------------------------------------- glow
+// The effect is a spotanim on the receiver's feet (height 0): gold for shared XP, green for shared healing. Player.spotanimId is cleared
+// at the end of every tick, so these tests act directly (addXp / the queue script) and read it before the next tick.
+
+const FLETCH = ids.stat('fletching');
+const glowId = (name: string) => SpotanimType.getId(name);
+
+test('glow: a player who receives shared XP gets the gold effect, the owner and players out of range do not', t => {
+    if (skip()) return t.skip(String(skip()));
+    const at = SPOT.glow;
+    const a = owner(at);
+    const close = plain(near(at, 4));
+    const far = plain(near(at, 7));
+    assert.notEqual(glowId('relic_fellowship_xp'), -1, 'the spotanim is defined');
+    a.player.addXp(FLETCH, 10000);
+    assert.equal(close.player.spotanimId, glowId('relic_fellowship_xp'));
+    assert.equal(close.player.spotanimHeight, 0, 'on the floor');
+    assert.equal(a.player.spotanimId, -1);
+    assert.equal(far.player.spotanimId, -1);
+});
+
+test('glow: the XP effect is not replayed on every gain, only every 4 ticks', t => {
+    if (skip()) return t.skip(String(skip()));
+    const at = { x: SPOT.glow.x + 8, z: SPOT.glow.z };
+    const a = owner(at);
+    const close = plain(near(at, 2));
+    a.player.addXp(FLETCH, 10000);
+    assert.equal(close.player.spotanimId, glowId('relic_fellowship_xp'));
+    close.player.spotanimId = -1;
+    a.player.addXp(FLETCH, 10000); // same tick: skipped
+    assert.equal(close.player.spotanimId, -1);
+    a.tick(4);
+    a.player.addXp(FLETCH, 10000);
+    assert.equal(close.player.spotanimId, glowId('relic_fellowship_xp'), `after 4 ticks (now ${World.currentTick})`);
+});
+
+test('glow: shared healing plays the green effect on the receivers', t => {
+    if (skip()) return t.skip(String(skip()));
+    const at = SPOT.glowHeal;
+    const a = owner(at);
+    const close = plain(near(at, 3));
+    const far = plain(near(at, 8));
+    for (const b of [close, far]) setHp(b, 70, 20);
+    // the queue's int argument is not a script parameter, so build the state by hand (Bot.call only takes declared parameters)
+    a.player.executeScript(ScriptRunner.init(ScriptProvider.getByName('[queue,relic_fellowship_heal_q]')!, a.player, null, [12]), true, true);
+    assert.equal(close.stat('hitpoints'), 26);
+    assert.equal(close.player.spotanimId, glowId('relic_fellowship_heal'));
+    assert.equal(close.player.spotanimHeight, 0);
+    assert.equal(far.player.spotanimId, -1);
 });

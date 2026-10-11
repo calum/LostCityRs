@@ -1,0 +1,17 @@
+// Fellowship (relic 31) glow on the feet of a player who receives shared XP (gold) or shared healing (green).
+// Copies of the bonus fight aura (relic_bonus.spotanim): the confuse spell ring, recoloured. recol1d = hue * 1024 + 966 (same recipe as the auras).
+[relic_fellowship_xp]
+model=spells_confuse_impact
+anim=confuse_impact
+ambient=75
+contrast=75
+recol1s=15375
+recol1d=10182
+
+[relic_fellowship_heal]
+model=spells_confuse_impact
+anim=confuse_impact
+ambient=75
+contrast=75
+recol1s=15375
+recol1d=22470
