@@ -6,6 +6,7 @@ import { test } from 'node:test';
 
 import { Bot, ids, spawnNpc } from '../harness/src/index.js';
 import { useVanillaWorld } from './helpers.js';
+import { existingRelicIds } from './relic-helpers.js';
 
 import ClientGameProt from '../Engine-TS/src/network/game/client/ClientGameProt.js';
 import OpNpcT from '../Engine-TS/src/network/game/client/model/OpNpcT.js';
@@ -15,7 +16,8 @@ useVanillaWorld();
 
 const bit = (id: number) => 1 << id;
 /** Every bit relic that exists: 2..14, 16..19 and 24 (15 is retired). */
-const ALL = (((1 << 20) - 4) & ~bit(15)) | bit(24) | bit(25) | bit(26) | bit(27) | bit(28) | bit(29); // 25-29: skilling relics
+/** Every bit relic that exists (retired and reserved ids skipped, see relicExists). */
+const ALL = existingRelicIds().filter(id => id >= 2).reduce((m, id) => m | bit(id), 0);
 const near = (bot: Bot, c: { x: number; z: number }, r = 2) => Math.abs(bot.x - c.x) <= r && Math.abs(bot.z - c.z) <= r && bot.level === 0;
 
 // Destinations: tele_coord of the Lumbridge/Varrock/Falador/Camelot/Ardougne spells (magic_spells.dbrow) and the amulet of glory

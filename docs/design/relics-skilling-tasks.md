@@ -26,7 +26,7 @@
 
 ## Tests
 
-`tests/relic-skilling-task-flows.ts` defines the tests once and runs them with no relics (`relic-tasks.test.ts`) and with every relic (`relic-all-relics.test.ts`): real coal and adamantite rocks, real furnace menu (steel), the anvil proc (28, 29), the fishing hook (30, 32). The table-row loop in the all-relics file picks up every new row by itself. The all-in-one test had to stop sorting "task >= 24" last (that would have put 26-31 behind the win message box) and compares the full mask as a signed 32-bit value.
+`tests/relic-skilling-task-flows.ts` defines the tests once and runs them with no relics (`relic-tasks.test.ts`) and with every relic (`relic-all-relics.test.ts`): real coal and adamantite rocks, real furnace menu (steel), the anvil proc (28, 29), the fishing hook (30). The table-row loop in the all-relics file picks up every new row by itself. The all-in-one test had to stop sorting "task >= 24" last (that would have put 26-31 behind the win message box) and compares the full mask as a signed 32-bit value.
 
 ## Not checked / open
 

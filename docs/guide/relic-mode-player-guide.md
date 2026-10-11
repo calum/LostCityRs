@@ -70,6 +70,8 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 27 | Endless Shoal | Fish go **straight to your bank** (cooked, if you have Double Yield) and a full backpack never stops you fishing. A fishing spot does not move away while you stand within 3 tiles of it. | automatic |
 | 28 | Fletcher's Echo | Fletching (cutting logs, arrows, bolts, darts, stringing bows) has a **50% chance** to make one more batch, sent to your bank, with the same Fletching XP. | automatic |
 | 29 | Hunter's Haul | When a cow or a dragon (green, blue, red, black) drops a hide, you get **three tanned hides** in your bank instead, and a **50% chance** of a random uncut gem (sapphire, emerald, ruby or diamond) too. | kill the animal |
+| 22 | Archmage | Your spells hit **twice as hard** and cast in about **half the time**. About half of all casts use **no runes** (you still need the runes in your backpack). After you cast a damage spell (strikes, bolts, blasts, waves, Crumble Undead) at a monster, you **keep casting the same spell** at it until you walk away, click something else, or run out of runes. Freezing and stat-lowering spells are cast once. | automatic |
+| 23 | Endless Quiver | Arrows, bolts and thrown weapons are **never used up** and never fall on the floor. Ranged attacks are **+50% accurate** and hit **+50% harder**. | automatic |
 
 Good to know:
 

@@ -9,6 +9,7 @@ import { Bot, useWorld } from '../harness/src/index.js';
 import Component from '../Engine-TS/src/cache/config/Component.js';
 import IfSetHide from '../Engine-TS/src/network/game/server/model/IfSetHide.js';
 import { hasVarp } from './helpers.js';
+import { existingRelicIds } from './relic-helpers.js';
 
 useWorld();
 
@@ -47,6 +48,9 @@ function openRelics(bot: Bot) {
     bot.clickButton('options:relic_relics').tick();
     assert.equal(bot.mainModal, 'relic_relicmenu');
 }
+
+/** Relics that exist today (relic_exists), so the counts follow the pool as relics land. */
+const RELICS = existingRelicIds().length;
 
 /** Rows per list in the relic menu: room for relic ids 1 to 29 (the lists scroll). */
 const RELIC_ROWS = 29;
@@ -138,18 +142,18 @@ test('task menu: a button jumps to the relic menu', t => {
     assert.equal(bot.mainModal, 'relic_taskmenu');
 });
 
-test('relic menu: nothing owned: XP rate 10x, empty unlocked list, all 24 available', t => {
+test('relic menu: nothing owned: XP rate 10x, empty unlocked list, every relic that exists is available', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     openRelics(bot);
     assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 10x/);
     assert.deepEqual(relicRows(bot, 'unlocked'), []);
     const available = relicRows(bot, 'available');
-    assert.equal(available.length, 24); // ids 1-14, 16-19, 24-29 (15 retired, 20-23 not offered yet)
+    assert.equal(available.length, RELICS);
     assert.match(available[0], /XP Multiplier/);
     assert.match(available[0], /30x/, 'the XP Multiplier row names the next rate');
     assert.match(text(bot, 'relic_relicmenu:unlocked_title'), /\(0\)/);
-    assert.match(text(bot, 'relic_relicmenu:available_title'), /\(24\)/);
+    assert.match(text(bot, 'relic_relicmenu:available_title'), new RegExp(`\\(${RELICS}\\)`));
 });
 
 test('relic menu: owned relics and the XP tier move to the unlocked list', t => {
@@ -166,7 +170,7 @@ test('relic menu: owned relics and the XP tier move to the unlocked list', t => 
     assert.match(unlocked[1], /half damage taken/);
     assert.match(unlocked[2], /Phoenix/);
     const available = relicRows(bot, 'available');
-    assert.equal(available.length, 22); // 24 - Stoneskin - Phoenix; XP Multiplier still has tier 3 to go
+    assert.equal(available.length, RELICS - 2); // all - Stoneskin - Phoenix; XP Multiplier still has tier 3 to go
     assert.ok(!available.some(r => /Stoneskin|Phoenix/.test(r)));
     assert.match(available[0], /XP Multiplier/);
     assert.match(available[0], /270x/);
@@ -178,7 +182,7 @@ test('relic menu: a maxed XP multiplier leaves the available list', t => {
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 3, relic_xp_factor: 27 } });
     openRelics(bot);
     assert.match(text(bot, 'relic_relicmenu:xp'), /XP rate: 270x/);
-    assert.equal(relicRows(bot, 'available').length, 23);
+    assert.equal(relicRows(bot, 'available').length, RELICS - 1);
     assert.ok(!relicRows(bot, 'available').some(r => /XP Multiplier/.test(r)));
 });
 

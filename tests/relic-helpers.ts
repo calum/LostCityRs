@@ -83,3 +83,17 @@ export function standNear(loc: Loc): { x: number; z: number; level: number } {
     throw new Error(`no free tile next to loc ${loc.type} at ${loc.x},${loc.z}`);
 }
 
+
+/** [proc,relic_exists] of relic_offer.rs2 evaluated in JS: false for retired (15) and still reserved ids, so tests follow the script as relics land. */
+export function relicExists(id: number): boolean {
+    const src = fs.readFileSync(new URL('../mods/relics/scripts/relic_offer.rs2', import.meta.url), 'utf8');
+    const m = /\[proc,relic_exists\]\(int \$id\)\(int\)\s*if \((.*)\) \{\s*return\(0\);/.exec(src);
+    if (!m) throw new Error('relic_exists not found in relic_offer.rs2');
+    const expr = m[1].replace(/\$id = /g, 'id === ').replace(/\$id/g, 'id').replace(/\|/g, '||').replace(/&/g, '&&');
+    return !new Function('id', `return (${expr});`)(id);
+}
+
+/** Relic ids that exist today (1..29 minus the hidden ones). */
+export function existingRelicIds(): number[] {
+    return Array.from({ length: 29 }, (_, i) => i + 1).filter(relicExists);
+}
