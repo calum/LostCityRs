@@ -137,7 +137,7 @@ export function defineSkillingTaskTests(prefix: string, spawn: SpawnFn, skip: ()
         doneMsg(bot, 35);
     });
 
-    for (const [task, rune] of [[36, 'naturerune'], [37, 'deathrune']] as const) {
+    for (const [task, rune] of [[36, 'naturerune']] as const) {
         test(`${prefix}: the ${rune} product row completes task ${task}`, t => {
             if (skip()) return t.skip(String(skip()));
             const bot = spawn();

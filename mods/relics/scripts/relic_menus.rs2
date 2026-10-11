@@ -64,7 +64,6 @@ switch_int ($n) {
     case 34 : return("Make a green dragonhide body");
     case 35 : return("Cut a diamond");
     case 36 : return("Craft a nature rune");
-    case 37 : return("Craft a death rune");
     case 38 : return("Cast High Level Alchemy");
     case 39 : return("Cast Camelot Teleport");
     case 40 : return("Reach level 99 in any skill");
@@ -84,7 +83,7 @@ def_int $pos = 0;
 def_int $n = 1;
 def_int $done = 0;
 def_component $com = null;
-while ($pos < ^relic_task_count) {
+while ($pos < ^relic_task_listed) {
     $n = enum(int, int, relic_task_order, $pos);
     $done = ~relic_task_is_done($n);
     if ($done = ^true) {
@@ -106,7 +105,7 @@ while ($row < ^relic_task_count) {
     if_settext($com, "");
     $row = calc($row + 1);
 }
-if_settext(relic_taskmenu:summary, "Tasks done: <tostring($done_count)> of <tostring(^relic_task_count)>");
+if_settext(relic_taskmenu:summary, "Tasks done: <tostring($done_count)> of <tostring(^relic_task_listed)>");
 if (%relic_hide_done = 1) {
     if_settext(relic_taskmenu:toggle, "Hide completed: On (click to show)");
 } else {

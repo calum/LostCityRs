@@ -231,9 +231,3 @@ table=relic_task_obj
 data=task,36
 data=obj,naturerune
 data=tier,3
-
-[relic_task37_deathrune_obj]
-table=relic_task_obj
-data=task,37
-data=obj,deathrune
-data=tier,3

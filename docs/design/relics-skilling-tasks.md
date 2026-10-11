@@ -42,14 +42,14 @@
 | 34 | Craft a green dragonhide body | new hook in the dragonhide branch of `craft_leather` (`leather.rs2`), row `dragonhide_body` | Crafting 63, 3 dragon leather |
 | 35 | Cut a diamond | new hook in `uncut_gem.rs2` (after the crush check), row `diamond` | Crafting 43 |
 | 36 | Craft a nature rune | existing hook in `runecraft.rs2` (`~relic_task_obj($rune)`), row `naturerune` | Runecrafting 44, members |
-| 37 | Craft a death rune | same, row `deathrune` | Runecrafting 65, members |
+| ~~37~~ | ~~Craft a death rune~~ | **Retired 2026-10-11** (Calum: the death altar is not usable in-game, so it could never be completed) | |
 | 38 | Cast High Level Alchemy | `~relic_task_spell` after the cast in `alchemy.rs2` (hook task, no row) | Magic 55 |
 | 39 | Cast Camelot Teleport | `~relic_task_spell` after `~give_spell_xp` in `teleport.rs2` (hook task, no row) | Magic 45, members |
 
 - **Second varp:** `%relic_tasks_done2` (`relic.varp`, id 372 in `Content/pack/varp.pack`). Tasks 1-31 are bits 0-30 of `%relic_tasks_done`; task N >= 32 is bit N-32 of `%relic_tasks_done2`. `[proc,relic_task_is_done]` and `[proc,relic_task_mark]` (`relic_tasks.rs2`) hide the split; the menu, `relic_task_try` and `[queue,relic_task_done]` use them. `::~relic_reset` and `::~relic_tasks_reset` clear both. Existing characters are unaffected (new perm varp starts at 0).
 - Task menu: rows 32-39 (`relic_taskmenu.if`, scroll 442 to 558).
-- Tests: `tests/relic-skilling-task-flows.ts` (both worlds): real stringing and dart making, `::~relic_leather` for the dragonhide label (the interface clicks are not driven), real chisel use on a diamond, real spell casts (OPHELDT for alchemy, the Camelot button), table rows for the two runes via the gather hook. Alchemy tests in `relic-skilling.test.ts` preset task 38 as done: finishing it opens a relic offer that would hold their dialogue.
-- Not checked: real altar runecrafting for 36 and 37 (the existing hook at `runecraft.rs2:99` is the one task 8 uses; the tests use the gather hook), the dragonhide interface clicks.
+- Tests: `tests/relic-skilling-task-flows.ts` (both worlds): real stringing and dart making, `::~relic_leather` for the dragonhide label (the interface clicks are not driven), real chisel use on a diamond, real spell casts (OPHELDT for alchemy, the Camelot button), the table row for the nature rune via the gather hook. Alchemy tests in `relic-skilling.test.ts` preset task 38 as done: finishing it opens a relic offer that would hold their dialogue.
+- Not checked: real altar runecrafting for 36 (the existing hook at `runecraft.rs2:99` is the one task 8 uses; the tests use the gather hook), the dragonhide interface clicks.
 
 ## Task 40: reach level 99 in any skill (Calum, 2026-10-11)
 
@@ -57,3 +57,7 @@
 - Existing 99s: `[proc,relic_check_99]` checks all 19 base levels and runs from `[proc,relic_on_login]` (after the tutorial check), so a character that already has a 99 gets the task, and an offer, on the next login.
 - Rerolls were built and later removed (docs/design/relics-special-offers.md).
 - Menu: `relic_taskmenu:row_40` (scroll 572), enum `relic_task_order` places 40 after task 29. Test default: `tests/helpers.ts` presets bit 8 of `relic_tasks_done2` so bots with a 99 skill do not get an offer mid-test; the tests in `relic-skilling-task-flows.ts` clear it (and spawn with the save, since `relog()` re-applies the defaults).
+
+## Task 37 retired (2026-10-11)
+
+Calum could not complete "Craft a death rune" because the death altar is not usable in this game, so the task is gone: its dbrow, name, menu entry and tests were removed. The number 37 stays reserved (bit 5 of `%relic_tasks_done2` is never set), so tasks 38-40 keep their numbers and existing saves stay valid. `^relic_task_count = 40` is still the highest task number (offer and test loops); the new `^relic_task_listed = 39` (`relic.constant`) is the number of tasks in the menu and its "Tasks done: N of 39" line. `relic_task_order` has 39 entries; the menu scroll is 558. `tests/relic-all-relics.test.ts` skips `RETIRED_TASK` and expects bit 5 of the second varp clear. Tests: suite 320/320 on Node 24.11.1, tsc clean.
