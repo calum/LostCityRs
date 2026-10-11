@@ -2,7 +2,7 @@
 
 **Question this answers:** how were the seven skilling tasks added after the two final bosses, and what keeps them completable with every relic owned?
 
-**Based on:** root `ebe235c` (+ this change), Content `3051fc17e` (fork `main`), Engine-TS `04db3dc2`. **Method:** read and **run**: `node harness/run.mjs` on Node 24.11.1, full suite 269/269 before the rebase (it was 248 before this work); `npx tsc -p harness/tsconfig.json` clean. Not re-run after merging other threads' relics (see the commit message).
+**Based on:** root `ebe235c` (+ this change), Content `d82f09706` (fork branch `skilling-tasks`), Engine-TS `04db3dc2`. **Method:** read and **run**: `node harness/run.mjs` on Node 24.11.1, full suite 269/269 before rebasing (248 before this work), 237/237 after rebasing onto the Teleport Network commit (Infinite Runes tests removed there); `npx tsc -p harness/tsconfig.json` clean. 
 
 ## The tasks
 
