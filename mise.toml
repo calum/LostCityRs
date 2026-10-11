@@ -127,3 +127,7 @@ run = [
 [tasks."relics:config"]
 description = "Copy config/world.json (xpRate 10, BUILD_VERIFY off) to Engine-TS/data/config/ (restart the server after)"
 run = "node -e \"require('fs').mkdirSync('Engine-TS/data/config',{recursive:true});require('fs').copyFileSync('config/world.json','Engine-TS/data/config/world.json')\""
+
+[tasks."public:config"]
+description = "Write world.json for a public server: relic settings + production on, debug off, access code from ACCESS_CODE (docs/setup/hosting-for-friends.md)"
+run = "node scripts/public-config.mjs"

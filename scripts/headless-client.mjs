@@ -1,6 +1,6 @@
 // Headless browser driver for testing in game. Usage:
 //   node scripts/headless-client.mjs <user> [dir]     (server on http://localhost:8888)
-// Logs in as <user> (password "test"), then executes the lines appended to <dir>/cmd:
+// Logs in as <user> (password "test", or env PASSWORD), then executes the lines appended to <dir>/cmd:
 //   say <text>        type text into the chat box and press Enter (e.g. say ::~relic_demo)
 //   key <name>        press a key        click <x> <y>   click in client pixels (765x503)
 //   rclick <x> <y>    right-click in client pixels
@@ -30,7 +30,7 @@ log(`canvas ${JSON.stringify(box)}`);
 // login: Existing User, username, password
 await click(462, 292); await page.waitForTimeout(500);
 await page.keyboard.type(user); await page.keyboard.press('Enter'); await page.waitForTimeout(300);
-await page.keyboard.type('test');
+await page.keyboard.type(process.env.PASSWORD ?? 'test');
 await click(302, 322); // Login button
 await page.waitForTimeout(8000);
 await page.screenshot({ path: `${dir}/login.png` });

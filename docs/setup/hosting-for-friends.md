@@ -2,7 +2,7 @@
 
 **Question answered:** what does the server really need (ports, memory, disk, state), what is unsafe about exposing it as configured, and which hosting routes fit a "cheap or free" goal?
 
-**Based on commits:** root `ebe235c`, Engine-TS `04db3dc2`, Content `34a8a0397`, Client-TS `2ea4280` (fork `main` heads).
+**Based on commits:** first part root `ebe235c`, Engine-TS `04db3dc2`, Content `34a8a0397`, Client-TS `2ea4280`; "Chosen setup" part Engine-TS `53ed3a49`, Content `9a5b2466a`, Client-TS `cd03818`.
 
 **Method:** read the code, and **ran** the server once on a 4-core, 16 GB Linux container (Node 24.11.1, `config/world.json` from this repo, `mods/` synced, cold cache pack). Nothing was created in any cloud and no one connected as a player. Prices and free-tier terms in the options table are **not verified** (nothing was fetched).
 
@@ -34,3 +34,35 @@
 - Memory and tick time with several real players online (not measured).
 - Does enabling the login service (bcrypt accounts, `easyStartup`) work cleanly with this repo's mods and relic saves?
 - Whether the Oracle Arm VM and Node 24 / `tsx` work together, and current Oracle and AWS free-tier terms.
+
+## Chosen setup (Calum, 2026-10-11): host on your PC, public https link, shared access code, `::map` working
+
+### Access code (built, tested)
+
+- World setting `node.accessCode` (default `''` = off), Engine-TS `53ed3a49`: `Engine-TS/src/util/AccessCode.ts` (`accessCodeAllows`, constant-time compare), checked in the login handler right after the password length check (`Engine-TS/src/engine/World.ts`, search `accessCodeAllows`), before anything is sent to the login thread. A wrong code gets reply 3, the same "Invalid username or password" a bad password gets.
+- **Friends type the code in the Password box.** The login screen has no other field. Limit: 1-20 characters, because the engine rejects longer passwords (`World.ts` password length check).
+- Tests: `tests/access-code.test.ts` (3). Failed first because the module did not exist, passes after. Full suite 344 passing, `test:types` clean (Node 24.11.1).
+- Observed in headless Chromium: password `wrong` showed "Invalid username or password"; the right code logged in. The login screen text was read from a screenshot.
+- **Limit (by design):** the code is one shared password, so anyone with the code can log in as any friend's username (there are still no per-player passwords). Fine for friends, not for strangers. Brute force: `node.rateLimitDeviceLogin` (5 per 15 s per device+address, production mode only, `World.ts` login handler) slows it; use a long random code.
+- Write the config with `ACCESS_CODE=your-code mise run public:config` (`scripts/public-config.mjs`): relic settings from `config/world.json` plus `production: true` (no dev commands), `debug: false` (no `/maped` map editor: `/maped` returned 404 when run), and the code. It overwrites `Engine-TS/data/config/world.json`. Restart the server afterwards.
+
+### `::map` for friends
+
+- `::map` runs `window.open('/worldmap.html', ...)` (`Client-TS/src/client/Client.ts`, `openWorldMap`): a **relative** URL, so on an https site it opens on that same site. The page loads `/worldmap.jag` by relative URL, and the player marker travels over a `BroadcastChannel` (same origin only). Nothing in `Client-TS/src/mapview/` or `Client.ts` hard-codes `localhost` for the map (grep).
+- `/worldmap.jag` is served even with `debug: false` (`Engine-TS/src/web.ts`, route comment "also served outside debug mode").
+- **Run:** server with `production: true`, `debug: false`, code on; client built from Client-TS `cd03818`; logged in through `http://127.0.0.1:8888` and typed `::map`: a popup opened at `http://127.0.0.1:8888/worldmap.html` and drew the world map with the red "you" marker on Tutorial Island (screenshot). One resource returned 404 (not identified, probably the favicon). **Not run:** over https or through a tunnel, and not with a second window of another browser.
+- Popups: a browser may block `window.open` unless it comes from a user action; the `::map` Enter key press worked in Chromium. Other browsers' popup blockers are **not checked**.
+
+### Public https link (not built or run: no tunnel was available here)
+
+- The browser client opens its WebSocket to the page's own host and uses `wss` on https (`Client-TS/src/client/Client.ts`, `openSocket(window.location.host, window.location.protocol === 'https:')`), so a tunnel that forwards HTTP and WebSockets to port 8888 is enough.
+- Suggested: Cloudflare Tunnel (`cloudflared tunnel --url http://localhost:8888` gives a random `https://...trycloudflare.com` link without an account, new each run; a stable name needs a domain on Cloudflare). **Not verified** here: tool terms, WebSocket support through quick tunnels, and the link surviving restarts.
+- Behind a tunnel every player appears from `127.0.0.1` to the engine (inference: the tunnel connects from your machine). The engine uses the address for the per-tick processing order bucket (open question 23) and the device-login rate limit key (`uid@address`, per client uid, so friends are still separate).
+- Keep 8898 (management) and 43594 off the internet: do not forward them, and the tunnel only exposes 8888.
+
+### Day-to-day (unverified as a whole; each step above was run separately)
+
+1. `git pull && git submodule sync --recursive && git submodule update --init`, `mise run client:build`, `mise run mods:sync`.
+2. `ACCESS_CODE=<code> mise run public:config`.
+3. `mise run start` (do not use `live` for a public server: it watches mods).
+4. `cloudflared tunnel --url http://localhost:8888`, share the https link and the code. Friends: open the link, Existing User, any username, **password = the code**.

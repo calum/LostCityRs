@@ -119,3 +119,9 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Content | `scripts/skill_thieving/scripts/thieving.rs2` | `~relic_pickpocket_sure` in `check_if_success_pick_pocket`, `~relic_pickpocket_again` after a pick, early return with reward, XP, task and `p_oploc(2)` in `steal_from_stall` when `~relic_stall_keeps`, `~relic_task_steal` after a normal theft. Test: `tests/relic-thieving.test.ts` | `8308a8b14` |
 | Content | `pack/interface.pack`, `pack/interface.order` | pack ids for `relic_taskmenu:row_41` and `row_42` | `9a5b2466a` |
 | root | `mods/relics/` | `relic_thieving.rs2`, task 42 in `relic_task_pickpocket`, names, menus. Design: [design/relics-light-fingers.md](design/relics-light-fingers.md) | `HEAD` of this change |
+
+## Access code (2026-10-11)
+
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Engine-TS | `src/util/AccessCode.ts` (new), `src/util/WorldConfig.ts` (`node.accessCode`, default `''`, legacy `NODE_ACCESS_CODE`), `src/engine/World.ts` (login handler, after the password length check) | When `node.accessCode` is set, a login whose password is not the code gets reply 3. Test: `tests/access-code.test.ts`. See `docs/setup/hosting-for-friends.md` | `53ed3a49` |

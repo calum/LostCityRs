@@ -49,6 +49,7 @@ What a bigger radius costs and what it cannot show (players and NPCs beyond 15 t
    | `node.members` | true (`:96`) | Members world |
    | `node.xpRate` | 1 (`:98`) | XP multiplier |
    | `node.skillingSecondChance` | true | Skilling buff: a failed skilling roll is rolled again with a 50% chance. `false` = upstream odds. See below |
+   | `node.accessCode` | `''` (off) | Shared code friends type as the password at login, 1-20 chars. See [hosting-for-friends.md](hosting-for-friends.md) |
    | `node.production` | false (`:99`) | Production mode; dev cheats need it off (see [flows/dev-cheat-commands.md](../flows/dev-cheat-commands.md)) |
    | `node.debug` | true (`:101`) | Debug mode |
    | `node.clientRoutefinder` | true (`:103`) | Use the client's route finder |
