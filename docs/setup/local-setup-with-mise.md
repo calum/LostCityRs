@@ -35,7 +35,7 @@ mise tasks ls       # lists the tasks below
 
 ```sh
 mise run submodules:init     # only if Engine-TS/, Content/, Client-TS/ are empty (see warning below)
-mise run up                  # set up, build the client, start the server
+mise run up                  # update submodules to the recorded commits, set up, build the client, start the server
 ```
 
 Wait for `World ready: Visit http://localhost.../rs2.cgi`, open that URL, click **Existing User** and enter any new username and password. The first run packs the cache from Content (about 20 s observed on Linux). Stop the server with ctrl+c.
@@ -75,7 +75,8 @@ So setting `build.srcDir` to `../Content` is not enough on a case-sensitive file
 
 | Task | Runs | Mirrors |
 |---|---|---|
-| `up` | `setup`, then `client:build`, then `start` | The whole stack in one command (run, Linux) |
+| `up` | `submodules:update`, then `setup`, then `client:build`, then `start` (`mise.toml`, `up`) | The whole stack in one command. Before `submodules:update` was added (2026-10-11, root `8bc51ce`+) it was `setup`, `client:build`, `start`; that three-step form was run on Linux, the four-step form was not run as one command. |
+| `submodules:update` | `node scripts/update-submodules.mjs` | Moves Engine-TS, Content and Client-TS to the commits the root repo **records** (not the fork tip, no `--remote`), only when a submodule is strictly behind; one that is ahead or diverged is left alone with a warning. Fetches from the submodule's own `origin` only if the recorded commit is missing locally. It does not `git pull` the root: pull the root first to get new recorded commits. Tested against a scratch repo (behind / ahead / current / unfetched / not on origin) and a no-op run on this repo; not run against a real behind submodule here. |
 | `setup` | `content:link`, `engine:install`, `client:install` (in parallel) | `start.js:99-111` |
 | `submodules:init` | `git submodule update --init Engine-TS Content Client-TS` | First clone only. On existing checkouts it moves submodules to the recorded commit and detaches them from `calum-research`. |
 | `content:link` | `node scripts/link-content.mjs` | See section 3 |

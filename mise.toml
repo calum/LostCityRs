@@ -15,9 +15,9 @@ python = "3.12"
 cloudflared = "latest"
 
 [tasks.up]
-description = "Set up, build the web client, then start the server (open the URL it prints)"
-depends = ["setup"]
-run = ["mise run client:build", "mise run start"]
+description = "Update submodules to the recorded commits, set up, build the web client, then start the server (open the URL it prints)"
+# Order matters (submodules first, so installs and the build see the new code), so no `depends`.
+run = ["mise run submodules:update", "mise run setup", "mise run client:build", "mise run start"]
 
 [tasks.setup]
 description = "Link content/ if needed and install engine and client dependencies"
@@ -28,6 +28,11 @@ description = "Clone the Engine-TS, Content and Client-TS submodules (first clon
 # Warning: on submodules that are already checked out, this moves them to the
 # commit recorded in this repo and detaches HEAD from main.
 run = "git submodule update --init Engine-TS Content Client-TS"
+
+[tasks."submodules:update"]
+description = "Move Engine-TS, Content and Client-TS to the commits this repo records (only if they are behind; local work is left alone)"
+# Unlike submodules:init this never detaches a submodule that has local commits (scripts/update-submodules.mjs).
+run = "node scripts/update-submodules.mjs"
 
 [tasks."content:link"]
 description = "Make ../content resolve to the Content submodule (needed on case-sensitive filesystems)"
