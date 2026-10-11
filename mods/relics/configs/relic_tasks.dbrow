@@ -201,9 +201,3 @@ table=relic_task_obj
 data=task,31
 data=obj,adamantite_ore
 data=tier,2
-
-[relic_task32_raw_shark_obj]
-table=relic_task_obj
-data=task,32
-data=obj,raw_shark
-data=tier,2

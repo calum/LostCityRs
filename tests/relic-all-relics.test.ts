@@ -244,7 +244,7 @@ test('all relics: a real melee kill of a goblin (task 1) with Glass Cannon, Exec
     expectDone(bot, 1);
 });
 
-// ---------------------------------------------------------------- tasks 26-32 (skilling)
+// ---------------------------------------------------------------- tasks 26-31 (skilling)
 
 defineSkillingTaskTests('all relics', spawn, skip);
 
@@ -264,7 +264,7 @@ test('all relics: every task, one after another on one character, ends with all 
     bot.tick(10);
     // 7 and 13 are hook tasks (real sites are tested above): complete them with the debug proc
     bot.debugproc('relic_task', 7).debugproc('relic_task', 13).tick(10);
-    // 32 tasks fill the whole int varp (task 32 is the sign bit), so compare as signed 32-bit values
+    // compare the full mask as signed 32-bit values (a 32-task mask would use the sign bit)
     const full = (2 ** taskCount() - 1) | 0;
     assert.equal(tasksDone(bot) | 0, full, `done ${(tasksDone(bot) >>> 0).toString(2)} of ${(full >>> 0).toString(2)}`);
 });

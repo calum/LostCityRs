@@ -416,6 +416,6 @@ test('tasks count in any order: tier 3 and tier 2 tasks complete with no tier 1 
     assert.equal(bot.messages.filter(m => m.startsWith('You gained the relic:')).length, 4);
 });
 
-// ---------------------------------------------------------------- tasks 26-32 (skilling), no relics owned
+// ---------------------------------------------------------------- tasks 26-31 (skilling), no relics owned
 
 defineSkillingTaskTests('skilling tasks', spawn, skip);
