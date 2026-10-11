@@ -1,4 +1,4 @@
-// 32 tasks (26-32: skilling tasks added after the two final bosses, 24 and 25; task 32 is the sign bit of %relic_tasks_done). Kill tasks: one row per npc type. Product tasks: one row per object.
+// 31 tasks (26-31: skilling tasks added after the two final bosses, 24 and 25). Kill tasks: one row per npc type. Product tasks: one row per object.
 // Tasks 7 (burn yew, firemaking.rs2) and 13 (pickpocket a paladin) are detected in their scripts and have no row. Tiers: 1-6, 7-13, 14-23, 24-25.
 [relic_task_npc]
 column=task,int,REQUIRED

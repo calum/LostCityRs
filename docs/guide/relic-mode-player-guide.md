@@ -9,7 +9,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **32 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- There are **31 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
@@ -27,7 +27,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 32 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 31 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
 
@@ -84,7 +84,7 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone and
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. Tasks 26 to 32 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 32 each give a relic offer. Ticking a task here does not affect any other row.
+Tasks count in any order. Tasks 26 to 31 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 31 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
@@ -119,7 +119,6 @@ Tasks count in any order. Tasks 26 to 32 were added after the bosses, so the two
 | 29 | **Smith a rune scimitar** | Smithing 90, two runite bars, a hammer and an anvil | any anvil |
 | 30 | **Catch a lobster** | Fishing 40 and a lobster pot. With Double Yield the lobster arrives cooked and still counts | lobster pot fishing spots |
 | 31 | **Mine an adamantite ore** | Mining 70 and a pickaxe | adamantite rocks, for example [Lumbridge Swamp (3242, 3165)](https://explv.github.io/?centreX=3242&centreY=3165&centreZ=0&zoom=9) |
-| 32 | **Catch a shark** | Fishing 76 and a harpoon. With Double Yield the shark arrives cooked and still counts (it also finishes task 10) | harpoon spots for sharks |
 
 **Map links** open [Explv's OSRS map](https://explv.github.io/) centred on the spots where that monster spawns. "Underground" means the spawn is in a dungeon; a second link shows the surface point directly above it.
 

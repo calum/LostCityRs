@@ -1,4 +1,4 @@
-// Relic tasks 26-32 (the skilling tasks added after the two final bosses), driven through the real skilling scripts where
+// Relic tasks 26-31 (the skilling tasks added after the two final bosses), driven through the real skilling scripts where
 // that is cheap. Shared by relic-tasks.test.ts (no relics) and relic-all-relics.test.ts (every relic owned), so each task
 // is proven in both worlds: with Eternal Vein, Evergreen and Double Yield owned an ore turns into a bar before it reaches
 // the inventory, and a fish arrives cooked, so a task keyed on the item can silently stop firing.
@@ -66,7 +66,7 @@ export function defineSkillingTaskTests(prefix: string, spawn: SpawnFn, skip: ()
         });
     }
 
-    for (const [task, fish] of [[30, 'raw_lobster'], [32, 'raw_shark']] as const) {
+    for (const [task, fish] of [[30, 'raw_lobster']] as const) {
         test(`${prefix}: catching a ${fish.slice(4)} through the fishing hook completes task ${task}`, t => {
             if (skip()) return t.skip(String(skip()));
             const bot = spawn();

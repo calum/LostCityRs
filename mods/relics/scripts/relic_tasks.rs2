@@ -1,4 +1,4 @@
-// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tiers (1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25) are no longer enforced in v1, see relic_task_try. Tasks 26-32 (skilling) have no tier mask; 32 tasks fill the int varp (task 32 is the sign bit).
+// Task engine. %relic_tasks_done holds one bit per task (bit = task - 1). Tiers (1: 1-6, 2: 7-13, 3: 14-23, 4: 24-25) are no longer enforced in v1, see relic_task_try. Tasks 26-31 (skilling) have no tier mask.
 
 [proc,relic_current_tier](int $dummy)(int)
 if (and(%relic_tasks_done, ^relic_tier1_mask) ! ^relic_tier1_mask) {
