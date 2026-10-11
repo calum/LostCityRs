@@ -17,5 +17,9 @@ No non-modal level-up interface exists in this content, so the dialog is skipped
 ## Tests
 `tests/levelup-nonblocking.test.ts` (2): failed first (no "Your fletching level is now 9." line; chat modal `levelup_fletching` open), pass now. `tests/relic-autosmelt.test.ts` real-copper-rock test changed: it used `waitUntilIdle`, which only held because the level-up dialog stopped mining; it now waits for the bank bar and scales the XP assertion by bars. Suite 192/192.
 
+## Follow-up: mining still "stopped" (Calum, 2026-10-11)
+A level-up does not stop a running action: with the dialog gone, an Evergreen chop loop ran straight through a woodcutting level-up (test 3). The engine's `ENGINE` queue script (`Player.ts:886`, `processEngineQueue` `Player.ts:661`) runs `closeModal(false)` afterwards, which leaves the interaction and weak queue alone (`Player.ts:759-762`; read).
+What actually stopped mining: `[label,mining_continue]`'s success branches (`get_ore_normal`, `get_ore_fast`, `Content/scripts/skill_mining/scripts/mining.rs2`) end with `return` after every ore, because a normal rock depletes and ends the action. With Eternal Vein the rock stays but the loop still ended, one ore per click (a test showed one ore in 60 ticks, no level-up involved); the autosmelt smithing level-up just landed at the same moment. Fix: hook `~relic_mine_again` (`mods/relics/scripts/relic_gather.rs2`) before that `return`; with relic 10 it calls `p_oploc(3)` so the swing loop continues, like Evergreen. A walk click still stops it. Tests: `tests/levelup-nonblocking.test.ts` (4 now; the Evergreen and Eternal Vein ones run through a level-up); `mineOnce` in `tests/relic-skilling.test.ts` now stops the interaction itself. Suite 194/194. Not seen in a real client.
+
 ## Open
 Real-client look at the chat line and that mining keeps going; whether to show unlock hints as chat lines.

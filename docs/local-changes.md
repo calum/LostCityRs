@@ -63,3 +63,4 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Repo | File | Change | Commit |
 |---|---|---|---|
 | Content | `scripts/levelup/scripts/levelup.rs2`, `scripts/levelup/configs/levelup.constant` (new) | level-up chat line with the new level; blocking dialog and unlock boxes skipped unless `^levelup_dialogs = 1` ([design/levelup-nonblocking.md](design/levelup-nonblocking.md)) | `975ff13d5` |
+| Content | `scripts/skill_mining/scripts/mining.rs2` | `~relic_mine_again` hook before the `return` after a mined ore (Eternal Vein keeps swinging) | `e9c938b6c` |

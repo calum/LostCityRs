@@ -66,3 +66,10 @@ if ($log = yew_logs) {
 if (npc_type = paladin) {
     ~relic_task_try(13, 2);
 }
+
+// mining.rs2 hook, after an ore is mined. Eternal Vein never depletes the rock (~relic_loc_change), so the swing loop goes on
+// instead of ending after each ore (the rock would otherwise have depleted and ended it). Docs: docs/design/levelup-nonblocking.md.
+[proc,relic_mine_again]
+if (~relic_has(10) = 1) {
+    p_oploc(3);
+}

@@ -86,10 +86,12 @@ function castOnHeld(bot: Bot, spell: string, obj: string) {
     bot.player.send('OPHELDT', ClientGameProt.OPHELDT, new OpHeldT(objId, slot, listener.com, ids.com(spell)));
 }
 
-/** Click the rock until one ore has been mined (the get_ore labels end with `return` after a success, mining.rs2:145,182). */
+/** Click the rock until one ore has been mined, then stop. Without Eternal Vein the get_ore labels end after a success (mining.rs2:145,182);
+ *  with it ~relic_mine_again re-arms the swing loop, so the test stops the interaction itself. */
 function mineOnce(bot: Bot, rock: Loc) {
     bot.opLoc(rock, 1);
     bot.waitForMessage(/You manage to mine some/, 300);
+    bot.player.stopAction();
     bot.waitUntilIdle(20);
 }
 
