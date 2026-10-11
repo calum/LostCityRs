@@ -1,5 +1,5 @@
 // Entering the King Black Dragon lair or the Kalphite lair sends the MIDI song id that the client swaps for a recording
-// (Client-TS/src/sound/CustomMusic.ts CUSTOM_MUSIC_NAMES: 26 -> chop_suey, 260 -> halo_theme). Design note: docs/design/custom-lair-music.md.
+// (Client-TS/src/sound/CustomMusic.ts CUSTOM_MUSIC_NAMES: 26 and 28 -> chop_suey, 260 -> halo_theme). Design note: docs/design/custom-lair-music.md.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';
@@ -38,4 +38,9 @@ test('the Kalphite chamber and the burrow above it play Insect Queen (midi 260, 
     assert.equal(midiId('insect queen'), 260);
     assert.deepEqual(songsAfterEntering('0_54_148_52_21'), [260]);
     assert.deepEqual(songsAfterEntering('2_54_148_27_38'), [260]);
+});
+
+test("the King Black Dragon's own lair (past the lever) plays Attack5 (midi 28, also replaced by chop_suey in the client)", () => {
+    assert.equal(midiId('attack5'), 28);
+    assert.deepEqual(songsAfterEntering('0_42_153_29_10'), [28]);
 });
