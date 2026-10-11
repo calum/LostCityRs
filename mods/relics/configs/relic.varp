@@ -37,3 +37,8 @@ protect=no
 [relic_hide_done]
 scope=perm
 protect=no
+
+// Rune Wellspring: XP gained (tenths) not yet paid out as bundles. Written by the Player.addXp hook (Engine-TS).
+[relic_wellspring_xp]
+scope=perm
+protect=no

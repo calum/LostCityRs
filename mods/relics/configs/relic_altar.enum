@@ -1,0 +1,15 @@
+[relic_altar_rows]
+inputtype=autoint
+outputtype=component
+default=null
+val=relic_altarmenu:row_1
+val=relic_altarmenu:row_2
+val=relic_altarmenu:row_3
+val=relic_altarmenu:row_4
+val=relic_altarmenu:row_5
+val=relic_altarmenu:row_6
+val=relic_altarmenu:row_7
+val=relic_altarmenu:row_8
+val=relic_altarmenu:row_9
+val=relic_altarmenu:row_10
+val=relic_altarmenu:row_11

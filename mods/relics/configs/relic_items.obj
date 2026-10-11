@@ -27,3 +27,13 @@ model=inv_naturerune
 2dxan=516
 weight=0g
 iop1=Teleport
+
+[relic_essence_bundle]
+name=Rune essence bundle
+desc=100 rune essence. Use it on a runecrafting altar.
+model=inv_blankrune
+2dyof=1
+2dzoom=740
+2dxan=516
+weight=0g
+stackable=yes

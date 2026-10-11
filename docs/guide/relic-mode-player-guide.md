@@ -64,6 +64,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 18 | Banker's Call | Opens your bank from anywhere. | use the Banker's stone |
 | 19 | Hoarder | One extra pick from relics you declined earlier. Happens right after you take it. | automatic |
 | 24 | Teleport Network | Opens a list of cities (Lumbridge, Varrock, Falador, Edgeville, Draynor Village, Al Kharid, Camelot, Ardougne, Karamja). Click one to teleport there, free of runes. The usual teleport rules still apply (for example, not on Tutorial Island). | use the Network stone |
+| 21 | Rune Wellspring | Every 100 XP you gain (in any skill except Runecrafting) gives you a **Rune essence bundle** (100 essence). Use bundles on a runecrafting altar to craft them all at once. Clicking *Locate* on any talisman opens a list of altars to teleport to. | use bundles on an altar; Locate on a talisman |
 
 Good to know:
 

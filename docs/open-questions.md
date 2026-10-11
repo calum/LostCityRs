@@ -95,3 +95,5 @@ Things not yet verified. Nothing here is a finding. Move an item into a note, wi
 | 106 | Skilling second chance: effect in a real client session, and whether the Gnomeball shot (`ranged` via `stat_random`) and quest-specific `stat_random` rolls should be excluded. | Only the headless test ran (`docs/setup/settings.md`). |
 
 | 107 | With Double Yield one raw fish cooked at a fire gives two cooked fish (`relic_gathered`) but cooking XP once; should the cook XP double too? | `docs/design/relics-double-yield.md` Ask Calum. |
+| 108 | Wellspring: how do the bundle item, the altar list and the XP-to-bundle rate look and feel in a real client at 30x and 270x XP? | `docs/design/relics-wellspring.md`: only headless tests ran. |
+| 109 | Wellspring: do all 11 altar rows teleport sensibly (chaos `enter_coord` starts with level 3, death equals `0_50_50_21_18`)? | `docs/design/relics-wellspring.md`: only air and mind were tested. |

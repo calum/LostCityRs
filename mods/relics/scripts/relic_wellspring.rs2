@@ -1,0 +1,148 @@
+// Relic 21 Rune Wellspring. Docs: docs/design/relics-wellspring.md.
+// 1. XP -> bundles. Engine hook Player.addXp (Engine-TS, docs/local-changes.md) adds every XP gain (tenths, after the XP rate and
+//    relic factor; runecrafting excluded) to %relic_wellspring_xp and queues [queue,relic_wellspring].
+// 2. Bundle on an altar: Content runecraft.rs2 [oplocu,_rc_altar] calls ~relic_wellspring_craft.
+// 3. Talisman Locate: Content runecraft.rs2 [opheld4,_talismans] and [opheld4,cosmic_talisman] call ~relic_wellspring_talisman.
+
+[queue,relic_wellspring]
+~relic_wellspring_claim;
+
+// Pay out the owed XP as whole bundles: backpack first, else bank. If neither can take them the XP stays owed.
+[proc,relic_wellspring_claim]
+def_int $n = calc(%relic_wellspring_xp / ^relic_wellspring_xp_per_bundle);
+if ($n < 1) {
+    return;
+}
+if (inv_itemspace(inv, relic_essence_bundle, $n, inv_size(inv)) = ^true) {
+    inv_add(inv, relic_essence_bundle, $n);
+} else if (inv_itemspace(bank, relic_essence_bundle, $n, inv_size(bank)) = ^true) {
+    inv_add(bank, relic_essence_bundle, $n);
+} else {
+    return;
+}
+%relic_wellspring_xp = calc(%relic_wellspring_xp - $n * ^relic_wellspring_xp_per_bundle);
+
+// Same rules as [label,runecraft_runes] (Content skill_runecraft/scripts/runecraft.rs2) but the essence comes from all the bundles
+// in the backpack (100 essence each, up to ^relic_wellspring_max_craft bundles per use). Runecrafting XP does not pay new bundles.
+[proc,relic_wellspring_craft]
+def_dbrow $data = ~get_runecraft_data(loc_param(rune_type));
+if ($data = null) {
+    ~displaymessage(^dm_default);
+    return;
+}
+def_int $levelreq = db_getfield($data, runecraft_table:level, 0);
+def_namedobj $rune = db_getfield($data, runecraft_table:rune, 0);
+if (oc_members($rune) = true) {
+    if (map_members = ^false) {
+        mes(^mes_members_do_that);
+        return;
+    }
+}
+def_int $level = stat(runecraft);
+if ($level < $levelreq) {
+    ~mesbox("You need a Runecrafting level of at least <tostring($levelreq)> to craft <oc_name($rune)>.");
+    return;
+}
+def_int $bundles = min(inv_total(inv, relic_essence_bundle), ^relic_wellspring_max_craft);
+if ($bundles < 1) {
+    return;
+}
+def_int $per_ess = 1;
+if (db_getfieldcount($data, runecraft_table:multiplier) > 0) {
+    $per_ess = calc($level / db_getfield($data, runecraft_table:multiplier, 0) + 1);
+}
+def_int $per_bundle = calc(^relic_wellspring_essence * $per_ess);
+// keep the rune stack inside 32 bits
+def_int $room = calc(sub(^max_32bit_int, inv_total(inv, $rune)) / $per_bundle);
+if ($room < 1) {
+    mes("You do not have enough inventory space to craft your essence into <lowercase(oc_name($rune))>s.");
+    return;
+}
+$bundles = min($bundles, $room);
+anim(human_runecraft, 0);
+spotanim_pl(runecrafting, 96, 0);
+sound_synth(bind_runes, 1, 0);
+inv_del(inv, relic_essence_bundle, $bundles);
+stat_advance(runecraft, calc($bundles * ^relic_wellspring_essence * db_getfield($data, runecraft_table:experience, 0)));
+mes("You bind the temple's power into <db_getfield($data, runecraft_table:name, 0)> Runes.");
+~relic_task_obj($rune);
+inv_add(inv, $rune, calc($bundles * $per_bundle));
+p_delay(3);
+
+// Locate op of any talisman: with the relic it opens the altar list instead.
+[proc,relic_wellspring_talisman]()(int)
+if (~relic_has(21) = 0) {
+    return(^false);
+}
+~relic_altarmenu_open;
+return(^true);
+
+[proc,relic_altarmenu_open]
+def_int $type = 1;
+def_dbrow $data = null;
+def_component $com = null;
+while ($type <= 11) {
+    db_find(runecraft_table:type, $type);
+    $data = db_findnext;
+    $com = enum(int, component, relic_altar_rows, calc($type - 1));
+    if ($data = null) {
+        if_settext($com, "");
+    } else if (db_getfield($data, runecraft_table:members, 0) = ^true) {
+        if_settext($com, "@yel@<db_getfield($data, runecraft_table:name, 0)> altar (members)");
+    } else {
+        if_settext($com, "@whi@<db_getfield($data, runecraft_table:name, 0)> altar");
+    }
+    $type = calc($type + 1);
+}
+if_openmain(relic_altarmenu);
+
+// Teleport next to the altar of runecraft_table type $type: same destination as holding that talisman to its ruins.
+[proc,relic_altar_go](int $type)
+db_find(runecraft_table:type, $type);
+def_dbrow $data = db_findnext;
+if ($data = null) {
+    return;
+}
+if (db_getfield($data, runecraft_table:members, 0) = ^true) {
+    if (map_members = ^false) {
+        mes(^mes_members_do_that);
+        return;
+    }
+}
+if (~pre_tele_checks(coord) = false) {
+    return;
+}
+~player_teleport_normal(map_findsquare(db_getfield($data, runecraft_table:enter_coord, random(db_getfieldcount($data, runecraft_table:enter_coord)))));
+
+[if_button,relic_altarmenu:row_1]
+~relic_altar_go(1);
+
+[if_button,relic_altarmenu:row_2]
+~relic_altar_go(2);
+
+[if_button,relic_altarmenu:row_3]
+~relic_altar_go(3);
+
+[if_button,relic_altarmenu:row_4]
+~relic_altar_go(4);
+
+[if_button,relic_altarmenu:row_5]
+~relic_altar_go(5);
+
+[if_button,relic_altarmenu:row_6]
+~relic_altar_go(6);
+
+[if_button,relic_altarmenu:row_7]
+~relic_altar_go(7);
+
+[if_button,relic_altarmenu:row_8]
+~relic_altar_go(8);
+
+[if_button,relic_altarmenu:row_9]
+~relic_altar_go(9);
+
+[if_button,relic_altarmenu:row_10]
+~relic_altar_go(10);
+
+[if_button,relic_altarmenu:row_11]
+~relic_altar_go(11);

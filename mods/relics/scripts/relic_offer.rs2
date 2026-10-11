@@ -23,6 +23,7 @@ switch_int ($id) {
     case 18 : return("Banker's Call");
     case 19 : return("Hoarder");
     case 24 : return("Teleport Network");
+    case 21 : return("Rune Wellspring");
     case default : return("Unknown relic");
 }
 
@@ -47,6 +48,7 @@ switch_int ($id) {
     case 18 : return("bank from anywhere");
     case 19 : return("pick a declined relic");
     case 24 : return("teleport to the main cities");
+    case 21 : return("XP pays rune essence, talisman teleports");
     case default : return("");
 }
 

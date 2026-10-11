@@ -1,0 +1,6 @@
+// Rune Wellspring (relic 21). Bundle price in XP tenths (the unit the engine stores): 1000 = 100 real XP, after the XP rate.
+^relic_wellspring_xp_per_bundle = 1000
+// Rune essence in one bundle.
+^relic_wellspring_essence = 100
+// Most bundles crafted by one use on an altar (keeps XP and rune counts inside 32 bits; use again for the rest).
+^relic_wellspring_max_craft = 10000
