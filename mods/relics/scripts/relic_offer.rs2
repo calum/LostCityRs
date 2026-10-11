@@ -183,13 +183,23 @@ return(calc(~relic_rerolls_earned - %relic_rerolls_used));
 // A reroll stores the advanced seed and the spent reroll straight away, so a relog after it shows the rerolled offer.
 [proc,relic_offer_mode](int $mode)(int)
 def_int $shown = 0;
+if ($mode = 0) {
+    $shown = %relic_offer_shown;
+}
 def_int $offered = 0;
 def_int $pick = 99;
 while ($pick = 99) {
     def_int $seed_before = %relic_seed;
     def_int $drawn = $shown;
     def_int $a = ~relic_draw($drawn, $mode);
+    if ($a = 0 & $shown ! 0) {
+        // the saved exclusion left nothing (the pool shrank): start the offer over
+        $shown = 0;
+        $drawn = 0;
+        $a = ~relic_draw($drawn, $mode);
+    }
     if ($a = 0) {
+        %relic_offer_shown = 0;
         return($offered);
     }
     $offered = 1;
@@ -239,7 +249,11 @@ while ($pick = 99) {
     if ($pick = 99) {
         %relic_rerolls_used = calc(%relic_rerolls_used + 1);
         $shown = $drawn;
+        %relic_offer_shown = $drawn;
     }
+}
+if ($mode = 0) {
+    %relic_offer_shown = 0;
 }
 if ($pick ! 0) {
     ~relic_grant($pick);

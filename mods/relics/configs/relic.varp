@@ -29,6 +29,10 @@ scope=perm
 [relic_rerolls_used]
 scope=perm
 
+// Relics already shown in the offer being rerolled (bitmask), so a relog shows the same rerolled offer. 0 when no reroll is in progress.
+[relic_offer_shown]
+scope=perm
+
 [relic_pending]
 scope=perm
 
