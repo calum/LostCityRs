@@ -47,21 +47,3 @@ test('closing the offer and clicking Choose a relic now shows the same relics in
     waitForOffer(bot);
     assert.deepEqual(bot.choices, first);
 });
-
-test('after a Reroll, closing the offer and relogging shows the rerolled relics again, not a new draw', t => {
-    if (skip()) return t.skip(String(skip()));
-    for (const seed of [5, 6, 1234]) {
-        const bot = Bot.spawn({ varps: { relic_seed: seed } });
-        waitForOffer(bot);
-        const names = (b: Bot) => b.choices.filter(c => !c.startsWith('Reroll'));
-        const first = names(bot);
-        bot.choose(4);
-        bot.waitUntil(() => bot.choices.length >= 2 && names(bot).join() !== first.join(), 10, 'the rerolled offer');
-        const second = [...bot.choices];
-        bot.closeModal().tick(3);
-        const again = bot.relog();
-        waitForOffer(again);
-        assert.deepEqual(again.choices, second, `seed ${seed}`);
-        assert.deepEqual(names(again).filter(n => first.includes(n)), [], 'still none of the first set');
-    }
-});

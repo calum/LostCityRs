@@ -1,5 +1,5 @@
 // Special offers by tasks done (relic_offer.rs2, [queue,relic_task_done]): the 10th task done grants Quest Pass directly,
-// every 5th task done guarantees an XP Multiplier option (while the tier is below 3), and a reroll keeps it.
+// every 5th task done guarantees an XP Multiplier option (while the tier is below 3).
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
@@ -11,7 +11,7 @@ useWorld();
 const skip = () => (hasVarp('relic_started') ? false : 'relic mod not loaded');
 const SEEDS = [5, 6, 1234, 40000, 777, 9999];
 const hasXp = (b: Bot) => b.choices.some(c => c.startsWith('XP Multiplier'));
-const names = (b: Bot) => b.choices.filter(c => !c.startsWith('Reroll')).map(c => c.split(':')[0]);
+const names = (b: Bot) => b.choices.map(c => c.split(':')[0]);
 const doTask = (b: Bot, n: number) => b.call('[debugproc,relic_task]', n);
 const waitOffer = (b: Bot) => b.waitUntil(() => b.inDialog && b.choices.length >= 2, 20, 'a relic offer');
 const spawnAt = (done: number, seed: number, extra: Record<string, number> = {}) =>
@@ -49,26 +49,6 @@ test('XP Multiplier already at tier 3: the 5th task offer is an ordinary three',
     waitOffer(bot);
     assert.ok(!hasXp(bot));
     assert.equal(names(bot).length, 3);
-});
-
-test('a reroll on a 5th-task offer keeps the XP Multiplier and replaces the other two', t => {
-    if (skip()) return t.skip(String(skip()));
-    const bot = spawnAt(0xf, 5);
-    doTask(bot, 5);
-    waitOffer(bot);
-    const first = names(bot);
-    assert.ok(hasXp(bot));
-    bot.choose(4);
-    bot.waitUntil(() => bot.choices.length >= 2 && names(bot).join() !== first.join(), 10, 'the rerolled offer');
-    assert.ok(hasXp(bot), JSON.stringify(bot.choices));
-    const others = names(bot).filter(n => n !== 'XP Multiplier');
-    assert.deepEqual(others.filter(n => first.includes(n)), []);
-    // and it survives a relog
-    const second = [...bot.choices];
-    bot.closeModal().tick(3);
-    const again = bot.relog();
-    waitOffer(again);
-    assert.deepEqual(again.choices, second);
 });
 
 test('the 5th-task offer is the same after closing it and relogging', t => {

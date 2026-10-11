@@ -25,11 +25,11 @@ scope=perm
 [relic_started]
 scope=perm
 
-// Rerolls spent. Rerolls left = 1 + (tasks done / 10) - this (relic_rerolls_left in relic_offer.rs2).
+// Retired (rerolls were removed 2026-10-11): kept declared so saves that hold a value for them still load. Unused.
 [relic_rerolls_used]
 scope=perm
 
-// Relics already shown in the offer being rerolled (bitmask), so a relog shows the same rerolled offer. 0 when no reroll is in progress.
+// Retired with the rerolls, unused (see relic_rerolls_used).
 [relic_offer_shown]
 scope=perm
 

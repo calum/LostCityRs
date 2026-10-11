@@ -155,7 +155,7 @@ test('kill task: a real melee kill of a goblin completes task 1 and owes an offe
     bot.waitUntil(() => !goblin.isActive, 10, 'the goblin to despawn');
     // relic_task_done queues the offer 3 ticks later, after the dying goblin's last swing (its if_close,
     // npc_combat_melee.rs2:36, would drop an open dialog): see the next test.
-    bot.waitUntil(() => bot.choices.length === 4, 10, 'a 3-relic offer plus Reroll');
+    bot.waitUntil(() => bot.choices.length === 3, 10, 'a 3-relic offer');
     assert.equal(bot.varp('relic_pending'), 1);
 
     const owned0 = bot.varp('relic_owned') as number;
@@ -175,9 +175,9 @@ test('kill task: the offer from a real kill stays open after the goblin dies', t
     const bot = spawn({ attack: 99, strength: 99, defence: 99, hitpoints: 99 });
     killGoblin(bot);
     bot.expectMessage(/^Relic task 1 complete!$/);
-    bot.waitUntil(() => bot.choices.length === 4, 10, 'the relic offer');
+    bot.waitUntil(() => bot.choices.length === 3, 10, 'the relic offer');
     bot.tick(5);
-    assert.equal(bot.choices.length, 4, 'the relic offer should still be open');
+    assert.equal(bot.choices.length, 3, 'the relic offer should still be open');
 });
 
 

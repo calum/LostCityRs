@@ -225,7 +225,7 @@ test('relic menu: a pending choice shows the button, and clicking it re-opens th
     bot.waitUntil(() => bot.inDialog, 20, 'the relic offer');
     assert.equal(bot.mainModal, null, 'the menu closes so the offer can show');
     assert.match(bot.dialogText, /Choose a relic/);
-    assert.equal(bot.choices.length, 4);
+    assert.equal(bot.choices.length, 3);
     bot.choose(bot.choices.findIndex(c => !/^(Hoarder|Quest Pass)/.test(c)) + 1); // Hoarder and Quest Pass open a second dialogue
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_pending'), 0);
@@ -245,14 +245,4 @@ test('relic menu: both lists have a row for every relic id up to 29, scroll in a
     assert.equal(text(bot, 'relic_relicmenu:available_29'), '');
     assert.notEqual(Component.getId('relic_relicmenu:unlocked_list'), -1);
     assert.notEqual(Component.getId('relic_relicmenu:available_list'), -1);
-});
-
-test('relic menu: shows the rerolls left (1 to start, one more per 10 tasks)', t => {
-    if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 0 } });
-    openRelics(bot);
-    assert.equal(text(bot, 'relic_relicmenu:title'), 'Relics (Rerolls left: 1)');
-    const more = Bot.spawn({ varps: { relic_started: 1, relic_pending: 0, relic_tasks_done: 0x3ff, relic_rerolls_used: 1 } }); // 10 tasks = 2, one used
-    openRelics(more);
-    assert.equal(text(more, 'relic_relicmenu:title'), 'Relics (Rerolls left: 1)');
 });
