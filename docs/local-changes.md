@@ -138,3 +138,10 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Client-TS | `src/sound/CustomSounds.ts`, `src/client/Client.ts` (`soundsDoQueue`, sounds start-up) | recorded sounds in `/custom-sounds/` replace synth id 912. Design: [design/relics-attune.md](design/relics-attune.md) | `8adf2b8` |
 | Client-TS | `src/client/Toast.ts` (new), `src/client/Client.ts` (`MESSAGE_GAME`, `otherOverlays`), `src/graphics/PixFont.ts` (`drawStringTrans`) | task-complete toast: `<text>:relictask:` game messages draw a 2 s fading panel instead of a chat line. Design: [design/task-complete-toast.md](design/task-complete-toast.md) | `f92f245` |
 | root | `mods/relics/scripts/relic_offer.rs2` (`relic_task_done`) | sends the `:relictask:` message | `HEAD` of this change |
+
+## Bonus boss fight (2026-10-11)
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Content | `scripts/player/scripts/death.rs2` (`[queue,player_death]`) | `def_boolean $bonus = ~relic_bonus_death; // relic hook`: in the KBD lair during the bonus fight the item-loss branch is skipped and the player is teleported to `0_47_160_59_14` instead of Lumbridge | `a0826d64d` |
+| Content | `pack/npc.pack`, `pack/spotanim.pack`, `pack/varp.pack` | pack ids for `relic_bonus_timer`, `relic_bonus_glow`, `relic_bonus_aura0..11`, `relic_bonus_colour` | `a0826d64d` |
+| root | `mods/relics/scripts/relic_tasks.rs2` (`relic_on_kill`) and `relic_bonus.rs2` | `~relic_bonus_arm` and the whole fight. Design: [design/relics-bonus-boss-fight.md](design/relics-bonus-boss-fight.md) | `HEAD` of this change |

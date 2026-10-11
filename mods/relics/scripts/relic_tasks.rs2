@@ -35,6 +35,7 @@ while ($rank < 16) {
     }
     $rank = calc($rank + 1);
 }
+~relic_bonus_arm; // bonus boss fight after a KBD dies in its lair
 
 // The active player gets every kill task listed for the dying npc.
 [proc,relic_kill_tasks]

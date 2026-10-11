@@ -1,0 +1,96 @@
+// Bonus boss fight (docs/design/relics-bonus-boss-fight.md): 15 s (25 ticks) after a King Black Dragon dies in its lair, 2 more
+// KBDs and 2 Kalphite Queens appear in the four corners and hunt whoever is there (their own huntmode does the aggression).
+// Everyone in the lair glows in a colour of their own while the fight lasts. Dying during it sends you to the lever outside
+// with your items. Starts no matter who is in the room or has clicked the completion dialog.
+// Controllers are two invisible npcs parked at 0_42_153_12_3 (2700, 9795), outside the lair (relic_bonus.npc).
+
+[proc,relic_bonus_in_lair](coord $c)(boolean)
+if (coordy($c) ! 0) {
+    return(false);
+}
+if (coordx($c) < 2704 | coordx($c) > 2735 | coordz($c) < 9800 | coordz($c) > 9831) {
+    return(false);
+}
+return(true);
+
+// 1 while a fight is running: the glow controller lives as long as the bosses are allowed to.
+[proc,relic_bonus_running]()(boolean)
+return(npc_find(0_42_153_12_3, relic_bonus_glow, 5, 0));
+
+// Last line of [proc,relic_on_kill] (the dying npc is active; the dotted commands leave it alone).
+[proc,relic_bonus_arm]
+if (npc_type ! king_dragon) {
+    return;
+}
+if (~relic_bonus_in_lair(npc_coord) = false) {
+    return;
+}
+// one round at a time: the bonus bosses are king_dragons too, and so is the respawned static one
+if (.npc_find(0_42_153_12_3, relic_bonus_glow, 5, 0) = true | .npc_find(0_42_153_12_3, relic_bonus_timer, 5, 0) = true) {
+    return;
+}
+.npc_add(0_42_153_12_3, relic_bonus_timer, 25);
+
+// The timer npc ran out: the fight starts.
+[ai_despawn,relic_bonus_timer]
+npc_add(0_42_153_23_30, king_dragon, 3000);
+npc_add(0_42_153_34_18, king_dragon, 3000);
+npc_add(0_42_153_36_25, kalphite_queen, 3000);
+npc_add(0_42_153_22_15, kalphite_queen, 3000);
+npc_add(0_42_153_12_3, relic_bonus_glow, 3000);
+huntall(0_42_153_32_20, 16, 0);
+while (huntnext = true) {
+    if (~relic_bonus_in_lair(coord) = true) {
+        mes("@red@The lair shakes. A final challenge begins!");
+        queue(relic_bonus_colour_reset_q, 0, 0);
+    }
+}
+
+[queue,relic_bonus_colour_reset_q](int $unused)
+%relic_bonus_colour = 0;
+
+// Every 2 ticks: give each player in the lair a colour no other player there has (once), and refresh everyone's glow.
+// The colours are picked here, where nobody is protected, and passed to a queue that stores them (a queue has protected access).
+[ai_timer,relic_bonus_glow]
+def_int $used = 0;
+huntall(0_42_153_32_20, 16, 0);
+while (huntnext = true) {
+    if (~relic_bonus_in_lair(coord) = true & %relic_bonus_colour > 0) {
+        $used = setbit($used, calc(%relic_bonus_colour - 1));
+    }
+}
+huntall(0_42_153_32_20, 16, 0);
+while (huntnext = true) {
+    if (~relic_bonus_in_lair(coord) = true) {
+        if (%relic_bonus_colour = 0) {
+            // a random colour among the free ones; any one if all 12 are taken
+            def_int $start = random(12);
+            def_int $pick = calc($start + 1);
+            def_int $i = 0;
+            while ($i < 12) {
+                def_int $idx = calc(($start + $i) % 12);
+                if (testbit($used, $idx) = ^false) {
+                    $pick = calc($idx + 1);
+                    $i = 12;
+                }
+                $i = calc($i + 1);
+            }
+            $used = setbit($used, calc($pick - 1));
+            queue(relic_bonus_colour_q, 0, $pick);
+        } else {
+            spotanim_pl(enum(int, spotanim, relic_bonus_auras, %relic_bonus_colour), 124, 0);
+        }
+    }
+}
+
+[queue,relic_bonus_colour_q](int $pick)
+if (%relic_bonus_colour = 0) {
+    %relic_bonus_colour = $pick;
+}
+
+// Death hook (Content player/scripts/death.rs2): a death inside the lair during the fight keeps everything.
+[proc,relic_bonus_death]()(boolean)
+if (~relic_bonus_in_lair(coord) = false) {
+    return(false);
+}
+return(~relic_bonus_running);

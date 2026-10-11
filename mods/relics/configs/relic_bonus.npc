@@ -1,0 +1,13 @@
+// Invisible controllers of the bonus boss fight (mods/relics/scripts/relic_bonus.rs2), parked on a free tile outside the lair.
+[relic_bonus_timer]
+vislevel=hide
+name=Bonus timer
+model1=man_torso_basic
+blockwalk=none
+
+[relic_bonus_glow]
+vislevel=hide
+name=Bonus glow
+model1=man_torso_basic
+blockwalk=none
+timer=2

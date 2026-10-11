@@ -1,0 +1,16 @@
+[relic_bonus_auras]
+inputtype=int
+outputtype=spotanim
+default=null
+val=1,relic_bonus_aura0
+val=2,relic_bonus_aura1
+val=3,relic_bonus_aura2
+val=4,relic_bonus_aura3
+val=5,relic_bonus_aura4
+val=6,relic_bonus_aura5
+val=7,relic_bonus_aura6
+val=8,relic_bonus_aura7
+val=9,relic_bonus_aura8
+val=10,relic_bonus_aura9
+val=11,relic_bonus_aura10
+val=12,relic_bonus_aura11

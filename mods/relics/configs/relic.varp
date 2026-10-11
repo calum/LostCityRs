@@ -75,3 +75,8 @@ protect=no
 [relic_finish_ticks]
 scope=perm
 protect=no
+
+// Bonus boss fight glow colour: 0 = none, otherwise 1 to 12 (index into enum relic_bonus_auras). Not saved.
+[relic_bonus_colour]
+scope=temp
+protect=no
