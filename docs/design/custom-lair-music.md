@@ -1,7 +1,24 @@
-# Custom MP3 for the King Black Dragon and Kalphite Queen lairs (feasibility)
+# Custom music for the King Black Dragon and Kalphite lairs
 
 **Question:** how is the music chosen when you enter the King Black Dragon (KBD) lair and the Kalphite Queen (KQ) lair, and how hard is it to play your own MP3 there instead?
-**Based on:** root `1cae35f`, Engine-TS `33564f19`, Content `b36ee553b`, Client-TS `f92f245`. Method: read only, nothing built or run. No test: docs only.
+**Based on:** root `8bc51ce`, Engine-TS `33564f19`, Content `a0826d64d`, Client-TS `f92f245` (+ the commit that adds `CustomMusic.ts`). Method: read, then built and ran (bun and harness tests, headless Chromium). Player steps: [../guide/lair-music.md](../guide/lair-music.md).
+
+## As built
+
+- **No server or Content change.** Both lairs already send the song ids 26 (`attack3`, KBD) and 260 (`insect queen`, Kalphite) when you enter their mapsquare, so the client swaps those ids. This means the music-tab buttons for Attack3 and Insect Queen also play the recordings. Both Kalphite levels are mapsquare `54_148` (burrow `2_54_148_27_38`, chamber `0_54_148_52_21`, `Content/scripts/areas/area_kalphite/configs/kalphite.constant:1-3`), so "lair and dungeon" is one square and is covered.
+- **Client:** `Client-TS/src/sound/CustomMusic.ts` (`CUSTOM_MUSIC_NAMES`: 26 `chop_suey`, 260 `halo_theme`) fetches `/custom-sounds/<name>.mp3|ogg|wav` once at start-up (blob URL), and a `CustomMusic` object plays one recording at a time with an `<audio>` element: `loop = true`, 2 s linear fade in and out, volume = the music option's dB plus `CUSTOM_MUSIC_GAIN_DB` (-3, a guess, not tuned by ear). `Client.startSong(id, fading)` is the single place that turns "play song N" into either the recording or the MIDI request; it replaces the four inline `onDemand.request(2, ...)` sites for the song packet, the jingle resume, the music-option change and (stop only) the reset on logout.
+- **Behaviour:** a different song (or silence) fades the recording out over 2 s and the next MIDI starts at once; a jingle cuts it at once and the recording restarts from the beginning after the jingle; music off or low-memory mode plays nothing; the music volume slider changes the recording's volume live.
+- **Files:** the two tracks were converted from the `.m4a` files in the repo root with `ffmpeg -codec:a libmp3lame -b:a 128k` into `custom-sounds/chop_suey.mp3` (3:25) and `custom-sounds/halo_theme.mp3` (2:58). `scripts/sync-mods.mjs` already copies `.mp3` from `custom-sounds/` to `Engine-TS/public/custom-sounds/`.
+
+## What was run
+
+- `Client-TS/test/custom-music.test.ts` (new, first): failed on the missing module, then 6 tests pass (bun, 21 in the client). A first version of the fade shared one timer, so a switch from one recording to the other never paused the first; the test caught it and the timer is now per fade.
+- `tests/lair-music.test.ts` (new): the server sends midi 26 on entering `0_47_160` and 260 on entering `0_54_148` (chamber and burrow). It passes with no server change (it pins the ids the client keys on). The song is sent twice on one teleport (set of ids compared); the client ignores a repeat. A bot without `relic_started` gets a relic offer that blocks the music script, so the test uses `useVanillaWorld`.
+- Full suite `node harness/run.mjs --jobs 4` on Node 24.11.1: 382/382. `npx tsc -p harness/tsconfig.json` clean.
+- Real client (headless Chromium, built client, server on 8888, `--autoplay-policy=no-user-gesture-required`): after `::~kbd` an `<audio>` for `chop_suey.mp3` (205.3 s) started with loop on; after `::~kq` the KBD audio paused and `halo_theme.mp3` (178.4 s) started with loop on; after `::~brimhaven` it paused. One earlier run with a fresh character showed only the pause after `::~kq` (no halo start); two reruns did not reproduce it and the cause was not found.
+- Not heard by a person; volume balance against the MIDI music is unknown.
+
+## Original feasibility analysis (before building)
 
 **Correction (2026-10-11, root `3b0c433`):** the KBD lair is map square `0_42_153`, not `0_47_160`. `0_47_160` is the antechamber with the entry ladder and the lever. Evidence: the KBD spawns in `Content/maps/m42_153.jm2:7622`, the lever teleports to `0_42_153_29_10` (`Content/scripts/areas/area_wilderness/scripts/king_black_dragon.rs2:371`), `multiway.csv` marks the "kbd lair" in `0_42_153`, and `docs/reference/finding-npc-locations.md:35-40` says the same. Music for the real lair today is `[mapzone,0_42_153] @music_playbyregion(coord);` (`Content/scripts/music/scripts/move.rs2:148`) and `[musicregion_42_153]` -> `music_Attack5` (`Content/scripts/music/configs/musicregion.dbrow:637-640`). Wherever this note says `0_47_160` for the lair (items 1 and 3 and the "Tests" bullet), read `0_42_153` and `music_Attack5`; the rest (KQ square `0_54_148`, how MIDI is sent, the client side) was not affected. Not re-checked: whether `music_Attack5` is used by other squares.
 
@@ -19,14 +36,13 @@
 
 Not as it is. `CustomSounds.ts` fetches `/custom-sounds/<name>.wav|mp3|ogg` for the synth ids in `CUSTOM_SOUND_NAMES` and `soundsDoQueue` plays them with `playWave` (a one-shot `AudioBufferSource`, no loop, no fade, uses the sound-effect volume) (`Client-TS/src/sound/CustomSounds.ts`, `Client.ts:1194`, `:3465-3470`, `Client-TS/src/3rdparty/audio.js:47-57`). Synth ids and MIDI ids are different packets and different volume settings, so music needs a parallel path. What does carry over: the `custom-sounds/` -> `Engine-TS/public/custom-sounds/` copy by `scripts/sync-mods.mjs`, the fetch-at-start pattern, and the browser doing the MP3 decoding.
 
-## Approach (proposal, not built)
+## Approach (as proposed; the built version needed no content change, see above)
 
 - **Server/content (small).** Add a dedicated MIDI id for each lair (e.g. 346 `lair_kbd`, 347 `lair_kq`, after `345=barking mad`, `midi.pack` tail) with a byte copy of the original `.mid`, and point the two `musicregion` rows at new `music` rows using it. This keeps every other place that plays Attack3 / Insect Queen (the music tab buttons) unchanged and means only the lairs use the recording. Alternative with no content change: key the override on ids 26 / 260, which would also replace the song when played from the music tab.
 - **Client (the real work).** A `CustomMusic` loader like `CustomSounds`, and a hook where the client turns "play song N" into a MIDI request: the song packet (`Client.ts:7139`), the jingle-delay resume (`Client.ts:3497-3508`), the music-option change (`Client.ts:10720-10752`) and `saveMidi`. For an id with a recording: play the MP3 with its own gain node, and stop it whenever anything else is requested (any later `MIDI_SONG` for another region, music turned off, logout reset at `Client.ts:2487`).
 - **Hosting.** Same as sounds: file in `custom-sounds/`, copied by `mise run mods:sync`, served at `/custom-sounds/`.
 - **Tests.** Server side: harness test that entering `0_47_160` / `0_54_148` sends `MidiSong` with the new ids (this part the harness can prove). Client side: bun unit test for the loader and the "which source plays" decision, like `Client-TS/test/custom-sounds.test.ts`. Actual audio only by ear / a headless audio-start log; not covered by the harness.
 
-**Effort (my estimate, not measured):** roughly a day of work; content and server part small, client part moderate (one new module plus four small hooks in the very large `Client.ts`).
 
 ## Catches
 
@@ -41,4 +57,4 @@ Not as it is. `CustomSounds.ts` fetches `/custom-sounds/<name>.wav|mp3|ogg` for 
 
 ## Not checked
 
-Nothing was built, run or heard. Not read: `OnDemand` internals (how a missing MIDI is handled), `ClientBuild`/`Client.ts` paths outside the cited lines, how `wilderness_underground_enter` interacts with music, the map extents of the two squares, and whether other `mapzone` triggers (e.g. the KQ tunnels) play different music en route. Added to `docs/open-questions.md` as item 123.
+Not heard. Not read: `OnDemand` internals (how a missing MIDI is handled), `ClientBuild`/`Client.ts` paths outside the cited lines, how `wilderness_underground_enter` interacts with music, the map extents of the two squares, and whether other `mapzone` triggers (e.g. the KQ tunnels) play different music en route. See `docs/open-questions.md` item 123.
