@@ -1,42 +1,55 @@
 [relic_recall_stone]
 name=Recall stone
 desc=Takes you back to where you last teleported from.
-model=inv_lawrune
-2dyof=1
-2dzoom=740
-2dxan=516
+model=inv_glowingorb
+recol1s=127
+recol1d=52058
+2dzoom=1260
+2dxan=48
 weight=0g
 iop1=Recall
 
 [relic_banker_stone]
 name=Banker's stone
 desc=Opens your bank from anywhere.
-model=inv_cosmicrune
-2dyof=1
-2dzoom=740
-2dxan=516
+model=inv_casket
+2dxof=3
+2dyof=-6
+2dzoom=1410
+2dyan=1592
+2dxan=164
 weight=0g
 iop1=Open bank
 
 [relic_network_stone]
 name=Network stone
 desc=Opens a list of cities to teleport to.
-model=inv_naturerune
-2dyof=1
-2dzoom=740
-2dxan=516
+model=inv_map_scroll
+recol1s=5452
+recol1d=37328
+recol2s=5427
+recol2d=37318
+recol3s=5440
+recol3d=37323
+2dxof=-1
+2dyof=56
+2dzoom=990
+2dyan=1716
+2dxan=264
 weight=0g
 iop1=Teleport
 
 [relic_wellspring_talisman]
 name=Wellspring talisman
 desc=Opens a list of runecrafting altars to teleport to.
-model=inv_runetalisman_air
-2dxof=2
-2dyof=20
-2dzoom=1160
-2dyan=160
-2dxan=352
+model=inv_talisman
+recol1s=5596
+recol1d=29530
+2dxof=-1
+2dyof=9
+2dzoom=1150
+2dyan=1980
+2dxan=324
 weight=0g
 iop1=Altars
 
