@@ -37,7 +37,7 @@ switch_int ($id) {
     case 7 : return("heal on kill, +50% accuracy");
     case 8 : return("finish weak monsters, +50% accuracy");
     case 9 : return("kills drop loot, +50% accuracy");
-    case 10 : return("rocks stay, ore to bank");
+    case 10 : return("rocks stay, ore smelts to bank");
     case 11 : return("trees stay, logs to bank");
     case 12 : return("double gathering");
     case 13 : return("high alch repeats");

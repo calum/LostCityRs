@@ -35,3 +35,15 @@ Mining a real rock with Eternal Vein (loc stays) and the full-inventory bypass; 
 New debug procs: `relic_give`, `relic_gather`, `relic_chop`, `relic_count`, `relic_wound`, `relic_alch`, `relic_swing`, `relic_delay_test`, `relic_qp`.
 
 **Update (2026-10-10):** now covered by automated end-to-end tests; see [relics-e2e-tests.md](relics-e2e-tests.md) for what is verified, the bugs fixed and what is still untested.
+
+
+## Eternal Vein auto-smelts (added 2026-10-11)
+
+Question: what does a mined ore become with Eternal Vein? Based on Content `316f314dc`, Engine-TS `f8bd5427`; ran `tests/relic-autosmelt.test.ts` (17 tests) and the full suite (190 pass).
+
+- `[proc,relic_gathered]` (`mods/relics/scripts/relic_gather.rs2`) calls `~relic_smelt_ore($obj)` when `$relic = 10` and the player owns it. The proc returns the bar for the ore: copper and tin give `bronze_bar`, iron gives `steel_bar`, silver, gold (and `perfect_gold_ore` to `perfect_gold_bar`), mithril, adamantite and runite give their own bar. Anything else (coal, clay, gems, blurite, limestone) returns `null` and is banked unchanged.
+- The bar replaces the ore as `$obj`, so the normal bank-then-backpack and Double Yield logic applies to bars. Task counting (`~relic_task_obj`) still sees the ore, so the "mine mithril ore" task works.
+- XP: `stat_advance(smithing, productexp * $n)`, where `productexp` is read from the bar's own smelting struct (`oc_param(bar, smelting_struct)`, `Content/scripts/skill_smithing/configs/smelting/smelting.struct`). Iron uses steel's 17.5 xp, not iron's. Double Yield doubles both bars and XP. No smithing level, coal or second ore is needed; one ore is one bar. The engine's XP rate and relic XP tiers apply to it as to any `stat_advance`.
+- Side effect (inference from the failing run, not a design choice): smithing level-ups open the usual level-up dialog while mining, which interrupts the swing loop. Tests that mine with the relic set smithing to 99 for that reason (`tests/relic-skilling.test.ts`).
+- Existing Eternal Vein tests that expected ore in the bank now expect `bronze_bar` (`tests/relic-skilling.test.ts`). Bank-full fallback: the bar goes to the backpack.
+- Not checked: a real iron/coal rock in game (the iron case runs through `::~relic_gather`, which is the call mining.rs2 makes), the Family Crest perfect gold mine, and how the offer text fits the dialog (option text changed to "rocks stay, ore smelts to bank", not looked at in a client).

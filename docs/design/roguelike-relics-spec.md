@@ -48,7 +48,7 @@ E = easy (mod plus at most one hook line), M = medium. Hook sites are in the des
 | 7 | Vampire | heal 10% of damage dealt (rounded down) as hitpoints and prayer, per hit | E |
 | 8 | Executioner | NPCs below 25% HP die instantly | M |
 | 9 | Bounty | kills drop coins and supplies by NPC tier | E |
-| 10 | Eternal Vein | ore rocks never deplete and ore goes straight to the bank | M |
+| 10 | Eternal Vein | ore rocks never deplete and ore is smelted into a bar and goes straight to the bank (2026-10-11, relics-m7-medium-relics.md) | M |
 | 11 | Evergreen | trees never fall and logs go straight to the bank | M |
 | 12 | Double Yield | gathering and cooking give x2 items | M |
 | 13 | Midas Loop | high alchemy repeats on the same stack | M |
