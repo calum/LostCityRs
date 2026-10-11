@@ -64,8 +64,8 @@ function openRelics(bot: Bot) {
 /** Relics that exist today (relic_exists), so the counts follow the pool as relics land. */
 const RELICS = existingRelicIds().length;
 
-/** Rows per list in the relic menu: room for relic ids 1 to 30 (the lists scroll). */
-const RELIC_ROWS = 29;
+/** Rows per list in the relic menu: room for relic ids 1 to 31 (the lists scroll). */
+const RELIC_ROWS = 30;
 
 // if_sethide only hides layers in the client (Client-TS Client.ts IF_SETHIDE sets .hide, drawing checks it for type 0), so the choose button sits in a layer.
 function relicRows(bot: Bot, list: 'unlocked' | 'available') {
@@ -237,12 +237,12 @@ test('relic menu: a pending choice shows the button, and clicking it re-opens th
     assert.ok(relicRows(bot, 'unlocked').length >= 1);
 });
 
-test('relic menu: both lists have a row for every relic that exists (29 rows, the last one used since Green Thumb), scroll in a layer, and unused rows are blank', t => {
+test('relic menu: both lists have a row for every relic that exists (30 rows, the last one used since Fellowship), scroll in a layer, and unused rows are blank', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     openRelics(bot);
     assert.ok(RELICS <= RELIC_ROWS, 'a relic was added: the menu lists need another row each (relic_relicmenu.if, relic_menus.enum, interface.pack)');
-    assert.equal(text(bot, 'relic_relicmenu:unlocked_29'), '');
+    assert.equal(text(bot, 'relic_relicmenu:unlocked_30'), '');
     assert.equal(text(bot, `relic_relicmenu:available_${RELICS}`) === '', false, 'every existing relic has a row in the not-yet-unlocked list');
     assert.notEqual(Component.getId('relic_relicmenu:unlocked_list'), -1);
     assert.notEqual(Component.getId('relic_relicmenu:available_list'), -1);

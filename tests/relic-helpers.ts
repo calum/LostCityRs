@@ -99,7 +99,7 @@ export function relicExists(id: number): boolean {
     return !new Function('id', `return (${expr});`)(id);
 }
 
-/** Relic ids that exist today (1..30 minus the hidden ones). */
+/** Relic ids that exist today (1..31 minus the hidden ones). */
 export function existingRelicIds(): number[] {
-    return Array.from({ length: 30 }, (_, i) => i + 1).filter(relicExists);
+    return Array.from({ length: 31 }, (_, i) => i + 1).filter(relicExists);
 }

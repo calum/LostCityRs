@@ -8,3 +8,7 @@
 ^relic_task_listed = 44
 // engine base XP rate, node.xpRate in config/world.json (only used to show the rate in the relics menu)
 ^relic_base_xp = 10
+// Fellowship (relic 31): reach in tiles and share of the owner's food healing. The XP share is in Engine-TS Player.ts (RELIC_FELLOWSHIP_RADIUS, RELIC_FELLOWSHIP_XP_PERCENT).
+^relic_fellowship_radius = 5
+^relic_fellowship_heal_percent = 50
+^relic_fellowship_xp_percent = 50

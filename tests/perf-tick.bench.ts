@@ -15,7 +15,7 @@ useVanillaWorld();
 
 const ALL_RELICS = (() => {
     let owned = 0;
-    for (let id = 2; id <= 30; id++) if (id !== 15) owned |= 1 << id;
+    for (let id = 2; id <= 31; id++) if (id !== 15) owned |= 1 << id;
     return owned;
 })();
 

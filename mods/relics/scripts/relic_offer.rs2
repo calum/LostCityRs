@@ -1,4 +1,4 @@
-// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..14, 16..30 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
+// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..14, 16..31 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
 // %relic_pending counts offers the player has earned but not yet answered (a closed dialog leaves it set; login re-offers).
 // Everything here needs protected access: run it from a queue script (see relic_offer_q).
 
@@ -33,6 +33,7 @@ switch_int ($id) {
     case 29 : return("Hunter's Haul");
     case 30 : return("Light Fingers");
     case 20 : return("Green Thumb");
+    case 31 : return("Fellowship");
     case default : return("Unknown relic");
 }
 
@@ -67,6 +68,7 @@ switch_int ($id) {
     case 29 : return("hides: 3 tanned, to the bank, gems");
     case 30 : return("pickpockets never fail and repeat, stalls never empty");
     case 20 : return("boosts never drain, secondaries stay, XP grows herbs");
+    case 31 : return("players within 5 tiles share half your XP and food healing");
     case default : return("");
 }
 
@@ -104,7 +106,7 @@ return(1);
 [proc,relic_pool_size](int $drawn, int $mode)(int)
 def_int $size = 0;
 def_int $i = 1;
-while ($i <= 30) {
+while ($i <= 31) {
     if (~relic_in_pool($i, $drawn, $mode) = 1) {
         $size = calc($size + 1);
     }
@@ -122,7 +124,7 @@ if ($size = 0) {
 %relic_seed = calc((%relic_seed * 75 + 74) % 65537);
 def_int $k = calc(%relic_seed % $size);
 def_int $i = 1;
-while ($i <= 30) {
+while ($i <= 31) {
     if (~relic_in_pool($i, $drawn, $mode) = 1) {
         if ($k = 0) {
             return($i);
@@ -229,7 +231,7 @@ if ($c ! 0) {
 %relic_seed = $seed_after;
 // everything offered and not picked can come back and feeds the Hoarder relic
 def_int $i = 1;
-while ($i <= 30) {
+while ($i <= 31) {
     if (testbit($drawn, $i) = ^true & $i ! $pick) {
         %relic_declined = setbit(%relic_declined, $i);
     }

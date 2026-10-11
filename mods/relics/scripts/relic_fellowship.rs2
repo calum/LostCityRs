@@ -1,0 +1,28 @@
+// 31 Fellowship. Every other player within ^relic_fellowship_radius tiles of the owner (owner or not) gets
+// ^relic_fellowship_heal_percent % of the hitpoints the owner heals by eating, and ^relic_fellowship_xp_percent % of the owner's XP
+// gains in the same skill. The XP half is an engine hook, Player.addXp -> relicFellowship (Engine-TS), with the same radius and
+// percentage as constants there. Owners stack; shared XP and shared heals are never shared again.
+
+// Content hook, last thing in [proc,consume_effect_apply] after the stat heals: $before is the hitpoints level when the food was eaten.
+// The share runs in a queue on the eater, so the scan below can switch the active player without disturbing the consume script.
+[proc,relic_fellowship_heal](int $before)
+if (~relic_has(31) = 0) {
+    return;
+}
+def_int $healed = calc(stat(hitpoints) - $before);
+if ($healed > 0) {
+    queue(relic_fellowship_heal_q, 0, $healed);
+}
+
+[queue,relic_fellowship_heal_q](int $healed)
+def_int $share = calc($healed * ^relic_fellowship_heal_percent / 100);
+if ($share <= 0) {
+    return;
+}
+def_player_uid $self = uid;
+huntall(coord, ^relic_fellowship_radius, 0);
+while (huntnext = true) {
+    if (uid ! $self) {
+        stat_heal(hitpoints, $share, 0);
+    }
+}

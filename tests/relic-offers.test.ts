@@ -45,7 +45,8 @@ const NAMES = [
     'Endless Shoal',
     "Fletcher's Echo",
     "Hunter's Haul",
-    'Light Fingers'
+    'Light Fingers',
+    'Fellowship'
 ];
 
 /** Every bit relic that exists owned (id 1 is a tier, not a bit; retired and reserved ids are skipped, see relicExists). */
@@ -62,7 +63,7 @@ function predictOffer(seed: number, owned: number, xpTier: number, declinedOnly 
     const drawn: number[] = [];
     for (let n = 0; n < 3; n++) {
         const pool: number[] = [];
-        for (let id = 1; id <= 30; id++) {
+        for (let id = 1; id <= 31; id++) {
             const exists = relicExists(id) && id !== 2; // Quest Pass (2) is never drawn: the 10th task done grants it (relic_in_pool)
             const eligible = exists && (id === 1 ? xpTier < 3 : (owned & bit(id)) === 0);
             const inMode = declinedOnly === -1 || (declinedOnly & bit(id)) !== 0;

@@ -137,7 +137,7 @@ x=8
 y=82
 width=250
 height=248
-scroll=352
+scroll=364
 
 [unlocked_1]
 layer=unlocked_list
@@ -487,13 +487,25 @@ shadowed=yes
 text=
 colour=0xFFFFFF
 
+[unlocked_30]
+layer=unlocked_list
+type=text
+x=0
+y=350
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
 [available_list]
 type=layer
 x=260
 y=82
 width=250
 height=248
-scroll=352
+scroll=364
 
 [available_1]
 layer=available_list
@@ -836,6 +848,18 @@ layer=available_list
 type=text
 x=0
 y=338
+width=250
+height=12
+font=p11_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[available_30]
+layer=available_list
+type=text
+x=0
+y=350
 width=250
 height=12
 font=p11_full

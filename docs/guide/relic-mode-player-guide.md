@@ -79,6 +79,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 22 | Archmage | Your spells hit **twice as hard** and cast in about **half the time**. About half of all casts use **no runes** (you still need the runes in your backpack). After you cast a damage spell (strikes, bolts, blasts, waves, Crumble Undead) at a monster, you **keep casting the same spell** at it until you walk away, click something else, or run out of runes. Freezing and stat-lowering spells are cast once. | automatic |
 | 23 | Endless Quiver | Arrows, bolts and thrown weapons are **never used up** and never fall on the floor. Ranged attacks are **+50% accurate** and hit **+50% harder**. | automatic |
 | 30 | Light Fingers | Pickpocketing **never fails**, so you are never stunned or hurt, and after each successful pick you **pick the same pocket again** by yourself. Stalls **never run empty**: click a stall once and you keep stealing from it, with the usual loot and Thieving XP. | click a person (Pickpocket) or a stall (Steal-from) once |
+| 31 | Fellowship | Made for playing together. Everyone within **5 tiles** of you (even without the relic) gets **half of every XP gain you make**, in the same skill, and **half of the hitpoints you heal by eating**. If several of you have it, the shares stack. | automatic, stand close |
 
 Good to know:
 
@@ -158,6 +159,7 @@ The three herblore tasks (43 to 45) need things this game hands out sparingly. F
 
 - **Herbs** drop from monsters (men, goblins, hobgoblins, giants, druids, dragons, demons and many more). They arrive **unidentified**: click one to identify it, which needs the Herblore level of that herb (guam 3, kwuarm 54, lantadyme 67, dwarf weed 70). No shop sells herbs and there is no farming.
 - **Vials of water** are sold in several shops. **Limpwurt roots** only drop from monsters. **Dragon scale dust** is a blue dragon scale ground with a pestle and mortar, and the only blue dragon scales lie on the floor in the Taverley dungeon. **Wine of Zamorak** is one bottle in the Chaos temple, plus a rare Canifis citizen drop.
+- **Fellowship** only gives, it does not need your friends to own it; they must stay within 5 tiles (same floor). Shared XP does not pass on again.
 - **Green Thumb** gives you identified herbs from XP, keeps your secondaries, and starts you with one of each.
 
 Details and sources: [herblore-relic-research.md](https://github.com/calum/LostCityRs/blob/main/docs/design/herblore-relic-research.md).

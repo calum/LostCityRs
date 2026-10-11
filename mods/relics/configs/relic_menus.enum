@@ -131,6 +131,7 @@ val=relic_relicmenu:unlocked_26
 val=relic_relicmenu:unlocked_27
 val=relic_relicmenu:unlocked_28
 val=relic_relicmenu:unlocked_29
+val=relic_relicmenu:unlocked_30
 
 [relic_available_rows]
 inputtype=autoint
@@ -165,3 +166,4 @@ val=relic_relicmenu:available_26
 val=relic_relicmenu:available_27
 val=relic_relicmenu:available_28
 val=relic_relicmenu:available_29
+val=relic_relicmenu:available_30
