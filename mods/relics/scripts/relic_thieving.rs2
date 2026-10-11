@@ -1,0 +1,30 @@
+// 30 Light Fingers and the thieving tasks. Hook lines are in Content skill_thieving/scripts/thieving.rs2 (grep "relic hook");
+// the list of hooks is in docs/local-changes.md, the design in docs/design/relics-light-fingers.md.
+
+// check_if_success_pick_pocket: a Light Fingers owner never fails a pickpocket (no stun, no damage).
+[proc,relic_pickpocket_sure]()(boolean)
+if (~relic_has(30) = 1) {
+    return(true);
+}
+return(false);
+
+// pick_pocket, after a successful pick: Light Fingers picks the same pocket again (the same op the player used, so a click on
+// anything else, a step or a full backpack ends it: attempt_pick_pocket runs again and its checks apply as for a click).
+[proc,relic_pickpocket_again]
+if (~relic_has(30) = 1) {
+    p_opnpc(3);
+}
+
+// steal_from_stall, after the delay: true for a Light Fingers owner, whose stalls never empty (the caller pays the reward and
+// repeats the op instead of swapping the stall for the empty market table).
+[proc,relic_stall_keeps]()(boolean)
+if (~relic_has(30) = 1) {
+    return(true);
+}
+return(false);
+
+// steal_from_stall, after a theft. Task 41 (tier 3): steal from a gem stall.
+[proc,relic_task_steal]
+if (loc_type = gem_stall_stealing) {
+    ~relic_task_try(41, 3);
+}

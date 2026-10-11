@@ -9,7 +9,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **39 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- There are **41 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
@@ -20,7 +20,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 1. **Do the tasks in any order**, including the bosses.
 2. **A task only counts once.**
 3. **Relics you turn down can come back** in later offers. If only 1 or 2 are left, you get just those. If none are left, the task still completes but there is no pick.
-4. **The pool runs out.** About 27 picks exist (the XP Multiplier counts three times), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
+4. **The pool runs out.** About 28 picks exist (the XP Multiplier counts three times), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
 5. **Two fixed rules.** Your **10th finished task** (whichever task it is) always gives you the **Quest Pass** straight away, with no choice. Quest Pass can never show up in an ordinary offer and you cannot get it earlier or later. Every **5th finished task** (5th, 15th, 20th, 25th, 30th, 35th) always has an **XP Multiplier** in its choice while you can still take one.
 6. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
 
@@ -28,7 +28,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 39 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 41 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - **Relics** also shows how long you have played ("Time played"). The game counts the time you are logged in. When you beat both final bosses it prints your final challenge time in the chat and the menu keeps showing it ("Final challenge done in ..."), so you can see how long the run took. Characters that already existed start counting from zero.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
@@ -74,6 +74,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 29 | Hunter's Haul | When a cow or a dragon (green, blue, red, black) drops a hide, you get **three tanned hides** in your bank instead, and a **50% chance** of a random uncut gem (sapphire, emerald, ruby or diamond) too. | kill the animal |
 | 22 | Archmage | Your spells hit **twice as hard** and cast in about **half the time**. About half of all casts use **no runes** (you still need the runes in your backpack). After you cast a damage spell (strikes, bolts, blasts, waves, Crumble Undead) at a monster, you **keep casting the same spell** at it until you walk away, click something else, or run out of runes. Freezing and stat-lowering spells are cast once. | automatic |
 | 23 | Endless Quiver | Arrows, bolts and thrown weapons are **never used up** and never fall on the floor. Ranged attacks are **+50% accurate** and hit **+50% harder**. | automatic |
+| 30 | Light Fingers | Pickpocketing **never fails**, so you are never stunned or hurt, and after each successful pick you **pick the same pocket again** by yourself. Stalls **never run empty**: click a stall once and you keep stealing from it, with the usual loot and Thieving XP. | click a person (Pickpocket) or a stall (Steal-from) once |
 
 Good to know:
 
@@ -82,6 +83,7 @@ Good to know:
 - **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
 - **Forge Echo, Fletcher's Echo and Hunter's Haul**: if your bank is full the extra items go to your backpack, and are lost if that is full too.
 - **Endless Shoal** only keeps a spot still while you are close; walk away and it moves on like any other.
+- **Light Fingers**: the repeat stops when you walk, click something else, or your backpack is full. Guards and stall owners who see you still stop you from stealing from a stall.
 - **Midas Loop** stops when you walk or click something else.
 - **Executioner** finishes an NPC below 25% HP on your next landed hit. It gives slightly too much attack XP.
 - **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge.
@@ -95,7 +97,7 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone and
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order (there is no task 37: the death rune task was removed because the death altar cannot be used in this game). Tasks 26 to 40 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 40 each give a relic offer. Ticking a task here does not affect any other row.
+Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order (there is no task 37: the death rune task was removed because the death altar cannot be used in this game). Tasks 26 to 42 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 42 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
@@ -108,6 +110,7 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 26 | **Mine a coal** | Mining 30 and a pickaxe. With Eternal Vein the coal goes to your bank as coal (it is never smelted on its own) | coal rocks, for example [near Seers' Village (2575, 3479)](https://explv.github.io/?centreX=2575&centreY=3479&centreZ=0&zoom=9) |
 | 27 | **Smelt a steel bar** | Smithing 30, one iron ore and two coal in a furnace (choose *steel bar* in the furnace menu). With Eternal Vein, mined iron ore already arrives as a steel bar and counts | any furnace |
 | 30 | **Catch a lobster** | Fishing 40 and a lobster pot. With Double Yield the lobster arrives cooked and still counts | lobster pot fishing spots |
+| 42 | **Pickpocket a guard** | Thieving 40. A failed attempt stuns and hurts you. Guards in Falador, Varrock, Ardougne and other towns all count | town guards |
 | 35 | **Cut a diamond** | Crafting 43, an uncut diamond and a chisel. A cut can fail and crush the gem, so bring a few | anywhere |
 | 36 | **Craft a nature rune** | Runecrafting 44, **members** world, a nature talisman and essence | nature altar |
 | 5 | **Chop a maple log** | Woodcutting 45 and an axe | maple trees |
@@ -125,6 +128,7 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 32 | **Make a yew longbow** | Fletching 70, an unstrung yew longbow and a bow string (use the string on the bow) | anywhere |
 | 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | use the Recall stone |
 | 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
+| 41 | **Steal from a gem stall** | Thieving 75, **members** world. The only gem stall is in Ardougne market, [around (2667, 3303)](https://explv.github.io/?centreX=2667&centreY=3303&centreZ=0&zoom=9). The gem seller and the guards or knights nearby stop you if they see you. Watch out for them | Ardougne market |
 | 10 | **Cook a raw shark** | Cooking 80. The cooked shark counts, a burnt one does not | any fire or range |
 | 33 | **Make rune darts** | Fletching 81, rune dart tips and feathers (use one on the other) | anywhere |
 | 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | automatic |

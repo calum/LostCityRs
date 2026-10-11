@@ -87,10 +87,12 @@ if ($log = yew_logs) {
     ~relic_task_try(7, 2);
 }
 
-// thieving.rs2 hook (after a successful pickpocket). Task 13 (tier 2): pickpocket a paladin.
+// thieving.rs2 hook (after a successful pickpocket). Task 13 (tier 2): pickpocket a paladin. Task 42 (tier 2): pickpocket a guard.
 [proc,relic_task_pickpocket]
 if (npc_type = paladin) {
     ~relic_task_try(13, 2);
+} else if (npc_type = guard1 | npc_type = guard2 | npc_type = ardougne_guard) {
+    ~relic_task_try(42, 2);
 }
 
 // mining.rs2 hook, after an ore is mined. Eternal Vein never depletes the rock (~relic_loc_change), so the swing loop goes on

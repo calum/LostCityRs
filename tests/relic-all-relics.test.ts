@@ -81,8 +81,8 @@ test('all relics: every task number 1..count has a driver below or a table row',
     assert.deepEqual(missing, [], 'tasks with no table row and no entry in HOOK_TASKS');
 });
 
-/** Tasks that are hard-coded in script hooks, not table rows (relic_gather.rs2 relic_task_burn, relic_task_pickpocket, relic_task_spell, relic_level99). */
-const HOOK_TASKS = new Set([7, 13, 38, 39, 40]);
+/** Tasks that are hard-coded in script hooks, not table rows (relic_gather.rs2 relic_task_burn, relic_task_pickpocket, relic_task_steal, relic_task_spell, relic_level99). */
+const HOOK_TASKS = new Set([7, 13, 38, 39, 40, 41, 42]);
 
 // ---------------------------------------------------------------- table rows
 
@@ -266,8 +266,8 @@ test('all relics: every task, one after another on one character, ends with all 
     }
     bot.debugproc('relic_gather', 'silver_ore', 10);
     bot.tick(10);
-    // 7, 13, 38 and 39 are hook tasks (real sites are tested above): complete them with the debug proc
-    for (const task of [7, 13, 38, 39, 40]) bot.debugproc('relic_task', task);
+    // 7, 13, 38, 39, 41 and 42 are hook tasks (real sites are tested above): complete them with the debug proc
+    for (const task of [7, 13, 38, 39, 40, 41, 42]) bot.debugproc('relic_task', task);
     bot.tick(10);
     // tasks 1-31 fill the first varp (bits 0-30), 32 and up the second (bit = task - 32)
     const count = taskCount();
