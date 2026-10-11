@@ -1,5 +1,8 @@
 # Relic mode: player guide and tracker
 
+!!! tip "Prefer a full-width, dark RuneScape-styled version?"
+    The same relics and tasks, with the same tracker, are on the [relic wiki page](https://calum.github.io/LostCityRs/relics/). It is generated from this page.
+
 Relic mode turns a normal character into a fast, over-powered run. Finish tasks, pick game-breaking perks (relics), and finish the run by killing the two bosses. This page tells you what you need to know and gives you a tracker for relics and tasks.
 
 !!! note "Things may change"

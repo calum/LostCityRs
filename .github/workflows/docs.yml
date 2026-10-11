@@ -34,6 +34,8 @@ jobs:
           cache-dependency-path: docs-site/requirements.txt
       - run: pip install -r docs-site/requirements.txt
       - run: mkdocs build --strict
+      # Standalone relic mode page (site/relics/), generated from docs/guide/relic-mode-player-guide.md.
+      - run: python docs/tools/relic-wiki/build_relic_wiki.py site/relics
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
