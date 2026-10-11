@@ -9,9 +9,9 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **25 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- There are **32 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
 - Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
-- The last two tasks are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
+- Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
 - Your first offer comes when you first log in (after Tutorial Island, or straight away if you skip it).
 
@@ -27,7 +27,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 25 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 32 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
 
@@ -84,7 +84,7 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone and
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. Ticking a task here does not affect any other row.
+Tasks count in any order. Tasks 26 to 32 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 32 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
@@ -113,6 +113,13 @@ Tasks count in any order. Ticking a task here does not affect any other row.
 | 23 | Defeat a **Kalphite soldier** | combat level 85, 90 HP | [underground (3472, 9486)](https://explv.github.io/?centreX=3472&centreY=9486&centreZ=2&zoom=9) ([surface above](https://explv.github.io/?centreX=3472&centreY=3086&centreZ=0&zoom=9)) |
 | 24 | Defeat the **King Black Dragon** | combat level 276. **Final task, no relic offer** | [underground Sorcerers' Tower (2716, 9817)](https://explv.github.io/?centreX=2716&centreY=9817&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=2716&centreY=3417&centreZ=0&zoom=9)) Route: the ladder at (3017, 3849) in the Wilderness takes you to (3069, 10255), and the lever there teleports you into the lair at about (2717, 9802). |
 | 25 | Defeat the **Kalphite Queen** | combat level 333, 255 HP. Her first form does not count: the kill that counts is her second (flying) form. **Final task, no relic offer** | [underground (3474, 9496)](https://explv.github.io/?centreX=3474&centreY=9496&centreZ=0&zoom=9) ([surface above](https://explv.github.io/?centreX=3474&centreY=3096&centreZ=0&zoom=9)) (first form; the flying form appears when she transforms) |
+| 26 | **Mine a coal** | Mining 30 and a pickaxe. With Eternal Vein the coal goes to your bank as coal (it is never smelted on its own) | coal rocks, for example [near Seers' Village (2575, 3479)](https://explv.github.io/?centreX=2575&centreY=3479&centreZ=0&zoom=9) |
+| 27 | **Smelt a steel bar** | Smithing 30, one iron ore and two coal in a furnace (choose *steel bar* in the furnace menu). With Eternal Vein, mined iron ore already arrives as a steel bar and counts | any furnace |
+| 28 | **Smith an adamant platebody** | Smithing 88, five adamantite bars (smelted, or banked by Eternal Vein), a hammer and an anvil | any anvil |
+| 29 | **Smith a rune scimitar** | Smithing 90, two runite bars, a hammer and an anvil | any anvil |
+| 30 | **Catch a lobster** | Fishing 40 and a lobster pot. With Double Yield the lobster arrives cooked and still counts | lobster pot fishing spots |
+| 31 | **Mine an adamantite ore** | Mining 70 and a pickaxe | adamantite rocks, for example [Lumbridge Swamp (3242, 3165)](https://explv.github.io/?centreX=3242&centreY=3165&centreZ=0&zoom=9) |
+| 32 | **Catch a shark** | Fishing 76 and a harpoon. With Double Yield the shark arrives cooked and still counts (it also finishes task 10) | harpoon spots for sharks |
 
 **Map links** open [Explv's OSRS map](https://explv.github.io/) centred on the spots where that monster spawns. "Underground" means the spawn is in a dungeon; a second link shows the surface point directly above it.
 

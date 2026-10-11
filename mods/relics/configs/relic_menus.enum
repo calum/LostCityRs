@@ -27,6 +27,13 @@ val=relic_taskmenu:row_22
 val=relic_taskmenu:row_23
 val=relic_taskmenu:row_24
 val=relic_taskmenu:row_25
+val=relic_taskmenu:row_26
+val=relic_taskmenu:row_27
+val=relic_taskmenu:row_28
+val=relic_taskmenu:row_29
+val=relic_taskmenu:row_30
+val=relic_taskmenu:row_31
+val=relic_taskmenu:row_32
 
 [relic_unlocked_rows]
 inputtype=autoint

@@ -217,7 +217,7 @@ if (inv_freespace(inv) > 0) {
     ~relic_say("Your inventory was full: <oc_name($item)> went to your bank.");
 }
 
-// The completion of a task: celebrate, then (tasks 24 and 25 are the finals) owe an offer.
+// The completion of a task: celebrate, then (tasks 24 and 25 are the finals, they owe no offer) owe an offer.
 [queue,relic_task_done](int $task)
 if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
     return;
@@ -225,7 +225,7 @@ if (testbit(%relic_tasks_done, calc($task - 1)) = ^true) {
 %relic_tasks_done = setbit(%relic_tasks_done, calc($task - 1));
 ~relic_say("Relic task <tostring($task)> complete!");
 ~relic_celebrate;
-if ($task >= 24) {
+if ($task = 24 | $task = 25) {
     if (and(%relic_tasks_done, ^relic_tier4_mask) = ^relic_tier4_mask) {
         ~relic_win;
     } else {

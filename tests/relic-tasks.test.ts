@@ -14,6 +14,8 @@ import { CoordGrid } from '../Engine-TS/src/engine/CoordGrid.js';
 import type Loc from '../Engine-TS/src/engine/entity/Loc.js';
 import { findPathToLoc, isMapBlocked, reachedLoc } from '../Engine-TS/src/engine/GameMap.js';
 
+import { defineSkillingTaskTests } from './relic-skilling-task-flows.js';
+
 useVanillaWorld(); // relic_started = 1 on every bot: no first-login offer
 
 const skip = () => (hasVarp('relic_tasks_done') ? false : 'relic mod not loaded');
@@ -413,3 +415,7 @@ test('tasks count in any order: tier 3 and tier 2 tasks complete with no tier 1 
     // four offers were owed and answered, one per task
     assert.equal(bot.messages.filter(m => m.startsWith('You gained the relic:')).length, 4);
 });
+
+// ---------------------------------------------------------------- tasks 26-32 (skilling), no relics owned
+
+defineSkillingTaskTests('skilling tasks', spawn, skip);

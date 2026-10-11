@@ -200,6 +200,19 @@ if (p_finduid(uid) = false) {
 }
 ~relic_gathered($o, $r);
 
+// ::~relic_smith <product> smiths one product as the anvil interface does after its checks (Content smithing.rs2 [proc,smithing_anvil]:
+// takes the bars from the inventory, adds the product, grants the smithing XP). Needs the bars in the inventory.
+// (The label attempt_smithing cannot be called from here: it reads last_item, which only the anvil op sets.)
+[debugproc,relic_smith](namedobj $o)
+if (p_finduid(uid) = false) {
+    return;
+}
+db_find(smithing:ifproduct, $o);
+def_dbrow $data = db_findnext;
+if ($data ! null) {
+    ~smithing_anvil($data, 1);
+}
+
 // ::~relic_fish <raw fish> runs the fishing hook as if the player had just caught it (no fishing XP; cooking XP with Double Yield).
 [debugproc,relic_fish](namedobj $o)
 if (p_finduid(uid) = false) {

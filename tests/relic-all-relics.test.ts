@@ -10,6 +10,7 @@ import { Bot, spawnNpc } from '../harness/src/index.js';
 import type { CoordLike } from '../harness/src/index.js';
 import { hasVarp, useVanillaWorld } from './helpers.js';
 import { dbrows, isDone, locNear, standNear, tasksDone } from './relic-helpers.js';
+import { defineSkillingTaskTests } from './relic-skilling-task-flows.js';
 
 useVanillaWorld(); // relic_started = 1 on every bot: no first-login offer
 
@@ -241,6 +242,10 @@ test('all relics: a real melee kill of a goblin (task 1) with Glass Cannon, Exec
     expectDone(bot, 1);
 });
 
+// ---------------------------------------------------------------- tasks 26-32 (skilling)
+
+defineSkillingTaskTests('all relics', spawn, skip);
+
 // ---------------------------------------------------------------- everything at once
 
 test('all relics: every task, one after another on one character, ends with all task bits set', t => {
@@ -248,7 +253,7 @@ test('all relics: every task, one after another on one character, ends with all 
     const bot = spawn();
     bot.clearInv();
     // the two final bosses (tasks 24, 25) last: winning opens a message box that holds back later queued completions
-    const rows = dbrows().sort((a, b) => Number(a.task >= 24) - Number(b.task >= 24));
+    const rows = dbrows().sort((a, b) => Number(a.task === 24 || a.task === 25) - Number(b.task === 24 || b.task === 25));
     for (const row of rows) {
         if (row.table === 'relic_task_npc') bot.debugproc('relic_kill', row.key);
         else bot.debugproc('relic_gather', row.key, gatherRelic(row.key));
@@ -257,6 +262,7 @@ test('all relics: every task, one after another on one character, ends with all 
     bot.tick(10);
     // 7 and 13 are hook tasks (real sites are tested above): complete them with the debug proc
     bot.debugproc('relic_task', 7).debugproc('relic_task', 13).tick(10);
-    const full = (1 << taskCount()) - 1;
-    assert.equal(tasksDone(bot), full, `done ${tasksDone(bot).toString(2)} of ${full.toString(2)}`);
+    // 32 tasks fill the whole int varp (task 32 is the sign bit), so compare as signed 32-bit values
+    const full = (2 ** taskCount() - 1) | 0;
+    assert.equal(tasksDone(bot) | 0, full, `done ${(tasksDone(bot) >>> 0).toString(2)} of ${(full >>> 0).toString(2)}`);
 });
