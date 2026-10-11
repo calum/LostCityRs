@@ -66,10 +66,9 @@ switch_int ($id) {
     case default : return("");
 }
 
-// 1 for an id that is a relic today. 15 (Infinite Runes) was retired and 20 was never used; 25 to 29 are reserved for relics other work packages add
-// and are removed from this list by the work that adds them.
+// 1 for an id that is a relic today. 15 (Infinite Runes) was retired and 20 was never used; a new relic id is hidden here until its work lands.
 [proc,relic_exists](int $id)(int)
-if ($id = 15 | $id = 20 | $id >= 25) {
+if ($id = 15 | $id = 20) {
     return(0);
 }
 return(1);

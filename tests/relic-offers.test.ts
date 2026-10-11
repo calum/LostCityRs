@@ -36,7 +36,6 @@ const NAMES = [
     "Banker's Call",
     'Hoarder',
     '',
-    '',
     'Rune Wellspring',
     'Archmage',
     'Endless Quiver',
@@ -129,15 +128,18 @@ test('first login after the tutorial: three relics from the seed, the pick is gr
     const expected = predictOffer(5, 0, 0);
     // predictOffer is the oracle: the draws shift whenever the pool changes (Infinite Runes left, Teleport Network and the new relics joined),
     // so no ids are pinned here
-    const [first, ...rest] = expected.ids;
-    assert.ok(first !== 1, 'seed 5 must not open with the XP Multiplier (it is a tier, not an owned bit)');
+    // pick one that opens no follow-up dialogue (not Quest Pass 2, Hoarder 19) and is a bit relic (not the XP Multiplier tier)
+    const take = expected.ids.findIndex(id => ![1, 2, 19].includes(id));
+    assert.ok(take >= 0, 'seed 5 offers a plain relic');
+    const first = expected.ids[take];
+    const rest = expected.ids.filter((_, i) => i !== take);
     assert.deepEqual(offeredIds(bot), expected.ids);
-    assert.ok(choiceTexts(bot)[0].startsWith(`${NAMES[first]}:`));
+    assert.ok(choiceTexts(bot)[take].startsWith(`${NAMES[first]}:`));
     assert.match(bot.dialogText, /Choose a relic/);
     // the advanced seed is only stored once the offer is answered, so closing it cannot reroll it
     assert.equal(bot.varp('relic_seed'), 5);
 
-    pick(bot, 1);
+    pick(bot, take + 1);
     bot.waitUntilIdle(20);
     bot.expectMessage(`You gained the relic: ${NAMES[first]}.`);
     assert.equal(bot.varp('relic_seed'), expected.seed);
@@ -233,7 +235,7 @@ test('closing an offer keeps it pending and unchanged; the next login shows the 
     waitForOffer(again);
     // no reroll: the re-offer shows the same three relics
     assert.deepEqual(offeredIds(again), first.ids);
-    const take = first.ids.findIndex(id => id !== 19); // not Hoarder: it opens a second offer
+    const take = first.ids.findIndex(id => id !== 19 && id !== 2); // not Hoarder or Quest Pass: they open a second dialogue
     pick(again, take + 1);
     again.waitUntilIdle(20);
     assert.equal(again.varp('relic_pending'), 0);
@@ -266,19 +268,22 @@ test('several pending offers are answered one after another', t => {
     waitForOffer(bot);
     const one = predictOffer(5, 0, 0);
     assert.deepEqual(offeredIds(bot), one.ids);
-    const firstId = one.ids[0]; // the first option is picked; seed 5 must not open with the XP Multiplier (a tier)
-    assert.ok(firstId !== 1);
-    pick(bot, 1);
+    const takeIdx = one.ids.findIndex(id => ![1, 2, 19].includes(id)); // a plain relic: Quest Pass and Hoarder open follow-up dialogues
+    assert.ok(takeIdx >= 0);
+    const firstId = one.ids[takeIdx];
+    pick(bot, takeIdx + 1);
     waitForOffer(bot);
     assert.equal(bot.varp('relic_pending'), 1);
 
     const two = predictOffer(one.seed, bit(firstId), 0);
     assert.deepEqual(offeredIds(bot), two.ids);
     assert.ok(!two.ids.includes(firstId));
-    pick(bot, 1);
+    const takeTwo = two.ids.findIndex(id => ![1, 2, 19].includes(id));
+    assert.ok(takeTwo >= 0);
+    pick(bot, takeTwo + 1);
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_pending'), 0);
-    assert.equal(bot.varp('relic_owned'), bit(firstId) | (two.ids[0] === 1 ? 0 : bit(two.ids[0])));
+    assert.equal(bot.varp('relic_owned'), bit(firstId) | bit(two.ids[takeTwo]));
     assert.equal(bot.chatModal, null);
 });
 

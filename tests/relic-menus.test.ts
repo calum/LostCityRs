@@ -212,7 +212,7 @@ test('relic menu: a pending choice shows the button, and clicking it re-opens th
     assert.equal(bot.mainModal, null, 'the menu closes so the offer can show');
     assert.match(bot.dialogText, /Choose a relic/);
     assert.equal(bot.choices.length, 3);
-    bot.choose(bot.choices.findIndex(c => !c.startsWith('Hoarder')) + 1); // Hoarder would open a second offer
+    bot.choose(bot.choices.findIndex(c => !/^(Hoarder|Quest Pass)/.test(c)) + 1); // Hoarder and Quest Pass open a second dialogue
     bot.waitUntilIdle(20);
     assert.equal(bot.varp('relic_pending'), 0);
     assert.ok(bot.varp('relic_owned') !== 0 || bot.varp('relic_xp_tier') !== 0, 'the pick was granted');
