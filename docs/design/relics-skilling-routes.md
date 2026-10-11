@@ -2,7 +2,7 @@
 
 **Question this answers:** how do Prospector's Pick (25), Forge Echo (26), Endless Shoal (27), Fletcher's Echo (28) and Hunter's Haul (29) work, where are their hooks, and what did the tests show?
 
-**Based on:** root `fe995ff` plus this change; Engine-TS `e45392c4` (no engine change was needed); Content branch `skilling-relics-a` at `c5d274233` (five hook commits on top of `dd72ac774`; the same five commits also sit on Content `main` as `a15fcce66`, rebased on `a6ed450c7`, see "Branches"). Method: code read, then **run** headless on Node 24.11.1: `tests/relic-skilling-routes.test.ts` (24 tests) and the whole suite 285/285, `test:types` clean. Brief: [skilling-relics-brief.md](skilling-relics-brief.md).
+**Based on:** root `fe995ff` plus this change; Engine-TS `e45392c4` (no engine change was needed); Content `main` at `a15fcce66` (five hook commits on top of `a6ed450c7`). Method: code read, then **run** headless on Node 24.11.1: `tests/relic-skilling-routes.test.ts` (24 tests) and the whole suite 282/282 after merging main (285 before task 32 was removed), `test:types` clean. Brief: [skilling-relics-brief.md](skilling-relics-brief.md).
 
 Ids: the brief said 16-20 but 16-19 were taken (`relic_offer.rs2` `relic_name`), so these use 25-29. Relic bits are in the 32-bit varp `relic_owned` (`testbit/setbit`), ids up to 30 fit.
 
@@ -25,10 +25,6 @@ Fishing limit: the first cast (`attempt_fish_*` labels) keeps its normal 4 or 5 
 ## 29 Hunter's Haul
 
 `[proc,relic_drop_hide]` replaces the `obj_add(npc_coord, <hide>, 1, ...)` line in `cow.rs2` and the four `*_dragon.rs2` drop tables. With the relic it queues player queues (`relic_haul_hide`: 3 leather, `relic_haul_gem`: one gem) because a death queue has no protected access to the killer's bank (observed error `inv_add $inv requires protected access: bank`). Leather: `leather`, `dragon_leather`, `dragon_leather_blue`, `_red`, `_black`. Gem: 50%, then sapphire/emerald/ruby/diamond with equal chance (not the mining gem table). Only the top damager gets it (`npc_findhero`), like Bounty.
-
-## Branches
-
-Content `main` moved while this was built (another thread removed task row 32's interface id) ahead of the root mods, so root `main` at the time did not build against Content `main`. This change pins Content to branch `skilling-relics-a` (based on `dd72ac774`, the commit the root recorded). The identical commits are on Content `main` too; whoever next merges should move the root pointer to `main` once the root mods match it.
 
 ## Tests (what they prove)
 

@@ -97,9 +97,9 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 ## Skilling relics 25-29 (2026-10-11)
 | Repo | File | Change | Commit |
 |---|---|---|---|
-| Content | `skill_mining/scripts/mining.rs2`, `skill_woodcutting/scripts/woodcut.rs2` | roll delay through `~relic_gather_delay` (Prospector's Pick). Test: `tests/relic-skilling-routes.test.ts` | `b75795da8` |
-| Content | `skill_fishing/scripts/fishing_spots/*.rs2`, `fishing_movement.rs2` | roll delay on the continuing labels (Prospector's Pick), `& ~relic_has(27) = 0` on every inventory-full check, spot kept by `~relic_spot_held` (Endless Shoal) | `7127cfe2c` |
-| Content | `skill_smithing/scripts/smelting/smelting.rs2`, `smithing/smithing.rs2` | `~relic_forge_echo` after the product (Forge Echo) | `9824840e8` |
-| Content | `skill_fletching/scripts/{arrows,bolts,bows,cut_logs,darts}.rs2` | `~relic_fletch_echo` after the product (Fletcher's Echo) | `883889899` |
-| Content | `drop tables/scripts/{cow,green_dragon,blue_dragon,red_dragon,black_dragon}.rs2` | hide `obj_add` replaced by `~relic_drop_hide` (Hunter's Haul) | `c5d274233` |
+| Content | `skill_mining/scripts/mining.rs2`, `skill_woodcutting/scripts/woodcut.rs2` | roll delay through `~relic_gather_delay` (Prospector's Pick). Test: `tests/relic-skilling-routes.test.ts` | `2836a3256` |
+| Content | `skill_fishing/scripts/fishing_spots/*.rs2`, `fishing_movement.rs2` | roll delay on the continuing labels (Prospector's Pick), `& ~relic_has(27) = 0` on every inventory-full check, spot kept by `~relic_spot_held` (Endless Shoal) | `871b03a87` |
+| Content | `skill_smithing/scripts/smelting/smelting.rs2`, `smithing/smithing.rs2` | `~relic_forge_echo` after the product (Forge Echo) | `9faec3d8c` |
+| Content | `skill_fletching/scripts/{arrows,bolts,bows,cut_logs,darts}.rs2` | `~relic_fletch_echo` after the product (Fletcher's Echo) | `38c204a97` |
+| Content | `drop tables/scripts/{cow,green_dragon,blue_dragon,red_dragon,black_dragon}.rs2` | hide `obj_add` replaced by `~relic_drop_hide` (Hunter's Haul) | `a15fcce66` |
 | root | `mods/relics/` | `relic_skilling.rs2`, `relic_gather.rs2` (fish bank id 27, Forge Echo per bar), names in `relic_offer.rs2`. Design: [design/relics-skilling-routes.md](design/relics-skilling-routes.md) | `HEAD` of this change |
