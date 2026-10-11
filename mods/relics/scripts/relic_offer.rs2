@@ -184,6 +184,10 @@ return(calc(~relic_rerolls_earned - %relic_rerolls_used));
 // (Player.closeModal), so the seed stays where it was and the next login shows the same offer (no reroll for free).
 // A reroll stores the advanced seed and the spent reroll straight away, so a relog after it shows the rerolled offer.
 [proc,relic_offer_mode](int $mode)(int)
+return(~relic_offer_run($mode, 0));
+
+// $force 1: the first option is the XP Multiplier whenever it is still eligible (every 5th task done); a reroll keeps it.
+[proc,relic_offer_run](int $mode, int $force)(int)
 def_int $shown = 0;
 if ($mode = 0) {
     $shown = %relic_offer_shown;
@@ -193,7 +197,12 @@ def_int $pick = 99;
 while ($pick = 99) {
     def_int $seed_before = %relic_seed;
     def_int $drawn = $shown;
-    def_int $a = ~relic_draw($drawn, $mode);
+    def_int $a = 0;
+    if ($force = 1 & ~relic_eligible(1) = 1) {
+        $a = 1;
+    } else {
+        $a = ~relic_draw($drawn, $mode);
+    }
     if ($a = 0 & $shown ! 0) {
         // the saved exclusion left nothing (the pool shrank): start the offer over
         $shown = 0;
@@ -265,7 +274,21 @@ return(1);
 // Answer every pending offer. An empty pool just clears the pending count.
 [proc,relic_offer_pending]
 while (%relic_pending > 0) {
-    def_int $granted = ~relic_offer_mode(0);
+    if (%relic_quest_owed > 0) {
+        // the 10th task done: Quest Pass, straight away
+        %relic_quest_owed = calc(%relic_quest_owed - 1);
+        if (testbit(%relic_owned, 2) = ^false) {
+            ~relic_grant(2);
+        } else {
+            def_int $s = ~relic_offer_run(0, 1);
+        }
+    } else if (%relic_xp_owed > 0) {
+        // every 5th task done: the offer has an XP Multiplier option while one is left
+        def_int $x = ~relic_offer_run(0, 1);
+        %relic_xp_owed = calc(%relic_xp_owed - 1);
+    } else {
+        def_int $granted = ~relic_offer_mode(0);
+    }
     %relic_pending = calc(%relic_pending - 1);
 }
 
@@ -310,6 +333,12 @@ if ($task = 24 | $task = 25) {
     return;
 }
 %relic_pending = calc(%relic_pending + 1);
+// Special offers by tasks done: the 10th (and every 10th after) is the Quest Pass if not owned yet, every other 5th guarantees the XP Multiplier option.
+if (calc(~relic_tasks_done_count % 10) = 0 & testbit(%relic_owned, 2) = ^false) {
+    %relic_quest_owed = calc(%relic_quest_owed + 1);
+} else if (calc(~relic_tasks_done_count % 5) = 0) {
+    %relic_xp_owed = calc(%relic_xp_owed + 1);
+}
 // Not shown here: a kill task completes inside npc_death while the npc is still swinging, and a melee npc's
 // swing at 0 hp runs if_close (npc_combat_melee.rs2:36), which drops a paused dialog. 3 ticks lets it finish.
 queue(relic_offer_q, 3, 0);

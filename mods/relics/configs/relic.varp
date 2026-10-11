@@ -53,3 +53,10 @@ protect=no
 [relic_wellspring_xp]
 scope=perm
 protect=no
+
+// Offers owed with a special rule (relic_task_done): a Quest Pass grant (10th task done) and offers that guarantee an XP Multiplier option (every other 5th).
+[relic_quest_owed]
+scope=perm
+
+[relic_xp_owed]
+scope=perm

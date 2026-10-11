@@ -112,3 +112,12 @@ test('the 7th task no longer announces a reroll (one per 10 tasks)', t => {
     bot.waitForMessage('Relic task 7 complete!', 10);
     assert.ok(!bot.messages.some(m => /relic reroll/.test(m)));
 });
+
+test('the 40th task done announces the fifth reroll (1 + 40 / 10)', t => {
+    if (skip()) return t.skip(String(skip()));
+    // tasks 1-31 in relic_tasks_done, 32-39 in relic_tasks_done2 (bits 0-7): 39 done
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: 0x7fffffff, relic_tasks_done2: 0xff } });
+    bot.call('[debugproc,relic_task]', 40);
+    bot.waitForMessage('Relic task 40 complete!', 10);
+    bot.expectMessage(/You earned a relic reroll \(5 available\)/);
+});
