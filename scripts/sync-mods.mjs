@@ -11,6 +11,9 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 
+// Paths below are relative to the repo root; mise runs this from Engine-TS (`start`, `engine:pack`) as well as the root.
+process.chdir(path.resolve(import.meta.dirname, '..'));
+
 const SRC = 'mods';
 const DEST = 'Content/scripts/_mods';
 
