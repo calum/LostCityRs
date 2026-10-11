@@ -1,4 +1,4 @@
-# Task-complete toast (feasibility)
+# Task-complete toast (feasibility, then built)
 
 **Question (Calum, 2026-10-11):** can a small non-blocking widget appear at the top of the screen when a relic task completes, fade out after about 2 seconds (like OSRS combat achievements / collection log popups), without blocking much screen during combat? How much work, and will it look good?
 
@@ -38,3 +38,15 @@ Approach A. It is the only one that gives a real fade, uses no scarce overlay sl
 
 ## Not checked
 No client built or run; whether `Client.ts` has any other consumer of messages ending in a `:...:` suffix besides the two seen; whether another per-frame draw (e.g. under the minimap viewport variants or the camera work) alters the 512x334 buffer assumption; width of the fonts.
+
+## Built (2026-10-11, approach A)
+Calum approved the recommendation. Based on: Client-TS `f92f245` (fork main), root mod `mods/relics/scripts/relic_offer.rs2`.
+- Server: after the existing chat line, `relic_task_done` sends `mes("<~relic_task_name($task)>:relictask:")` (`relic_offer.rs2:293`). The chat line is kept as the log.
+- Client: `Client-TS/src/client/Toast.ts` (marker parsing, `toastAlpha`, `drawToast`), `PixFont.drawStringTrans` (new), and three hooks in `Client.ts`: fields, a `MESSAGE_GAME` branch that sets the toast instead of `addChat`, and a draw call in `otherOverlays()` just before the `::fpson` block. 250x38 panel at x=131,y=8 of the 512x334 view, fade in 0.2 s, hold, fade out the last 0.3 s, gone at 2.0 s. No click handling.
+- Tests (failed first): `tests/relic-task-toast.test.ts` (2; first run failed because no `:relictask:` message was sent, then the second failed only on my message order, fixed in the test) and `Client-TS/test/toast.test.ts` (3; failed on the missing module, then passed). Suite: `node harness/run.mjs` 374/374 on Node 24.11.1; `bun test` in Client-TS 15/15; harness typecheck clean.
+- Seen in the real client (headless Chromium via `scripts/headless-client.mjs`, local server): `::~relic_task 7` showed the panel "Relic task complete! / Burn a yew log" at the top of the view with the client's own fonts: [full](../assets/task-toast-real.png), [fading in](../assets/task-toast-real-fadein.png). The chat pane still showed "Relic task 7 complete!".
+
+![real client](../assets/task-toast-real.png)
+
+Findings while testing: the production client build drops `console.*` (`Client-TS/bundle.ts:163`), so debug logging needs `bun run build:dev`. The `::~relic_task` debug command on a fresh Tutorial Island character works.
+Not checked: fade-out frames in the real client (only the logged draw at 1.4 s and screenshots up to about 1 s were taken); combat; many tasks completing in a row (a new toast replaces the current one, by reading the code only); mobile/other client sizes.

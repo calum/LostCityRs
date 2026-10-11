@@ -136,3 +136,5 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | root | `mods/relics/` | `relic_herblore.rs2`, `.enum`, `.constant`, tasks 43-45 rows, names, menus. Design: [design/relics-green-thumb.md](design/relics-green-thumb.md) | `HEAD` of this change |
 | Content | `pack/synth.pack`, `synth/relic_attune.synth` | pack id `912=relic_attune`, copy of `enchant_diamond_amulet.synth` (relic attune chime) | `b36ee553b` |
 | Client-TS | `src/sound/CustomSounds.ts`, `src/client/Client.ts` (`soundsDoQueue`, sounds start-up) | recorded sounds in `/custom-sounds/` replace synth id 912. Design: [design/relics-attune.md](design/relics-attune.md) | `8adf2b8` |
+| Client-TS | `src/client/Toast.ts` (new), `src/client/Client.ts` (`MESSAGE_GAME`, `otherOverlays`), `src/graphics/PixFont.ts` (`drawStringTrans`) | task-complete toast: `<text>:relictask:` game messages draw a 2 s fading panel instead of a chat line. Design: [design/task-complete-toast.md](design/task-complete-toast.md) | `f92f245` |
+| root | `mods/relics/scripts/relic_offer.rs2` (`relic_task_done`) | sends the `:relictask:` message | `HEAD` of this change |

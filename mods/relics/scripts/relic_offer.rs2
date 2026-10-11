@@ -289,6 +289,8 @@ if (~relic_task_is_done($task) = 1) {
 }
 ~relic_task_mark($task);
 ~relic_say("Relic task <tostring($task)> complete!");
+// The client draws this as a fading toast at the top of the game view and does not add it to the chat (Client-TS toast).
+mes("<~relic_task_name($task)>:relictask:");
 ~relic_celebrate;
 if ($task = 24 | $task = 25) {
     if (and(%relic_tasks_done, ^relic_tier4_mask) = ^relic_tier4_mask) {
