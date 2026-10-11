@@ -3,8 +3,9 @@
 // Replaces inv_add(inv, $obj, 1) at gathering and cooking sites. $relic is the skill relic (10 mining, 11 woodcutting, 0 none):
 // with it the product goes straight to the bank (falls back to the inventory if the bank cannot take it).
 // Double Yield (12) doubles the count when it fits. Also counts the product for tasks.
+// Returns how many were produced (1 or 2): the mining, fishing and cooking sites multiply the skill's XP by it.
 // With Eternal Vein (10) a mined ore is smelted on the spot: the bar replaces the ore and its smithing XP is granted per bar.
-[proc,relic_gathered](namedobj $obj, int $relic)
+[proc,relic_gathered](namedobj $obj, int $relic)(int)
 ~relic_task_obj($obj);
 def_int $n = 1;
 if (~relic_has(12) = 1) {
@@ -26,13 +27,30 @@ if ($relic > 0 & ~relic_has($relic) = 1) {
     }
     if (inv_itemspace(bank, $obj, $n, inv_size(bank)) = ^true) {
         inv_add(bank, $obj, $n);
-        return;
+        return($n);
     }
 }
 if ($n = 2 & inv_itemspace(inv, $obj, 2, inv_size(inv)) = ^false) {
     $n = 1;
 }
 inv_add(inv, $obj, $n);
+return($n);
+
+// fishing.rs2 hook, replaces ~relic_gathered at the four catch sites. Returns how many fish were caught (the site multiplies fishing XP by it).
+// 12 Double Yield: the fish arrive already cooked (never burnt), each with the normal cooking XP of that fish, no cooking level needed.
+// The raw fish is still counted for tasks first (task 9 asks for a raw swordfish). A fish with no cooking row stays raw.
+[proc,relic_fished](namedobj $fish)(int)
+if (~relic_has(12) = 1 & $fish ! tbwt_raw_karambwan) {
+    db_find(cooking_generic:uncooked, $fish);
+    def_dbrow $data = db_findnext;
+    if ($data ! null) {
+        ~relic_task_obj($fish);
+        def_int $n = ~relic_gathered(db_getfield($data, cooking_generic:cooked, 0), 0);
+        stat_advance(cooking, multiply(db_getfield($data, cooking_generic:experience, 0), $n));
+        return($n);
+    }
+}
+return(~relic_gathered($fish, 0));
 
 // Ore to bar for Eternal Vein. Iron gives steel; coal, clay, gems and other rock products return null (banked unchanged).
 [proc,relic_smelt_ore](namedobj $ore)(namedobj)

@@ -39,7 +39,7 @@ switch_int ($id) {
     case 9 : return("kills drop loot, +50% accuracy");
     case 10 : return("rocks stay, ore smelts to bank");
     case 11 : return("trees stay, logs to bank");
-    case 12 : return("double gathering");
+    case 12 : return("double ore, fish and XP");
     case 13 : return("high alch repeats");
     case 14 : return("alchemy pays double");
     case 15 : return("spells need no runes");

@@ -56,7 +56,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 9 | Bounty | Every kill drops **coins plus a piece of food**, bigger for tougher NPCs. | pick the drop up |
 | 10 | Eternal Vein | Ore rocks never run out, ore goes **straight to your bank**, and ore is **smelted into bars** for you (with Smithing XP). | automatic |
 | 11 | Evergreen | Trees never fall and logs go **straight to your bank**. | automatic |
-| 12 | Double Yield | Gathering and cooking give **double** items. | automatic |
+| 12 | Double Yield | Mining, woodcutting, fishing and cooking give **double** items. Mining, fishing and smelting (with Eternal Vein) give **double XP** too. Fish are caught already **cooked** (never burnt) and give their cooking XP as well. | automatic |
 | 13 | Midas Loop | High Level Alchemy keeps repeating on the same stack. | cast High Level Alchemy |
 | 14 | Philosopher's Coin | Alchemy pays **double** coins. | cast High Level Alchemy |
 | 15 | Infinite Runes | **Every** spell costs no runes (combat, teleports, alchemy, enchant, superheat, bones to bananas), with or without a staff. | automatic |

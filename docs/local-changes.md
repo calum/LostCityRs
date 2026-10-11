@@ -22,9 +22,9 @@ Hooks live on `main` of each fork (fast-forwarded from the former `relic-mode` b
 | M5 | Content | `scripts/skill_magic/scripts/spells/teleport.rs2:127` (end of `pre_tele_checks`) | `~relic_record_origin($coord); // relic hook` | `c80daec05` |
 | M6 | Content | `scripts/player/scripts/death.rs2:55` (`player_death_lose_items`, after `inv_clear(deathkeep);`) | `~relic_stash_items; // relic hook` | `d6197b655` |
 | M6 | Content | `pack/npc.pack` | pack id `1359=relic_keeper` | `73546549b` |
-| M7 | Content | `skill_mining/scripts/mining.rs2` (full-inventory checks x2, `loc_change` x3, `inv_add` x2) | `~relic_gathered`, `~relic_loc_change`, `& ~relic_has(10) = 0` | `e2c977f8f` |
+| M7 | Content | `skill_mining/scripts/mining.rs2` (full-inventory checks x2, `loc_change` x3, `inv_add` x2) | `~relic_gathered` (since 2026-10-11 its result multiplies the mining XP), `~relic_loc_change`, `& ~relic_has(10) = 0` | `e2c977f8f` |
 | M7 | Content | `skill_woodcutting/scripts/woodcut.rs2` (`inv_add`, deplete `if`, full-inventory checks x2) | `~relic_gathered`, `& ~relic_has(11) = 0` | `10964ca66` |
-| M7 | Content | `skill_fishing/scripts/fishing.rs2` (4 `inv_add`) | `~relic_gathered($fish, 0)` | `728de3250` |
+| M7 | Content | `skill_fishing/scripts/fishing.rs2` (4 `inv_add`) | `~relic_gathered($fish, 0)` (since 2026-10-11: `~relic_fished($fish)`, XP multiplied by its result) | `728de3250` |
 | M7 | Content | `skill_cooking/scripts/cooking.rs2` (success `inv_add`) | `~relic_gathered($cooked_item, 0)` | `70eb085cb` |
 | M7 | Content | `skill_firemaking/scripts/firemaking.rs2` (`firemaking_success`) | `~relic_task_burn($log)` | `e355eb836` |
 | M7 | Content | `skill_runecraft/scripts/runecraft.rs2`, `skill_fletching/scripts/bows.rs2`, `skill_smithing/scripts/smelting/smelting.rs2`, `skill_herblore/scripts/herblore.rs2` | one `~relic_task_obj(...)` line each before the product is added (bows: 4 lines) | `af18d03ab`, `cd85440fe`, `a397c341b`, `4fab3bc43` |

@@ -198,6 +198,13 @@ if (p_finduid(uid) = false) {
 }
 ~relic_gathered($o, $r);
 
+// ::~relic_fish <raw fish> runs the fishing hook as if the player had just caught it (no fishing XP; cooking XP with Double Yield).
+[debugproc,relic_fish](namedobj $o)
+if (p_finduid(uid) = false) {
+    return;
+}
+~relic_fished($o);
+
 // ::~relic_chop adds a tree next to the player and starts chopping it.
 [debugproc,relic_chop]
 if (p_finduid(uid) = false) {
