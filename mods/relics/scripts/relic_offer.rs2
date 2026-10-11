@@ -30,13 +30,13 @@ switch_int ($id) {
 switch_int ($id) {
     case 1 : return("XP rate doubles");
     case 2 : return("all quests complete");
-    case 3 : return("half damage taken");
-    case 4 : return("attack twice as fast");
-    case 5 : return("deal double, take x1.5");
-    case 6 : return("survive one lethal hit");
-    case 7 : return("heal on kill");
-    case 8 : return("finish weak monsters");
-    case 9 : return("kills drop loot");
+    case 3 : return("half damage taken, +50% accuracy");
+    case 4 : return("attack twice as fast, +50% accuracy");
+    case 5 : return("deal double, take x1.5, +50% accuracy");
+    case 6 : return("survive one lethal hit, +50% accuracy");
+    case 7 : return("heal on kill, +50% accuracy");
+    case 8 : return("finish weak monsters, +50% accuracy");
+    case 9 : return("kills drop loot, +50% accuracy");
     case 10 : return("rocks stay, ore to bank");
     case 11 : return("trees stay, logs to bank");
     case 12 : return("double gathering");

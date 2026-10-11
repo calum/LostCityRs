@@ -506,3 +506,42 @@ test('Bounty drops 5 + 3*baseHP coins and food by tier at the death tile; nothin
         }
     }
 });
+
+// ----------------------------------------------------------------------- combat relics: +50% accuracy (attack roll)
+
+/** Run [proc,name] as `bot` with no active target and return its int result. */
+function callProc(bot: Bot, name: string, ...args: number[]): number {
+    const script = ScriptProvider.getByName(`[proc,${name}]`);
+    assert.ok(script, `no proc ${name}`);
+    const state = ScriptRunner.init(script, bot.player, null, args);
+    bot.player.executeScript(state, true, true);
+    return state.isp > 0 ? state.popInt() : NaN;
+}
+
+test('every combat relic (3-9) gives +50% to the attack roll of every style, not stacked', t => {
+    if (skip()) return t.skip(String(skip()));
+    // style ids: Content/scripts/skill_combat/configs/combat_damagetypes.constant (stab 0, slash 1, crush 2, ranged 3, magic 4)
+    const varps = ['com_stabattack', 'com_slashattack', 'com_crushattack', 'com_rangeattack', 'com_magicattack'];
+    const plain = relicBot(SPOT.taken, []);
+    const rolls = [1000, 777, 3, 1, 0];
+    for (const id of [3, 4, 5, 6, 7, 8, 9, 3 + 100]) {
+        // id 103 is not a relic: control that a non-combat relic (15 Infinite Runes) does nothing
+        const relics = id === 103 ? [15] : [id];
+        const bot = relicBot(SPOT.taken, relics);
+        for (let style = 0; style < 5; style++) {
+            for (const roll of rolls) {
+                plain.player.setVar(ids.varp(varps[style]), roll);
+                bot.player.setVar(ids.varp(varps[style]), roll);
+                const base = callProc(plain, 'player_attack_roll_specific', style);
+                const got = callProc(bot, 'player_attack_roll_specific', style);
+                assert.equal(base, roll, `plain style ${style}`);
+                const expected = id === 103 ? roll : Math.floor((roll * 150) / 100);
+                assert.equal(got, expected, `relic ${id} style ${style} roll ${roll}`);
+            }
+        }
+    }
+    // owning several combat relics does not stack
+    const many = relicBot(SPOT.taken, [3, 5, 8]);
+    many.player.setVar(ids.varp('com_rangeattack'), 1000);
+    assert.equal(callProc(many, 'player_attack_roll_specific', 3), 1500);
+});
