@@ -30,8 +30,9 @@ if (~relic_has(5) = 1) {
 return($maxhit);
 
 // player_combat.rs2 hook (player_attack_roll_specific, every PvM/PvP/special attack roll). Each combat relic (3 to 9) owned
-// adds +50% to the player's attack roll for all styles. Additive: n relics give x(1 + 0.5n).
-[proc,relic_accuracy](int $roll)(int)
+// adds +50% to the player's attack roll for all styles. 23 Endless Quiver adds another +50% for ranged attacks only
+// (^ranged_style = 3). Additive: n bonuses give x(1 + 0.5n).
+[proc,relic_accuracy](int $roll, int $damagetype)(int)
 def_int $pct = 100;
 def_int $id = 3;
 while ($id <= 9) {
@@ -40,7 +41,55 @@ while ($id <= 9) {
     }
     $id = calc($id + 1);
 }
+if ($damagetype = ^ranged_style & ~relic_has(23) = 1) {
+    $pct = calc($pct + 50);
+}
 return(scale($pct, 100, $roll));
+
+// 22 Archmage. magic_spell_maxhit (pvp_magic.rs2) hook: spell max hit x2. A null max hit (-1, spells that do no damage) stays.
+[proc,relic_spell_maxhit](int $maxhit)(int)
+if (~relic_has(22) = 1 & $maxhit > 0) {
+    return(calc($maxhit * 2));
+}
+return($maxhit);
+
+// 22 Archmage. pvm_spell_cast (player_magic.rs2) hook: the cast delay is halved (rounded up); relic_delay (4 Quickstrike) applies after.
+[proc,relic_cast_delay](int $ticks)(int)
+if (~relic_has(22) = 1) {
+    return(calc(($ticks + 1) / 2));
+}
+return($ticks);
+
+// 22 Archmage. pvm_spell_cast hook: after a cast the player keeps casting the same spell at the same target (like autocast does),
+// for spells flagged continue_by_autocast (damage strikes/bolts/blasts/waves, crumble undead; not freezes or stat drains). Walking
+// or clicking something else clears the interaction, which stops it; running out of runes stops it in check_spell_requirements.
+[proc,relic_keep_casting](dbrow $spell_data)(boolean)
+if (~relic_has(22) = 1 & db_getfield($spell_data, magic_spell_table:continue_by_autocast, 0) = true) {
+    return(true);
+}
+return(false);
+
+// 22 Archmage. delete_spell_runes (magic.rs2) hook: 50% of casts (any spell) use no runes. The rune check before the cast still
+// needs the runes in the backpack.
+[proc,relic_free_cast]()(boolean)
+if (~relic_has(22) = 1 & random(2) = 0) {
+    return(true);
+}
+return(false);
+
+// 23 Endless Quiver. player_ranged_attack (player_ranged.rs2) hook: ranged max hit x1.5.
+[proc,relic_ranged_maxhit](int $maxhit)(int)
+if (~relic_has(23) = 1) {
+    return(scale(150, 100, $maxhit));
+}
+return($maxhit);
+
+// 23 Endless Quiver. ranged_dropammo_npc (player_ranged.rs2) hook: the arrow, bolt or thrown weapon is neither used up nor dropped.
+[proc,relic_keep_ammo]()(boolean)
+if (~relic_has(23) = 1) {
+    return(true);
+}
+return(false);
 
 // alchemy.rs2 hooks. 14 Philosopher's Coin: alchemy pays double.
 [proc,relic_alch_profit](int $profit)(int)

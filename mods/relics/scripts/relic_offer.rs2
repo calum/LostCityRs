@@ -22,6 +22,8 @@ switch_int ($id) {
     case 17 : return("Last Recall");
     case 18 : return("Banker's Call");
     case 19 : return("Hoarder");
+    case 22 : return("Archmage");
+    case 23 : return("Endless Quiver");
     case 24 : return("Teleport Network");
     case 21 : return("Rune Wellspring");
     case default : return("Unknown relic");
@@ -47,6 +49,8 @@ switch_int ($id) {
     case 17 : return("teleport back and forth");
     case 18 : return("bank from anywhere");
     case 19 : return("pick a declined relic");
+    case 22 : return("double spell damage, repeat casts");
+    case 23 : return("ammo never runs out, +50% ranged");
     case 24 : return("teleport to the main cities");
     case 21 : return("XP pays rune essence, talisman teleports");
     case default : return("");
