@@ -97,7 +97,7 @@ return(~relic_exists($id));
 if ($id = 2 | ~relic_eligible($id) = 0 | testbit($drawn, $id) = ^true) {
     return(0);
 }
-if ($mode = 1 & testbit(%relic_declined, $id) = ^false) {
+if ($mode = 1 & (testbit(%relic_declined, $id) = ^false | testbit(%relic_hoarder_skip, $id) = ^true)) {
     return(0);
 }
 return(1);
@@ -172,7 +172,7 @@ if ($id = 16) {
 } else if ($id = 2) {
     queue(relic_quest_pass, 0, 0);
 } else if ($id = 19) {
-    def_int $extra = ~relic_offer_mode(1);
+    ~relic_hoarder_start;
 }
 
 // Tasks done, over both task varps (tasks 1-31 in %relic_tasks_done, 32 and up in %relic_tasks_done2).
@@ -229,7 +229,12 @@ if ($c ! 0) {
     $pick = ~p_choice2_header(~relic_option($a), $a, "No thanks", 0, "Take this relic?");
 }
 %relic_seed = $seed_after;
-// everything offered and not picked can come back and feeds the Hoarder relic
+// Everything offered and not picked can come back (and feeds Hoarder). Hoarder is granted first, so the widget it opens
+// lists only relics declined in earlier offers; the relics of this offer are kept out of that list (%relic_hoarder_skip).
+if ($pick = 19) {
+    %relic_hoarder_skip = $drawn;
+    ~relic_grant($pick);
+}
 def_int $i = 1;
 while ($i <= 31) {
     if (testbit($drawn, $i) = ^true & $i ! $pick) {
@@ -237,14 +242,15 @@ while ($i <= 31) {
     }
     $i = calc($i + 1);
 }
-if ($pick ! 0) {
+if ($pick ! 0 & $pick ! 19) {
     ~relic_grant($pick);
 }
 return(1);
 
 // Answer every pending offer. An empty pool just clears the pending count.
 [proc,relic_offer_pending]
-while (%relic_pending > 0) {
+// an open Hoarder pick comes first: the widget would be closed by the next dialogue (relic_hoarder_pick re-queues this)
+while (%relic_pending > 0 & %relic_hoarder_owed = 0) {
     if (%relic_quest_owed > 0) {
         // the 10th task done: Quest Pass, straight away
         %relic_quest_owed = calc(%relic_quest_owed - 1);
@@ -351,6 +357,9 @@ if (testbit(%relic_owned, 15) = ^true) {
 if (%relic_started = 0) {
     ~relic_first_offer; // queues the offer itself
     return;
+}
+if (%relic_hoarder_owed > 0) {
+    ~relic_hoarder_open;
 }
 if (%relic_pending > 0) {
     queue(relic_offer_q, 0, 0);

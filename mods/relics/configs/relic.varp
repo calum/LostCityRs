@@ -80,3 +80,11 @@ protect=no
 [relic_bonus_colour]
 scope=temp
 protect=no
+
+// Hoarder (19): picks still owed from the declined-relic widget. Stays set if the widget is closed without a pick; login and the Relics menu re-open it.
+[relic_hoarder_owed]
+scope=perm
+
+// Hoarder (19): bitmask of the relics offered next to Hoarder, kept out of its list. Cleared when the pick is made.
+[relic_hoarder_skip]
+scope=perm

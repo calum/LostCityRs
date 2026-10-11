@@ -1,0 +1,158 @@
+// Relic 19 Hoarder: one extra pick from every relic declined in an earlier offer, in a scrolling widget
+// (interface mods/relics/interfaces/relic_hoardermenu.if, rows enum relic_hoarder_rows). Docs: docs/design/relics-hoarder.md.
+// The relics of the offer that granted Hoarder are kept out of the list: %relic_hoarder_skip holds that offer's relics until the pick is made.
+
+// The $n-th (1-based) relic id that is declined and still eligible, in relic id order, or 0.
+[proc,relic_hoarder_nth](int $n)(int)
+def_int $i = 1;
+while ($i <= 31) {
+    if (~relic_in_pool($i, 0, 1) = 1) {
+        $n = calc($n - 1);
+        if ($n = 0) {
+            return($i);
+        }
+    }
+    $i = calc($i + 1);
+}
+return(0);
+
+// Mode 1 of relic_in_pool (relic_offer.rs2) is the list: eligible, declined, and not in %relic_hoarder_skip.
+// Hoarder was just granted: owe the pick and open the list, unless nothing is declined yet.
+[proc,relic_hoarder_start]
+if (~relic_pool_size(0, 1) = 0) {
+    %relic_hoarder_skip = 0;
+    return;
+}
+%relic_hoarder_owed = calc(%relic_hoarder_owed + 1);
+~relic_hoarder_open;
+
+[proc,relic_hoarder_open]
+def_int $total = ~relic_pool_size(0, 1);
+if ($total = 0) {
+    %relic_hoarder_owed = 0;
+    %relic_hoarder_skip = 0;
+    ~relic_say("Hoarder: you have no declined relics left to take.");
+    return;
+}
+def_int $row = 0;
+def_int $id = 0;
+def_component $com = null;
+while ($row < 30) {
+    $com = enum(int, component, relic_hoarder_rows, $row);
+    $id = ~relic_hoarder_nth(calc($row + 1));
+    if ($id = 0) {
+        if_settext($com, "");
+    } else {
+        if_settext($com, "@yel@<~relic_name($id)> @whi@- <~relic_desc($id)>");
+    }
+    $row = calc($row + 1);
+}
+if_settext(relic_hoardermenu:count, "<tostring($total)> declined relics to choose from. Click one to take it.");
+if_openmain(relic_hoardermenu);
+if_setscrollpos(relic_hoardermenu:list, 0);
+
+[proc,relic_hoarder_pick](int $n)
+if (%relic_hoarder_owed = 0) {
+    return;
+}
+def_int $id = ~relic_hoarder_nth($n);
+if ($id = 0) {
+    return;
+}
+%relic_hoarder_owed = calc(%relic_hoarder_owed - 1);
+%relic_hoarder_skip = 0;
+if_close;
+~relic_grant($id);
+if (%relic_pending > 0) {
+    queue(relic_offer_q, 1, 0);
+}
+
+[if_button,relic_hoardermenu:row_1]
+~relic_hoarder_pick(1);
+
+[if_button,relic_hoardermenu:row_2]
+~relic_hoarder_pick(2);
+
+[if_button,relic_hoardermenu:row_3]
+~relic_hoarder_pick(3);
+
+[if_button,relic_hoardermenu:row_4]
+~relic_hoarder_pick(4);
+
+[if_button,relic_hoardermenu:row_5]
+~relic_hoarder_pick(5);
+
+[if_button,relic_hoardermenu:row_6]
+~relic_hoarder_pick(6);
+
+[if_button,relic_hoardermenu:row_7]
+~relic_hoarder_pick(7);
+
+[if_button,relic_hoardermenu:row_8]
+~relic_hoarder_pick(8);
+
+[if_button,relic_hoardermenu:row_9]
+~relic_hoarder_pick(9);
+
+[if_button,relic_hoardermenu:row_10]
+~relic_hoarder_pick(10);
+
+[if_button,relic_hoardermenu:row_11]
+~relic_hoarder_pick(11);
+
+[if_button,relic_hoardermenu:row_12]
+~relic_hoarder_pick(12);
+
+[if_button,relic_hoardermenu:row_13]
+~relic_hoarder_pick(13);
+
+[if_button,relic_hoardermenu:row_14]
+~relic_hoarder_pick(14);
+
+[if_button,relic_hoardermenu:row_15]
+~relic_hoarder_pick(15);
+
+[if_button,relic_hoardermenu:row_16]
+~relic_hoarder_pick(16);
+
+[if_button,relic_hoardermenu:row_17]
+~relic_hoarder_pick(17);
+
+[if_button,relic_hoardermenu:row_18]
+~relic_hoarder_pick(18);
+
+[if_button,relic_hoardermenu:row_19]
+~relic_hoarder_pick(19);
+
+[if_button,relic_hoardermenu:row_20]
+~relic_hoarder_pick(20);
+
+[if_button,relic_hoardermenu:row_21]
+~relic_hoarder_pick(21);
+
+[if_button,relic_hoardermenu:row_22]
+~relic_hoarder_pick(22);
+
+[if_button,relic_hoardermenu:row_23]
+~relic_hoarder_pick(23);
+
+[if_button,relic_hoardermenu:row_24]
+~relic_hoarder_pick(24);
+
+[if_button,relic_hoardermenu:row_25]
+~relic_hoarder_pick(25);
+
+[if_button,relic_hoardermenu:row_26]
+~relic_hoarder_pick(26);
+
+[if_button,relic_hoardermenu:row_27]
+~relic_hoarder_pick(27);
+
+[if_button,relic_hoardermenu:row_28]
+~relic_hoarder_pick(28);
+
+[if_button,relic_hoardermenu:row_29]
+~relic_hoarder_pick(29);
+
+[if_button,relic_hoardermenu:row_30]
+~relic_hoarder_pick(30);

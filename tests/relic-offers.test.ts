@@ -404,7 +404,7 @@ test('XP tier 2 gives 9x prayer XP for burying bones (a real skill action)', t =
     assert.equal(boosted.xp('prayer'), plain.xp('prayer') * 9);
 });
 
-test('Hoarder opens a second offer drawn only from declined relics; the pick leaves the declined set', t => {
+test('Hoarder does not list the relics of the offer that granted it (nothing declined earlier: no widget)', t => {
     if (skip()) return t.skip(String(skip()));
     // pool is exactly {3, 4, 19}: everything else owned and XP at tier 3
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 11, relic_xp_tier: 3, relic_xp_factor: 27, relic_owned: ownedExcept(3, 4, 19) } });
@@ -412,32 +412,26 @@ test('Hoarder opens a second offer drawn only from declined relics; the pick lea
     waitForOffer(bot);
     assert.deepEqual([...offeredIds(bot)].sort((a, b) => a - b), [3, 4, 19]);
     pick(bot, 'Hoarder');
-
-    // relic_grant(19) -> relic_offer_mode(1): only declined relics (3 and 4 were just declined)
-    waitForOffer(bot);
-    bot.expectMessage('You gained the relic: Hoarder.');
-    assert.equal(choiceTexts(bot).length, 2);
-    assert.deepEqual([...offeredIds(bot)].sort((a, b) => a - b), [3, 4]);
-    assert.equal(bot.varp('relic_declined'), bit(3) | bit(4));
-    pick(bot, 'Quickstrike');
     bot.waitUntilIdle(20);
-    bot.expectMessage('You gained the relic: Quickstrike.');
-
-    assert.equal(bot.varp('relic_owned'), ownedExcept(3));
-    assert.equal(bot.varp('relic_declined'), bit(3), 'Quickstrike left the declined set, Stoneskin stays');
+    // 3 and 4 were declined just now, so they are kept out of Hoarder's list (docs/design/relics-hoarder.md): no widget
+    bot.expectMessage('You gained the relic: Hoarder.');
+    assert.equal(bot.mainModal, null);
+    assert.equal(bot.inDialog, false);
+    assert.equal(bot.varp('relic_hoarder_owed'), 0);
+    assert.equal(bot.varp('relic_declined'), bit(3) | bit(4), 'still declined for later');
     assert.equal(bot.varp('relic_pending'), 0);
-    assert.equal(bot.chatModal, null);
 });
 
-test('Hoarder second offer skips declined relics that are owned since, and offers declined XP Multiplier', t => {
+test('Hoarder list skips declined relics that are owned since, and lists declined XP Multiplier', t => {
     if (skip()) return t.skip(String(skip()));
     // declined: 1 (XP, tier 0) and 5 (now owned). Mode 1 pool = eligible AND declined = {1}.
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 2, relic_owned: bit(5), relic_declined: bit(1) | bit(5) } });
     bot.debugproc('relic_grant', 19);
-    waitForOffer(bot);
-    assert.deepEqual(choiceTexts(bot), ['XP Multiplier: XP rate triples', 'No thanks']);
-    pick(bot, 'XP Multiplier');
-    bot.waitUntilIdle(20);
+    bot.tick(3);
+    assert.equal(bot.mainModal, 'relic_hoardermenu');
+    assert.match(bot.texts.get('relic_hoardermenu:row_1') ?? '', /XP Multiplier/);
+    assert.equal(bot.texts.get('relic_hoardermenu:row_2') ?? '', '');
+    bot.clickButton('relic_hoardermenu:row_1').tick(3);
     assert.equal(bot.varp('relic_xp_tier'), 1);
     assert.equal(bot.varp('relic_declined'), bit(5));
 });

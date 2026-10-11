@@ -188,7 +188,10 @@ if_settext(relic_relicmenu:xp, "XP rate: <tostring(~relic_xp_rate(%relic_xp_tier
 ~relic_playtime_menu;
 if_settext(relic_relicmenu:unlocked_title, "Unlocked relics (<tostring($u)>)");
 if_settext(relic_relicmenu:available_title, "Not yet unlocked (<tostring($a)>)");
-if (%relic_pending > 0) {
+if (%relic_hoarder_owed > 0) {
+    if_settext(relic_relicmenu:pending, "@gre@Hoarder: pick a declined relic");
+    if_sethide(relic_relicmenu:choose_box, false);
+} else if (%relic_pending > 0) {
     if (%relic_pending = 1) {
         if_settext(relic_relicmenu:pending, "@gre@1 relic choice waiting");
     } else {
@@ -204,7 +207,9 @@ if (%relic_pending > 0) {
 // access, so close the menu and run it from the queue, like the login hook does.
 [if_button,relic_relicmenu:choose]
 if_close;
-if (%relic_pending > 0) {
+if (%relic_hoarder_owed > 0) {
+    ~relic_hoarder_open;
+} else if (%relic_pending > 0) {
     queue(relic_offer_q, 0, 0);
 }
 
