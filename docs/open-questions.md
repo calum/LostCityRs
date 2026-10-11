@@ -103,4 +103,4 @@ Things not yet verified. Nothing here is a finding. Move an item into a note, wi
 | 113 | Skilling relics 25-29 in a real client: does 2-tick mining/woodcutting/fishing look right, and is the first fishing cast being slow acceptable? | `docs/design/relics-skilling-routes.md`: only headless tests ran. |
 | 114 | Endless Shoal holds a spot while any owner is within 3 tiles; should it instead follow only the player who is fishing it? | `docs/design/relics-skilling-routes.md` (`npc_settimer` does not reset the clock). |
 | 115 | Should Forge Echo / Fletcher's Echo also cover ogre arrows, cannonballs, glass and Crafting? | Not hooked; see `docs/design/relics-skilling-routes.md`. |
-
+| 116 | Which of the relic task candidates in `docs/design/relic-task-candidates.md` are reachable on a fresh character (Entrana boat, Wine of Zamorak spot, Gnome bar, wardrobe locations) and do the scan-only items hold? | Only the scripts were read, nothing run. Needs map lookups and a headless-harness run per candidate. |
