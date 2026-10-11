@@ -87,7 +87,7 @@ Good to know:
 - **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
 - **Forge Echo, Fletcher's Echo and Hunter's Haul**: if your bank is full the extra items go to your backpack, and are lost if that is full too.
 - **Endless Shoal** only keeps a spot still while you are close; walk away and it moves on like any other.
-- **Light Fingers**: the repeat stops when you walk, click something else, or your backpack is full. Guards and stall owners who see you still stop you from stealing from a stall.
+- **Light Fingers**: the repeat stops when you walk, click something else, or your backpack is full. It picks or steals about every 3 ticks. If a click does not take (it can be ignored on the tick you are mid-pick), click again. Guards and stall owners who see you still stop you from stealing from a stall.
 - **Midas Loop** stops when you walk or click something else.
 - **Executioner** finishes an NPC below 25% HP on your next landed hit. It gives slightly too much attack XP.
 - **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge.

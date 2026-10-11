@@ -8,10 +8,13 @@ if (~relic_has(30) = 1) {
 }
 return(false);
 
-// pick_pocket, after a successful pick: Light Fingers picks the same pocket again (the same op the player used, so a click on
-// anything else, a step or a full backpack ends it: attempt_pick_pocket runs again and its checks apply as for a click).
+// pick_pocket, after a successful pick: Light Fingers picks the same pocket again. Two ticks of %action_delay make the next
+// attempt wait in attempt_pick_pocket's own "p_opnpc(3)" wait loop, where the player is not delayed. A pick itself ends in
+// p_delay, and a walk click that arrives while the player is delayed is dropped (MoveClickHandler), so without this gap the
+// loop could not be cancelled. A walk or any other click clears the interaction in one of the waiting ticks.
 [proc,relic_pickpocket_again]
 if (~relic_has(30) = 1) {
+    %action_delay = calc(map_clock + 2);
     p_opnpc(3);
 }
 
@@ -19,6 +22,19 @@ if (~relic_has(30) = 1) {
 // repeats the op instead of swapping the stall for the empty market table).
 [proc,relic_stall_keeps]()(boolean)
 if (~relic_has(30) = 1) {
+    return(true);
+}
+return(false);
+
+// steal_from_stall, Light Fingers repeat: same gap as ~relic_pickpocket_again (two ticks of waiting where the player is not delayed,
+// so a walk click can clear the interaction). ~relic_stall_wait, at the top of attempt_steal_from_stall, does the waiting.
+[proc,relic_stall_again]
+%action_delay = calc(map_clock + 2);
+p_oploc(2);
+
+[proc,relic_stall_wait]()(boolean)
+if (~relic_has(30) = 1 & %action_delay > map_clock) {
+    p_oploc(2);
     return(true);
 }
 return(false);

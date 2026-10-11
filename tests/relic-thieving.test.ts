@@ -156,3 +156,52 @@ test('task 42: pickpocketing a guard (a man does not count)', t => {
         bot.tick(5);
     }
 });
+
+// ---------------------------------------------------------------- cancelling the repeat
+
+/**
+ * Click a tile away like a player would: a click that arrives while the player is delayed inside a script is dropped
+ * (MoveClickHandler), so click again on the next tick until the player starts moving. Returns the ticks it took.
+ */
+function clickAway(bot: Bot, dx: number, maxTicks = 4): number {
+    const x0 = bot.x;
+    for (let i = 1; i <= maxTicks; i++) {
+        bot.walkTo({ x: x0 + dx, z: bot.z });
+        bot.tick();
+        if (Math.sign(bot.x - x0) === Math.sign(dx)) return i; // moving the way clicked (an NPC being followed moves the player too)
+    }
+    throw new Error(`${maxTicks} clicks in a row did not move the player`);
+}
+
+const pocketMessages = (bot: Bot) => bot.messages.filter(m => /pocket\.$/.test(m)).length;
+
+for (const offset of [0, 1, 2, 3]) {
+    test(`light fingers: a walk click ${offset} ticks into the pickpocket loop ends it (within ${offset === 1 ? 'two clicks' : 'one click'})`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const bot = thief([LIGHT_FINGERS]);
+        const man = spawnNpc('man', { x: bot.x + 2, z: bot.z }, 2000);
+        bot.tick();
+        bot.opNpc(man, 3);
+        bot.tick(12 + offset);
+        assert.ok(pocketMessages(bot) > 2, 'the loop is running');
+        clickAway(bot, -6);
+        bot.tick(15);
+        const before = pocketMessages(bot);
+        bot.tick(40);
+        assert.equal(pocketMessages(bot), before, `still pickpocketing after the player walked away: ${bot.messages.slice(-6).join(' | ')}`);
+    });
+}
+
+test('light fingers: a walk click ends the stall loop too', t => {
+    if (skip()) return t.skip(String(skip()));
+    const { bot, loc } = stallBot([LIGHT_FINGERS], 'tea_stall', VARROCK_TEA);
+    bot.opLoc(loc, 2);
+    bot.tick(20);
+    const steals = () => bot.messages.filter(m => /^You steal/.test(m)).length;
+    assert.ok(steals() > 2, 'the loop is running');
+    clickAway(bot, -1);
+    bot.tick(15);
+    const before = steals();
+    bot.tick(40);
+    assert.equal(steals(), before, 'still stealing after the player walked away');
+});
