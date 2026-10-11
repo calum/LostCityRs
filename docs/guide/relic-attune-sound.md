@@ -19,7 +19,7 @@ To go back to the built-in chime, delete your file from `custom-sounds/`, run `m
 
 ## Good to know
 
-- The sound plays only when **sound effects** are on in the Options tab, and it follows the same volume. Both come from the existing sound-effect path, so a very quiet recording will be quiet in game. Normalise it before you export.
+- The sound plays only when **sound effects** are on in the Options tab, and it follows the same volume. Both come from the existing sound-effect path, so a very quiet recording will be quiet in game. Normalise it before you export. The built-in chime is boosted to twice its original amplitude in the client (`SYNTH_GAIN` in `Client-TS/src/sound/JagFX.ts`); that boost does not apply to your recording, which plays at the level you exported it.
 - Friends who join your hosted server hear your recording too, because the file is served by the same web server. They need no extra steps. (Not tried through the tunnel.)
 - Low-memory mode has no sound effects at all, so no chime plays there.
 - If nothing plays: open the browser developer tools, Network tab, reload, and look for `relic_attune.wav` (or `.mp3` / `.ogg`). A 404 means the file is not in `Engine-TS/public/custom-sounds/` yet, so check step 4. If the file loads but is silent, check your Options sound volume and that the browser can play the file directly.

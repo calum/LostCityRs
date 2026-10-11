@@ -11,6 +11,12 @@
 - Engine: `sound_synth` writes a `SynthSound` packet (`Engine-TS/src/engine/script/handlers/PlayerOps.ts:476`). Client: `ServerProt.SYNTH_SOUND` queues the id (`Client-TS/src/client/Client.ts:7102`), `soundsDoQueue` plays it.
 - Override: the client has no sound names, only ids and `JagFX` synth data, and `playWave` already decodes any browser-supported audio (`Client-TS/src/3rdparty/audio.js:47`). `Client-TS/src/sound/CustomSounds.ts` fetches `/custom-sounds/<name>.wav|mp3|ogg` for each id in `CUSTOM_SOUND_NAMES` at start-up (`Client.ts:1191`); `soundsDoQueue` plays the recording instead of the synth when there is one (`Client.ts:3465`). The server serves `Engine-TS/public/` statically (`Engine-TS/src/web.ts:301`); `scripts/sync-mods.mjs` (`syncSounds`) copies root `custom-sounds/*.{wav,mp3,ogg}` there and hides the folder from the Engine-TS git status.
 
+## Loudness (2026-10-11, after Calum found it quiet)
+
+- Measured with the client's own `JagFX` on `relic_attune.synth`: 33075 samples, 8-bit peak 95 of 128, RMS 14.8, so plain 2x amplitude would clip only 74 samples (0.2%). 8-bit output means more than about 1.3x would otherwise clip at peaks.
+- `Client-TS/src/sound/JagFX.ts` now has `SYNTH_GAIN` (`912: 2`); `makeSound` multiplies the finished samples and clamps to the 8-bit range. Test first: `Client-TS/test/synth-gain.test.ts` failed (peak 95, expected at least 126), 13/13 bun tests passed after (Client-TS `a251dd5`). Recordings in `custom-sounds/` are not boosted.
+- "Twice as loud" to the ear is about +10 dB (3x amplitude); 2x amplitude is +6 dB. Chosen: 2x, since 3x would clip much more. Not listened to; if still too quiet raise the number in `SYNTH_GAIN` (clipping gets audible above about 2.5x).
+
 ## What was run
 
 - `tests/relic-attune.test.ts` (new, first): failed on `actual: [] expected: [645]` (no animation), then passed. Checks animation id, spotanim id/height/delay, and one `SynthSound` for id 912 with loops 1, delay 0, for Stoneskin and XP Multiplier grants.
