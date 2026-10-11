@@ -170,9 +170,9 @@ while ($n <= ^relic_task_count) {
 }
 return($count);
 
-// Rerolls an account has earned in total: 1 to start, one more per 7 tasks done. Existing characters get the same count from the tasks they already did.
+// Rerolls an account has earned in total: 1 to start, one more per 10 tasks done. Existing characters get the same count from the tasks they already did.
 [proc,relic_rerolls_earned]()(int)
-return(calc(1 + ~relic_tasks_done_count / 7));
+return(calc(1 + ~relic_tasks_done_count / 10));
 
 [proc,relic_rerolls_left]()(int)
 return(calc(~relic_rerolls_earned - %relic_rerolls_used));
@@ -298,7 +298,7 @@ if (~relic_task_is_done($task) = 1) {
 ~relic_task_mark($task);
 ~relic_say("Relic task <tostring($task)> complete!");
 ~relic_celebrate;
-if (calc(~relic_tasks_done_count % 7) = 0) {
+if (calc(~relic_tasks_done_count % 10) = 0) {
     ~relic_say("You earned a relic reroll (<tostring(~relic_rerolls_left)> available).");
 }
 if ($task = 24 | $task = 25) {

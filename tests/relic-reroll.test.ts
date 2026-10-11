@@ -1,4 +1,4 @@
-// Relic rerolls: every account starts with 1, one more per 7 tasks done (relic_offer.rs2 relic_rerolls_left).
+// Relic rerolls: every account starts with 1, one more per 10 tasks done (relic_offer.rs2 relic_rerolls_left).
 // A "Reroll" option is the last choice of an offer while rerolls are left; it replaces the three relics with new ones.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -64,9 +64,9 @@ test('no reroll left: the offer has three options and no Reroll', t => {
     assert.ok(!bot.choices.some(c => /^Reroll/.test(c)));
 });
 
-test('existing characters: 1 + one per 7 tasks already done (14 tasks = 3 rerolls)', t => {
+test('existing characters: 1 + one per 10 tasks already done (20 tasks = 3 rerolls)', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 1, relic_seed: 5, relic_tasks_done: 0x3fff } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 1, relic_seed: 5, relic_tasks_done: 0xfffff } });
     waitForOffer(bot);
     assert.equal(bot.choices[3], 'Reroll (3 left)');
     assert.equal(bot.call('relic_rerolls_left').popInt(), 3);
@@ -74,7 +74,7 @@ test('existing characters: 1 + one per 7 tasks already done (14 tasks = 3 reroll
 
 test('rerolls stack: spend two in a row, the third offer has one left', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 1, relic_seed: 5, relic_tasks_done: 0x3fff } });
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_pending: 1, relic_seed: 5, relic_tasks_done: 0xfffff } });
     waitForOffer(bot);
     const a = relicNames(bot.choices);
     bot.choose(4);
@@ -89,18 +89,26 @@ test('rerolls stack: spend two in a row, the third offer has one left', t => {
     assert.deepEqual([...a, ...b].filter(n => c.includes(n)), [], 'nothing repeats while the pool lasts');
 });
 
-test('completing the 7th task announces a new reroll', t => {
+test('completing the 10th task announces a new reroll', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: 0x3f } }); // tasks 1-6 done
-    bot.call('[debugproc,relic_task]', 7);
-    bot.waitForMessage('Relic task 7 complete!', 10);
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: 0x1ff } }); // tasks 1-9 done
+    bot.call('[debugproc,relic_task]', 10);
+    bot.waitForMessage('Relic task 10 complete!', 10);
     bot.expectMessage(/You earned a relic reroll \(2 available\)/);
 });
 
-test('the 6th task does not announce a reroll', t => {
+test('the 9th task does not announce a reroll', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: 0x1f } });
-    bot.call('[debugproc,relic_task]', 6);
-    bot.waitForMessage('Relic task 6 complete!', 10);
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: 0xff } });
+    bot.call('[debugproc,relic_task]', 9);
+    bot.waitForMessage('Relic task 9 complete!', 10);
+    assert.ok(!bot.messages.some(m => /relic reroll/.test(m)));
+});
+
+test('the 7th task no longer announces a reroll (one per 10 tasks)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: 0x3f } });
+    bot.call('[debugproc,relic_task]', 7);
+    bot.waitForMessage('Relic task 7 complete!', 10);
     assert.ok(!bot.messages.some(m => /relic reroll/.test(m)));
 });

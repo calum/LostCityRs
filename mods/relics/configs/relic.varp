@@ -25,7 +25,7 @@ scope=perm
 [relic_started]
 scope=perm
 
-// Rerolls spent. Rerolls left = 1 + (tasks done / 7) - this (relic_rerolls_left in relic_offer.rs2).
+// Rerolls spent. Rerolls left = 1 + (tasks done / 10) - this (relic_rerolls_left in relic_offer.rs2).
 [relic_rerolls_used]
 scope=perm
 
