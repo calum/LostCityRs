@@ -134,3 +134,5 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Content | `scripts/skill_herblore/scripts/herblore.rs2` (`[proc,brew_potion]`) | `inv_del` of the ingredient only when `~relic_keeps_secondary($ingredient, $solvent) = 0` `// relic hook` | `63824af58` |
 | Content | `pack/varp.pack`, `pack/interface.pack`, `pack/interface.order` | pack ids for `relic_herb_xp` and `relic_taskmenu:row_43..45` | `514e71556` |
 | root | `mods/relics/` | `relic_herblore.rs2`, `.enum`, `.constant`, tasks 43-45 rows, names, menus. Design: [design/relics-green-thumb.md](design/relics-green-thumb.md) | `HEAD` of this change |
+| Content | `pack/synth.pack`, `synth/relic_attune.synth` | pack id `912=relic_attune`, copy of `enchant_diamond_amulet.synth` (relic attune chime) | `b36ee553b` |
+| Client-TS | `src/sound/CustomSounds.ts`, `src/client/Client.ts` (`soundsDoQueue`, sounds start-up) | recorded sounds in `/custom-sounds/` replace synth id 912. Design: [design/relics-attune.md](design/relics-attune.md) | `8adf2b8` |

@@ -145,10 +145,52 @@ function ensureInterfaceIds() {
     console.log(`[mods] interface.pack/.order: added ${packLines.length} id(s)`);
 }
 
+// Recorded sounds: custom-sounds/*.wav|mp3|ogg are copied to Engine-TS/public/custom-sounds/, which the web server serves at
+// /custom-sounds/ and the client checks at start-up (Client-TS/src/sound/CustomSounds.ts, docs/guide/relic-attune-sound.md).
+// Like the mods copy, files removed from custom-sounds/ are removed from the copy.
+const SOUNDS_SRC = 'custom-sounds';
+const SOUNDS_DEST = path.join('Engine-TS', 'public', 'custom-sounds');
+const SOUND_EXTS = ['.wav', '.mp3', '.ogg'];
+
+function syncSounds() {
+    if (!fs.existsSync(SOUNDS_SRC)) return;
+    const want = fs.readdirSync(SOUNDS_SRC).filter((f) => SOUND_EXTS.includes(path.extname(f).toLowerCase()));
+    fs.mkdirSync(SOUNDS_DEST, { recursive: true });
+    let changed = 0;
+    for (const f of want) {
+        const data = fs.readFileSync(path.join(SOUNDS_SRC, f));
+        const to = path.join(SOUNDS_DEST, f);
+        if (!fs.existsSync(to) || !fs.readFileSync(to).equals(data)) {
+            fs.writeFileSync(to, data);
+            changed++;
+        }
+    }
+    for (const f of fs.readdirSync(SOUNDS_DEST)) {
+        if (!want.includes(f)) {
+            fs.rmSync(path.join(SOUNDS_DEST, f));
+            changed++;
+        }
+    }
+    if (changed) console.log(`[mods] synced ${changed} sound file(s) -> ${SOUNDS_DEST}`);
+    try {
+        const file = execFileSync('git', ['-C', 'Engine-TS', 'rev-parse', '--git-path', 'info/exclude'], { encoding: 'utf8' }).trim();
+        const p = path.resolve('Engine-TS', file);
+        const line = 'public/custom-sounds/';
+        const cur = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
+        if (!cur.split(/\r?\n/).includes(line)) {
+            fs.mkdirSync(path.dirname(p), { recursive: true });
+            fs.appendFileSync(p, (cur && !cur.endsWith('\n') ? '\n' : '') + line + '\n');
+        }
+    } catch {
+        // Engine-TS is not a git checkout; nothing to exclude.
+    }
+}
+
 excludeFromContentGit();
 ensurePackIds();
 ensureInterfaceIds();
 sync();
+syncSounds();
 
 if (process.argv.includes('--watch')) {
     console.log(`[mods] watching ${SRC}/ (ctrl+c to stop)`);
@@ -157,4 +199,5 @@ if (process.argv.includes('--watch')) {
         clearTimeout(t);
         t = setTimeout(() => { ensurePackIds(); ensureInterfaceIds(); sync(); }, 300);
     });
+    if (fs.existsSync(SOUNDS_SRC)) fs.watch(SOUNDS_SRC, () => syncSounds());
 }

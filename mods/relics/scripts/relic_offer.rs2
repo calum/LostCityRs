@@ -136,6 +136,13 @@ return(0);
 [proc,relic_option](int $id)(string)
 return("<~relic_name($id)>: <~relic_desc($id)>");
 
+// The "attuned" effect when a relic is gained: kneel, enchant glow, chime. The chime is synth 912 (Content/synth/relic_attune.synth,
+// a copy of enchant_diamond_amulet); the client can replace it with a recorded sound (docs/guide/relic-attune-sound.md).
+[proc,relic_attune]
+anim(human_pray, 0);
+spotanim_pl(enchant_amulet_lvl3, 92, 0);
+sound_synth(relic_attune, 1, 0);
+
 [proc,relic_grant](int $id)
 if ($id = 1) {
     %relic_xp_tier = calc(%relic_xp_tier + 1);
@@ -145,6 +152,7 @@ if ($id = 1) {
 }
 %relic_declined = clearbit(%relic_declined, $id);
 ~relic_say("You gained the relic: <~relic_name($id)>.");
+~relic_attune;
 if ($id = 16) {
     ~relic_give_item(ring_of_dueling_8);
     ~relic_give_item(amulet_of_glory_4);
