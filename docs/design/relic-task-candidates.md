@@ -2,6 +2,8 @@
 
 **Question this answers:** which unique, fun main-world encounters or dialogues in the RuneScript could become relic tasks? (Calum, 2026-10-11.) Quests (`Content/scripts/quests/`, or any script gated on a quest varp) and instanced areas are excluded.
 
+**Status (Calum, 2026-10-11): parked for a future version.** There are not enough relics yet to add these as tasks; nothing here is scheduled or built. Keep the list for later.
+
 **Based on:** root `e92c160`, Content `bf73428d9`. **Method:** three read-only scans of `Content/scripts/areas`, `general*`, `npc`, `player`, `minigames`, `skill_agility`, `skill_thieving`, then my own re-read of the scripts quoted below. **Nothing was run.** Nothing here is implemented; the list waits for Calum's pick.
 
 All paths are under `Content/scripts/`. "Verified" = I opened the lines and the quoted snippet is from them. "Scan only" = reported by a scan, not re-opened by me.
