@@ -11,6 +11,8 @@ node = "24"
 bun = "1.3.10"
 # Only needed for the docs site (docs-site/requirements.txt): MkDocs is a Python tool.
 python = "3.12"
+# Only needed for `mise run host` (public https tunnel, scripts/host-public.mjs). Not pinned: installing it through mise was not verified (see docs/setup/hosting-for-friends.md).
+cloudflared = "latest"
 
 [tasks.up]
 description = "Set up, build the web client, then start the server (open the URL it prints)"
@@ -131,3 +133,8 @@ run = "node -e \"require('fs').mkdirSync('Engine-TS/data/config',{recursive:true
 [tasks."public:config"]
 description = "Write world.json for a public server: relic settings + production on, debug off, access code from ACCESS_CODE (docs/setup/hosting-for-friends.md)"
 run = "node scripts/public-config.mjs"
+
+[tasks.host]
+description = "Host for friends: asks for an access code, writes the public world.json, starts the server and opens a Cloudflare https tunnel (docs/setup/hosting-for-friends.md)"
+# Not `depends = ["setup"]`: run `mise run up` once first so dependencies and the client are built.
+run = "node scripts/host-public.mjs"

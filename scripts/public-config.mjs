@@ -1,7 +1,7 @@
 // Writes Engine-TS/data/config/world.json for a public server: config/world.json (relic settings)
 // plus node.production=true (no dev commands), node.debug=false (no map editor) and the access code
 // from the ACCESS_CODE environment variable (1-20 characters: players type it as their password).
-// Usage: ACCESS_CODE=yourcode node scripts/public-config.mjs   (restart the server after)
+// Also sets web.port 8888. Usage: ACCESS_CODE=yourcode node scripts/public-config.mjs   (restart the server after)
 import fs from 'node:fs';
 
 const code = process.env.ACCESS_CODE ?? '';
@@ -11,6 +11,7 @@ if (code.length < 1 || code.length > 20) {
 }
 
 const base = JSON.parse(fs.readFileSync('config/world.json', 'utf8'));
+base.web = { ...base.web, port: 8888 }; // same on every OS (the default is 80 on Windows/macOS); mise run host tunnels this port
 base.node = { ...base.node, production: true, debug: false, accessCode: code };
 fs.mkdirSync('Engine-TS/data/config', { recursive: true });
 fs.writeFileSync('Engine-TS/data/config/world.json', JSON.stringify(base, null, 4) + '\n');

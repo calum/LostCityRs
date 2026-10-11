@@ -66,3 +66,12 @@
 2. `ACCESS_CODE=<code> mise run public:config`.
 3. `mise run start` (do not use `live` for a public server: it watches mods).
 4. `cloudflared tunnel --url http://localhost:8888`, share the https link and the code. Friends: open the link, Existing User, any username, **password = the code**.
+
+### `mise run host` (2026-10-11): one command for the day-to-day steps above
+
+`scripts/host-public.mjs`, task `host` in `mise.toml`. Asks for the access code (or reads `ACCESS_CODE`), runs `scripts/public-config.mjs` (which now also pins `web.port` to 8888 on every OS), starts `mise run start`, waits for `http://localhost:8888/rs2.cgi`, starts `cloudflared tunnel --url http://localhost:8888`, reads the `https://...trycloudflare.com` link from its output and prints it with the code. Ctrl+C stops the tunnel and the server (SIGINT, so the engine can save).
+
+- **Ports:** only the web port 8888 is tunnelled (it carries the page, the WebSocket and `::map`). 43594 and 8898 are not exposed by the tunnel. Both still listen on `0.0.0.0` on your machine (`web.ts`, `TcpServer.ts`), so they are reachable from your own network (LAN), but not from the internet unless you forward them on the router.
+- **Cloudflare login:** the free quick tunnel needs **no Cloudflare account and no login**. A login is only needed for a stable link on your own domain: `CF_TUNNEL_HOSTNAME=game.example.com mise run host` runs `cloudflared tunnel login` (browser) if `~/.cloudflared/cert.pem` is missing, then creates tunnel `lostcity-relics`, points the hostname at it and runs it. **That named-tunnel branch was not run** (needs an account and domain).
+- **cloudflared dependency:** `cloudflared = "latest"` is in `[tools]` of `mise.toml` (mise's registry maps it to `aqua:cloudflare/cloudflared`, read from `mise registry`, mise 2026.10.6). **Not verified:** `mise install cloudflared` itself (blocked in the cloud container); the script falls back to a `cloudflared` on PATH and prints install hints if none is found. Run `mise run up` once first so dependencies and the client exist.
+- **Tested here:** with a fake `mise` and a fake `cloudflared` (prints a `trycloudflare.com` line): the code prompt, the written `world.json` (`production`, `debug: false`, `accessCode`, `web.port 8888`), the real server starting and answering, and the link banner. **Not tested:** a real quick tunnel (the container cannot reach `api.trycloudflare.com`: DNS lookup failed), the Windows path (`taskkill`, `shell: true`), and the Ctrl+C save.
