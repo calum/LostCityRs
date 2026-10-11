@@ -6,79 +6,77 @@
 <title>Relic Mode – LostCityRS</title>
 <meta name="description" content="Relics, tasks and a progress tracker for the LostCityRS relic game mode.">
 <style>
-@font-face{font-family:"MedievalSharp";src:url(fonts/MedievalSharp.ttf) format("truetype");font-display:swap}
-@font-face{font-family:"VT323";src:url(fonts/VT323.ttf) format("truetype");font-display:swap}
+/* Styled after the OSRS Wiki (tan page, beige content panel, tan table headers, blue links, serif headings).
+   Colours are from memory of that site, not copied from its CSS (the host was unreachable when this was written). */
 :root{
-  --bg:#14110d; --panel:#231d15; --panel2:#2e261b; --edge:#5a4a30; --edge-dark:#0d0a07;
-  --text:#d9ccb0; --muted:#9a8c6e; --gold:#ffb81c; --orange:#ff981f; --green:#37c837; --link:#6ab7ff; --red:#e0583c;
+  --page:#1c1a17; --content:#2b2823; --alt:#242119; --head:#4a3f2e; --border:#5b5240; --edge:#5b5240;
+  --text:#e3dccb; --muted:#a29a88; --h:#f0e9d6; --link:#7db4ff; --visited:#b69bf0; --done:#1f2d1c; --done-text:#a6cfa0; --ok:#6fcf6f; --box:#171512;
 }
+@media (prefers-color-scheme: light){:root{
+  --page:#94866d; --content:#d8ccb4; --alt:#e2dbc8; --head:#c0a886; --border:#a2927a; --edge:#a2927a;
+  --text:#222; --muted:#5a5446; --h:#000; --link:#0645ad; --visited:#5b3a9a; --done:#c8dcb8; --done-text:#2a4a22; --ok:#2a7a2a; --box:#f4efe2;
+}}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
-body{margin:0;background:var(--bg) radial-gradient(ellipse at top,#2a2217 0,var(--bg) 60%) fixed;color:var(--text);
-  font:21px/1.4 "VT323",ui-monospace,monospace;letter-spacing:.2px}
-a{color:var(--link)} a:hover{color:#a6d4ff}
-h1,h2,h3{font-family:"MedievalSharp",serif;font-weight:400;color:var(--gold);text-shadow:2px 2px 0 #000;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:3.5rem}
+body{margin:0;background:var(--page);color:var(--text);font:15px/1.6 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--link)} a:visited{color:var(--visited)}
+h1,h2,h3{font-family:"Linux Libertine",Georgia,Times,serif;font-weight:400;color:var(--h);margin:0}
 .wrap{width:100%;padding:0 clamp(12px,3vw,48px)}
-header.hero{padding:2.2rem 0 1.2rem;border-bottom:3px solid var(--edge-dark);background:linear-gradient(#1e1810,transparent)}
-header.hero h1{font-size:clamp(2.2rem,5vw,3.6rem)}
-header.hero p{margin:.4rem 0 0;color:var(--muted);max-width:70ch}
-nav.top{position:sticky;top:0;z-index:10;background:#0f0c08ee;backdrop-filter:blur(4px);border-bottom:2px solid var(--edge)}
-nav.top .wrap{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;align-items:center;padding-top:.5rem;padding-bottom:.5rem}
-nav.top a{color:var(--orange);text-decoration:none;font-weight:400}
-nav.top a:hover{color:var(--gold)}
-nav.top .prog{margin-left:auto;color:var(--text)}
-nav.top .prog b{color:var(--green)}
-section{padding:1.6rem 0}
-section>.wrap>h2{font-size:2rem;border-bottom:2px solid var(--edge);padding-bottom:.3rem;margin-bottom:1rem}
-.panel{background:var(--panel);border:2px solid var(--edge);box-shadow:inset 0 0 0 1px var(--edge-dark),0 3px 0 #000;padding:1rem 1.2rem}
+.page{background:var(--content);border-left:1px solid var(--border);border-right:1px solid var(--border);min-height:100vh}
+header.hero{padding:1.4rem 0 .8rem}
+header.hero h1{font-size:clamp(1.9rem,4vw,2.6rem);border-bottom:1px solid var(--border);padding-bottom:.3rem}
+header.hero p{margin:.5rem 0 0;color:var(--muted);max-width:75ch}
+nav.top{position:sticky;top:0;z-index:10;background:var(--head);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+nav.top .wrap{display:flex;flex-wrap:wrap;gap:.2rem 1.2rem;align-items:center;padding-top:.4rem;padding-bottom:.4rem}
+nav.top a{font-weight:600}
+nav.top .prog{margin-left:auto}
+nav.top .prog b{color:var(--ok)}
+section{padding:1.2rem 0}
+section>.wrap>h2{font-size:1.7rem;border-bottom:1px solid var(--border);padding-bottom:.2rem;margin-bottom:1rem}
+.panel{background:var(--alt);border:1px solid var(--border);padding:.8rem 1.1rem}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:1rem}
-.panel h3{font-size:1.4rem;margin:1rem 0 .4rem}.panel h3:first-child{margin-top:0}
+.panel h3{font-size:1.25rem;margin:1rem 0 .4rem;border-bottom:1px solid var(--border)}.panel h3:first-child{margin-top:0}
 .panel ul,.panel ol{padding-left:1.3rem;margin:.4rem 0}.panel li{margin:.3rem 0}
-strong,b{color:#fff}
-code{background:#0007;padding:0 .3em;color:var(--orange)}
-.admonition{border-left:5px solid var(--orange);background:#0005;padding:.4rem 1rem;margin:1rem 0}
-.admonition.warning{border-color:var(--red)}
-.admonition-title{font-weight:400;color:var(--orange);margin:.2rem 0}
+strong,b{color:var(--h)}
+code{background:var(--box);padding:0 .3em;border:1px solid var(--border)}
+.admonition{border:1px solid var(--border);border-left:4px solid var(--head);background:var(--content);padding:.3rem 1rem;margin:1rem 0}
+.admonition.warning{border-left-color:#c0392b}
+.admonition-title{font-weight:700;margin:.2rem 0}
 .admonition p{margin:.3rem 0}
 .tools{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin:0 0 1rem}
-.tools input[type=search]{flex:1 1 220px;max-width:420px;font:inherit;padding:.4rem .7rem;background:#0b0907;color:var(--text);border:2px solid var(--edge)}
+.tools input[type=search]{flex:1 1 220px;max-width:420px;font:inherit;padding:.3rem .6rem;background:var(--box);color:var(--text);border:1px solid var(--border)}
 .tools label{cursor:pointer;user-select:none}
-.tools button{font:inherit;cursor:pointer;background:var(--panel2);color:var(--orange);border:2px solid var(--edge);padding:.3rem .8rem}
-.tools button:hover{color:var(--gold);border-color:var(--gold)}
-.count{color:var(--green);font-weight:400}
-/* relic cards */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:.9rem}
-.card{position:relative;background:var(--panel);border:2px solid var(--edge);box-shadow:inset 0 0 0 1px var(--edge-dark),0 3px 0 #000;padding:.9rem 1rem 1rem 3rem}
-.card h3{font-size:1.35rem}
-.card p{margin:.4rem 0 0}
+.tools button{font:inherit;cursor:pointer;background:var(--head);color:var(--text);border:1px solid var(--border);padding:.25rem .8rem}
+.tools button:hover{filter:brightness(1.15)}
+.count{color:var(--ok);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:.8rem}
+.card{position:relative;background:var(--alt);border:1px solid var(--border);padding:.7rem 1rem .9rem 2.8rem}
+.card h3{font-size:1.2rem}
+.card p{margin:.35rem 0 0}
 .card .how{color:var(--muted)}
-.card .num{position:absolute;top:.5rem;right:.7rem;color:var(--muted);font-size:.85rem}
-.card .tick{position:absolute;left:.8rem;top:.9rem}
-.card.done{border-color:#2b7d2b;background:#1a2418}
-.card.done h3{color:#8de08d}
-/* checkbox */
-.tick input{position:absolute;opacity:0;width:1.4rem;height:1.4rem;cursor:pointer;margin:0}
-.tick span{display:inline-block;width:1.4rem;height:1.4rem;background:#0b0907;border:2px solid var(--edge);vertical-align:middle}
-.tick input:checked+span{background:var(--green);box-shadow:inset 0 0 0 3px #0b0907}
-.tick input:focus-visible+span{outline:2px solid var(--gold)}
+.card .num{position:absolute;top:.5rem;right:.7rem;color:var(--muted);font-size:.8rem}
+.card .tick{position:absolute;left:.8rem;top:.8rem}
+.card.done{background:var(--done)}
+.tick input{position:absolute;opacity:0;width:1.3rem;height:1.3rem;cursor:pointer;margin:0}
+.tick span{display:inline-block;width:1.3rem;height:1.3rem;background:var(--box);border:1px solid var(--border);vertical-align:middle}
+.tick input:checked+span{background:var(--ok);box-shadow:inset 0 0 0 3px var(--box)}
+.tick input:focus-visible+span{outline:2px solid var(--link)}
 .tick{position:relative;display:inline-block}
-/* tasks table */
-.scroll{overflow-x:auto;border:2px solid var(--edge);box-shadow:0 3px 0 #000}
-table{border-collapse:collapse;width:100%;background:var(--panel)}
-th{position:sticky;top:0;background:#3a2f1e;color:var(--gold);font-family:"MedievalSharp",serif;font-weight:400;text-align:left;padding:.5rem .7rem;white-space:nowrap}
-td{padding:.5rem .7rem;vertical-align:top;border-top:1px solid #3b3122}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;background:var(--alt)}
+th{background:var(--head);color:var(--h);text-align:left;padding:.4rem .6rem;white-space:nowrap;border:1px solid var(--border)}
+td{padding:.4rem .6rem;vertical-align:top;border:1px solid var(--border)}
 td.num{color:var(--muted);text-align:right}
 td.tname{min-width:15ch}
-tr:nth-child(even) td{background:#281f16}
-tr.done td{background:#1a2418;color:#8fb98f}
-tr.done td.tname{text-decoration:line-through;text-decoration-color:#4a7a4a}
+tr.done td{background:var(--done);color:var(--done-text)}
+tr.done td.tname{text-decoration:line-through}
 .hidden{display:none!important}
-footer{padding:2rem 0 3rem;color:var(--muted);border-top:3px solid var(--edge-dark);font-size:.9rem}
+footer{padding:1.5rem 0 2.5rem;color:var(--muted);border-top:1px solid var(--border);font-size:.85rem}
 .note{color:var(--muted);margin:.5rem 0}
-@media (max-width:600px){body{font-size:19px}}
 </style>
 </head>
 <body>
+<div class="page">
 <header class="hero"><div class="wrap">
   <h1>Relic Mode</h1>
   <p>Finish tasks, pick game-breaking relics, and slay the King Black Dragon and the Kalphite Queen. Your guide to all {{NRELICS}} relics and {{NTASKS}} tasks.</p>
@@ -130,13 +128,13 @@ footer{padding:2rem 0 3rem;color:var(--muted);border-top:3px solid var(--edge-da
 <section id="notes"><div class="wrap">
   <h2>Your notes</h2>
   <p class="note">Declined relics, plans, anything. Saved in this browser only.</p>
-  <textarea id="notes-box" rows="5" style="width:100%;font:inherit;background:#0b0907;color:var(--text);border:2px solid var(--edge);padding:.6rem" aria-label="Your notes"></textarea>
+  <textarea id="notes-box" rows="5" style="width:100%;font:inherit;background:var(--box);color:var(--text);border:1px solid var(--border);padding:.6rem" aria-label="Your notes"></textarea>
 </div></section>
 
 <footer><div class="wrap">
   This page is generated from the <a href="https://github.com/calum/LostCityRs/blob/main/docs/guide/relic-mode-player-guide.md">relic mode player guide</a>
   by <code>docs/tools/relic-wiki/build_relic_wiki.py</code>. If it differs from what you see in game, trust the game.
-  Fonts: MedievalSharp and VT323 (SIL Open Font License 1.1, via Google Fonts). Not affiliated with Jagex.
+  Styled after the OSRS Wiki. Not affiliated with Jagex.
   · <a href="../guide/relic-mode-player-guide/">Developer-style guide</a> · <a href="../">Research notes</a>
 </div></footer>
 
@@ -177,5 +175,6 @@ footer{padding:2rem 0 3rem;color:var(--muted);border-top:3px solid var(--edge-da
   var n=$("notes-box");n.value=state.notes;n.addEventListener("input",function(){state.notes=n.value;save();});
 })();
 </script>
+</div>
 </body>
 </html>

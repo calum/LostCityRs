@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the standalone dark, RuneScape-styled relic mode page.
+"""Builds the standalone relic mode page, styled after the OSRS Wiki (dark by default, tan in light mode).
 
 Source of truth is docs/guide/relic-mode-player-guide.md: the relic and task
 tables, the rules and the menu notes are parsed from it, so the page cannot
@@ -8,11 +8,9 @@ drift from the guide. Only the styling, layout and tracker script live here.
 Usage: python3 docs/tools/relic-wiki/build_relic_wiki.py [OUT_DIR]
 OUT_DIR defaults to site/relics (the MkDocs output; run after `mkdocs build`).
 Needs the `markdown` package (installed with MkDocs).
-Fonts in ./fonts are SIL OFL 1.1: MedievalSharp and VT323 (Google Fonts).
 """
 import html
 import re
-import shutil
 import sys
 from pathlib import Path
 
@@ -85,10 +83,10 @@ def task_rows(rows):
 
 
 def build():
-    secs = sections(GUIDE.read_text(encoding="utf-8"))
+    text = re.sub(r'^!!! tip "Prefer.*?\n(?:    .*\n|\n)+', "", GUIDE.read_text(encoding="utf-8"), count=1, flags=re.M)  # link to this page
+    secs = sections(text)
     intro_paras = secs[""].split("\n\n")
     intro = md("\n\n".join(intro_paras[1:]))  # drop the '# title' line
-    intro = intro.replace("Things may change", "Things may change")
 
     run = md(secs["The run in one minute"])
     menus = md(secs["In-game menus"])
@@ -120,7 +118,6 @@ def build():
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "index.html").write_text(build(), encoding="utf-8")
-    shutil.copytree(HERE / "fonts", OUT / "fonts", dirs_exist_ok=True)
     print(f"wrote {OUT}/index.html")
 
 
