@@ -47,18 +47,40 @@ overcolour=0xFFFFFF
 [xp]
 type=text
 x=14
-y=28
-width=300
+y=26
+width=244
 height=14
 font=p12_full
 shadowed=yes
 text=XP rate
 colour=0xFFFF00
 
+[time]
+type=text
+x=262
+y=26
+width=244
+height=14
+font=p12_full
+shadowed=yes
+text=
+colour=0xFFFFFF
+
+[finish]
+type=text
+x=14
+y=52
+width=490
+height=14
+font=p12_full
+shadowed=yes
+text=
+colour=0x00FF00
+
 [pending]
 type=text
 x=14
-y=44
+y=39
 width=240
 height=14
 font=p12_full
@@ -69,7 +91,7 @@ colour=0xFFFFFF
 [choose_box]
 type=layer
 x=262
-y=44
+y=39
 width=240
 height=14
 
@@ -90,7 +112,7 @@ overcolour=0xFFFFFF
 [unlocked_title]
 type=text
 x=8
-y=64
+y=66
 width=246
 height=14
 font=p12_full
@@ -101,7 +123,7 @@ colour=0x00FF00
 [available_title]
 type=text
 x=260
-y=64
+y=66
 width=246
 height=14
 font=p12_full
@@ -112,9 +134,9 @@ colour=0xFFFF00
 [unlocked_list]
 type=layer
 x=8
-y=80
+y=82
 width=250
-height=250
+height=248
 scroll=352
 
 [unlocked_1]
@@ -468,9 +490,9 @@ colour=0xFFFFFF
 [available_list]
 type=layer
 x=260
-y=80
+y=82
 width=250
-height=250
+height=248
 scroll=352
 
 [available_1]

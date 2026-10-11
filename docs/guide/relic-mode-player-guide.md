@@ -30,6 +30,7 @@ Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at 
 
 - **Tasks** lists all 39 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
+- **Relics** also shows how long you have played ("Time played"). The game counts the time you are logged in. When you beat both final bosses it prints your final challenge time in the chat and the menu keeps showing it ("Final challenge done in ..."), so you can see how long the run took. Characters that already existed start counting from zero.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
 
 ## Your tracker

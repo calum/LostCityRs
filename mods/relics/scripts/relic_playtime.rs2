@@ -1,0 +1,44 @@
+// Play time. %relic_playticks counts the game ticks (0.6 s) a character has been logged in; a softtimer adds 1 per tick (it runs while
+// the player is busy or in a dialog, and is not saved, so the login hook restarts it). Existing characters start from 0.
+// %relic_finish_ticks holds the count at the moment the final challenge (both final bosses) was completed, 0 until then.
+
+[softtimer,relic_playtime_timer]
+%relic_playticks = calc(%relic_playticks + 1);
+
+// login.rs2 hook (relic_on_login), before the tutorial check so Tutorial Island counts too.
+[proc,relic_playtime_start]
+clearsofttimer(relic_playtime_timer);
+softtimer(relic_playtime_timer, 1);
+
+// "2h 05m 30s" from a tick count.
+[proc,relic_playtime_text](int $ticks)(string)
+def_int $secs = calc($ticks * 6 / 10);
+def_int $h = calc($secs / 3600);
+def_int $m = calc($secs / 60 % 60);
+def_int $s = calc($secs % 60);
+def_string $mm = tostring($m);
+def_string $ss = tostring($s);
+if ($m < 10) {
+    $mm = "0<$mm>";
+}
+if ($s < 10) {
+    $ss = "0<$ss>";
+}
+return("<tostring($h)>h <$mm>m <$ss>s");
+
+// relic_win: record the finish time once and tell the player.
+[proc,relic_playtime_finish]
+if (%relic_finish_ticks > 0) {
+    return;
+}
+%relic_finish_ticks = max(%relic_playticks, 1);
+~relic_say("Your final challenge time: <~relic_playtime_text(%relic_finish_ticks)>.");
+
+// Relics menu refresh: the two time lines (the finish line stays empty until the final challenge is done).
+[proc,relic_playtime_menu]
+if_settext(relic_relicmenu:time, "Time played: <~relic_playtime_text(%relic_playticks)>");
+if (%relic_finish_ticks > 0) {
+    if_settext(relic_relicmenu:finish, "Final challenge done in <~relic_playtime_text(%relic_finish_ticks)>");
+} else {
+    if_settext(relic_relicmenu:finish, "");
+}

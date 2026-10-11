@@ -60,3 +60,13 @@ scope=perm
 
 [relic_xp_owed]
 scope=perm
+
+// Play time: game ticks (0.6 s) spent logged in since this feature went live, counted by [softtimer,relic_playtime_timer]. Written from a timer, so protect=no.
+[relic_playticks]
+scope=perm
+protect=no
+
+// %relic_playticks at the moment the final challenge was completed (both final bosses down); 0 = not finished yet.
+[relic_finish_ticks]
+scope=perm
+protect=no
