@@ -51,7 +51,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 1a | XP Multiplier I | Your XP rate goes from 10x to **30x**. | automatic |
 | 1b | XP Multiplier II | XP rate goes from 30x to **90x** (take I first). | automatic |
 | 1c | XP Multiplier III | XP rate goes from 90x to **270x** (take II first). | automatic |
-| 2 | Quest Pass | Every quest is marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. The quest reward XP is **not** boosted by the XP Multiplier (the normal base rate still applies); the multiplier is back as soon as the last quest is done. **Given only by your 10th finished task**, never offered. | automatic |
+| 2 | Quest Pass | Every quest is marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. The quest reward XP is plain **1x** (neither the XP Multiplier nor the 10x base rate applies); the multiplier is back as soon as the last quest is done. **Given only by your 10th finished task**, never offered. | automatic |
 | 3 | Stoneskin | You take **half** damage. | automatic |
 | 4 | Quickstrike | You attack **twice as fast**. | automatic |
 | 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. | automatic |
@@ -84,7 +84,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 Good to know:
 
 - **Infinite Runes** was removed. A character that already had it loses it at the next login and gets one new relic choice instead.
-- **Quest Pass** also hands out the quest rewards and XP, so it is a big skill boost too. The XP Multiplier is switched off while the quests are completed, so the rewards come at the base rate.
+- **Quest Pass** also hands out the quest rewards and XP, so it is a big skill boost too. The XP Multiplier is switched off while the quests are completed, so the rewards come at plain 1x.
 - **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
 - **Forge Echo, Fletcher's Echo and Hunter's Haul**: if your bank is full the extra items go to your backpack, and are lost if that is full too.
 - **Endless Shoal** only keeps a spot still while you are close; walk away and it moves on like any other.

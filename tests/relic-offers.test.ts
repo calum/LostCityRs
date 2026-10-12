@@ -552,3 +552,12 @@ test('Quest Pass: quest reward XP ignores the XP Multiplier while the quests run
     boosted.bot.tick(2);
     assert.equal(boosted.bot.xp('fletching') - before, 1000 * Environment.node.xpRate * 27);
 });
+
+test('Quest Pass: while the quest flag is set every XP gain is exactly 1x, not the 10x base rate', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: 3, relic_xp_factor: 27, relic_quest_xp_off: 1 } });
+    const before = bot.xp('fletching');
+    bot.cheat('~relic_xptest');
+    bot.tick(2);
+    assert.equal(bot.xp('fletching') - before, 1000);
+});
