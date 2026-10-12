@@ -2,6 +2,7 @@
 //  - Content player/scripts/stat.rs2 [timer,stat_boost_restore]: boosts do not drain.
 //  - Content skill_herblore/scripts/herblore.rs2 [proc,brew_potion]: the secondary is not used up.
 //  - Engine Player.addXp -> relicGreenThumb: raw XP collects in %relic_herb_xp and queues [queue,relic_herbs].
+//  - Content interface_bank/scripts/bank.rs2 [proc,bank_deposit_request]: banking herbs pays their cleaning XP (~relic_bank_herbs).
 
 // 1. Stat boosts never drain (potions, kebabs, special attacks). Drained stats still recover to base ([timer,stat_regen]).
 [proc,relic_boost_stays]()(int)
@@ -56,6 +57,49 @@ if ($paid < $n) {
     %relic_herb_xp = calc(%relic_herb_xp + ($n - $paid) * ^relic_herb_xp_per_herb);
     queue(relic_herbs, 0, 0);
 }
+
+// 3b. Banking a herb (grimy or clean) pays the Herblore XP of cleaning it, once per herb deposited, through stat_advance so the
+// engine rate and the XP Multiplier apply. Called from [proc,bank_deposit_request] with the number actually moved. Herbs the relic itself puts
+// in the bank (~relic_herbs_claim) and the death-relic transfers do not pass through here, so they pay nothing.
+[proc,relic_bank_herbs](obj $obj, int $n)
+if (~relic_has(20) = 0 | $n < 1) {
+    return;
+}
+def_int $xp = ~relic_herb_clean_xp(oc_uncert($obj));
+if ($xp < 1) {
+    return;
+}
+// the cap keeps xp * n inside 32 bits (largest cleaning XP is 15 XP = 150 tenths)
+if ($n > ^relic_bank_herb_max) {
+    $n = ^relic_bank_herb_max;
+}
+stat_advance(herblore, multiply($xp, $n));
+
+// Cleaning XP (in the unit of stat_advance) of one herb: identified_herb_exp of the clean herb, which a grimy herb shares.
+[proc,relic_herb_clean_xp](obj $obj)(int)
+switch_obj($obj) {
+    case unidentified_guam : return(oc_param(guam_leaf, identified_herb_exp));
+    case unidentified_marentill : return(oc_param(marentill, identified_herb_exp));
+    case unidentified_tarromin : return(oc_param(tarromin, identified_herb_exp));
+    case unidentified_harralander : return(oc_param(harralander, identified_herb_exp));
+    case unidentified_ranarr : return(oc_param(ranarr_weed, identified_herb_exp));
+    case unidentified_irit : return(oc_param(irit_leaf, identified_herb_exp));
+    case unidentified_avantoe : return(oc_param(avantoe, identified_herb_exp));
+    case unidentified_kwuarm : return(oc_param(kwuarm, identified_herb_exp));
+    case unidentified_cadantine : return(oc_param(cadantine, identified_herb_exp));
+    case unidentified_lantadyme : return(oc_param(lantadyme, identified_herb_exp));
+    case unidentified_dwarf_weed : return(oc_param(dwarf_weed, identified_herb_exp));
+    case unidentified_torstol : return(oc_param(torstol, identified_herb_exp));
+    case unidentified_toadflax : return(oc_param(toadflax, identified_herb_exp));
+    case unidentified_snapdragon : return(oc_param(snapdragon, identified_herb_exp));
+    case unidentified_snake_weed : return(oc_param(snake_weed, identified_herb_exp));
+    case unidentified_ardrigal : return(oc_param(ardrigal, identified_herb_exp));
+    case unidentified_sito_foil : return(oc_param(sito_foil, identified_herb_exp));
+    case unidentified_volencia_moss : return(oc_param(volencia_moss, identified_herb_exp));
+    case unidentified_rogues_purse : return(oc_param(rogues_purse, identified_herb_exp));
+}
+// A clean herb carries the XP itself (the param is 0 on everything else, identify.param).
+return(oc_param($obj, identified_herb_exp));
 
 // 4. On taking the relic: one of every potion secondary, in the bank (the backpack if the bank is full). With boosts and secondaries
 // that stay, this is all the player needs to find of them.

@@ -2,3 +2,5 @@
 ^relic_herb_xp_per_herb = 5000
 // Most herbs one claim hands out; what is left stays owed and the claim queues itself again.
 ^relic_herb_max_claim = 200
+// Most herbs of one deposit that pay Herblore XP when banked (keeps xp * herbs inside 32 bits).
+^relic_bank_herb_max = 1000000
