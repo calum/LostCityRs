@@ -66,7 +66,7 @@ The submodule commits recorded here are on the forks' `main` branches (the point
 | [`docs/setup/headless-test-harness.md`](docs/setup/headless-test-harness.md) | `mise run test`: fast in-process tests (`harness/`, `tests/`); new behaviour starts with a failing test (see `CLAUDE.md`) |
 | [`docs/guide/relic-mode-player-guide.md`](docs/guide/relic-mode-player-guide.md) | Player guide for the relic mode (source of truth for the Pages relic wiki) |
 | `mods/` | Our own RuneScript (the relic mode), synced into `Content/scripts/_mods/` |
-| `harness/`, `tests/` | The headless test harness and its tests (`mise run test`; 417 tests passing on 2026-10-12) |
+| `harness/`, `tests/` | The headless test harness and its tests (`mise run test`; 426 tests passing on 2026-10-12) |
 | `config/` | `world.json`, the engine config this repo expects; `mise run relics:config` copies it to `Engine-TS/data/config/` (`config/README.md`) |
 | `custom-sounds/` | Your own audio replacing the relic chime and the KBD / Kalphite Queen lair music (client side; `custom-sounds/README.md`) |
 | `scripts/` | Helper scripts behind the `mise` tasks (submodule updates, client build copy, mod sync, public hosting, headless client) |
