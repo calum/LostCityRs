@@ -187,8 +187,22 @@ while ($n <= ^relic_task_count) {
 }
 return($count);
 
+// 1 when the offer must contain the next XP Multiplier tier (Calum, 2026-10-12): tier I from the 4th task done, tier II from the 9th,
+// tier III from the 12th, each in every offer until it has been picked (the tier picked is always the next one).
+[proc,relic_xp_due](int $count)(int)
+if (%relic_xp_tier < 1 & $count >= 4) {
+    return(1);
+}
+if (%relic_xp_tier < 2 & $count >= 9) {
+    return(1);
+}
+if (%relic_xp_tier < 3 & $count >= 12) {
+    return(1);
+}
+return(0);
+
 // Draw up to 3 relics (see relic_in_pool for $mode), ask, grant. Returns 1 if something was offered, 0 if the pool was empty.
-// $force 1: the first option is the XP Multiplier whenever it is still eligible (every 5th task done).
+// $force 1: the first option is the XP Multiplier whenever it is still eligible (see relic_xp_due).
 // The seed advanced by the draws is stored only once the player answers: closing the dialog drops this script
 // (Player.closeModal), so the seed stays where it was and the next login shows the same offer.
 [proc,relic_offer_mode](int $mode)(int)
@@ -257,14 +271,11 @@ while (%relic_pending > 0 & %relic_hoarder_owed = 0) {
         if (testbit(%relic_owned, 2) = ^false) {
             ~relic_grant(2);
         } else {
-            def_int $s = ~relic_offer_run(0, 1);
+            def_int $s = ~relic_offer_run(0, ~relic_xp_due(~relic_tasks_done_count));
         }
-    } else if (%relic_xp_owed > 0) {
-        // every 5th task done: the offer has an XP Multiplier option while one is left
-        def_int $x = ~relic_offer_run(0, 1);
-        %relic_xp_owed = calc(%relic_xp_owed - 1);
     } else {
-        def_int $granted = ~relic_offer_mode(0);
+        // XP Multiplier tiers are guaranteed from set task counts until picked (relic_xp_due)
+        def_int $granted = ~relic_offer_run(0, ~relic_xp_due(~relic_tasks_done_count));
     }
     %relic_pending = calc(%relic_pending - 1);
 }
@@ -308,7 +319,7 @@ if ($task = 24 | $task = 25) {
     }
 }
 // Special offers by tasks done. The 10th task done, whichever task it is, is the Quest Pass (if not owned): granted directly,
-// never earlier or later. Every 5th task done guarantees the XP Multiplier option. Final bosses owe no ordinary offer.
+// never earlier or later. The XP Multiplier tiers are guaranteed in offers from set task counts (relic_xp_due). Final bosses owe no ordinary offer.
 def_int $count = ~relic_tasks_done_count;
 if ($count = 10 & testbit(%relic_owned, 2) = ^false) {
     %relic_quest_owed = calc(%relic_quest_owed + 1);
@@ -320,9 +331,6 @@ if ($task = 24 | $task = 25) {
     return;
 }
 %relic_pending = calc(%relic_pending + 1);
-if (calc($count % 5) = 0) {
-    %relic_xp_owed = calc(%relic_xp_owed + 1);
-}
 // Not shown here: a kill task completes inside npc_death while the npc is still swinging, and a melee npc's
 // swing at 0 hp runs if_close (npc_combat_melee.rs2:36), which drops a paused dialog. 3 ticks lets it finish.
 queue(relic_offer_q, 3, 0);

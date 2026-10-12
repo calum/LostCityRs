@@ -1,5 +1,5 @@
 // Special offers by tasks done (relic_offer.rs2, [queue,relic_task_done]): the 10th task done grants Quest Pass directly,
-// every 5th task done guarantees an XP Multiplier option (while the tier is below 3).
+// XP Multiplier I is guaranteed in every offer from the 4th task done until picked, II from the 9th, III from the 12th.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
@@ -17,44 +17,90 @@ const waitOffer = (b: Bot) => b.waitUntil(() => b.inDialog && b.choices.length >
 const spawnAt = (done: number, seed: number, extra: Record<string, number> = {}) =>
     Bot.spawn({ varps: { relic_started: 1, relic_seed: seed, relic_tasks_done: done, ...extra } });
 
-test('the 5th task done always offers the XP Multiplier', t => {
+// XP Multiplier guarantee (Calum, 2026-10-12): tier I is in every offer from the 4th task done until picked, tier II from the 9th,
+// tier III from the 12th. "task N" = N tasks done.
+test('the 4th task done always offers XP Multiplier I', t => {
     if (skip()) return t.skip(String(skip()));
     for (const seed of SEEDS) {
-        const bot = spawnAt(0xf, seed); // 4 tasks done
-        doTask(bot, 5);
+        const bot = spawnAt(0x7, seed); // 3 tasks done
+        doTask(bot, 4);
         waitOffer(bot);
         assert.ok(hasXp(bot), `seed ${seed}: ${JSON.stringify(bot.choices)}`);
         assert.equal(names(bot).length, 3);
     }
 });
 
-test('other tasks do not guarantee it (4th and 6th task done)', t => {
+test('XP Multiplier I is still guaranteed on later offers while it is not picked (5th and 8th task done)', t => {
     if (skip()) return t.skip(String(skip()));
-    const offers = [] as boolean[];
-    for (const [done, task] of [[0x7, 4], [0x1f, 6]]) {
+    for (const [done, task] of [[0xf, 5], [0x7f, 8]]) {
         for (const seed of SEEDS) {
             const bot = spawnAt(done, seed);
+            doTask(bot, task);
+            waitOffer(bot);
+            assert.ok(hasXp(bot), `task ${task} seed ${seed}: ${JSON.stringify(bot.choices)}`);
+        }
+    }
+});
+
+test('before the 4th task done and once tier I is owned, it is not guaranteed (3rd task; 5th task with tier 1)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const offers = [] as boolean[];
+    for (const [done, task, extra] of [[0x3, 3, {}], [0xf, 5, { relic_xp_tier: 1, relic_xp_factor: 3 }]] as const) {
+        for (const seed of SEEDS) {
+            const bot = spawnAt(done, seed, extra);
             doTask(bot, task);
             waitOffer(bot);
             offers.push(hasXp(bot));
         }
     }
     assert.ok(offers.includes(false), 'XP Multiplier is not in every ordinary offer');
+    assert.equal(offers.filter(x => !x).length >= 4, true);
 });
 
-test('XP Multiplier already at tier 3: the 5th task offer is an ordinary three', t => {
+test('the 9th task done always offers XP Multiplier II (tier I owned) and still tier I when it is not owned', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = spawnAt(0xf, 5, { relic_xp_tier: 3, relic_xp_factor: 27 });
-    doTask(bot, 5);
-    waitOffer(bot);
-    assert.ok(!hasXp(bot));
-    assert.equal(names(bot).length, 3);
+    for (const seed of SEEDS) {
+        const owned = spawnAt(0xff, seed, { relic_xp_tier: 1, relic_xp_factor: 3 }); // 8 done
+        doTask(owned, 9);
+        waitOffer(owned);
+        assert.ok(hasXp(owned), `tier 1, seed ${seed}: ${JSON.stringify(owned.choices)}`);
+        const none = spawnAt(0xff, seed);
+        doTask(none, 9);
+        waitOffer(none);
+        assert.ok(hasXp(none), `tier 0, seed ${seed}: ${JSON.stringify(none.choices)}`);
+    }
 });
 
-test('the 5th-task offer is the same after closing it and relogging', t => {
+test('the 12th task done always offers XP Multiplier III while tier 3 is not owned; at tier 3 it is an ordinary three', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = spawnAt(0xf, 6);
-    doTask(bot, 5);
+    for (const seed of SEEDS) {
+        const bot = spawnAt(0x7ff, seed, { relic_xp_tier: 2, relic_xp_factor: 9, relic_owned: 1 << 2 }); // 11 done, Quest Pass owned
+        doTask(bot, 12);
+        waitOffer(bot);
+        assert.ok(hasXp(bot), `seed ${seed}: ${JSON.stringify(bot.choices)}`);
+    }
+    const full = spawnAt(0x7ff, 5, { relic_xp_tier: 3, relic_xp_factor: 27, relic_owned: 1 << 2 });
+    doTask(full, 12);
+    waitOffer(full);
+    assert.ok(!hasXp(full));
+    assert.equal(names(full).length, 3);
+});
+
+test('tier II is not forced before the 9th task done (8th task with tier I owned)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const offers = SEEDS.map(seed => {
+        const bot = spawnAt(0x7f, seed, { relic_xp_tier: 1, relic_xp_factor: 3 });
+        doTask(bot, 8);
+        waitOffer(bot);
+        return hasXp(bot);
+    });
+    assert.ok(offers.includes(false));
+});
+
+test('the 4th-task offer is the same after closing it and relogging', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = spawnAt(0x7, 6);
+    doTask(bot, 4);
     waitOffer(bot);
     const first = [...bot.choices];
     bot.closeModal().tick(3);
