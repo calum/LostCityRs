@@ -94,3 +94,7 @@ scope=perm
 [relic_quest_xp_off]
 scope=temp
 protect=no
+
+// 1 while a Quest Pass scroll has been issued and not yet read (the Relic Keeper replaces a lost one only then). 0 = read, or a Quest Pass from before the scroll existed.
+[relic_quest_scroll]
+scope=perm

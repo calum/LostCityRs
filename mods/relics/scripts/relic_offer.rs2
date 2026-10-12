@@ -170,7 +170,9 @@ if ($id = 16) {
 } else if ($id = 20) {
     ~relic_herblore_starter;
 } else if ($id = 2) {
-    queue(relic_quest_pass, 0, 0);
+    // a scroll the player reads when it suits them (no stacked quest scrolls in the middle of a fight)
+    %relic_quest_scroll = 1;
+    ~relic_give_item(relic_quest_scroll);
 } else if ($id = 19) {
     ~relic_hoarder_start;
 }
@@ -391,6 +393,11 @@ if (%relic_pending > 0) {
 // grants the quests' reward items and XP.
 // The quest reward XP is not multiplied by the XP Multiplier relic: %relic_quest_xp_off switches the factor off (Player.addXp) until
 // relic_quest_pass_end sees that the last queued quest (viking_quest_complete) has run.
+[opheld1,relic_quest_scroll]
+inv_del(inv, relic_quest_scroll, 1);
+%relic_quest_scroll = 0;
+queue(relic_quest_pass, 0, 0);
+
 [queue,relic_quest_pass]
 %relic_quest_xp_off = 1;
 queue(relic_quest_pass_end, 0, 0);

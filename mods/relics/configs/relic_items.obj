@@ -62,3 +62,19 @@ model=inv_blankrune
 2dxan=516
 weight=0g
 stackable=yes
+
+[relic_quest_scroll]
+name=Quest Pass scroll
+desc=Read it to complete every quest.
+model=inv_map_scroll
+recol1s=5452
+recol1d=22440
+recol2s=5427
+recol2d=22440
+2dxof=-1
+2dyof=56
+2dzoom=990
+2dyan=1716
+2dxan=264
+weight=0g
+iop1=Read

@@ -274,3 +274,37 @@ test('win: with tasks 1-23 already done, killing both finals wins and owes no of
     assert.equal(bot.varp('relic_pending'), 0);
     assert.equal(bot.varp('relic_tasks_done'), (1 << 25) - 1);
 });
+
+// ---------------------------------------------------------------- Quest Pass scroll (Calum, 2026-10-12)
+
+test('Quest Pass scroll: death moves an unread scroll to the bank', t => {
+    if (skip()) return t.skip(String(skip()));
+    const at = { x: 3236, z: 3231 };
+    const bot = Bot.spawn({ at: { ...at, level: 0 } });
+    bot.clearInv().clearInv('worn').clearInv('bank');
+    bot.debugproc('relic_grant', 2);
+    assert.equal(bot.count('relic_quest_scroll'), 1);
+    bot.setVar('pk_skull', 100);
+    die(bot);
+    assert.equal(bot.count('relic_quest_scroll', 'bank'), 1);
+    assert.equal(groundCount(bot, 'relic_quest_scroll', at.x, at.z), 0);
+});
+
+test('Quest Pass scroll: the Relic Keeper replaces a lost unread scroll once, and never after it was read or for a legacy owner', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ at: { x: 3222, z: 3220, level: 0 } });
+    bot.clearInv().clearInv('bank');
+    bot.debugproc('relic_grant', 2);
+    bot.clearInv(); // scroll lost
+    assert.equal(total(bot, 'relic_quest_scroll'), 0);
+    const seen = talkToKeeper(bot);
+    assert.ok(said(seen, 'replaced'), seen.join(' | '));
+    assert.equal(total(bot, 'relic_quest_scroll'), 1);
+    talkToKeeper(bot);
+    assert.equal(total(bot, 'relic_quest_scroll'), 1, 'not given twice');
+    // read: the varp is cleared and the keeper gives nothing
+    bot.setVar('relic_quest_scroll', 0);
+    bot.clearInv();
+    talkToKeeper(bot);
+    assert.equal(total(bot, 'relic_quest_scroll'), 0);
+});

@@ -458,6 +458,12 @@ test('Quest Pass completes every quest through @complete_all_quests', t => {
     bot.debugproc('relic_grant', 2);
     bot.expectMessage('You gained the relic: Quest Pass.');
     assert.equal(bot.varp('relic_owned'), bit(2));
+    // the relic gives a scroll; nothing happens until it is read (Calum, 2026-10-12)
+    assert.equal(bot.count('relic_quest_scroll'), 1);
+    bot.tick(5);
+    assert.equal(bot.inDialog, false);
+    assert.equal(bot.varp('qp'), 0);
+    bot.opHeld('relic_quest_scroll');
 
     // [label,complete_all_quests] (cheat_quest.rs2:332-334) asks two side choices first
     waitForOffer(bot);
@@ -520,6 +526,7 @@ test('Quest Pass: quest reward XP ignores the XP Multiplier while the quests run
         const before = ['magic', 'strength', 'ranged', 'crafting', 'fishing'].map(s => bot.xp(s));
         bot.debugproc('relic_grant', 2);
         bot.expectMessage('You gained the relic: Quest Pass.');
+        bot.opHeld('relic_quest_scroll');
         waitForOffer(bot);
         pick(bot, 'Black Arm Gang.');
         waitForOffer(bot);
@@ -577,4 +584,33 @@ test('a run that already started is not given Druidic Ritual again', t => {
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     bot.tick(5);
     assert.equal(bot.varp('druidquest'), 0);
+});
+
+// ---------------------------------------------------------------- Quest Pass is a scroll (Calum, 2026-10-12)
+
+test('Quest Pass scroll: granting it adds a scroll to the inventory and completes nothing; reading uses it up and starts the quests', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_started: 1 } });
+    bot.debugproc('relic_grant', 2);
+    assert.equal(bot.count('relic_quest_scroll'), 1);
+    assert.equal(bot.count('relic_quest_scroll', 'bank'), 0);
+    bot.tick(8);
+    assert.equal(bot.varp('qp'), 0, 'no quest completed yet');
+    assert.equal(bot.varp('relic_quest_scroll'), 1, 'scroll issued, unread');
+    bot.opHeld('relic_quest_scroll');
+    waitForOffer(bot);
+    assert.match(bot.dialogText, /Choose a gang for Shield of Arrav/);
+    assert.equal(bot.count('relic_quest_scroll'), 0, 'the scroll is used up');
+    assert.equal(bot.varp('relic_quest_scroll'), 0);
+});
+
+test('Quest Pass scroll: with a full inventory it goes to the bank', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_started: 1 } });
+    bot.clearInv();
+    for (let i = 0; i < 28; i++) bot.give('logs', 1);
+    bot.debugproc('relic_grant', 2);
+    assert.equal(bot.count('relic_quest_scroll'), 0);
+    assert.equal(bot.count('relic_quest_scroll', 'bank'), 1);
+    bot.expectMessage('went to your bank');
 });
