@@ -174,6 +174,22 @@ test('Phoenix: a lethal hit leaves 1 HP once per 500 ticks; a second lethal hit 
     assert.ok((bot.varp('relic_phoenix_until') as number) >= until + 500);
 });
 
+test('Phoenix: the save plays the death animation so the player can see it trigger; no animation when the hit is not lethal', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
+    const played: number[] = [];
+    const real = bot.player.playAnimation.bind(bot.player);
+    bot.player.playAnimation = (anim: number, delay: number) => {
+        played.push(anim);
+        real(anim, delay);
+    };
+    bot.debugproc('relic_hit', 3);
+    assert.ok(!played.includes(ids.seq('human_death')), 'a non-lethal hit does not play it');
+    bot.debugproc('relic_hit', 50);
+    assert.equal(bot.stat('hitpoints'), 1);
+    assert.ok(played.includes(ids.seq('human_death')), `animations played: ${JSON.stringify(played)}`);
+});
+
 test('Phoenix + Stoneskin: the save is checked on the already halved amount', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = relicBot(SPOT.phoenix, [3, 6], { hitpoints: 10 });
@@ -538,7 +554,7 @@ function objName(id: number): string {
     return String(id);
 }
 
-test('Bounty drops 5 + 3*baseHP coins and food by tier at the death tile; nothing without the relic', t => {
+test('Bounty drops 5 x (5 + 3*baseHP) coins and food by tier at the death tile; nothing without the relic', t => {
     if (skip()) return t.skip(String(skip()));
     const tiers: [string, number, string][] = [
         ['chicken', 3, 'bread'],
@@ -557,15 +573,15 @@ test('Bounty drops 5 + 3*baseHP coins and food by tier at the death tile; nothin
                 bot.tick(4);
             });
             const ex = { x: at.x + 1, z: at.z };
-            const coins = drops.filter(d => d.type === 'coins' && d.count === 5 + hp * 3 && d.x === ex.x && d.z === ex.z);
+            const coins = drops.filter(d => d.type === 'coins' && d.count === (5 + hp * 3) * 5 && d.x === ex.x && d.z === ex.z);
             const fish = drops.filter(d => d.type === food && d.count === 1 && d.x === ex.x && d.z === ex.z);
             if (relics.length) {
-                assert.equal(coins.length, 1, `${npc}: coins ${5 + hp * 3} in ${JSON.stringify(drops)}`);
+                assert.equal(coins.length, 1, `${npc}: coins ${(5 + hp * 3) * 5} in ${JSON.stringify(drops)}`);
                 assert.equal(fish.length, 1, `${npc}: ${food} in ${JSON.stringify(drops)}`);
                 // Bounty runs first in npc_death, so the bounty coins are the first drop.
-                assert.deepEqual(drops[0], { type: 'coins', count: 5 + hp * 3, ...ex });
+                assert.deepEqual(drops[0], { type: 'coins', count: (5 + hp * 3) * 5, ...ex });
                 const pile = bot.findObj('coins', 3);
-                assert.ok(pile.x === ex.x && pile.z === ex.z && pile.count >= 5 + hp * 3);
+                assert.ok(pile.x === ex.x && pile.z === ex.z && pile.count >= (5 + hp * 3) * 5);
                 bot.findObj(food, 3);
             } else {
                 assert.equal(coins.length, 0, `${npc} control: ${JSON.stringify(drops)}`);

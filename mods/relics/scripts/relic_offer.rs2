@@ -63,9 +63,9 @@ switch_int ($id) {
     case 21 : return("XP pays rune essence, talisman teleports");
     case 25 : return("mine, chop and fish every 2 ticks");
     case 26 : return("smelt and smith: 50% extra");
-    case 27 : return("fish go to the bank, spots stay");
+    case 27 : return("fish arrive cooked in the bank, spots stay");
     case 28 : return("fletching: 50% extra");
-    case 29 : return("hides: 3 tanned, to the bank, gems");
+    case 29 : return("hides: 10 tanned, to the bank, gems");
     case 30 : return("pickpockets never fail and repeat, stalls never empty");
     case 20 : return("boosts never drain, secondaries stay, XP grows herbs");
     case 31 : return("players within 5 tiles share half your XP and food healing");

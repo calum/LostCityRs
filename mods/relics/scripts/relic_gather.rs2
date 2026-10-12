@@ -45,10 +45,11 @@ inv_add(inv, $obj, $n);
 return($n);
 
 // fishing.rs2 hook, replaces ~relic_gathered at the four catch sites. Returns how many fish were caught (the site multiplies fishing XP by it).
-// 12 Double Yield: the fish arrive already cooked (never burnt), each with the normal cooking XP of that fish, no cooking level needed.
+// 27 Endless Shoal: the fish arrive already cooked (never burnt), each with the normal cooking XP of that fish, no cooking level needed
+// (moved here from Double Yield, Calum 2026-10-12). Double Yield only doubles the count.
 // The raw fish is still counted for tasks first (task 9 asks for a raw swordfish). A fish with no cooking row stays raw.
 [proc,relic_fished](namedobj $fish)(int)
-if (~relic_has(12) = 1 & $fish ! tbwt_raw_karambwan) {
+if (~relic_has(27) = 1 & $fish ! tbwt_raw_karambwan) {
     db_find(cooking_generic:uncooked, $fish);
     def_dbrow $data = db_findnext;
     if ($data ! null) {

@@ -1,5 +1,5 @@
 // Relic 12 Double Yield: the doubled product also doubles the XP, and fishing is covered too
-// (double fish, caught already cooked, with the cooking XP). Mod code: relic_gather.rs2; hooks in
+// (double fish; the auto-cooking moved to Endless Shoal 2026-10-12). Mod code: relic_gather.rs2; hooks in
 // Content skill_mining/skill_fishing (docs/local-changes.md). Design: docs/design/relics-double-yield.md.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -129,23 +129,20 @@ test('fishing control: without the relic a net catches one raw shrimp and no coo
     assert.equal(bot.xp('cooking'), 0);
 });
 
-test('double yield (fishing): two fish, caught already cooked, with double fishing xp and the cooking xp for both', t => {
+test('double yield (fishing): two raw fish and double fishing xp, no cooking (that is Endless Shoal now)', t => {
     if (skip()) return t.skip(String(skip()));
     const control = fishOnce(fisher([]));
 
     const bot = fisher([12]);
     const xp = fishOnce(bot);
 
-    assert.equal(bot.count('raw_shrimp') + bot.count('raw_anchovies'), 0, 'nothing is left raw');
-    assert.equal(bot.count('burntfish1'), 0);
-    const cooked = bot.count('shrimp') + bot.count('anchovies');
-    assert.equal(cooked, 2);
+    assert.equal(bot.count('raw_shrimp') + bot.count('raw_anchovies'), 2);
+    assert.equal(bot.count('shrimp') + bot.count('anchovies'), 0, 'nothing is cooked');
     assert.equal(xp, 2 * control);
-    // cooking_generic.dbrow: shrimp gives experience 300 (tenths) per cook. Fishing level 1 keeps the catch to shrimp (anchovies need 15)
-    assert.equal(bot.xp('cooking'), 2 * 300 * xpMulti(bot));
+    assert.equal(bot.xp('cooking'), 0);
 });
 
-test('double yield (fishing): with room for one fish you get one cooked fish and one fish of xp', t => {
+test('double yield (fishing): with room for one fish you get one raw fish and one fish of xp', t => {
     if (skip()) return t.skip(String(skip()));
     const control = fishOnce(fisher([]));
 
@@ -154,9 +151,8 @@ test('double yield (fishing): with room for one fish you get one cooked fish and
     bot.give('bronze_dagger', free - 1);
     const xp = fishOnce(bot);
 
-    assert.equal(bot.count('shrimp') + bot.count('anchovies'), 1);
+    assert.equal(bot.count('raw_shrimp') + bot.count('raw_anchovies'), 1);
     assert.equal(xp, control);
-    assert.equal(bot.xp('cooking'), 300 * xpMulti(bot));
 });
 
 // ---------------------------------------------------------------- tasks stay completable
@@ -165,6 +161,7 @@ test('double yield: a caught fish still counts for the catch-the-raw-fish task a
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ at: DRAYNOR, varps: { relic_owned: (1 << 2) | (1 << 19) } });
     bot.debugproc('relic_grant', 12);
+    bot.debugproc('relic_grant', 27); // the shark arrives cooked only with Endless Shoal now
     // task 9 = catch a raw swordfish (relic_task_obj raw_swordfish), task 10 = a shark; ::~relic_fish runs the fishing hook for a fish
     bot.debugproc('relic_fish', 'raw_swordfish');
     assert.equal(((bot.varp('relic_tasks_done') as number) >>> 8) & 1, 1, 'task 9 (raw swordfish) done');

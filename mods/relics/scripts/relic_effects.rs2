@@ -17,6 +17,7 @@ if (~relic_has(5) = 1) {
 if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & map_clock >= %relic_phoenix_until) {
     %relic_phoenix_until = calc(map_clock + 500);
     $amount = calc(stat(hitpoints) - 1);
+    anim(human_death, 0); // so the player sees it trigger
     mes("Your Phoenix relic saves you from a lethal hit!");
 }
 return($amount);
@@ -173,11 +174,11 @@ if (~relic_has(7) = 1 & $damage >= 10) {
     stat_heal(prayer, $heal, 0);
 }
 
-// Called from relic_on_kill (npc_death hook) with the killer active. 9 Bounty drops coins and food by npc toughness.
+// Called from relic_on_kill (npc_death hook) with the killer active. 9 Bounty drops coins (5 x (5 + 3 x base hitpoints)) and food by npc toughness.
 [proc,relic_kill_effects]
 if (~relic_has(9) = 1) {
     def_int $hp = npc_basestat(hitpoints);
-    obj_add(npc_coord, coins, calc(5 + $hp * 3), ^lootdrop_duration);
+    obj_add(npc_coord, coins, calc((5 + $hp * 3) * 5), ^lootdrop_duration);
     if ($hp >= 100) {
         obj_add(npc_coord, shark, 1, ^lootdrop_duration);
     } else if ($hp >= 50) {

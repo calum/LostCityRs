@@ -119,7 +119,7 @@ test('prospector: woodcutting with the relic rolls about 2x as often (interval 2
     assert.ok(fast >= base * 1.6, `prospector: ${fast} logs in 60 ticks (control ${base})`);
 });
 
-const NET_FISH = ['raw_shrimp', 'raw_anchovies'];
+const NET_FISH = ['shrimp', 'anchovies', 'raw_shrimp', 'raw_anchovies']; // Endless Shoal banks them cooked
 
 /** Fish caught in 50 ticks at the Draynor net spot. Endless Shoal sends them to the bank, so a full backpack never stops the count. */
 function fishIn50Ticks(relics: number[]): number {
@@ -150,7 +150,8 @@ test('endless shoal: a net catch goes to the bank, not the backpack, and a full 
     bot.opNpc(spot, 1);
     bot.tick(40);
     assert.ok(total(bot, NET_FISH) >= 3, bot.describe());
-    assert.equal(bot.count('raw_shrimp') + bot.count('raw_anchovies'), 0, 'nothing in the backpack');
+    assert.equal(total(bot, NET_FISH) - bot.count('shrimp', 'bank') - bot.count('anchovies', 'bank'), 0, 'every catch is cooked, in the bank');
+    assert.equal(bot.count('shrimp') + bot.count('anchovies'), 0, 'nothing in the backpack');
     bot.expectNoMessage("You can't carry any more fish");
 });
 
@@ -165,23 +166,31 @@ test('endless shoal control: without the relic the fish go to the backpack', t =
     assert.equal(bot.count('raw_shrimp', 'bank') + bot.count('raw_anchovies', 'bank'), 0);
 });
 
-test('endless shoal + double yield: the catch arrives cooked in the bank (cooking xp, never burnt)', t => {
+test('endless shoal: the catch arrives cooked in the bank (cooking xp, never burnt), one fish', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = relicBot([SHOAL, DOUBLE_YIELD]);
+    const bot = relicBot([SHOAL]);
     const xp0 = bot.xp('cooking');
     bot.debugproc('relic_fish', 'raw_trout'); // relic_debug.rs2: ~relic_fished
-    assert.equal(bot.count('trout', 'bank'), 2);
+    assert.equal(bot.count('trout', 'bank'), 1);
     assert.equal(bot.count('raw_trout', 'bank') + bot.count('raw_trout'), 0);
     assert.equal(bot.count('trout'), 0);
     assert.ok(bot.xp('cooking') > xp0);
 });
 
-test('endless shoal: ~relic_fished banks the raw fish and counts 1 (2 with double yield)', t => {
+test('endless shoal + double yield: two cooked fish in the bank, cooking xp for both', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = relicBot([SHOAL, DOUBLE_YIELD]);
+    bot.debugproc('relic_fish', 'raw_trout');
+    assert.equal(bot.count('trout', 'bank'), 2);
+    assert.equal(bot.count('raw_trout', 'bank') + bot.count('raw_trout'), 0);
+});
+
+test('endless shoal: ~relic_fished banks the cooked fish and counts 1 (2 with double yield)', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = relicBot([SHOAL]);
     assert.equal(run(bot, 'relic_fished', 'raw_shrimp'), 1);
-    assert.equal(bot.count('raw_shrimp', 'bank'), 1);
-    assert.equal(bot.count('raw_shrimp'), 0);
+    assert.equal(bot.count('shrimp', 'bank'), 1);
+    assert.equal(bot.count('raw_shrimp', 'bank') + bot.count('raw_shrimp'), 0);
 });
 
 /** Move every fishing spot of one type to a tile and report whether the first one left after its timer fired. */
@@ -366,11 +375,11 @@ function dropHides(bot: Bot, n: number, hide = 'cow_hide', leather = 'leather') 
     World.removeNpc(cow as NpcEntity, -1);
 }
 
-test("hunter's haul: a hide drop becomes 3 tanned leather in the bank, no hide on the ground", t => {
+test("hunter's haul: a hide drop becomes 10 tanned leather in the bank, no hide on the ground", t => {
     if (skip()) return t.skip(String(skip()));
     const bot = relicBot([HAUL]);
     dropHides(bot, 1);
-    assert.equal(bot.count('leather', 'bank'), 3);
+    assert.equal(bot.count('leather', 'bank'), 10);
     assert.equal(bot.count('leather'), 0);
     assert.throws(() => bot.findObj('cow_hide', 6), 'no cow_hide on the ground');
 });
@@ -388,7 +397,7 @@ test("hunter's haul: 50% of hide drops also bank one random uncut gem", t => {
     if (skip()) return t.skip(String(skip()));
     const bot = relicBot([HAUL]);
     dropHides(bot, 60);
-    assert.equal(bot.count('leather', 'bank'), 180);
+    assert.equal(bot.count('leather', 'bank'), 600);
     const gems = total(bot, GEMS);
     assert.ok(gems >= 14 && gems <= 46, `${gems} gems in 60 drops`);
     const kinds = GEMS.filter(g => bot.count(g, 'bank') > 0).length;
@@ -405,7 +414,7 @@ test("hunter's haul: each dragon hide tans to its own leather", t => {
         ['dragonhide_black', 'dragon_leather_black']
     ]) {
         dropHides(bot, 1, hide, leather);
-        assert.equal(bot.count(leather, 'bank'), 3, leather);
+        assert.equal(bot.count(leather, 'bank'), 10, leather);
     }
 });
 
@@ -414,9 +423,9 @@ test("hunter's haul: a real cow kill and a real green dragon kill use the hook",
     const bot = relicBot([HAUL]);
     bot.debugproc('relic_kill', 'cow'); // relic_debug.rs2: npc_add east, credit the kill, run the real ai_queue3
     bot.tick(12); // npc_death ends with npc_delay(1) and npc_del; the drop lines run after it
-    assert.equal(bot.count('leather', 'bank'), 3);
+    assert.equal(bot.count('leather', 'bank'), 10);
     bot.debugproc('relic_kill', 'green_dragon');
     bot.tick(12); // npc_death ends with npc_delay(1) and npc_del; the drop lines run after it
-    assert.equal(bot.count('dragon_leather', 'bank'), 3);
+    assert.equal(bot.count('dragon_leather', 'bank'), 10);
     assert.equal(bot.count('dragonhide_green', 'bank') + bot.count('dragonhide_green'), 0);
 });
