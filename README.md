@@ -64,18 +64,22 @@ The submodule commits recorded here are on the forks' `main` branches (the point
 | [`docs/open-questions.md`](docs/open-questions.md) | Things not yet verified; the to-do list for research |
 | [`docs/local-changes.md`](docs/local-changes.md) | Every edit we made to upstream code (relic hooks, client camera) |
 | [`docs/setup/headless-test-harness.md`](docs/setup/headless-test-harness.md) | `mise run test`: fast in-process tests (`harness/`, `tests/`); new behaviour starts with a failing test (see `CLAUDE.md`) |
+| [`docs/guide/relic-mode-player-guide.md`](docs/guide/relic-mode-player-guide.md) | Player guide for the relic mode (source of truth for the Pages relic wiki) |
 | `mods/` | Our own RuneScript (the relic mode), synced into `Content/scripts/_mods/` |
+| `harness/`, `tests/` | The headless test harness and its tests (`mise run test`; 417 tests passing on 2026-10-12) |
+| `config/` | `world.json`, the engine config this repo expects; `mise run relics:config` copies it to `Engine-TS/data/config/` (`config/README.md`) |
+| `custom-sounds/` | Your own audio replacing the relic chime and the KBD / Kalphite Queen lair music (client side; `custom-sounds/README.md`) |
+| `scripts/` | Helper scripts behind the `mise` tasks (submodule updates, client build copy, mod sync, public hosting, headless client) |
+| `docs-site/`, `mkdocs.yml` | MkDocs config for the published docs site |
 
-## Research plan
+## Status
 
-Planned approach: trace one action end to end and document each hop with citations.
+What has been traced and where it is written down (all in [`docs/`](docs/README.md), which is the index):
 
-1. Client packet definitions: `Client-TS/src/io/ClientProt.ts`, `ServerProt.ts`.
-2. Engine decoding and dispatch: `Engine-TS/src/network/`.
-3. The game tick: `Engine-TS/src/engine/World.ts`.
-4. Entities and interactions: `Engine-TS/src/engine/entity/`.
-5. Script execution: `Engine-TS/src/engine/script/` and `RuneScriptTS/`.
-6. Game rules: `Content/scripts/`.
-7. Client behaviour: `Client-TS/src/client/`.
+- **The game tick**, phase by phase, with an overview, an ordering matrix and worked scenarios: [`docs/tick/`](docs/tick/00-overview.md). Read from code, not all observed running (see `docs/open-questions.md`).
+- **Traced flows** (click a tree, the return path, walking, `::` commands, camera, lag): [`docs/flows/`](docs/flows/).
+- **RuneScript** (toolchain, language, VM, pointers) and **multi-tick scripts**, as books: [`docs/books/`](docs/books/README.md); readable editions in [`docs/guide/`](docs/guide/).
+- **The relic roguelike mode** (our own mod, in `mods/relics/` plus small hooks in the forks): design notes `docs/design/relics-*.md`, the player guide [`docs/guide/relic-mode-player-guide.md`](docs/guide/relic-mode-player-guide.md) and the relic wiki page generated from it (<https://calum.github.io/LostCityRs/relics/>).
+- **Setup, tooling and hosting**: [`docs/setup/`](docs/setup/local-setup-with-mise.md).
 
-None of the above has been read yet. This list is a reading order, not a set of findings.
+Not covered by the notes: the parts of `Client-TS` outside the packet paths, the camera, the world map and the client-side interface code (rendering in particular). The unverified items are listed in [`docs/open-questions.md`](docs/open-questions.md).

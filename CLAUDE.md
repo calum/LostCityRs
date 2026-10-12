@@ -70,7 +70,8 @@ These are **starting points only** (paths verified to exist). What they do is in
 | Client opcodes | `Client-TS/src/io/ClientProt.ts` (client to server), `ServerProt.ts` (server to client) |
 | Client logic | `Client-TS/src/client/Client.ts`: one very large file. Grep for the packet name (`ClientProt.X`, `ServerProt.X`) or the method name; do not read it whole |
 | Game rules/content | `Content/scripts/<feature>/scripts/*.rs2` and `configs/` |
-| Script compiler | `RuneScriptTS/src/` (not yet read) |
+| Script compiler | `RuneScriptTS/src/` (read for the RuneScript book: `docs/books/runescript-intro/`) |
+| Relic mode (our own mod) | `mods/relics/` (scripts, configs), synced to `Content/scripts/_mods/`; notes `docs/design/relics-*.md`; player guide `docs/guide/relic-mode-player-guide.md` (source of truth for the Pages relic wiki, built by `docs/tools/relic-wiki/build_relic_wiki.py` in the docs workflow); odds table `docs/reference/relic-offer-odds.md` via `docs/tools/relic_offer_odds.py` (rerun when relics or tasks change); engine/content hooks listed in `docs/local-changes.md` |
 | Headless tests | `harness/src/` (world stepping, `Bot` API), `tests/*.test.ts`; run `mise run test`. How it works: `docs/setup/headless-test-harness.md` |
 
 ## Tracing workflow
@@ -90,5 +91,5 @@ Notes are only valid at the commits they record. Before relying on a note's line
 
 ## Environment
 
-- Windows 11; use Git Bash or PowerShell. `python3` is available in Git Bash and is handy for scripted doc edits. The "LF will be replaced by CRLF" git warnings are harmless.
+- Calum's machine is Windows 11 (use Git Bash or PowerShell); cloud agent sessions run Linux without `mise`: use Node 24.11.1 or newer (24.11.0 gives bogus worker-load failures), copy `config/world.json` to `Engine-TS/data/config/` and run `node harness/run.mjs`. `git submodule update --init` first; the submodule folders are empty after a fresh clone. `python3` is available in Git Bash and is handy for scripted doc edits. The "LF will be replaced by CRLF" git warnings are harmless.
 - Upstream READMEs state the engine and content must be on matching revision branches (currently `274`) and the setup is run through `Engine-TS` (`npm start`) or the `Server` scripts. Check the READMEs before running anything, and note in docs when behaviour was observed by running the server.
