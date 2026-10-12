@@ -368,8 +368,19 @@ if (%relic_pending > 0) {
 // 2 Quest Pass: reuse upstream's own "complete every quest" script (Content/scripts/_test/scripts/cheats/cheat_quest.rs2, label
 // complete_all_quests). It asks which side to take in Shield of Arrav and Temple of Ikov, runs each quest's completion queue and
 // grants the quests' reward items and XP.
+// The quest reward XP is not multiplied by the XP Multiplier relic: %relic_quest_xp_off switches the factor off (Player.addXp) until
+// relic_quest_pass_end sees that the last queued quest (viking_quest_complete) has run.
 [queue,relic_quest_pass]
+%relic_quest_xp_off = 1;
+queue(relic_quest_pass_end, 0, 0);
 @complete_all_quests;
+
+[queue,relic_quest_pass_end]
+if (getqueue(viking_quest_complete) > 0) {
+    queue(relic_quest_pass_end, 1, 0);
+    return;
+}
+%relic_quest_xp_off = 0;
 
 // Both final bosses (tasks 24 King Black Dragon and 25 Kalphite Queen) are down: the run is won.
 [proc,relic_win]

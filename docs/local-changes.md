@@ -7,6 +7,7 @@ Hooks live on `main` of each fork (fast-forwarded from the former `relic-mode` b
 | Milestone | Repo | File:line | One-line change | Commit |
 |---|---|---|---|---|
 | M2 | Engine-TS | `src/engine/entity/Player.ts:1831` (`addXp`) | XP multiplier becomes `xpRate * max(1, %relic_xp_factor)` | `f959ad04` |
+| Quest Pass | Engine-TS | `src/engine/entity/Player.ts` (`addXp`, `multi`) | factor is 1 while temp varp `relic_quest_xp_off` is set (set by `[queue,relic_quest_pass]` in `mods/relics/scripts/relic_offer.rs2`, cleared by `relic_quest_pass_end` once `viking_quest_complete`, the last queued quest, has run) | `90baf22c` |
 | M2 | Engine-TS | `src/engine/entity/Player.ts:76,706` (`updateEnergy`) | `RELIC_UNLIMITED_RUN` constant makes the recovery branch always run, so run energy never drains | `8c4fa9ca` |
 | M3 | Content | `scripts/skill_combat/scripts/npc/npc_death.rs2:11` (first line of `[proc,npc_death]`) | `~relic_on_kill; // relic hook` | `5321d0828` |
 | M4 | Content | `scripts/login_logout/login.rs2` (after `queue(macro_event_login, 0, 0);`) | `~relic_on_login; // relic hook` | `f249435bb` |

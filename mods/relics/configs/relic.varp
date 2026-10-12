@@ -88,3 +88,9 @@ scope=perm
 // Hoarder (19): bitmask of the relics offered next to Hoarder, kept out of its list. Cleared when the pick is made.
 [relic_hoarder_skip]
 scope=perm
+
+// Quest Pass (2): 1 while the autocompleted quests are still being rewarded. Player.addXp then ignores %relic_xp_factor (the base rate
+// still applies). Not saved, so a logout mid-way cannot leave the multiplier off.
+[relic_quest_xp_off]
+scope=temp
+protect=no

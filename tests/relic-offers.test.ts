@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { Bot, useWorld } from '../harness/src/index.js';
+import Environment from '../Engine-TS/src/util/Environment.js';
 import Component from '../Engine-TS/src/cache/config/Component.js';
 import { existingRelicIds, relicExists } from './relic-helpers.js';
 import { hasVarp } from './helpers.js';
@@ -510,4 +511,44 @@ test('::~relic_reset clears every relic varp', t => {
         assert.equal(bot.varp(v), 0, v);
     }
     assert.equal(bot.varp('relic_xp_factor'), 1, 'pow(2, 0)');
+});
+
+test('Quest Pass: quest reward XP ignores the XP Multiplier while the quests run, and the multiplier is back afterwards', t => {
+    if (skip()) return t.skip(String(skip()));
+    const run = (tier: number, factor: number) => {
+        const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: tier, relic_xp_factor: factor } });
+        const before = ['magic', 'strength', 'ranged', 'crafting', 'fishing'].map(s => bot.xp(s));
+        bot.debugproc('relic_grant', 2);
+        bot.expectMessage('You gained the relic: Quest Pass.');
+        waitForOffer(bot);
+        pick(bot, 'Black Arm Gang.');
+        waitForOffer(bot);
+        pick(bot, 'Lucien.');
+        bot.waitForMessage('All quests have been completed.', 5);
+        bot.waitUntil(
+            () => {
+                if (bot.mainModal !== null) bot.closeModal();
+                else if (bot.inDialog) {
+                    if (visibleChoices(bot).length > 0) pick(bot, 1);
+                    else bot.continueDialog();
+                }
+                return bot.player.queue.head() === null && bot.mainModal === null && !bot.inDialog;
+            },
+            400,
+            'every quest completion queue to run'
+        );
+        bot.tick(3);
+        const gained = ['magic', 'strength', 'ranged', 'crafting', 'fishing'].map((s, i) => bot.xp(s) - before[i]);
+        return { bot, gained };
+    };
+    const plain = run(0, 1);
+    const boosted = run(3, 27);
+    assert.deepEqual(boosted.gained, plain.gained, 'tier 3 (x27) gives the same quest XP as no multiplier');
+    assert.ok(plain.gained.every(g => g > 0));
+    // multiplier restored: factor untouched, flag cleared, a later stat_advance is x270 again
+    assert.equal(boosted.bot.varp('relic_xp_factor'), 27);
+    const before = boosted.bot.xp('fletching');
+    boosted.bot.cheat('~relic_xptest');
+    boosted.bot.tick(2);
+    assert.equal(boosted.bot.xp('fletching') - before, 1000 * Environment.node.xpRate * 27);
 });
