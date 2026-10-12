@@ -291,6 +291,26 @@ test('Quickstrike rounds melee odd intervals down (machette, attackrate 5 -> 2)'
     assert.deepEqual(run([4]), [2, 2, 2, 2, 2]);
 });
 
+test('Quickstrike on a dragon battleaxe (attackrate 6) gives 3-tick swings, not 2', t => {
+    if (skip()) return t.skip(String(skip()));
+    const run = (relics: number[]) => {
+        const bot = relicBot(SPOT.quick, relics, { attack: 60, strength: 60, hitpoints: 99, defence: 99 });
+        bot.setVar('heroquest', 15); // ^hero_complete: the dragon battleaxe needs Heroes' Quest to wield
+        bot.clearInv().give('dragon_battleaxe');
+        bot.opHeld('dragon_battleaxe', 2).tick(); // Wield
+        assert.equal(bot.count('dragon_battleaxe', 'worn'), 1);
+        const npc = spawnNpc('black_demon', { x: SPOT.quick.x + 2, z: SPOT.quick.z });
+        bot.tick();
+        bot.opNpc(npc, 2);
+        const iv = swingIntervals(bot, npc, 6);
+        retire(npc);
+        bot.remove();
+        return iv;
+    };
+    assert.deepEqual(run([]), [6, 6, 6, 6, 6]);
+    assert.deepEqual(run([4]), [3, 3, 3, 3, 3]); // 6 / 2 = 3: halving a 6-tick weapon cannot give 2
+});
+
 test('Quickstrike halves the ranged interval (shortbow, attackrate default 4 -> 2)', t => {
     if (skip()) return t.skip(String(skip()));
     const run = (relics: number[]) => {
