@@ -161,3 +161,7 @@ Client-TS `2ea4280`, Engine-TS `7825ebda`. Tests first again: three new cases in
 **Observed** (map page with positions posted over the channel, headless Chromium, real `worldmap.jag`): wheel up moved zoom from 50 % to 75 % ([screenshot](../assets/world-map/marker-edge.png), the 75 % button is lit); a Varrock position while the view showed Lumbridge produced the edge marker at the top ("You" beside it); a following dungeon position switched the map to the dungeon with the marker on the KBD antechamber ([screenshot](../assets/world-map/marker-follow-dungeon.png)); a level-1 position showed "Level 2". Positions were posted by a test script, not by the game client, in this round (the game-to-map feed was observed in Phase 1).
 
 **Still not done:** the in-page overlay (C2), mobile/touch zoom, real GPU browsers, a clean real-game capture of the marker in the dungeon. Marker "level" text assumes `minusedlevel` is the player's level (open question 103).
+
+## Search (added 2026-10-12)
+
+A search box for NPCs, items and objects was added on top of this map: see [map-search.md](map-search.md).
