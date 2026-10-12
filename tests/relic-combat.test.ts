@@ -272,6 +272,25 @@ test('Quickstrike halves the real melee attack interval (unarmed 4 ticks -> 2)',
     assert.deepEqual(run([4]), [2, 2, 2, 2, 2]);
 });
 
+test('Quickstrike rounds melee odd intervals down (machette, attackrate 5 -> 2)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const run = (relics: number[]) => {
+        const bot = relicBot(SPOT.quick, relics, { attack: 1, strength: 1, hitpoints: 99, defence: 99 });
+        bot.clearInv().give('machette');
+        bot.opHeld('machette', 2).tick(); // Wield
+        assert.equal(bot.count('machette', 'worn'), 1);
+        const npc = spawnNpc('black_demon', { x: SPOT.quick.x + 2, z: SPOT.quick.z });
+        bot.tick();
+        bot.opNpc(npc, 2);
+        const iv = swingIntervals(bot, npc, 6);
+        retire(npc);
+        bot.remove();
+        return iv;
+    };
+    assert.deepEqual(run([]), [5, 5, 5, 5, 5]);
+    assert.deepEqual(run([4]), [2, 2, 2, 2, 2]);
+});
+
 test('Quickstrike halves the ranged interval (shortbow, attackrate default 4 -> 2)', t => {
     if (skip()) return t.skip(String(skip()));
     const run = (relics: number[]) => {

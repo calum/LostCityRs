@@ -196,6 +196,14 @@ if (~relic_has(4) = 1) {
 }
 return($ticks);
 
+// player_melee.rs2 hook (the two normal melee swing sites). 4 Quickstrike for melee rounds the halved delay DOWN (5 -> 2, 3 -> 1, 4 -> 2), at least 1 tick.
+// Ranged, magic and special attacks still use ~relic_delay (rounded up).
+[proc,relic_delay_melee](int $ticks)(int)
+if (~relic_has(4) = 1) {
+    return(max(1, calc($ticks / 2)));
+}
+return($ticks);
+
 // alchemy.rs2 hook (end of the high alchemy label). 13 Midas Loop: cast again while the player still has the item.
 [proc,relic_midas](obj $item)(int)
 if (~relic_has(13) = 1 & inv_total(inv, $item) > 0) {

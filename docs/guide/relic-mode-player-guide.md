@@ -54,7 +54,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 1c | XP Multiplier III | XP rate goes from 90x to **270x** (take II first). | automatic |
 | 2 | Quest Pass | Every quest is marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. The quest reward XP is plain **1x** (neither the XP Multiplier nor the 10x base rate applies); the multiplier is back as soon as the last quest is done. **Given only by your 10th finished task**, never offered. | automatic |
 | 3 | Stoneskin | You take **half** damage. | automatic |
-| 4 | Quickstrike | You attack **twice as fast**. | automatic |
+| 4 | Quickstrike | You attack **twice as fast**. Melee rounds down, so a 5-tick weapon becomes 2 ticks (ranged and magic round up). | automatic |
 | 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. | automatic |
 | 6 | Phoenix | If a hit would kill you, you survive on 1 HP. Works once every **5 minutes**. | automatic |
 | 7 | Vampire | Every hit you land on an NPC heals you for **10% of the damage** as both hitpoints and prayer points. A 25 hit heals 2 of each. | automatic |

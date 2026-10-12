@@ -18,7 +18,7 @@
 
 ## Quickstrike (4)
 
-`~relic_delay($ticks)` halves the delay (minimum 1, rounded up). Hooked at `player_melee.rs2` (2), `player_ranged.rs2` (2), `player_special_attack.rs2` (1), `player_magic.rs2` (1). Not hooked: PvP files, chompy bird, `auto_retaliate.rs2` (its `$delay` is the retaliation flinch, not an attack rate), the crossbow/other specs that set their own delay. **Observed:** `::~relic_delay_test` printed 1/4/5 without the relic and 1/2/3 with it, and a melee attack ran with the relic without errors. Not verified: that the client shows the faster swing, and the real attack rate in game.
+`~relic_delay($ticks)` halves the delay (minimum 1, rounded up). Changed 2026-10-12 (Calum): the two `player_melee.rs2` swing sites now call `~relic_delay_melee`, which rounds **down** (`max(1, ticks/2)`: 4->2, 5->2, 3->1; `relic_effects.rs2`); test `Quickstrike rounds melee odd intervals down` (machette, attackrate 5: 5,5,5.. -> 2,2,2..). Ranged, magic and special attacks still use `~relic_delay`. Hooked at `player_melee.rs2` (2, now `_melee`), `player_ranged.rs2` (2), `player_special_attack.rs2` (1), `player_magic.rs2` (1). Not hooked: PvP files, chompy bird, `auto_retaliate.rs2` (its `$delay` is the retaliation flinch, not an attack rate), the crossbow/other specs that set their own delay. **Observed:** `::~relic_delay_test` printed 1/4/5 without the relic and 1/2/3 with it, and a melee attack ran with the relic without errors. Not verified: that the client shows the faster swing, and the real attack rate in game.
 
 ## Midas Loop (13)
 
