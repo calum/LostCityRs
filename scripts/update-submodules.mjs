@@ -24,6 +24,22 @@ const ok = (args, cwd) => {
 };
 const short = (sha) => sha.slice(0, 7);
 
+// `client:build` (scripts/copy-client.mjs) overwrites these tracked Engine-TS files on every run, with
+// output that differs from the committed copy. Left dirty, they block `git submodule update` on the next
+// `mise run up`. They are generated, so they are restored here and the build writes them again.
+// Only these paths are touched; any other local change still blocks the update.
+const generatedClientFiles = ['public/client/client.js', 'public/client/mapview.js', 'public/client/ondemandworker.js'];
+
+const restoreGeneratedClientFiles = (name, dir) => {
+    if (name !== 'Engine-TS') return;
+    const dirty = git(['diff', '--name-only'], dir).split('\n').filter(Boolean);
+    const generated = dirty.filter((file) => generatedClientFiles.includes(file));
+    if (generated.length === 0) return;
+    if (generated.length !== dirty.length) return; // other local edits present: leave them, the update will report them
+    execFileSync('git', ['checkout', '--', ...generated], { cwd: dir, stdio: 'ignore' });
+    console.log(`[submodules] ${name}: restored ${generated.length} generated client file(s) (rebuilt by client:build).`);
+};
+
 let failed = false;
 for (const name of names) {
     const dir = path.join(root, name);
@@ -70,6 +86,7 @@ for (const name of names) {
     }
 
     if (ok(['merge-base', '--is-ancestor', current, recorded], dir)) {
+        restoreGeneratedClientFiles(name, dir);
         update();
     } else {
         console.log(`[submodules] warning: ${name} is at ${short(current)}, this repo records ${short(recorded)}; local commits or another branch, left alone.`);
