@@ -10,7 +10,7 @@ Reads the relic list from mods/relics/scripts/relic_offer.rs2 (relic_name cases,
 - offer 0 is the first-login offer; after that, one offer per task done, count 1..TASKS (task count minus the retired task 37) (the finals 24/25 are treated as ordinary tasks,
   the real game gives them no offer when they are not the 10th);
 - count 10: Quest Pass (id 2) is granted, no choice; Quest Pass is never in an ordinary offer;
-- every 5th count (5, 10 if Quest Pass is already owned, 15, ...): the first option is the XP Multiplier if still available;
+- XP Multiplier guarantee (relic_xp_due): from count 4 while tier < 1, from count 9 while tier < 2, from count 12 while tier < 3, the first option is the XP Multiplier (Calum, 2026-10-12);
 - the player picks one of the offered relics UNIFORMLY AT RANDOM (an assumption: real players choose, so real odds differ);
 - picking Hoarder (19) opens a second offer drawn only from relics offered and declined before; the player picks uniformly again.
 "Offered" = the relic is one of the options at that count. Hoarder's second offer is counted in the same row.
@@ -88,7 +88,7 @@ def play(rng, ids, counts, owned_counts, tier_max=3):
             counts[2][c] += 1
             seen.add((2, c))
         else:
-            offer(c, c % 5 == 0)
+            offer(c, (tier < 1 and c >= 4) or (tier < 2 and c >= 9) or (tier < 3 and c >= 12))
         for i in owned | ({1} if tier else set()):
             owned_counts[i][c] += 1
 
@@ -118,7 +118,7 @@ def main():
     print('|---|' + '---|' * len(cols))
     for i in ids:
         print(f'| {i} {names[i]} | ' + ' | '.join(f'{100 * counts[i][c] / n:.0f}' for c in cols) + ' |')
-    print('\n(Quest Pass is 100 at count 10 only. XP Multiplier is 100 at counts 5, 15, 25, 35 while a tier is left.)\n')
+    print('\n(Quest Pass is 100 at count 10 only. XP Multiplier I is guaranteed from count 4, II from 9, III from 12, until each is picked.)\n')
     print('## Chance the relic is offered, every task count\n')
     print('| Relic | ' + ' | '.join(str(c) for c in allc) + ' |')
     print('|---|' + '---|' * len(allc))

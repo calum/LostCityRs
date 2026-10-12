@@ -1,3 +1,5 @@
+> **Superseded in part (2026-10-12):** fish are no longer cooked by Double Yield; that moved to Endless Shoal (27). Double Yield still doubles the count and the fishing XP. See [relics-feedback-2026-10-12.md](relics-feedback-2026-10-12.md).
+
 # Relic 12 Double Yield: double XP and fishing
 
 **Question it answers:** what does Double Yield do for XP and for fishing, and what defaults were chosen?

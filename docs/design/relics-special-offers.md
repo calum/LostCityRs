@@ -1,3 +1,5 @@
+> **Superseded in part (2026-10-12):** the "every 5th task" XP rule below was replaced by guaranteed XP Multiplier tiers (I from the 4th task done, II from the 9th, III from the 12th, until picked), and Quest Pass is now a scroll. See [relics-feedback-2026-10-12.md](relics-feedback-2026-10-12.md).
+
 # Relic offers: Quest Pass on the 10th task, XP Multiplier on every 5th (and the removed rerolls)
 
 **Question answered:** which offers are special, how are they built, and what happened to the rerolls?

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """List where an NPC spawns, from the map files, with absolute coordinates and map links.
 
-Usage: python3 docs/tools/npc_spawns.py goblin giant king_dragon [--top N] [--md]
+Usage: python3 docs/tools/npc_spawns.py goblin giant king_dragon [--top N] [--all] [--tiles] [--md]
 A task with several NPC types can be given as one argument joined with +: goblin+goblin_armed.
 --md prints one Markdown table cell per argument (the form used in the relic guide).
+--all lists every map square (default: the 4 biggest groups). --tiles also lists each spawn tile of a group (x,z), so "all locations" can be answered exactly.
 Reads Content/pack/npc.pack (id=debugname), Content/maps/m<MX>_<MZ>.jm2 (`==== NPC ====` lines
 `level localX localZ: npcId`) and Content/maps/labels.txt (place names). Read-only. See
 docs/reference/finding-npc-locations.md for the method and its limits.
@@ -53,6 +54,9 @@ def main():
     md = "--md" in sys.argv
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     top = int(sys.argv[sys.argv.index("--top") + 1]) if "--top" in sys.argv else 4
+    if "--all" in sys.argv:
+        top = 10 ** 6
+    tiles_on = "--tiles" in sys.argv
     if "--top" in sys.argv:
         args.remove(sys.argv[sys.argv.index("--top") + 1])
     ids, labels = load_ids({n for a in args for n in a.split("+")}), load_labels()
@@ -75,6 +79,9 @@ def main():
                 near = math.hypot(lab[1] - cx, lab[2] - sz) <= 60
                 text = f"{lab[0]} " if near else ""
                 text += f"({cx}, {cz})"
+                if tiles_on:
+                    extra = "; ".join(f"{a},{b}" for a, b in sorted(set(tiles)))
+                    text += f", {len(tiles)} spawn{'s' if len(tiles) > 1 else ''}: {extra}"
                 if under:
                     cells.append(f"[underground {text}]({EXPLV.format(x=cx, y=cz, p=level)}) ([surface above]({EXPLV.format(x=cx, y=sz, p=0)}))")
                 else:
@@ -94,6 +101,8 @@ def main():
             print("  " + EXPLV.format(x=cx, y=cz, p=level))
             if under:
                 print("  surface above: " + EXPLV.format(x=cx, y=sz, p=0))
+            if tiles_on:
+                print("  tiles: " + "; ".join(f"{a},{b}" for a, b in sorted(set(tiles))))
 
 
 main()
