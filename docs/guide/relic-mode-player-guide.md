@@ -78,7 +78,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 29 | Hunter's Haul | When a cow or a dragon (green, blue, red, black) drops a hide, you get **three tanned hides** in your bank instead, and a **50% chance** of a random uncut gem (sapphire, emerald, ruby or diamond) too. | kill the animal |
 | 22 | Archmage | Your spells hit **twice as hard** and cast in about **half the time**. About half of all casts use **no runes** (you still need the runes in your backpack). After you cast a damage spell (strikes, bolts, blasts, waves, Crumble Undead) at a monster, you **keep casting the same spell** at it until you walk away, click something else, or run out of runes. Freezing and stat-lowering spells are cast once. | automatic |
 | 23 | Endless Quiver | Arrows, bolts and thrown weapons are **never used up** and never fall on the floor. Ranged attacks are **+50% accurate** and hit **+50% harder**. | automatic |
-| 30 | Light Fingers | Pickpocketing **never fails**, so you are never stunned or hurt, and after each successful pick you **pick the same pocket again** by yourself. Stalls **never run empty**: click a stall once and you keep stealing from it, with the usual loot and Thieving XP. | click a person (Pickpocket) or a stall (Steal-from) once |
+| 30 | Light Fingers | Pickpocketing **never fails**, so you are never stunned or hurt, and after each successful pick you **pick the same pocket again** by yourself. Stalls **never run empty** and **guards and stall owners never see you**: click a stall once and you keep stealing from it, with the usual loot and Thieving XP. | click a person (Pickpocket) or a stall (Steal-from) once |
 | 31 | Fellowship | Made for playing together. Everyone within **5 tiles** of you (even without the relic) gets **half of every XP gain you make**, in the same skill, and **half of the hitpoints you heal by eating**. If several of you have it, the shares stack. | automatic, stand close |
 
 Good to know:
@@ -88,7 +88,7 @@ Good to know:
 - **Eternal Vein**: you may need to click the rock again after each ore. **Evergreen** keeps chopping until you walk away.
 - **Forge Echo, Fletcher's Echo and Hunter's Haul**: if your bank is full the extra items go to your backpack, and are lost if that is full too.
 - **Endless Shoal** only keeps a spot still while you are close; walk away and it moves on like any other.
-- **Light Fingers**: the repeat stops when you walk, click something else, or your backpack is full. It picks or steals about every 3 ticks. If a click does not take (it can be ignored on the tick you are mid-pick), click again. Guards and stall owners who see you still stop you from stealing from a stall.
+- **Light Fingers**: the repeat stops when you walk, click something else, or your backpack is full. It picks or steals about every 3 ticks. If a click does not take (it can be ignored on the tick you are mid-pick), click again. Guards and stall owners **never notice** you stealing from a stall.
 - **Midas Loop** stops when you walk or click something else.
 - **Executioner** finishes an NPC below 25% HP on your next landed hit. It gives slightly too much attack XP.
 - **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge.
@@ -136,7 +136,7 @@ Tasks count in any order. The table (and the in-game task menu) is sorted from e
 | 45 | **Make a ranging potion** | Herblore 72: a dwarf weed herb, a vial of water and a wine of Zamorak. The wine lies in the Chaos temple, [around (2930, 3515)](https://explv.github.io/?centreX=2930&centreY=3515&centreZ=0&zoom=9) (taking it hurts), and Canifis citizens sometimes drop it | anywhere |
 | 17 | Defeat a **green dragon** | combat level 79, 75 HP, members NPC | use the Recall stone |
 | 6 | **Make a magic shortbow** | Fletching 80. Unstrung bow from magic logs, then string it | anywhere |
-| 41 | **Steal from a gem stall** | Thieving 75, **members** world. The only gem stall is in Ardougne market, [around (2667, 3303)](https://explv.github.io/?centreX=2667&centreY=3303&centreZ=0&zoom=9). The gem seller and the guards or knights nearby stop you if they see you. Watch out for them | Ardougne market |
+| 41 | **Steal from a gem stall** | Thieving 75, **members** world. The only gem stall is in Ardougne market, [around (2667, 3303)](https://explv.github.io/?centreX=2667&centreY=3303&centreZ=0&zoom=9). Without Light Fingers the gem seller and the guards or knights nearby stop you if they see you | Ardougne market |
 | 10 | **Cook a raw shark** | Cooking 80. The cooked shark counts, a burnt one does not | any fire or range |
 | 33 | **Make rune darts** | Fletching 81, rune dart tips and feathers (use one on the other) | anywhere |
 | 2 | Defeat a **lesser demon** | a real fight: combat level 82, 79 HP | automatic |

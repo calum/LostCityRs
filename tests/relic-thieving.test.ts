@@ -5,6 +5,7 @@ import { test } from 'node:test';
 
 import { Bot, spawnNpc, World } from '../harness/src/index.js';
 import { hasVarp, useVanillaWorld } from './helpers.js';
+import { NpcMode } from '../Engine-TS/src/engine/entity/NpcMode.js';
 import { isDone, locNear, standNear } from './relic-helpers.js';
 
 useVanillaWorld();
@@ -26,11 +27,11 @@ function thief(relics: number[], levels: Record<string, number> = { thieving: 99
     return bot.setVar('relic_owned', relics.reduce((m, id) => m | (1 << id), 0));
 }
 
-function stallBot(relics: number[], type: string, near: { x: number; z: number }) {
+function stallBot(relics: number[], type: string, near: { x: number; z: number }, clearNpcs = true) {
     const loc = locNear(type, near.x, near.z, 30);
     const bot = thief(relics, { thieving: 99, hitpoints: 99 }, standNear(loc));
     // the stall owner and the town guards stop a theft they can see (steal_from_stall): take every spawned npc away
-    for (const npc of World.npcs) {
+    for (const npc of clearNpcs ? World.npcs : []) {
         if (npc && npc.isActive && Math.max(Math.abs(npc.x - bot.x), Math.abs(npc.z - bot.z)) <= 10) World.removeNpc(npc, 100000);
     }
     bot.tick(2);
@@ -205,3 +206,30 @@ test('light fingers: a walk click ends the stall loop too', t => {
     bot.tick(40);
     assert.equal(steals(), before, 'still stealing after the player walked away');
 });
+
+// ---------------------------------------------------------------- never seen
+
+for (const relics of [[], [LIGHT_FINGERS]]) {
+    test(`light fingers: a guard and the stall owner right next to the baker's stall ${relics.length ? 'do not notice the theft' : 'control: stop a theft without the relic'}`, t => {
+        if (skip()) return t.skip(String(skip()));
+        const { bot, loc } = stallBot(relics, 'bakers_stall_stealing', { x: 2667, z: 3310 }, false);
+        for (const npc of World.npcs) {
+            if (npc && npc.isActive && Math.max(Math.abs(npc.x - bot.x), Math.abs(npc.z - bot.z)) <= 10) World.removeNpc(npc, 100000);
+        }
+        const owner = spawnNpc('baker_merchant', { x: bot.x, z: bot.z + 1 }, 2000);
+        const guard = spawnNpc('ardougne_guard', { x: bot.x - 1, z: bot.z }, 2000);
+        const knight = spawnNpc('knight_of_ardougne', { x: bot.x, z: bot.z - 1 }, 2000);
+        bot.tick();
+        bot.opLoc(loc, 2);
+        bot.tick(40);
+        const steals = bot.messages.filter(m => /^You steal/.test(m)).length;
+        if (relics.length) {
+            assert.ok(steals >= 5, `only ${steals} thefts: ${bot.messages.slice(-8).join(' | ')} ${bot.describe()}`);
+            assert.equal(bot.messages.filter(m => /Hey! Get your hands off/.test(m)).length, 0);
+            // nobody fights back: no guard or knight is attacking the thief
+            for (const npc of [guard, knight, owner]) assert.notEqual(npc.targetOp, NpcMode.OPPLAYER2, 'nobody attacks the thief');
+        } else {
+            assert.equal(steals, 0, 'a guard or the owner who sees the theft stops it');
+        }
+    });
+}
