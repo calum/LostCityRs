@@ -327,12 +327,25 @@ if (calc($count % 5) = 0) {
 // swing at 0 hp runs if_close (npc_combat_melee.rs2:36), which drops a paused dialog. 3 ticks lets it finish.
 queue(relic_offer_q, 3, 0);
 
+// Quests completed when a run starts (Calum, 2026-10-12): Druidic Ritual, which unlocks Herblore. Same effects as [queue,druid_quest_complete]
+// (Content quests/quest_druid/scripts/quest_druid.rs2:1-4) without Kaqemeex's talk or the scroll. XP is exactly 1x (%relic_quest_xp_off, Player.addXp).
+[proc,relic_starter_quests]
+if (%druidquest < ^druid_complete) {
+    %druidquest = ^druid_complete;
+    %relic_quest_xp_off = 1;
+    stat_advance(herblore, 2500);
+    %relic_quest_xp_off = 0;
+    ~update_questpoints;
+    ~update_questlist;
+}
+
 // First offer of a run: start the run, seed it, owe one offer.
 [proc,relic_first_offer]
 if (%relic_started = 1) {
     return;
 }
 %relic_started = 1;
+~relic_starter_quests;
 if (%relic_seed = 0) {
     %relic_seed = calc(random(65535) + 1);
 }

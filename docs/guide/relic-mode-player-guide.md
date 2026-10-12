@@ -17,6 +17,7 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
 - Your first offer comes when you first log in (after Tutorial Island, or straight away if you skip it).
+- **Druidic Ritual starts completed**, so Herblore is open from the beginning. The quest reward (herblore XP) is plain 1x, with no multipliers.
 
 ### Rules worth knowing
 

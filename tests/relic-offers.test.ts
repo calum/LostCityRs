@@ -561,3 +561,20 @@ test('Quest Pass: while the quest flag is set every XP gain is exactly 1x, not t
     bot.tick(2);
     assert.equal(bot.xp('fletching') - before, 1000);
 });
+
+test('a new relic run starts with Druidic Ritual complete: 1x herblore XP, quest points, no multiplier', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_seed: 5, relic_xp_tier: 3, relic_xp_factor: 27 } });
+    waitForOffer(bot);
+    assert.equal(bot.varp('druidquest'), 4); // ^druid_complete (quest.constant:19)
+    assert.equal(bot.xp('herblore'), 2500, 'quest_druid.rs2 stat_advance(herblore, 2500) at exactly 1x');
+    assert.equal(bot.varp('qp'), 4); // ^druid_questpoints (quest.constant:84)
+    assert.equal(bot.varp('relic_quest_xp_off'), 0, 'multiplier back on');
+});
+
+test('a run that already started is not given Druidic Ritual again', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = Bot.spawn({ varps: { relic_started: 1 } });
+    bot.tick(5);
+    assert.equal(bot.varp('druidquest'), 0);
+});
