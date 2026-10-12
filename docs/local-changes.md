@@ -138,7 +138,7 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Engine-TS | `src/engine/entity/Player.ts` (`addXp`, new `relicGreenThumb`) | adds the raw XP gained to `%relic_herb_xp` and queues `[queue,relic_herbs]` when bit 20 of `%relic_owned` is set (not Herblore). Test: `tests/relic-greenthumb.test.ts` | `33564f19` |
 | Content | `scripts/player/scripts/stat.rs2` (`[timer,stat_boost_restore]`) | `& ~relic_boost_stays = 0` added to the drain condition `// relic hook` | `a274da743` |
 | Content | `scripts/skill_herblore/scripts/herblore.rs2` (`[proc,brew_potion]`) | `inv_del` of the ingredient only when `~relic_keeps_secondary($ingredient, $solvent) = 0` `// relic hook` | `63824af58` |
-| Content | `scripts/interface_bank/scripts/bank.rs2` (`[proc,bank_deposit_request]`) | `~relic_bank_herbs($obj, $deposit); // relic hook` after the deposit: banked herbs pay their cleaning XP (2026-10-12). Also `pack/varp.pack` id 383 `relic_quest_xp_off`, written by `mods:sync` | `49de3c73f` |
+| Content | `pack/varp.pack` | id 383 `relic_quest_xp_off` written by `mods:sync` (a bank hook for Green Thumb was added and removed again the same day, 2026-10-12) | `49de3c73f`, hook removed in `12f5b4194` |
 | Content | `pack/varp.pack`, `pack/interface.pack`, `pack/interface.order` | pack ids for `relic_herb_xp` and `relic_taskmenu:row_43..45` | `514e71556` |
 | root | `mods/relics/` | `relic_herblore.rs2`, `.enum`, `.constant`, tasks 43-45 rows, names, menus. Design: [design/relics-green-thumb.md](design/relics-green-thumb.md) | `HEAD` of this change |
 | Content | `pack/synth.pack`, `synth/relic_attune.synth` | pack id `912=relic_attune`, copy of `enchant_diamond_amulet.synth` (relic attune chime) | `b36ee553b` |
