@@ -277,12 +277,19 @@ test('win: with tasks 1-23 already done, killing both finals wins and owes no of
 
 // ---------------------------------------------------------------- Quest Pass scroll (Calum, 2026-10-12)
 
+/** Close the hint dialog shown when Quest Pass is granted. */
+function closeScrollHint(bot: Bot) {
+    bot.waitUntil(() => bot.inDialog, 20, 'the Quest Pass scroll hint');
+    bot.continueDialog();
+}
+
 test('Quest Pass scroll: death moves an unread scroll to the bank', t => {
     if (skip()) return t.skip(String(skip()));
     const at = { x: 3236, z: 3231 };
     const bot = Bot.spawn({ at: { ...at, level: 0 } });
     bot.clearInv().clearInv('worn').clearInv('bank');
     bot.debugproc('relic_grant', 2);
+    closeScrollHint(bot);
     assert.equal(bot.count('relic_quest_scroll'), 1);
     bot.setVar('pk_skull', 100);
     die(bot);
@@ -295,6 +302,7 @@ test('Quest Pass scroll: the Relic Keeper replaces a lost unread scroll once, an
     const bot = Bot.spawn({ at: { x: 3222, z: 3220, level: 0 } });
     bot.clearInv().clearInv('bank');
     bot.debugproc('relic_grant', 2);
+    closeScrollHint(bot);
     bot.clearInv(); // scroll lost
     assert.equal(total(bot, 'relic_quest_scroll'), 0);
     const seen = talkToKeeper(bot);

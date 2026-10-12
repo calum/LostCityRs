@@ -116,6 +116,16 @@ function offeredIds(bot: Bot): number[] {
     });
 }
 
+/** The Quest Pass hint dialog (Calum, 2026-10-12): says where the scroll is and to read it when ready. Closes it. */
+function questPassHint(bot: Bot, where: 'backpack' | 'bank') {
+    bot.waitUntil(() => bot.inDialog, 20, 'the Quest Pass scroll hint');
+    assert.match(bot.dialogText, /Quest Pass scroll/);
+    assert.match(bot.dialogText, new RegExp(`in your ${where}`));
+    assert.match(bot.dialogText, /Read it/);
+    bot.continueDialog();
+    assert.equal(bot.inDialog, false);
+}
+
 function waitForOffer(bot: Bot, maxTicks = 10) {
     bot.waitUntil(() => bot.inDialog && visibleChoices(bot).length >= 2, maxTicks, 'a relic offer');
 }
@@ -456,6 +466,7 @@ test('Quest Pass completes every quest through @complete_all_quests', t => {
     assert.equal(bot.varp('cookquest'), 0);
 
     bot.debugproc('relic_grant', 2);
+    questPassHint(bot, 'backpack');
     bot.expectMessage('You gained the relic: Quest Pass.');
     assert.equal(bot.varp('relic_owned'), bit(2));
     // the relic gives a scroll; nothing happens until it is read (Calum, 2026-10-12)
@@ -525,6 +536,7 @@ test('Quest Pass: quest reward XP ignores the XP Multiplier while the quests run
         const bot = Bot.spawn({ varps: { relic_started: 1, relic_xp_tier: tier, relic_xp_factor: factor } });
         const before = ['magic', 'strength', 'ranged', 'crafting', 'fishing'].map(s => bot.xp(s));
         bot.debugproc('relic_grant', 2);
+        questPassHint(bot, 'backpack');
         bot.expectMessage('You gained the relic: Quest Pass.');
         bot.opHeld('relic_quest_scroll');
         waitForOffer(bot);
@@ -592,6 +604,7 @@ test('Quest Pass scroll: granting it adds a scroll to the inventory and complete
     if (skip()) return t.skip(String(skip()));
     const bot = Bot.spawn({ varps: { relic_started: 1 } });
     bot.debugproc('relic_grant', 2);
+    questPassHint(bot, 'backpack');
     assert.equal(bot.count('relic_quest_scroll'), 1);
     assert.equal(bot.count('relic_quest_scroll', 'bank'), 0);
     bot.tick(8);
@@ -610,6 +623,7 @@ test('Quest Pass scroll: with a full inventory it goes to the bank', t => {
     bot.clearInv();
     for (let i = 0; i < 28; i++) bot.give('logs', 1);
     bot.debugproc('relic_grant', 2);
+    questPassHint(bot, 'bank');
     assert.equal(bot.count('relic_quest_scroll'), 0);
     assert.equal(bot.count('relic_quest_scroll', 'bank'), 1);
     bot.expectMessage('went to your bank');

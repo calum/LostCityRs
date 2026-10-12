@@ -173,9 +173,18 @@ if ($id = 16) {
     // a scroll the player reads when it suits them (no stacked quest scrolls in the middle of a fight)
     %relic_quest_scroll = 1;
     ~relic_give_item(relic_quest_scroll);
+    ~relic_quest_scroll_hint;
 } else if ($id = 19) {
     ~relic_hoarder_start;
 }
+
+// Explains the Quest Pass scroll (Calum, 2026-10-12): where it went and that reading it starts the quests.
+[proc,relic_quest_scroll_hint]
+def_string $where = "backpack";
+if (inv_total(inv, relic_quest_scroll) = 0) {
+    $where = "bank";
+}
+~mesbox("You gained the Quest Pass relic.|A Quest Pass scroll is in your <$where>.|Read it when you are ready, ideally out of combat.|It completes every quest, and each quest opens its own screen.");
 
 // Tasks done, over both task varps (tasks 1-31 in %relic_tasks_done, 32 and up in %relic_tasks_done2).
 [proc,relic_tasks_done_count]()(int)
@@ -265,12 +274,16 @@ return(1);
 
 // Answer every pending offer. An empty pool just clears the pending count.
 [proc,relic_offer_pending]
+def_int $paid = 0;
 // an open Hoarder pick comes first: the widget would be closed by the next dialogue (relic_hoarder_pick re-queues this)
 while (%relic_pending > 0 & %relic_hoarder_owed = 0) {
     if (%relic_quest_owed > 0) {
         // the 10th task done: Quest Pass, straight away
         %relic_quest_owed = calc(%relic_quest_owed - 1);
         if (testbit(%relic_owned, 2) = ^false) {
+            // paid before the grant: it ends in a hint dialog, and closing that drops this script
+            %relic_pending = calc(%relic_pending - 1);
+            $paid = 1;
             ~relic_grant(2);
         } else {
             def_int $s = ~relic_offer_run(0, ~relic_xp_due(~relic_tasks_done_count));
@@ -279,7 +292,10 @@ while (%relic_pending > 0 & %relic_hoarder_owed = 0) {
         // XP Multiplier tiers are guaranteed from set task counts until picked (relic_xp_due)
         def_int $granted = ~relic_offer_run(0, ~relic_xp_due(~relic_tasks_done_count));
     }
-    %relic_pending = calc(%relic_pending - 1);
+    if ($paid = 0) {
+        %relic_pending = calc(%relic_pending - 1);
+    }
+    $paid = 0;
 }
 
 [queue,relic_offer_q]

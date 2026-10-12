@@ -115,6 +115,10 @@ test('the 10th task done grants Quest Pass directly, with no choice', t => {
     doTask(bot, 10);
     bot.waitForMessage('You gained the relic: Quest Pass.', 30);
     assert.equal(((bot.varp('relic_owned') as number) >> 2) & 1, 1);
+    bot.waitUntil(() => bot.inDialog, 20, 'the Quest Pass scroll hint');
+    assert.match(bot.dialogText, /Quest Pass scroll/, 'the hint explains the scroll');
+    assert.equal(bot.count('relic_quest_scroll'), 1);
+    bot.continueDialog();
     assert.equal(bot.varp('relic_pending'), 0);
     assert.ok(!bot.choices.some(c => /: /.test(c) && !/Quest/.test(c)), 'no relic choice was shown');
 });
@@ -162,4 +166,19 @@ test('the 10th task done grants Quest Pass even when that task is a final boss (
     doTask(bot, 24);
     bot.waitForMessage('You gained the relic: Quest Pass.', 30);
     assert.equal(((bot.varp('relic_owned') as number) >> 2) & 1, 1);
+});
+
+test('closing the Quest Pass hint does not leave an offer pending: no extra relic choice after a relog', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = spawnAt(0x1ff, 5); // 9 done
+    doTask(bot, 10);
+    bot.waitForMessage('You gained the relic: Quest Pass.', 30);
+    bot.waitUntil(() => bot.inDialog, 20, 'the Quest Pass scroll hint');
+    bot.closeModal().tick(3);
+    assert.equal(bot.varp('relic_pending'), 0, 'pending cleared before the hint');
+    assert.equal(bot.count('relic_quest_scroll'), 1);
+    const again = bot.relog();
+    again.tick(10);
+    assert.equal(again.inDialog, false, 'no offer after the relog');
+    assert.equal(again.count('relic_quest_scroll'), 1);
 });

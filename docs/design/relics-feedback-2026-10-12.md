@@ -19,6 +19,12 @@
 
 The offer odds table ([reference/relic-offer-odds.md](../reference/relic-offer-odds.md)) was regenerated with the new guarantee rule (`docs/tools/relic_offer_odds.py`, `relic_xp_due` mirrored in the simulator).
 
+## Follow-up: Quest Pass hint dialog (Calum, 2026-10-12)
+
+Granting Quest Pass now ends in a message box (`[proc,relic_quest_scroll_hint]`, called after the scroll is given in `[proc,relic_grant]`, `mods/relics/scripts/relic_offer.rs2`): "You gained the Quest Pass relic. A Quest Pass scroll is in your backpack (or bank). Read it when you are ready, ideally out of combat. It completes every quest, and each quest opens its own screen." Tests: `tests/relic-offers.test.ts` (backpack and bank wording), `tests/relic-special-offers.test.ts`, `tests/relic-death-win.test.ts`. Red run first: 7 failures, then green; suite 427/427, `tsc` clean.
+
+The dialog exposed a hole, found by a test: closing a dialog drops the script that opened it, and the 10th-task grant ran inside `[proc,relic_offer_pending]` before `%relic_pending` was decremented, so closing the hint would have left an offer pending and given a free extra relic choice after a relog. The pending count is now paid before the Quest Pass grant. Test: "closing the Quest Pass hint does not leave an offer pending".
+
 ## Not done
 
 - **Map search for NPCs, items and objects** (general note in the sheet): a `search` box in `::map` that highlights every "Mithril rock", "knife" on the floor or "Giant" and pans to the nearest. Not started. What it would need is in [open-questions.md](../open-questions.md) item 133; it is a separate piece of work.
