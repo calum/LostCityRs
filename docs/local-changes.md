@@ -155,3 +155,10 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | root | `mods/relics/scripts/relic_tasks.rs2` (`relic_on_kill`) and `relic_bonus.rs2` | `~relic_bonus_arm` and the whole fight. Design: [design/relics-bonus-boss-fight.md](design/relics-bonus-boss-fight.md) | `HEAD` of this change |
 | Client-TS | `src/sound/JagFX.ts` (`SYNTH_GAIN`, `makeSound`) | synth 912 relic_attune plays at 2x amplitude, clamped. Design: [design/relics-attune.md](design/relics-attune.md) | `a251dd5` |
 | root | `mods/relics/scripts/relic_hoarder.rs2`, `interfaces/relic_hoardermenu.if`, `configs/relic_hoarder.enum`, varps `relic_hoarder_owed`/`relic_hoarder_skip`, hooks in `relic_offer.rs2` and `relic_menus.rs2` | Hoarder widget with the full declined list. Design: [design/relics-hoarder.md](design/relics-hoarder.md). Test: `tests/relic-hoarder.test.ts` | `HEAD` of this change |
+
+## Map search (2026-10-12)
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Client-TS | `src/mapview/MapSearch.ts` (new), `src/mapview/MapView.ts` (`searchQuery`, `selectSearch`, `clearSearch`, `drawSearchHighlights`, `globalThis.worldMapSearch` handle, one call in `renderWorldMap`'s caller) | search over the index, ring the spawns, pan and switch area. Tests: `test/map-search.test.ts`. Design: [design/map-search.md](design/map-search.md) | `b351ab3` |
+| Engine-TS | `public/worldmap.html` (search box), `public/mapsearch.json` (generated), `public/client/mapview.js` (rebuilt) | UI and generated index | `eefa2b85` |
+| root | `scripts/build-map-search.mjs`, `scripts/lib/map-search-index.ts`, `tests/map-search-index.test.ts`, `mise.toml` (`client:build` runs the builder) | index builder and its test | `HEAD` of this change |
