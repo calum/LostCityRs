@@ -25,6 +25,8 @@ In `[proc,relic_damage_taken]` (`relic_effects.rs2`), when the save triggers: th
 - Delay 47: read from the cache in the harness, `human_death` frame delays are `[8,4,4,4,14,4,3,3,3,20000]`, so the fall lasts 47 client ticks before the endless hold on the last frame. The fire starts as the fall ends.
 - **Not verified:** in a real client, whether the character visibly stands back up after the hold (the final frame has delay 20000) and how the fire looks against it. Recorded in `docs/open-questions.md` #137.
 
+- **Full HP (Calum, 2026-10-13, same day):** the save no longer leaves 1 HP (that only meant dying on the next hitsplat). The lethal hit is negated (`$amount = 0`) and `stat_heal(hitpoints, 0, 100)` restores 100% of the base level (`relic_effects.rs2`). The 500-tick recharge is unchanged.
+
 ## Tests
 
 `tests/relic-special-offers.test.ts` (rewritten), `relic-offers.test.ts`, `relic-menus.test.ts`, `relic-all-relics.test.ts`, `relic-tasks.test.ts`, `relic-combat.test.ts` (new Phoenix test). Red run first: 25 failures for the expected reasons (multiplier still in offers, monkey still listed, no Phoenix text). Final run in the commit message.

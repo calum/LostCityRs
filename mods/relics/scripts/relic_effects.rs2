@@ -3,7 +3,7 @@
 [proc,relic_has](int $id)(int)
 return(testbit(%relic_owned, $id));
 
-// damage.rs2 hook. 3 Stoneskin: half damage. 5 Glass Cannon: x1.5 taken. 6 Phoenix: a lethal hit leaves 1 HP, once per 5 minutes.
+// damage.rs2 hook. 3 Stoneskin: half damage. 5 Glass Cannon: x1.5 taken. 6 Phoenix: a lethal hit is negated and restores full HP, once per 5 minutes.
 [proc,relic_damage_taken](int $amount)(int)
 if ($amount <= 0) {
     return($amount);
@@ -16,7 +16,8 @@ if (~relic_has(5) = 1) {
 }
 if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & map_clock >= %relic_phoenix_until) {
     %relic_phoenix_until = calc(map_clock + 500);
-    $amount = calc(stat(hitpoints) - 1);
+    $amount = 0; // the lethal hit is negated and hitpoints go back to full (Calum, 2026-10-13: 1 HP just meant dying on the next hitsplat)
+    stat_heal(hitpoints, 0, 100); // 100% of the base level, capped at it
     anim(human_death, 0); // so the player sees it trigger
     say("I rise from the ashes!"); // overhead text, seen by every player nearby
     // human_death's frames before its endless hold last 47 client ticks (delay column of the seq, read in the harness); the fire flares as the fall ends and the player is back on their feet

@@ -140,7 +140,7 @@ test('Stoneskin and Glass Cannon on real NPC melee hits: each rolled hit lands t
 
 // ----------------------------------------------------------------------- 6 Phoenix
 
-test('Phoenix: a lethal hit leaves 1 HP once per 500 ticks; a second lethal hit inside the window kills', t => {
+test('Phoenix: a lethal hit is negated and restores full HP once per 500 ticks; a second lethal hit inside the window kills', t => {
     if (skip()) return t.skip(String(skip()));
     // Control: without the relic a lethal hit kills (damage.rs2 queues player_death at 0 HP).
     const plain = relicBot(SPOT.phoenix, [], { hitpoints: 10 });
@@ -151,8 +151,10 @@ test('Phoenix: a lethal hit leaves 1 HP once per 500 ticks; a second lethal hit 
 
     const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
     const t0 = World.currentTick;
+    bot.debugproc('relic_hit', 4);
+    assert.equal(bot.stat('hitpoints'), 6, 'a non-lethal hit is taken normally');
     bot.debugproc('relic_hit', 50);
-    assert.equal(bot.stat('hitpoints'), 1);
+    assert.equal(bot.stat('hitpoints'), 10, 'Phoenix restores 100% HP, not 1');
     bot.expectMessage('Your Phoenix relic saves you from a lethal hit!');
     const until = bot.varp('relic_phoenix_until') as number;
     // map_clock is World.currentTick; the debugproc ran during the tick after t0.
@@ -170,7 +172,7 @@ test('Phoenix: a lethal hit leaves 1 HP once per 500 ticks; a second lethal hit 
     // After the window: saves again.
     bot.waitUntil(() => World.currentTick >= until, 520, 'phoenix window to expire');
     bot.debugproc('relic_hit', 50);
-    assert.equal(bot.stat('hitpoints'), 1);
+    assert.equal(bot.stat('hitpoints'), 10);
     bot.expectMessage('Your Phoenix relic saves you from a lethal hit!');
     assert.ok((bot.varp('relic_phoenix_until') as number) >= until + 500);
 });
@@ -187,7 +189,7 @@ test('Phoenix: the save plays the death animation so the player can see it trigg
     bot.debugproc('relic_hit', 3);
     assert.ok(!played.includes(ids.seq('human_death')), 'a non-lethal hit does not play it');
     bot.debugproc('relic_hit', 50);
-    assert.equal(bot.stat('hitpoints'), 1);
+    assert.equal(bot.stat('hitpoints'), 10);
     assert.ok(played.includes(ids.seq('human_death')), `animations played: ${JSON.stringify(played)}`);
 });
 
@@ -224,7 +226,7 @@ test('Phoenix + Stoneskin: the save is checked on the already halved amount', t 
     const bot = relicBot(SPOT.phoenix, [3, 6], { hitpoints: 10 });
     // 19 -> stoneskin 10, which is >= 10 HP: lethal, so Phoenix saves (relic_effects.rs2 order: 3, 5, then 6).
     bot.debugproc('relic_hit', 19);
-    assert.equal(bot.stat('hitpoints'), 1);
+    assert.equal(bot.stat('hitpoints'), 10);
     bot.expectMessage('Phoenix relic saves you');
     const other = relicBot(SPOT.phoenix, [3, 6], { hitpoints: 10 });
     // 17 -> 9: not lethal, no save, window not used.
