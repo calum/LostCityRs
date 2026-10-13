@@ -253,6 +253,18 @@ test('Glass Cannon in real melee: hits above the unarmed max hit appear only wit
     assert.equal(run([5]), 2, 'with Glass Cannon a 2 lands (randominc(2))');
 });
 
+/** Record every applyDamage on `npc` (one entry per hitsplat, the hitpoints actually lost: a lethal hit is capped) until the returned array is dropped. */
+function spyHits(npc: Npc): number[] {
+    const hits: number[] = [];
+    const orig = npc.applyDamage.bind(npc);
+    npc.applyDamage = (damage: number, type: number) => {
+        const before = npc.levels[HP];
+        orig(damage, type);
+        hits.push(before - npc.levels[HP]);
+    };
+    return hits;
+}
+
 // ----------------------------------------------------------------------- 4 Quickstrike
 
 /** Ticks between successive changes of %action_delay (set once per swing in player_melee.rs2 / player_ranged.rs2). */
@@ -403,19 +415,17 @@ test('Vampire in real melee: each landed hit heals floor(damage / 10)', t => {
     const giant = spawnNpc('giant', { x: SPOT.vampire.x + 2, z: SPOT.vampire.z });
     bot.tick();
     bot.opNpc(giant, 2);
-    // The giant loses hp two ticks after the hit (npc_queue(2, ...)); prayer is healed on the hit itself, so tick a few more after.
-    let last = giant.levels[HP];
-    let expected = 0;
-    for (let i = 0; i < 200 && expected < 3; i++) {
-        bot.tick();
-        const d = last - giant.levels[HP];
-        if (d > 0) expected += Math.floor(d / 10);
-        last = giant.levels[HP];
-    }
-    bot.tick(4);
-    last = giant.levels[HP];
+    // Every hitsplat the giant takes is one give_combat_experience call (the landed hit, plus Glass Cannon's extra hitsplats,
+    // which credit themselves): each heals floor(damage / 10). Prayer is healed on the roll, so tick a few more after.
+    giant.levels[HP] = 5000; // Glass Cannon's extra hitsplats would otherwise kill a 35 HP giant before a 10+ hit comes up
+    const hits = spyHits(giant);
+    const healed = () => hits.reduce((n, d) => n + Math.floor(d / 10), 0);
+    for (let i = 0; i < 200 && healed() < 3; i++) bot.tick();
+    bot.tick(12);
+    const expected = healed();
     assert.ok(expected > 0, 'expected at least one hit of 10+ damage');
     assert.equal(bot.stat('prayer') - 10, expected); // giants do not drain prayer, so all of the change is Vampire
+    bot.remove(); // it kept fighting the giant (now 5000 HP) and would pull later tests' giants into combat
     retire(giant);
 });
 

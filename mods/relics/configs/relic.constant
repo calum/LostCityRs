@@ -12,3 +12,6 @@
 ^relic_fellowship_radius = 5
 ^relic_fellowship_heal_percent = 50
 ^relic_fellowship_xp_percent = 50
+
+// Glass Cannon (5): longest chain of extra hitsplats one attack can roll (safety cap).
+^relic_glass_extra_max = 10

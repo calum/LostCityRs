@@ -22,13 +22,44 @@ if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & map_clock >= %relic_phoenix
 }
 return($amount);
 
-// npc_combat.rs2 hook (npc_max_dealt). 5 Glass Cannon: double damage dealt.
+// npc_combat.rs2 hook (npc_max_dealt). 5 Glass Cannon: double damage dealt, plus a 25% chance of an extra hitsplat (see
+// relic_glass_extra). Called once per landed player attack on an npc, before the attack rolls its own damage.
 [proc,relic_dealt](int $maxhit)(int)
 ~relic_execute;
 if (~relic_has(5) = 1) {
-    return(calc($maxhit * 2));
+    $maxhit = calc($maxhit * 2);
+    if ($maxhit > 0) {
+        ~relic_glass_extra($maxhit, 25);
+    }
+    return($maxhit);
 }
 return($maxhit);
+
+// 5 Glass Cannon extra hitsplats. Each success (pct% chance) rolls randominc($maxhit) like the normal hit, queues it on the
+// active npc, credits combat xp and hero points (capped by the hitpoints still unclaimed), then rolls again, so a chain
+// of extra hitsplats is possible. The chain is capped at ^relic_glass_extra_max hitsplats. Extras land one tick apart so
+// each one shows (an npc shows two hitsplats per tick); projectile attacks (ranged and magic) start 2 ticks later so the
+// extras do not land before the projectile.
+[proc,relic_glass_extra](int $maxhit, int $pct)
+def_int $n = 0;
+def_int $hp = npc_stat(hitpoints);
+def_int $base = 0;
+def_int $dmg = 0;
+def_int $credit = 0;
+if (%damagetype ! ^melee_style) {
+    $base = 2;
+}
+while ($n < ^relic_glass_extra_max & random(100) < $pct) {
+    $n = calc($n + 1);
+    $dmg = randominc($maxhit);
+    $credit = min($dmg, $hp);
+    if ($credit > 0) {
+        npc_heropoints($credit);
+        ~give_combat_experience(%damagestyle, $credit, %npc_combat_xp_multiplier);
+        $hp = calc($hp - $credit);
+    }
+    npc_queue(2, $dmg, calc($base + $n));
+}
 
 // player_combat.rs2 hook (player_attack_roll_specific, every PvM/PvP/special attack roll). Each combat relic (3 to 9) owned
 // adds +50% to the player's attack roll for all styles. 23 Endless Quiver adds another +50% for ranged attacks only
