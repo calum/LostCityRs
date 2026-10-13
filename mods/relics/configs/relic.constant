@@ -4,8 +4,9 @@
 ^relic_tier3_mask = 8380416
 ^relic_tier4_mask = 25165824
 ^relic_task_count = 45
-// tasks shown in the task menu: the highest number minus the retired task 37 (death rune, the death altar is not usable)
-^relic_task_listed = 44
+// tasks shown in the task menu: the highest number minus the retired tasks 37 (death rune, the death altar is not usable)
+// and 16 (monkey, removed 2026-10-13 as too easy). Their numbers stay reserved so saved task bits keep their meaning.
+^relic_task_listed = 43
 // engine base XP rate, node.xpRate in config/world.json (only used to show the rate in the relics menu)
 ^relic_base_xp = 10
 // Fellowship (relic 31): reach in tiles and share of the owner's food healing. The XP share is in Engine-TS Player.ts (RELIC_FELLOWSHIP_RADIUS, RELIC_FELLOWSHIP_XP_PERCENT).

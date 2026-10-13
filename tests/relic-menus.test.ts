@@ -38,7 +38,7 @@ function hidden(bot: Bot, com: string): boolean | undefined {
 
 /** [task, name] in menu order: easiest first (skill level or monster combat level, the two kinds are compared as plain numbers). */
 const TASK_ORDER: [number, string][] = [
-    [1, 'Defeat a goblin'], [16, 'Defeat a monkey'], [14, 'Defeat a scorpion'], [11, 'Smith a silver bar'], [15, 'Defeat a bear'],
+    [1, 'Defeat a goblin'], [14, 'Defeat a scorpion'], [11, 'Smith a silver bar'], [15, 'Defeat a bear'],
     [3, 'Defeat a giant'], [26, 'Mine a coal'], [27, 'Smelt a steel bar'], [30, 'Catch a lobster'], [42, 'Pickpocket a guard'], [35, 'Cut a diamond'],
     [36, 'Craft a nature rune'], [5, 'Chop a maple log'], [12, 'Make a super attack potion'], [39, 'Cast Camelot Teleport'], [9, 'Harpoon a swordfish'],
     [8, 'Craft a law rune'], [4, 'Mine a mithril ore'], [43, 'Make a super strength potion'], [38, 'Cast High Level Alchemy'], [7, 'Burn a yew log'], [20, 'Chop a yew log'],
@@ -48,7 +48,7 @@ const TASK_ORDER: [number, string][] = [
     [21, 'Defeat a hellhound'], [22, 'Defeat a black demon'], [24, 'Defeat the King Black Dragon'], [25, 'Defeat the Kalphite Queen']
 ];
 
-const taskRows = (bot: Bot) => Array.from({ length: 44 }, (_, i) => text(bot, `relic_taskmenu:row_${i + 1}`));
+const taskRows = (bot: Bot) => Array.from({ length: 43 }, (_, i) => text(bot, `relic_taskmenu:row_${i + 1}`));
 const shownTasks = (bot: Bot) => taskRows(bot).filter(r => r !== '');
 
 function openTasks(bot: Bot) {
@@ -91,13 +91,13 @@ test('the low detail settings tab has the same two buttons', t => {
     assert.equal(bot.mainModal, 'relic_relicmenu');
 });
 
-test('task menu: all 44 tasks listed with done and not done marks, and a count', t => {
+test('task menu: all 43 tasks listed with done and not done marks, and a count', t => {
     if (skip()) return t.skip(String(skip()));
     // tasks 1 (goblin) and 3 (giant) done: bits 0 and 2
     const bot = Bot.spawn({ varps: { relic_started: 1, relic_tasks_done: bit(0) | bit(2) } });
     openTasks(bot);
     const rows = taskRows(bot);
-    assert.equal(rows.length, 44);
+    assert.equal(rows.length, 43);
     assert.ok(rows.every(r => r !== ''));
     // listed from easiest to hardest (lowest requirement or combat level first), each keeping its own task number
     assert.equal(rows.length, TASK_ORDER.length);
@@ -105,10 +105,10 @@ test('task menu: all 44 tasks listed with done and not done marks, and a count',
         const mark = task === 1 || task === 3 ? '@gre@[x]' : '@whi@[ ]';
         assert.equal(rows[i], `${mark} ${task}. ${name}`);
     });
-    assert.deepEqual(TASK_ORDER.map(([t]) => t).sort((a, b) => a - b), Array.from({ length: 45 }, (_, i) => i + 1).filter(n => n !== 37), 'every task exactly once (37, the death rune, is retired)');
+    assert.deepEqual(TASK_ORDER.map(([t]) => t).sort((a, b) => a - b), Array.from({ length: 45 }, (_, i) => i + 1).filter(n => n !== 37 && n !== 16), 'every task exactly once (37, the death rune, and 16, the monkey, are retired)');
     assert.match(rows[0], /^@gre@\[x\] 1\. Defeat a goblin$/);
-    assert.match(rows[43], /^@whi@\[ \] 25\. Defeat the Kalphite Queen$/);
-    assert.match(text(bot, 'relic_taskmenu:summary'), /2 of 44/);
+    assert.match(rows[42], /^@whi@\[ \] 25\. Defeat the Kalphite Queen$/);
+    assert.match(text(bot, 'relic_taskmenu:summary'), /2 of 43/);
     assert.match(text(bot, 'relic_taskmenu:toggle'), /Hide completed: Off/);
 });
 
@@ -121,17 +121,17 @@ test('task menu: the toggle hides completed tasks and packs the rest to the top'
     assert.equal(bot.varp('relic_hide_done'), 1);
     assert.match(text(bot, 'relic_taskmenu:toggle'), /Hide completed: On/);
     const shown = shownTasks(bot);
-    assert.equal(shown.length, 42);
-    assert.match(shown[0], /^@whi@\[ \] 16\. Defeat a monkey$/); // goblin (1) is done, the monkey is next easiest
-    assert.match(shown[1], /^@whi@\[ \] 14\. Defeat a scorpion$/);
+    assert.equal(shown.length, 41);
+    assert.match(shown[0], /^@whi@\[ \] 14\. Defeat a scorpion$/); // goblin (1) is done, the scorpion is next easiest
+    assert.match(shown[1], /^@whi@\[ \] 11\. Smith a silver bar$/);
     assert.ok(shown.every(r => r.startsWith('@whi@')));
     // rows are packed: no empty row sits between two shown rows
     const rows = taskRows(bot);
-    assert.deepEqual(rows.slice(42), ['', '']);
+    assert.deepEqual(rows.slice(41), ['', '']);
     // toggling back shows everything again
     bot.clickButton('relic_taskmenu:toggle').tick();
     assert.equal(bot.varp('relic_hide_done'), 0);
-    assert.equal(shownTasks(bot).length, 44);
+    assert.equal(shownTasks(bot).length, 43);
 });
 
 test('task menu: the hide setting is remembered across relog', t => {
@@ -142,7 +142,7 @@ test('task menu: the hide setting is remembered across relog', t => {
     const again = bot.relog();
     assert.equal(again.varp('relic_hide_done'), 1);
     openTasks(again);
-    assert.equal(shownTasks(again).length, 43);
+    assert.equal(shownTasks(again).length, 42);
     assert.match(text(again, 'relic_taskmenu:toggle'), /Hide completed: On/);
 });
 

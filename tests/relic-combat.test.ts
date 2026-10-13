@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { Bot, ids, spawnNpc, World } from '../harness/src/index.js';
+import SpotanimType from '../Engine-TS/src/cache/config/SpotanimType.js';
 import VarNpcType from '../Engine-TS/src/cache/config/VarNpcType.js';
 import Npc from '../Engine-TS/src/engine/entity/Npc.js';
 import Obj from '../Engine-TS/src/engine/entity/Obj.js';
@@ -188,6 +189,34 @@ test('Phoenix: the save plays the death animation so the player can see it trigg
     bot.debugproc('relic_hit', 50);
     assert.equal(bot.stat('hitpoints'), 1);
     assert.ok(played.includes(ids.seq('human_death')), `animations played: ${JSON.stringify(played)}`);
+});
+
+test('Phoenix: the player says "I rise from the ashes!" overhead and a fire graphic plays as they stand back up (2026-10-13)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
+    const said: string[] = [];
+    const spots = [] as { id: number; height: number; delay: number }[];
+    const realSay = bot.player.say.bind(bot.player);
+    bot.player.say = (m: string) => {
+        said.push(m);
+        realSay(m);
+    };
+    const realSpot = bot.player.spotanim.bind(bot.player);
+    bot.player.spotanim = (id: number, height: number, delay: number) => {
+        spots.push({ id, height, delay });
+        realSpot(id, height, delay);
+    };
+    bot.debugproc('relic_hit', 3);
+    assert.deepEqual(said, [], 'a non-lethal hit says nothing');
+    assert.equal(spots.length, 0);
+    bot.debugproc('relic_hit', 50);
+    assert.deepEqual(said, ['I rise from the ashes!']);
+    assert.equal(spots.length, 1, JSON.stringify(spots));
+    assert.equal(spots[0].id, SpotanimType.getId('fireblast_impact'));
+    assert.ok(spots[0].delay > 0, 'the fire starts after the fall, as the character gets up');
+    // the saved hit does not repeat it inside the 500 tick window
+    bot.debugproc('relic_hit', 50);
+    assert.equal(said.length, 1);
 });
 
 test('Phoenix + Stoneskin: the save is checked on the already halved amount', t => {

@@ -1,3 +1,5 @@
+> **Superseded (2026-10-13):** the XP Multiplier is now passive (tiers at 5/10/15 tasks done, never in offers). See [relics-passive-xp-and-phoenix.md](relics-passive-xp-and-phoenix.md).
+
 > **Superseded in part (2026-10-12):** the "every 5th task" XP rule below was replaced by guaranteed XP Multiplier tiers (I from the 4th task done, II from the 9th, III from the 12th, until picked), and Quest Pass is now a scroll. See [relics-feedback-2026-10-12.md](relics-feedback-2026-10-12.md).
 
 # Relic offers: Quest Pass on the 10th task, XP Multiplier on every 5th (and the removed rerolls)

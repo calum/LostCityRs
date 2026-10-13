@@ -12,8 +12,8 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 
 - You play a normal character with **10x XP** and **unlimited run energy**.
 - Everyone also gets a free **skilling second chance**: if a skilling attempt (chopping, mining, fishing, cooking, firemaking, thieving, agility and so on) fails, it gets one more 50% roll to succeed. Combat is not affected.
-- There are **44 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
-- Relics are big perks (table below). The **XP Multiplier** can be taken three times and triples your XP rate each time: **30x, 90x, then 270x**.
+- There are **43 tasks**. Finish one and you get fireworks, the level-up jingle, and **a pick of up to 3 random relics**.
+- Relics are big perks (table below). The **XP Multiplier** is not a choice: it switches on by itself as you finish tasks and triples your XP rate each time: **30x at your 5th finished task, 90x at your 10th, 270x at your 15th**.
 - Tasks 24 and 25 are the bosses: the **King Black Dragon** and the **Kalphite Queen**. They give no relic. Killing both ends the run.
 - **Playing with friends:** everyone who hits a monster before it dies gets the kill task, not just the player who did the most damage. You can fight the King Black Dragon or the Kalphite Queen together and all of you finish the run. Even one point of damage counts, and you must still be logged in when it dies. Loot and the Bounty relic drop still go to whoever did the most damage.
 - Your first offer comes when you first log in (after Tutorial Island, or straight away if you skip it).
@@ -24,15 +24,15 @@ Relic mode turns a normal character into a fast, over-powered run. Finish tasks,
 1. **Do the tasks in any order**, including the bosses.
 2. **A task only counts once.**
 3. **Relics you turn down can come back** in later offers. If only 1 or 2 are left, you get just those. If none are left, the task still completes but there is no pick.
-4. **The pool runs out.** About 30 picks exist (the XP Multiplier counts three times), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
-5. **Fixed rules.** Your **10th finished task** (whichever task it is) always gives you the **Quest Pass** scroll straight away, with no choice. Quest Pass can never show up in an ordinary offer and you cannot get it earlier or later. The **XP Multiplier** is guaranteed in your relic choice from set task counts until you take it: **XP Multiplier I from your 4th finished task**, **II from your 9th**, **III from your 12th**. Every offer from that point includes the next one until you pick it.
+4. **The pool runs out.** About 28 picks exist (the XP Multiplier is automatic and not one of them), so the offers near the end of a full run are empty. The table of how likely each relic is at each task count is in [relic-offer-odds.md](https://github.com/calum/LostCityRs/blob/main/docs/reference/relic-offer-odds.md).
+5. **Fixed rules.** Your **10th finished task** (whichever task it is) always gives you the **Quest Pass** scroll straight away, with no choice. Quest Pass can never show up in an ordinary offer and you cannot get it earlier or later. The **XP Multiplier** is automatic and never in a relic choice: **tier I at your 5th finished task, II at your 10th, III at your 15th**. At the 5th and 15th you still get your normal pick of 3 relics, and at the 10th the Quest Pass scroll, with the multiplier added on top.
 6. **Combat relics stack.** Relics 3 to 9 (Stoneskin through Bounty) each also give **+50% accuracy** on your attack rolls for melee, ranged and magic. Each one you own adds another +50%. This raises your chance to hit, not your max hit.
 
 ## In-game menus { #menus }
 
 Open the **Game Options** tab (the wrench) and click **Tasks** or **Relics** at the right of the "Split Private-chat" row.
 
-- **Tasks** lists all 44 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
+- **Tasks** lists all 43 tasks, with a green `[x]` when done. *Hide completed* shows only the open ones (it remembers your choice).
 - **Relics** shows your XP rate, the relics you have, and the ones you do not have yet. If you closed a relic choice by accident, it says "relic choice waiting": click **Choose a relic now** to get the same three back.
 - **Relics** also shows how long you have played ("Time played"). The game counts the time you are logged in. When you beat both final bosses it prints your final challenge time in the chat and the menu keeps showing it ("Final challenge done in ..."), so you can see how long the run took. Characters that already existed start counting from zero.
 - Every level-up prints your **XP rate** (for example "XP rate: 30x") in the chat.
@@ -49,14 +49,14 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 
 | # | Relic | What it does | Where / how to use it |
 |---|---|---|---|
-| 1a | XP Multiplier I | Your XP rate goes from 10x to **30x**. Guaranteed in every offer from your 4th finished task until you take it. | automatic |
-| 1b | XP Multiplier II | XP rate goes from 30x to **90x** (take I first). Guaranteed in every offer from your 9th finished task until you take it. | automatic |
-| 1c | XP Multiplier III | XP rate goes from 90x to **270x** (take II first). Guaranteed in every offer from your 12th finished task until you take it. | automatic |
+| 1a | XP Multiplier I | Your XP rate goes from 10x to **30x**. Switches on by itself when you finish your **5th task**. Not an offer choice. | automatic |
+| 1b | XP Multiplier II | XP rate goes from 30x to **90x**. Switches on by itself at your **10th finished task** (together with the Quest Pass scroll). Not an offer choice. | automatic |
+| 1c | XP Multiplier III | XP rate goes from 90x to **270x**. Switches on by itself at your **15th finished task**, together with your normal pick of 3 relics. Not an offer choice. | automatic |
 | 2 | Quest Pass | Gives you a **Quest Pass scroll** (in your backpack, or your bank if the backpack is full) and a message box that says where it is. **Read it** when you are ready, ideally out of combat: every quest is then marked complete, with the rewards. Expect a lot of quest-complete scrolls to click through. The scroll moves to your bank if you die, and the Relic Keeper replaces it once if you lose it before reading it. The quest reward XP is plain **1x** (neither the XP Multiplier nor the 10x base rate applies); the multiplier is back as soon as the last quest is done. **Given only by your 10th finished task**, never offered. | automatic |
 | 3 | Stoneskin | You take **half** damage. | automatic |
 | 4 | Quickstrike | You attack **twice as fast**. Melee rounds down, so a 5-tick weapon becomes 2 ticks (ranged and magic round up). | automatic |
 | 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. Every attack that lands also has a **25% chance of an extra hitsplat**, and each extra hitsplat has its own 25% chance of another one (up to 10 extras from a single attack). Extra hitsplats roll their damage like a normal hit and give you combat XP, and Vampire heals from them. | automatic |
-| 6 | Phoenix | If a hit would kill you, you survive on 1 HP and your **death animation plays** so you can see it trigger. Works once every **5 minutes**. | automatic |
+| 6 | Phoenix | If a hit would kill you, you survive on 1 HP. Your **death animation plays**, you call out **"I rise from the ashes!"** (overhead text every nearby player sees) and a **ball of fire** flares around you as you get back up. Works once every **5 minutes**. | automatic |
 | 7 | Vampire | Every hit you land on an NPC heals you for **10% of the damage, rounded up**, as both hitpoints and prayer points. A 25 hit heals 3 of each and even a 1 hit heals 1. | automatic |
 | 8 | Executioner | NPCs below 25% HP die instantly. | automatic |
 | 9 | Bounty | Every kill drops **coins plus a piece of food**, bigger for tougher NPCs. The coins are **five times** what they were: (5 + 3 x the NPC's hitpoints) x 5. | pick the drop up |
@@ -103,12 +103,11 @@ Relic items (the three jewellery items, the Recall stone, the Banker's stone, th
 
 <div class="relic-tracker-bar" data-for="tasks"></div>
 
-Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order (there is no task 37: the death rune task was removed because the death altar cannot be used in this game). Tasks 26 to 42 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 42 each give a relic offer. Ticking a task here does not affect any other row.
+Tasks count in any order. The table (and the in-game task menu) is sorted from easiest to hardest, by the lowest skill level or monster combat level needed; the `#` is the task's fixed number, which is why the numbers are out of order (there is no task 37 and no task 16: the death rune task was removed because the death altar cannot be used in this game, and the monkey task was removed because it was far too easy; if you had already finished the monkey task, it no longer counts towards the 5/10/15 XP unlocks). Tasks 26 to 42 were added after the bosses, so the two final bosses stay numbers 24 and 25; unlike them, tasks 26 to 42 each give a relic offer. Ticking a task here does not affect any other row.
 
 | # | Task | Requirements | Where (map links) |
 |---|---|---|---|
 | 1 | Defeat a **goblin** | none. Any of five goblin types counts: combat levels 2, 5 or 13 | [Kingdom of Kandarin (2580, 3416)](https://explv.github.io/?centreX=2580&centreY=3416&centreZ=0&zoom=9); [Lumbridge (3248, 3241)](https://explv.github.io/?centreX=3248&centreY=3241&centreZ=0&zoom=9); [Goblin Village (2956, 3498)](https://explv.github.io/?centreX=2956&centreY=3498&centreZ=0&zoom=9); [Jail (3159, 3240)](https://explv.github.io/?centreX=3159&centreY=3240&centreZ=0&zoom=9) |
-| 16 | Defeat a **monkey** | combat level 3, 6 HP | [Karamja (2852, 3025)](https://explv.github.io/?centreX=2852&centreY=3025&centreZ=0&zoom=9); [(2921, 3022)](https://explv.github.io/?centreX=2921&centreY=3022&centreZ=0&zoom=9); [(2518, 4551)](https://explv.github.io/?centreX=2518&centreY=4551&centreZ=0&zoom=9); [Karamja (2902, 3079)](https://explv.github.io/?centreX=2902&centreY=3079&centreZ=0&zoom=9); [Zoo (2601, 3278)](https://explv.github.io/?centreX=2601&centreY=3278&centreZ=0&zoom=9) |
 | 14 | Defeat a **scorpion** | combat level 14, 17 HP | [Black Knights' Fortress (3045, 3570)](https://explv.github.io/?centreX=3045&centreY=3570&centreZ=0&zoom=9); [(3299, 3299)](https://explv.github.io/?centreX=3299&centreY=3299&centreZ=0&zoom=9); [Agility Arena (2860, 3163)](https://explv.github.io/?centreX=2860&centreY=3163&centreZ=0&zoom=9); [Scorpion Pit (3240, 3946)](https://explv.github.io/?centreX=3240&centreY=3946&centreZ=0&zoom=9); [Cairn Isle (2778, 2962)](https://explv.github.io/?centreX=2778&centreY=2962&centreZ=0&zoom=9) |
 | 11 | **Smith a silver bar** | Smithing 20, silver ore and a furnace | any furnace |
 | 15 | Defeat a **bear** | brown bear (level 21) or dark bear (level 19) both count | [Legends' Guild (2703, 3336)](https://explv.github.io/?centreX=2703&centreY=3336&centreZ=0&zoom=9); [Graveyard of Shadows (3113, 3669)](https://explv.github.io/?centreX=3113&centreY=3669&centreZ=0&zoom=9); [(2404, 3373)](https://explv.github.io/?centreX=2404&centreY=3373&centreZ=0&zoom=9); [Goblin Village (2969, 3480)](https://explv.github.io/?centreX=2969&centreY=3480&centreZ=0&zoom=9); [(3102, 3601)](https://explv.github.io/?centreX=3102&centreY=3601&centreZ=0&zoom=9) |

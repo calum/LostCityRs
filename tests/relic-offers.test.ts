@@ -66,7 +66,7 @@ function predictOffer(seed: number, owned: number, xpTier: number, declinedOnly 
         const pool: number[] = [];
         for (let id = 1; id <= 31; id++) {
             const exists = relicExists(id) && id !== 2; // Quest Pass (2) is never drawn: the 10th task done grants it (relic_in_pool)
-            const eligible = exists && (id === 1 ? xpTier < 3 : (owned & bit(id)) === 0);
+            const eligible = exists && id !== 1 && (owned & bit(id)) === 0; // XP Multiplier (1) is passive since 2026-10-13, never drawn (xpTier is unused)
             const inMode = declinedOnly === -1 || (declinedOnly & bit(id)) !== 0;
             if (eligible && inMode && !drawn.includes(id)) pool.push(id);
         }
@@ -172,20 +172,14 @@ test('first login with a fresh character rolls a non-zero seed', t => {
     assert.equal(new Set(offeredIds(bot)).size, 3, 'three distinct relics');
 });
 
-test('picking XP Multiplier on the first offer raises the tier instead of an owned bit', t => {
+test('XP Multiplier is passive: it is never in an offer, whatever the seed (30 first offers)', t => {
     if (skip()) return t.skip(String(skip()));
-    // find a seed whose first offer contains XP Multiplier (id 1)
-    let seed = 1;
-    while (!predictOffer(seed, 0, 0).ids.includes(1)) seed++;
-    const bot = Bot.spawn({ varps: { relic_seed: seed } });
-    waitForOffer(bot);
-    assert.deepEqual(offeredIds(bot), predictOffer(seed, 0, 0).ids);
-    pick(bot, 'XP Multiplier');
-    bot.waitUntilIdle(20);
-    assert.equal(bot.varp('relic_xp_tier'), 1);
-    assert.equal(bot.varp('relic_xp_factor'), 3);
-    assert.equal(bot.varp('relic_owned'), 0);
-    assert.equal((bot.varp('relic_declined') as number) & bit(1), 0);
+    for (let seed = 1; seed <= 30; seed++) {
+        const bot = Bot.spawn({ varps: { relic_seed: seed * 2111 } });
+        waitForOffer(bot);
+        assert.ok(!offeredIds(bot).includes(1), `seed ${seed * 2111}: ${JSON.stringify(choiceTexts(bot))}`);
+        assert.deepEqual(offeredIds(bot), predictOffer(seed * 2111, 0, 0).ids);
+    }
 });
 
 test('tutorial not done: no offer and the run does not start; finishing it and relogging starts it', t => {
@@ -355,21 +349,14 @@ test('pool shrinking: two left gives two options, one left gives "No thanks", no
     assert.equal(bot.varp('relic_seed'), seedBefore, 'relic_draw does not advance the seed on an empty pool');
 });
 
-test('XP Multiplier is offered until tier 3, then never', t => {
+test('XP Multiplier is never offered, not even at tier 0 with nothing else left', t => {
     if (skip()) return t.skip(String(skip()));
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 3, relic_owned: ALL_BITS, relic_xp_tier: 2, relic_xp_factor: 9 } });
-    bot.debugproc('relic_offer');
-    waitForOffer(bot);
-    assert.deepEqual(choiceTexts(bot), ['XP Multiplier: XP rate triples', 'No thanks']);
-    pick(bot, 'XP Multiplier');
-    bot.waitUntilIdle(20);
-    assert.equal(bot.varp('relic_xp_tier'), 3);
-    assert.equal(bot.varp('relic_xp_factor'), 27);
-
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 3, relic_owned: ALL_BITS } });
     bot.debugproc('relic_offer');
     bot.tick(3);
-    assert.equal(bot.inDialog, false, 'nothing left to offer at tier 3');
+    assert.equal(bot.inDialog, false, 'nothing to offer: the multiplier is passive');
     assert.equal(bot.varp('relic_pending'), 0);
+    assert.equal(bot.varp('relic_xp_tier'), 0);
 });
 
 test('XP Multiplier grants: each raises the tier and sets factor 3^tier', t => {
@@ -433,18 +420,18 @@ test('Hoarder does not list the relics of the offer that granted it (nothing dec
     assert.equal(bot.varp('relic_pending'), 0);
 });
 
-test('Hoarder list skips declined relics that are owned since, and lists declined XP Multiplier', t => {
+test('Hoarder list skips declined relics that are owned since, and a stale declined XP Multiplier bit', t => {
     if (skip()) return t.skip(String(skip()));
-    // declined: 1 (XP, tier 0) and 5 (now owned). Mode 1 pool = eligible AND declined = {1}.
-    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 2, relic_owned: bit(5), relic_declined: bit(1) | bit(5) } });
+    // declined: 1 (old saves; XP Multiplier is passive now), 3 (still wanted) and 5 (now owned). Mode 1 pool = eligible AND declined = {3}.
+    const bot = Bot.spawn({ varps: { relic_started: 1, relic_seed: 2, relic_owned: bit(5), relic_declined: bit(1) | bit(3) | bit(5) } });
     bot.debugproc('relic_grant', 19);
     bot.tick(3);
     assert.equal(bot.mainModal, 'relic_hoardermenu');
-    assert.match(bot.texts.get('relic_hoardermenu:row_1') ?? '', /XP Multiplier/);
+    assert.match(bot.texts.get('relic_hoardermenu:row_1') ?? '', /Stoneskin/);
     assert.equal(bot.texts.get('relic_hoardermenu:row_2') ?? '', '');
     bot.clickButton('relic_hoardermenu:row_1').tick(3);
-    assert.equal(bot.varp('relic_xp_tier'), 1);
-    assert.equal(bot.varp('relic_declined'), bit(5));
+    assert.equal(((bot.varp('relic_owned') as number) >> 3) & 1, 1);
+    assert.equal(bot.varp('relic_declined'), bit(1) | bit(5));
 });
 
 test('Hoarder with nothing declined is granted and opens no offer', t => {

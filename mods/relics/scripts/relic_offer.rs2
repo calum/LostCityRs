@@ -1,4 +1,4 @@
-// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit), 2..14, 16..31 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
+// Offer engine. Relic ids: 1 = XP Multiplier (tiers, not a bit; passive since 2026-10-13, never offered: see relic_xp_passive), 2..14, 16..31 = bit n of %relic_owned (15 Infinite Runes was retired and its bit is never used again).
 // %relic_pending counts offers the player has earned but not yet answered (a closed dialog leaves it set; login re-offers).
 // Everything here needs protected access: run it from a queue script (see relic_offer_q).
 
@@ -79,11 +79,9 @@ if ($id = 15) {
 }
 return(1);
 
+// The XP Multiplier (1) is passive (Calum, 2026-10-13): it is never offered, relic_xp_passive unlocks its tiers from tasks done.
 [proc,relic_eligible](int $id)(int)
 if ($id = 1) {
-    if (%relic_xp_tier < 3) {
-        return(1);
-    }
     return(0);
 }
 if (testbit(%relic_owned, $id) = ^true) {
@@ -187,47 +185,42 @@ if (inv_total(inv, relic_quest_scroll) = 0) {
 ~mesbox("You gained the Quest Pass relic.|A Quest Pass scroll is in your <$where>.|Read it when you are ready, ideally out of combat.|It completes every quest, and each quest opens its own screen.");
 
 // Tasks done, over both task varps (tasks 1-31 in %relic_tasks_done, 32 and up in %relic_tasks_done2).
+// Retired task 16 (monkey, removed 2026-10-13 as too easy) is not counted, even for saves that finished it. Task 37 can never be done.
 [proc,relic_tasks_done_count]()(int)
 def_int $n = 1;
 def_int $count = 0;
 while ($n <= ^relic_task_count) {
-    if (~relic_task_is_done($n) = ^true) {
+    if (~relic_task_is_done($n) = ^true & $n ! 16) {
         $count = calc($count + 1);
     }
     $n = calc($n + 1);
 }
 return($count);
 
-// 1 when the offer must contain the next XP Multiplier tier (Calum, 2026-10-12): tier I from the 4th task done, tier II from the 9th,
-// tier III from the 12th, each in every offer until it has been picked (the tier picked is always the next one).
-[proc,relic_xp_due](int $count)(int)
-if (%relic_xp_tier < 1 & $count >= 4) {
-    return(1);
+// XP Multiplier tiers are passive (Calum, 2026-10-13): tier I at 5 tasks done, II at 10, III at 15, on top of the normal offers.
+// A save never loses a tier it already holds (older saves took the multiplier from offers at 4/9/12 tasks).
+[proc,relic_xp_passive]
+def_int $target = calc(~relic_tasks_done_count / 5);
+if ($target > 3) {
+    $target = 3;
 }
-if (%relic_xp_tier < 2 & $count >= 9) {
-    return(1);
+if (%relic_xp_tier >= $target) {
+    return;
 }
-if (%relic_xp_tier < 3 & $count >= 12) {
-    return(1);
-}
-return(0);
+%relic_xp_tier = $target;
+~relic_xp_recompute;
+~relic_say("XP Multiplier unlocked: tier <tostring($target)> of 3. Your XP rate is now <tostring(~relic_xp_rate($target))>x.");
 
 // Draw up to 3 relics (see relic_in_pool for $mode), ask, grant. Returns 1 if something was offered, 0 if the pool was empty.
-// $force 1: the first option is the XP Multiplier whenever it is still eligible (see relic_xp_due).
 // The seed advanced by the draws is stored only once the player answers: closing the dialog drops this script
 // (Player.closeModal), so the seed stays where it was and the next login shows the same offer.
 [proc,relic_offer_mode](int $mode)(int)
-return(~relic_offer_run($mode, 0));
+return(~relic_offer_run($mode));
 
-[proc,relic_offer_run](int $mode, int $force)(int)
+[proc,relic_offer_run](int $mode)(int)
 def_int $seed_before = %relic_seed;
 def_int $drawn = 0;
-def_int $a = 0;
-if ($force = 1 & ~relic_eligible(1) = 1) {
-    $a = 1;
-} else {
-    $a = ~relic_draw($drawn, $mode);
-}
+def_int $a = ~relic_draw($drawn, $mode);
 if ($a = 0) {
     return(0);
 }
@@ -286,11 +279,10 @@ while (%relic_pending > 0 & %relic_hoarder_owed = 0) {
             $paid = 1;
             ~relic_grant(2);
         } else {
-            def_int $s = ~relic_offer_run(0, ~relic_xp_due(~relic_tasks_done_count));
+            def_int $s = ~relic_offer_run(0);
         }
     } else {
-        // XP Multiplier tiers are guaranteed from set task counts until picked (relic_xp_due)
-        def_int $granted = ~relic_offer_run(0, ~relic_xp_due(~relic_tasks_done_count));
+        def_int $granted = ~relic_offer_run(0);
     }
     if ($paid = 0) {
         %relic_pending = calc(%relic_pending - 1);
@@ -336,8 +328,10 @@ if ($task = 24 | $task = 25) {
         ~relic_say("A final boss is down. Defeat the other one to win.");
     }
 }
+// The XP Multiplier is passive: tiers unlock at 5, 10 and 15 tasks done, added to whatever offer the count brings (relic_xp_passive).
+~relic_xp_passive;
 // Special offers by tasks done. The 10th task done, whichever task it is, is the Quest Pass (if not owned): granted directly,
-// never earlier or later. The XP Multiplier tiers are guaranteed in offers from set task counts (relic_xp_due). Final bosses owe no ordinary offer.
+// never earlier or later. Final bosses owe no ordinary offer.
 def_int $count = ~relic_tasks_done_count;
 if ($count = 10 & testbit(%relic_owned, 2) = ^false) {
     %relic_quest_owed = calc(%relic_quest_owed + 1);
@@ -386,6 +380,7 @@ if (%tutorial < ^tutorial_complete) {
 }
 ~relic_ensure_keeper;
 ~relic_check_99;
+~relic_xp_passive; // saves that finished tasks before the multiplier turned passive catch up
 // Relic 15 Infinite Runes was retired: take the bit away and owe one new offer in its place.
 if (testbit(%relic_owned, 15) = ^true) {
     %relic_owned = clearbit(%relic_owned, 15);

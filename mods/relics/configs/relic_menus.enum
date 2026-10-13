@@ -54,7 +54,6 @@ inputtype=autoint
 outputtype=int
 default=0
 val=1
-val=16
 val=14
 val=11
 val=15

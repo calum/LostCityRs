@@ -58,12 +58,6 @@ data=task,15
 data=npc,darkbear
 data=tier,3
 
-[relic_task16_monkey]
-table=relic_task_npc
-data=task,16
-data=npc,monkey
-data=tier,3
-
 [relic_task17_green_dragon]
 table=relic_task_npc
 data=task,17

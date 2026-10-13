@@ -1,3 +1,5 @@
+> **Superseded in part (2026-10-13):** the XP Multiplier guarantee (4th/9th/12th task) was replaced by passive tiers at 5/10/15 tasks done. See [relics-passive-xp-and-phoenix.md](relics-passive-xp-and-phoenix.md).
+
 # Relic review feedback, 2026-10-12
 
 **Question answered:** what changed after Calum's line-by-line review of every relic and task (an editable review sheet; his notes were read from the sheet's saved data), and what was not done.

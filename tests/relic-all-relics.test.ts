@@ -25,8 +25,8 @@ function relicIds(): number[] {
     return [...body.matchAll(/case (\d+) :/g)].map(m => Number(m[1]));
 }
 
-/** Task 37 (death rune) was retired: the death altar is not usable in the game, so the task can never be done. Its number stays reserved. */
-const RETIRED_TASK = 37;
+/** Task 37 (death rune) was retired: the death altar is not usable in the game, so the task can never be done. Task 16 (monkey) was retired as too easy. Their numbers stay reserved. */
+const RETIRED_TASKS = [16, 37];
 
 /** ^relic_task_count of relic.constant (the highest task number, retired 37 included). */
 function taskCount(): number {
@@ -75,7 +75,7 @@ test('all relics: every task number 1..count has a driver below or a table row',
     const rowTasks = new Set(dbrows().map(r => r.task));
     const missing: number[] = [];
     for (let task = 1; task <= taskCount(); task++) {
-        if (task === RETIRED_TASK) continue;
+        if (RETIRED_TASKS.includes(task)) continue;
         if (!rowTasks.has(task) && !HOOK_TASKS.has(task)) missing.push(task);
     }
     assert.deepEqual(missing, [], 'tasks with no table row and no entry in HOOK_TASKS');
@@ -271,8 +271,8 @@ test('all relics: every task, one after another on one character, ends with all 
     bot.tick(10);
     // tasks 1-31 fill the first varp (bits 0-30), 32 and up the second (bit = task - 32)
     const count = taskCount();
-    const full1 = (2 ** Math.min(count, 31) - 1) | 0;
+    const full1 = ((2 ** Math.min(count, 31) - 1) & ~(1 << (16 - 1))) | 0;
     assert.equal(tasksDone(bot) | 0, full1, `done ${(tasksDone(bot) >>> 0).toString(2)} of ${(full1 >>> 0).toString(2)}`);
-    const full2 = (2 ** (count - 31) - 1) & ~(1 << (RETIRED_TASK - 32));
+    const full2 = (2 ** (count - 31) - 1) & ~(1 << (37 - 32));
     assert.equal(bot.varp('relic_tasks_done2'), full2, 'second varp');
 });

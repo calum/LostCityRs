@@ -184,7 +184,7 @@ test('kill task: the offer from a real kill stays open after the goblin dies', t
 test('every relic_task_npc row: the real death script ([ai_queue3] via ::~relic_kill) completes its task', t => {
     if (skip()) return t.skip(String(skip()));
     const rows = dbrows().filter(r => r.table === 'relic_task_npc');
-    assert.ok(rows.length >= 18);
+    assert.ok(rows.length >= 17);
     const failed: string[] = [];
     for (const row of rows) {
         const bot = spawn();

@@ -43,7 +43,6 @@ switch_int ($n) {
     case 13 : return("Pickpocket a paladin");
     case 14 : return("Defeat a scorpion");
     case 15 : return("Defeat a bear");
-    case 16 : return("Defeat a monkey");
     case 17 : return("Defeat a green dragon");
     case 18 : return("Defeat a blue dragon");
     case 19 : return("Mine a runite ore");
@@ -80,7 +79,7 @@ if_openmain(relic_taskmenu);
 if_setscrollpos(relic_taskmenu:list, 0);
 ~relic_taskmenu_refresh;
 
-// Fill the 45 rows: every task in menu order (relic_task_order, easiest first), or (hide completed on) only the open ones packed to the top.
+// Fill the rows (^relic_task_listed of the 45 declared): every task in menu order (relic_task_order, easiest first), or (hide completed on) only the open ones packed to the top.
 [proc,relic_taskmenu_refresh]
 def_int $row = 0;
 def_int $done_count = 0;
@@ -143,7 +142,7 @@ if ($id = 1) {
     if ($have = 1) {
         return("@gre@<~relic_name($id)> @whi@- now <tostring(~relic_xp_rate(%relic_xp_tier))>x");
     }
-    return("@yel@<~relic_name($id)> @whi@- next <tostring(~relic_xp_rate(calc(%relic_xp_tier + 1)))>x");
+    return("@yel@<~relic_name($id)> @whi@- next <tostring(~relic_xp_rate(calc(%relic_xp_tier + 1)))>x at <tostring(calc((%relic_xp_tier + 1) * 5))> tasks");
 }
 if ($have = 1) {
     return("@gre@<~relic_name($id)> @whi@- <~relic_desc($id)>");
@@ -165,7 +164,8 @@ while ($id <= 31) {
         if_settext($com, ~relic_menu_line($id, 1));
         $u = calc($u + 1);
     }
-    if (~relic_eligible($id) = 1) {
+    // the passive XP Multiplier is listed here until its last tier is unlocked, with the task count that unlocks the next one
+    if (~relic_eligible($id) = 1 | ($id = 1 & %relic_xp_tier < 3)) {
         $com = enum(int, component, relic_available_rows, $a);
         if_settext($com, ~relic_menu_line($id, 0));
         $a = calc($a + 1);

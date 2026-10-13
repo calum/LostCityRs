@@ -18,6 +18,9 @@ if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & map_clock >= %relic_phoenix
     %relic_phoenix_until = calc(map_clock + 500);
     $amount = calc(stat(hitpoints) - 1);
     anim(human_death, 0); // so the player sees it trigger
+    say("I rise from the ashes!"); // overhead text, seen by every player nearby
+    // human_death's frames before its endless hold last 47 client ticks (delay column of the seq, read in the harness); the fire flares as the fall ends and the player is back on their feet
+    spotanim_pl(fireblast_impact, 92, 47);
     mes("Your Phoenix relic saves you from a lethal hit!");
 }
 return($amount);
