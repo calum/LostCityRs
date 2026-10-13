@@ -9,7 +9,7 @@
 |---|---|
 | 3 Stoneskin, 5 Glass Cannon (taken) | a 10 damage hit took 10 HP baseline, 5 with Stoneskin (`(a+1)/2`), 8 with both (`(a*3+1)/2` on the halved value) |
 | 6 Phoenix | HP 10, a 50 damage hit left 1 HP and printed the save message; a second 50 hit inside the window brought HP to 0 (window is 500 ticks, `%relic_phoenix_until`, a `protect=no` varp) |
-| 7 Vampire | (superseded 2026-10-11) originally healed on kill, `stat_heal(hitpoints, 1, 10)`. Now heals floor(10% of damage dealt) as hitpoints and prayer per hit, see `docs/design/relics-e2e-tests.md` |
+| 7 Vampire | (superseded 2026-10-11) originally healed on kill, `stat_heal(hitpoints, 1, 10)`. Now heals ceil(10% of damage dealt; was floor until 2026-10-13) as hitpoints and prayer per hit, see `docs/design/relics-e2e-tests.md` |
 | 9 Bounty | a coin pile and an item appeared on the ground after a kill (screenshot); amounts by `npc_basestat(hitpoints)` not read back |
 | 15 Infinite Runes | `::~relic_cast` (Varrock Teleport label) said "You do not have enough Fire Runes" without the relic and teleported with it, with no runes in the inventory. Combat spells and alchemy use the same `staff_runes` (`magic.rs2:32,78,97`) but were not cast |
 | 16 Everlasting Jewellery | the three items are granted to the inventory (bank if full); rubbing the Ring of dueling teleported to the Duel Arena and the item stayed `(8)` |

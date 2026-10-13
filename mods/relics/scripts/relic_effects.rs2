@@ -196,11 +196,11 @@ if (~pre_tele_checks(coord) = false) {
 [if_button,relic_teleportmenu:karamja]
 ~relic_network_go(0_45_49_38_40);
 
-// 7 Vampire, called from give_combat_experience (every player-vs-npc hit, with the damage actually dealt): heals floor(10%) of
-// it as hitpoints and as prayer points, capped at the base levels by stat_heal.
+// 7 Vampire, called from give_combat_experience (every player-vs-npc hit, with the damage actually dealt): heals ceil(10%) of
+// it (so any hit of 1+ heals at least 1, a 0 hit heals nothing) as hitpoints and as prayer points, capped at the base levels by stat_heal.
 [proc,relic_vampire](int $damage)
-if (~relic_has(7) = 1 & $damage >= 10) {
-    def_int $heal = calc($damage / 10);
+if (~relic_has(7) = 1 & $damage > 0) {
+    def_int $heal = calc(($damage + 9) / 10);
     stat_heal(hitpoints, $heal, 0);
     stat_heal(prayer, $heal, 0);
 }

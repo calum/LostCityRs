@@ -366,7 +366,7 @@ function dealt(bot: Bot, npc: Npc, damage: number) {
     callWithNpc(bot, 'give_combat_experience', npc, 0, damage, 1); // style 0 = ^style_melee_accurate
 }
 
-test('Vampire heals floor(10% of damage dealt) as hitpoints and prayer on each hit, capped at base', t => {
+test('Vampire heals ceil(10% of damage dealt) as hitpoints and prayer on each hit, capped at base', t => {
     if (skip()) return t.skip(String(skip()));
     const plain = relicBot(SPOT.vampire, [], { hitpoints: 50, prayer: 50 });
     const vamp = relicBot(SPOT.vampire, [7], { hitpoints: 50, prayer: 50 });
@@ -380,15 +380,21 @@ test('Vampire heals floor(10% of damage dealt) as hitpoints and prayer on each h
     dealt(vamp, npc, 25);
     assert.equal(plain.stat('hitpoints'), 20);
     assert.equal(plain.stat('prayer'), 20);
-    assert.equal(vamp.stat('hitpoints'), 22); // floor(25 / 10) = 2
-    assert.equal(vamp.stat('prayer'), 22);
+    assert.equal(vamp.stat('hitpoints'), 23); // ceil(25 / 10) = 3
+    assert.equal(vamp.stat('prayer'), 23);
 
-    dealt(vamp, npc, 9); // rounds down to 0
-    assert.equal(vamp.stat('hitpoints'), 22);
-    assert.equal(vamp.stat('prayer'), 22);
-    dealt(vamp, npc, 30);
+    dealt(vamp, npc, 6); // rounds up to 1
+    assert.equal(vamp.stat('hitpoints'), 24);
+    assert.equal(vamp.stat('prayer'), 24);
+    dealt(vamp, npc, 1); // any hit of 1+ heals at least 1
     assert.equal(vamp.stat('hitpoints'), 25);
     assert.equal(vamp.stat('prayer'), 25);
+    dealt(vamp, npc, 0); // a 0 hit heals nothing
+    assert.equal(vamp.stat('hitpoints'), 25);
+    assert.equal(vamp.stat('prayer'), 25);
+    dealt(vamp, npc, 30);
+    assert.equal(vamp.stat('hitpoints'), 28);
+    assert.equal(vamp.stat('prayer'), 28);
 
     // capped at base level
     vamp.player.levels[ids.stat('hitpoints')] = 49;
@@ -407,7 +413,7 @@ test('Vampire no longer heals on an npc death', t => {
     assert.equal(vamp.stat('hitpoints'), 20);
 });
 
-test('Vampire in real melee: each landed hit heals floor(damage / 10)', t => {
+test('Vampire in real melee: each landed hit heals ceil(damage / 10)', t => {
     if (skip()) return t.skip(String(skip()));
     // Glass Cannon (5) doubles the max hit so that a 10+ hit comes up quickly; its damage is what give_combat_experience sees.
     const bot = relicBot(SPOT.vampire, [7, 5], { attack: 99, strength: 99, defence: 99, hitpoints: 99, prayer: 99 });
@@ -416,14 +422,14 @@ test('Vampire in real melee: each landed hit heals floor(damage / 10)', t => {
     bot.tick();
     bot.opNpc(giant, 2);
     // Every hitsplat the giant takes is one give_combat_experience call (the landed hit, plus Glass Cannon's extra hitsplats,
-    // which credit themselves): each heals floor(damage / 10). Prayer is healed on the roll, so tick a few more after.
+    // which credit themselves): each heals ceil(damage / 10). Prayer is healed on the roll, so tick a few more after.
     giant.levels[HP] = 5000; // Glass Cannon's extra hitsplats would otherwise kill a 35 HP giant before a 10+ hit comes up
     const hits = spyHits(giant);
-    const healed = () => hits.reduce((n, d) => n + Math.floor(d / 10), 0);
+    const healed = () => hits.reduce((n, d) => n + Math.ceil(d / 10), 0);
     for (let i = 0; i < 200 && healed() < 3; i++) bot.tick();
     bot.tick(12);
     const expected = healed();
-    assert.ok(expected > 0, 'expected at least one hit of 10+ damage');
+    assert.ok(expected > 0, 'expected at least one hit');
     assert.equal(bot.stat('prayer') - 10, expected); // giants do not drain prayer, so all of the change is Vampire
     bot.remove(); // it kept fighting the giant (now 5000 HP) and would pull later tests' giants into combat
     retire(giant);
@@ -519,6 +525,10 @@ test(
         const bot = relicBot({ x: SPOT.execE2e.x, z: SPOT.execE2e.z + 8 }, [8], { attack: 99, strength: 1, hitpoints: 99, defence: 99 });
         bot.setVar('damagestyle', 0);
         const atk0 = bot.xp('attack');
+        // Wandering world npcs (giant spiders here) can step onto the giant's tile and take the bot's attack instead.
+        for (const other of World.npcs) {
+            if (other && other.isActive && Math.max(Math.abs(other.x - bot.x), Math.abs(other.z - bot.z)) <= 6) retire(other);
+        }
         bot.debugproc('relic_wound', 'giant');
         const npc = bot.findNpc('giant', 2);
         let maxHp = npc.levels[HP];

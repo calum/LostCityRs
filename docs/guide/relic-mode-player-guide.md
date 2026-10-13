@@ -57,7 +57,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 4 | Quickstrike | You attack **twice as fast**. Melee rounds down, so a 5-tick weapon becomes 2 ticks (ranged and magic round up). | automatic |
 | 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. Every attack that lands also has a **25% chance of an extra hitsplat**, and each extra hitsplat has its own 25% chance of another one (up to 10 extras from a single attack). Extra hitsplats roll their damage like a normal hit and give you combat XP, and Vampire heals from them. | automatic |
 | 6 | Phoenix | If a hit would kill you, you survive on 1 HP and your **death animation plays** so you can see it trigger. Works once every **5 minutes**. | automatic |
-| 7 | Vampire | Every hit you land on an NPC heals you for **10% of the damage** as both hitpoints and prayer points. A 25 hit heals 2 of each. | automatic |
+| 7 | Vampire | Every hit you land on an NPC heals you for **10% of the damage, rounded up**, as both hitpoints and prayer points. A 25 hit heals 3 of each and even a 1 hit heals 1. | automatic |
 | 8 | Executioner | NPCs below 25% HP die instantly. | automatic |
 | 9 | Bounty | Every kill drops **coins plus a piece of food**, bigger for tougher NPCs. The coins are **five times** what they were: (5 + 3 x the NPC's hitpoints) x 5. | pick the drop up |
 | 10 | Eternal Vein | Ore rocks never run out, ore goes **straight to your bank**, and ore is **smelted into bars** for you (with Smithing XP). | automatic |

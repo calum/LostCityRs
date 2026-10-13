@@ -232,7 +232,7 @@ On the multiplier: finding 5 shows the rate is one integer from `NODE_XPRATE` (`
 | 4 | Quickstrike | attacks twice as fast (halve attack delay) | ~9 `%action_delay` sites (Part 1 finding 11) | M |
 | 5 | Glass Cannon | damage dealt x2, damage taken x1.5 | `npc_max_dealt` (finding 27) + `damage_self` | E |
 | 6 | Phoenix | the first lethal hit in each 5-minute window leaves 1 HP | `damage_self` + timer | E |
-| 7 | Vampire | heal 10% of damage dealt (rounded down) as hitpoints and prayer, per hit | `give_combat_experience` hook (was `npc_death`) | E |
+| 7 | Vampire | heal 10% of damage dealt (rounded up) as hitpoints and prayer, per hit | `give_combat_experience` hook (was `npc_death`) | E |
 | 8 | Executioner | NPCs below 25% HP die instantly | `npc_max_dealt` (needs the target HP) | M |
 | 9 | Bounty | every kill drops coins and supplies by NPC tier | `npc_death` hook, mod loot table | E |
 
