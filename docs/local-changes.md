@@ -56,6 +56,10 @@ Hooks live on `main` of each fork (fast-forwarded from the former `relic-mode` b
 | Fellowship glow | Content | `pack/spotanim.pack` | pack ids 313-314 | `589afed39` |
 | Fellowship | Content | `scripts/player/scripts/consumption/effects/scripts/consume_effects.rs2` (`[proc,consume_effect_apply]`, after the stat-heal loop), `pack/interface.pack`, `pack/interface.order` | `~relic_fellowship_heal($hitpoints); // relic hook`; pack ids 11192-11193 for relic menu row 30 | `d1d052a46` |
 
+| Regroup | Engine-TS | `src/network/game/client/handler/ClientCheatHandler.ts` (block before the staff gates) | any player can run `::<cmd>` when a script `[label,playercmd_<cmd>](string $args)` exists | `cd2f9e8c` |
+| Regroup | Engine-TS | `src/engine/script/ScriptOpcode.ts`, `handlers/ServerOps.ts` | new commands `world_playeruid` (nth signed-in player's uid) and `uid_toint` | `cd2f9e8c` |
+| Regroup | Content | `scripts/engine.rs2`, `pack/varp.pack`, `pack/enum.pack` is gitignored, `pack/interface.pack`, `pack/interface.order` | declarations of the two commands; pack ids for `regroup_last`, `regroup_sig` and `regroup_menu` | `d4aba0332` |
+
 Not a code hook: `config/world.json` (copied to `Engine-TS/data/config/world.json` by `mise run relics:config`) sets `build.verify=false` and `node.xpRate=8`.
 
 Verified in game (M2, `docs/design/relics-m2-xp-energy.md`).

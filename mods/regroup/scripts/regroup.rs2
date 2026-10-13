@@ -1,0 +1,319 @@
+// ::regroup: teleport to another signed-in player, once per 10 minutes of play time.
+//   ::regroup <name>   teleports to that player (names are case-insensitive; an underscore stands for a space)
+//   ::regroup          opens a list of everyone else who is signed in; a click on a name teleports there
+// Engine support: the [label,playercmd_regroup] name makes the cheat handler run this for every player (ClientCheatHandler.ts), and
+// world_playeruid lists the signed-in players. Tests: tests/regroup.test.ts. Notes: docs/flows/regroup-command.md.
+
+[label,playercmd_regroup](string $name)
+if (string_length($name) = 0) {
+    ~regroup_menu_open;
+} else {
+    ~regroup_by_name($name);
+}
+
+// ---------------------------------------------------------------- cooldown
+
+// Ticks left on the cooldown (0 = ready). The clock is %relic_playticks (relic_playtime.rs2): ticks spent logged in, saved with the
+// character, so relogging does not reset it and time spent offline does not count. A larger-than-possible value (the counter was
+// reset) is clamped to a full cooldown.
+[proc,regroup_remaining]()(int)
+if (%regroup_last = 0) {
+    return(0);
+}
+def_int $left = calc(^regroup_cooldown - (%relic_playticks - %regroup_last));
+if ($left < 0) {
+    return(0);
+}
+if ($left > ^regroup_cooldown) {
+    return(^regroup_cooldown);
+}
+return($left);
+
+// "9m 05s", rounded up to whole seconds.
+[proc,regroup_time_text](int $ticks)(string)
+def_int $secs = calc(($ticks * 6 + 9) / 10);
+def_int $m = calc($secs / 60);
+def_int $s = calc($secs % 60);
+def_string $ss = tostring($s);
+if ($s < 10) {
+    $ss = "0<$ss>";
+}
+return("<tostring($m)>m <$ss>s");
+
+// ---------------------------------------------------------------- finding players
+
+// A uid that matches no player (world_playeruid gives -1 for an index that does not exist); the "none" value of the procs below.
+[proc,regroup_none]()(player_uid)
+return(world_playeruid(-1));
+
+// The uid of the $n-th (0-based) signed-in player other than the active one, in slot order; the "none" uid when there is no such player.
+[proc,regroup_nth_other](int $n)(player_uid)
+def_player_uid $none = ~regroup_none;
+def_player_uid $self = uid;
+def_int $i = 0;
+def_int $found = 0;
+def_player_uid $u = world_playeruid($i);
+while ($u ! $none) {
+    if ($u ! $self) {
+        if ($found = $n) {
+            return($u);
+        }
+        $found = calc($found + 1);
+    }
+    $i = calc($i + 1);
+    $u = world_playeruid($i);
+}
+return($none);
+
+[proc,regroup_other_count]()(int)
+def_player_uid $none = ~regroup_none;
+def_player_uid $self = uid;
+def_int $i = 0;
+def_int $count = 0;
+def_player_uid $u = world_playeruid($i);
+while ($u ! $none) {
+    if ($u ! $self) {
+        $count = calc($count + 1);
+    }
+    $i = calc($i + 1);
+    $u = world_playeruid($i);
+}
+return($count);
+
+// The uid of the signed-in player whose display name (lowercased) is $name, or the "none" uid.
+[proc,regroup_find](string $name)(player_uid)
+def_player_uid $none = ~regroup_none;
+def_int $i = 0;
+def_player_uid $u = world_playeruid($i);
+while ($u ! $none) {
+    if (.finduid($u) = true) {
+        if (compare(lowercase(.displayname), $name) = 0) {
+            return($u);
+        }
+    }
+    $i = calc($i + 1);
+    $u = world_playeruid($i);
+}
+return($none);
+
+// ---------------------------------------------------------------- teleporting
+
+// Places a player cannot be regrouped onto: the same list pre_tele_checks refuses to teleport from.
+[proc,regroup_target_ok](coord $c)(boolean)
+if (~in_tutorial_island($c) = true) {
+    return(false);
+}
+if (~in_duel_arena($c) = true) {
+    return(false);
+}
+if (~inzone_coord_pair_table(trawler_wreck_zones, $c) = true) {
+    return(false);
+}
+if (~inzone_coord_pair_table(trawler_game_zones, $c) = true) {
+    return(false);
+}
+if (~inzone_coord_pair_table(random_event_mime_zones, $c) = true) {
+    return(false);
+}
+if (~inzone_coord_pair_table(random_event_maze_zones, $c) = true) {
+    return(false);
+}
+return(true);
+
+[proc,regroup_by_name](string $name)
+if (compare(lowercase(displayname), $name) = 0) {
+    mes("You cannot regroup with yourself.");
+    return;
+}
+def_player_uid $target = ~regroup_find($name);
+if ($target = ~regroup_none) {
+    mes("<$name> is not signed in.");
+    return;
+}
+~regroup_go($target);
+
+// Teleport to the player with uid $target. The cooldown only starts when the teleport really happens.
+[proc,regroup_go](player_uid $target)
+def_int $left = ~regroup_remaining;
+if ($left > 0) {
+    mes("You can regroup again in <~regroup_time_text($left)>.");
+    return;
+}
+if (.finduid($target) = false) {
+    mes("That player is no longer signed in.");
+    return;
+}
+if (uid = $target) {
+    mes("You cannot regroup with yourself.");
+    return;
+}
+def_coord $dest = .coord;
+def_string $who = .displayname;
+if (~regroup_target_ok($dest) = false) {
+    mes("You cannot regroup with <$who> right now.");
+    return;
+}
+if (~pre_tele_checks(coord) = false) {
+    return;
+}
+%regroup_last = max(%relic_playticks, 1);
+mes("You regroup with <$who>.");
+~player_teleport_normal($dest);
+
+// ---------------------------------------------------------------- the list
+
+[proc,regroup_menu_open]
+if (~regroup_other_count = 0) {
+    mes("There are no other players signed in.");
+    return;
+}
+if_openmain(regroup_menu);
+~regroup_menu_fill;
+
+// Fingerprint of the rows currently listed.
+[proc,regroup_list_sig]()(int)
+def_player_uid $none = ~regroup_none;
+def_int $sig = 0;
+def_int $row = 0;
+def_player_uid $u = ~regroup_nth_other($row);
+while ($u ! $none & $row < ^regroup_rows) {
+    $sig = calc(($sig * 31 + uid_toint($u) % 65521) % 1000003);
+    $row = calc($row + 1);
+    $u = ~regroup_nth_other($row);
+}
+return($sig);
+
+[proc,regroup_menu_fill]
+def_player_uid $none = ~regroup_none;
+def_int $row = 0;
+def_player_uid $u = ~regroup_nth_other($row);
+def_component $com = null;
+while ($row < ^regroup_rows) {
+    $com = enum(int, component, regroup_rows, $row);
+    if ($u ! $none & .finduid($u) = true) {
+        if_settext($com, "@whi@<.displayname>");
+    } else {
+        if_settext($com, "");
+    }
+    $row = calc($row + 1);
+    $u = ~regroup_nth_other($row);
+}
+%regroup_sig = ~regroup_list_sig;
+def_int $left = ~regroup_remaining;
+if ($left > 0) {
+    if_settext(regroup_menu:status, "Regroup is ready in <~regroup_time_text($left)>.");
+} else {
+    if_settext(regroup_menu:status, "Click a name to teleport to that player. Regroup is ready.");
+}
+def_int $others = ~regroup_other_count;
+if ($others > ^regroup_rows) {
+    if_settext(regroup_menu:more, "And <tostring(calc($others - ^regroup_rows))> more. Use ::regroup <name> to go to them.");
+} else {
+    if_settext(regroup_menu:more, "");
+}
+
+[proc,regroup_pick](int $row)
+def_player_uid $none = ~regroup_none;
+if (~regroup_list_sig ! %regroup_sig) {
+    mes("The player list changed. Please pick again.");
+    ~regroup_menu_fill;
+    return;
+}
+def_player_uid $u = ~regroup_nth_other($row);
+if ($u = $none) {
+    return;
+}
+~regroup_go($u);
+
+[if_button,regroup_menu:refresh]
+~regroup_menu_fill;
+
+[if_button,regroup_menu:row_0]
+~regroup_pick(0);
+
+[if_button,regroup_menu:row_1]
+~regroup_pick(1);
+
+[if_button,regroup_menu:row_2]
+~regroup_pick(2);
+
+[if_button,regroup_menu:row_3]
+~regroup_pick(3);
+
+[if_button,regroup_menu:row_4]
+~regroup_pick(4);
+
+[if_button,regroup_menu:row_5]
+~regroup_pick(5);
+
+[if_button,regroup_menu:row_6]
+~regroup_pick(6);
+
+[if_button,regroup_menu:row_7]
+~regroup_pick(7);
+
+[if_button,regroup_menu:row_8]
+~regroup_pick(8);
+
+[if_button,regroup_menu:row_9]
+~regroup_pick(9);
+
+[if_button,regroup_menu:row_10]
+~regroup_pick(10);
+
+[if_button,regroup_menu:row_11]
+~regroup_pick(11);
+
+[if_button,regroup_menu:row_12]
+~regroup_pick(12);
+
+[if_button,regroup_menu:row_13]
+~regroup_pick(13);
+
+[if_button,regroup_menu:row_14]
+~regroup_pick(14);
+
+[if_button,regroup_menu:row_15]
+~regroup_pick(15);
+
+[if_button,regroup_menu:row_16]
+~regroup_pick(16);
+
+[if_button,regroup_menu:row_17]
+~regroup_pick(17);
+
+[if_button,regroup_menu:row_18]
+~regroup_pick(18);
+
+[if_button,regroup_menu:row_19]
+~regroup_pick(19);
+
+[if_button,regroup_menu:row_20]
+~regroup_pick(20);
+
+[if_button,regroup_menu:row_21]
+~regroup_pick(21);
+
+[if_button,regroup_menu:row_22]
+~regroup_pick(22);
+
+[if_button,regroup_menu:row_23]
+~regroup_pick(23);
+
+[if_button,regroup_menu:row_24]
+~regroup_pick(24);
+
+[if_button,regroup_menu:row_25]
+~regroup_pick(25);
+
+[if_button,regroup_menu:row_26]
+~regroup_pick(26);
+
+[if_button,regroup_menu:row_27]
+~regroup_pick(27);
+
+[if_button,regroup_menu:row_28]
+~regroup_pick(28);
+
+[if_button,regroup_menu:row_29]
+~regroup_pick(29);

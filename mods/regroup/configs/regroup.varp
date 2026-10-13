@@ -1,0 +1,7 @@
+// %relic_playticks at the last ::regroup (0 = never used). Perm, so logging out does not reset the cooldown.
+[regroup_last]
+scope=perm
+
+// Fingerprint of the list shown by the regroup menu, so a click can tell that someone logged in or out since the list was drawn. Not saved.
+[regroup_sig]
+scope=temp

@@ -1,0 +1,4 @@
+// ::regroup cooldown in game ticks (0.6 s): 1000 = 10 minutes of play time
+^regroup_cooldown = 1000
+// rows in the player list (interface regroup_menu has row_0 .. row_29)
+^regroup_rows = 30
