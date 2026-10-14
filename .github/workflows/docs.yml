@@ -36,6 +36,9 @@ jobs:
       - run: mkdocs build --strict
       # Standalone relic mode page (site/relics/), generated from docs/guide/relic-mode-player-guide.md.
       - run: python docs/tools/relic-wiki/build_relic_wiki.py site/relics
+      # Custom domain for the Pages site (the relic wiki is at https://wiki.rogue-relics.co.uk/relics/).
+      # A CNAME file in the artifact keeps the domain set on each deploy. Needs a DNS CNAME wiki -> calum.github.io.
+      - run: echo wiki.rogue-relics.co.uk > site/CNAME
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
