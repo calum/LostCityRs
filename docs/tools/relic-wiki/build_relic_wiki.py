@@ -6,7 +6,7 @@ tables, the rules and the menu notes are parsed from it, so the page cannot
 drift from the guide. Only the styling, layout and tracker script live here.
 
 Usage: python3 docs/tools/relic-wiki/build_relic_wiki.py [OUT_DIR]
-OUT_DIR defaults to site/relics (the MkDocs output; run after `mkdocs build`).
+OUT_DIR defaults to site/relics. The docs workflow passes `site`, so the page is at the Pages root.
 Needs the `markdown` package (installed with MkDocs).
 """
 import html

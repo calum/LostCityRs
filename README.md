@@ -79,7 +79,7 @@ What has been traced and where it is written down (all in [`docs/`](docs/README.
 - **The game tick**, phase by phase, with an overview, an ordering matrix and worked scenarios: [`docs/tick/`](docs/tick/00-overview.md). Read from code, not all observed running (see `docs/open-questions.md`).
 - **Traced flows** (click a tree, the return path, walking, `::` commands, camera, lag): [`docs/flows/`](docs/flows/).
 - **RuneScript** (toolchain, language, VM, pointers) and **multi-tick scripts**, as books: [`docs/books/`](docs/books/README.md); readable editions in [`docs/guide/`](docs/guide/).
-- **The relic roguelike mode** (our own mod, in `mods/relics/` plus small hooks in the forks): design notes `docs/design/relics-*.md`, the player guide [`docs/guide/relic-mode-player-guide.md`](docs/guide/relic-mode-player-guide.md) and the relic wiki page generated from it (<https://calum.github.io/LostCityRs/relics/>).
+- **The relic roguelike mode** (our own mod, in `mods/relics/` plus small hooks in the forks): design notes `docs/design/relics-*.md`, the player guide [`docs/guide/relic-mode-player-guide.md`](docs/guide/relic-mode-player-guide.md) and the relic wiki page generated from it (<https://wiki.rogue-relics.co.uk/>).
 - **Setup, tooling and hosting**: [`docs/setup/`](docs/setup/local-setup-with-mise.md).
 
 Not covered by the notes: the parts of `Client-TS` outside the packet paths, the camera, the world map and the client-side interface code (rendering in particular). The unverified items are listed in [`docs/open-questions.md`](docs/open-questions.md).

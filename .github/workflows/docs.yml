@@ -1,4 +1,4 @@
-# Builds docs/ with MkDocs (Material theme) and publishes it to GitHub Pages.
+# Builds the relic wiki (GitHub Pages root) and keeps the MkDocs site (docs/) as a workflow artifact.
 # One-time repo setting: Settings > Pages > Build and deployment > Source = "GitHub Actions".
 name: Publish docs
 
@@ -33,10 +33,17 @@ jobs:
           cache: pip
           cache-dependency-path: docs-site/requirements.txt
       - run: pip install -r docs-site/requirements.txt
-      - run: mkdocs build --strict
-      # Standalone relic mode page (site/relics/), generated from docs/guide/relic-mode-player-guide.md.
-      - run: python docs/tools/relic-wiki/build_relic_wiki.py site/relics
-      # Custom domain for the Pages site (the relic wiki is at https://wiki.rogue-relics.co.uk/relics/).
+      # The MkDocs site is no longer published to Pages. It is kept as a downloadable workflow artifact
+      # (mkdocs-site, 90 days) so it can be re-hosted; the source stays in docs/ and mkdocs.yml.
+      - run: mkdocs build --strict --site-dir mkdocs-site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mkdocs-site
+          path: mkdocs-site
+          retention-days: 90
+      # The Pages site is only the relic wiki: site/index.html is generated from docs/guide/relic-mode-player-guide.md.
+      - run: python docs/tools/relic-wiki/build_relic_wiki.py site
+      # Custom domain for the Pages site: the wiki is at https://wiki.rogue-relics.co.uk/.
       # A CNAME file in the artifact keeps the domain set on each deploy. Needs a DNS CNAME wiki -> calum.github.io.
       - run: echo wiki.rogue-relics.co.uk > site/CNAME
       - uses: actions/upload-pages-artifact@v4

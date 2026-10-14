@@ -3,6 +3,7 @@
 
 # MkDocs build output (mise run docs:build)
 site/
+mkdocs-site/
 __pycache__/
 
 # Local, not committed: values for mise tasks (loaded through [env] in mise.toml).
