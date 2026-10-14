@@ -31,12 +31,18 @@ if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & ~relic_phoenix_ready = 1) {
     $amount = 0; // the lethal hit is negated and hitpoints go back to full (Calum, 2026-10-13: 1 HP just meant dying on the next hitsplat)
     stat_heal(hitpoints, 0, 100); // 100% of the base level, capped at it
     anim(human_death, 0); // so the player sees it trigger
+    queue(relic_phoenix_stand, 3, 0); // clears the pose; the client holds human_death until it gets a clear (see the proc below)
     say("I rise from the ashes!"); // overhead text, seen by every player nearby
     // human_death's frames before its endless hold last 47 client ticks (delay column of the seq, read in the harness); the fire flares as the fall ends and the player is back on their feet
     spotanim_pl(fireblast_impact, 92, 47);
     mes("Your Phoenix relic saves you from a lethal hit!");
 }
 return($amount);
+
+// 6 Phoenix, 3 ticks after the save: stand up. human_death ends in an endless hold and has postanim_move DELAYMOVE, so without
+// this clear the client keeps the death pose and holds route movement. Same delay and clear as death.rs2 (p_delay(3), anim(null, 0)).
+[queue,relic_phoenix_stand](int $unused)
+anim(null, 0);
 
 // npc_combat.rs2 hook (npc_max_dealt). 5 Glass Cannon: double damage dealt, plus a 25% chance of an extra hitsplat (see
 // relic_glass_extra). Called once per landed player attack on an npc, before the attack rolls its own damage.

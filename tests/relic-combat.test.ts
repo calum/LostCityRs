@@ -193,6 +193,23 @@ test('Phoenix: the save plays the death animation so the player can see it trigg
     assert.ok(played.includes(ids.seq('human_death')), `animations played: ${JSON.stringify(played)}`);
 });
 
+test('Phoenix: after the fall the player stands back up; the death pose is cleared, not left on (the client holds it until a clear arrives)', t => {
+    if (skip()) return t.skip(String(skip()));
+    // human_death ends in an endless hold (last frame delay 20000) and has postanim_move DELAYMOVE, so the client keeps
+    // the pose and holds route movement until it gets an ANIM with -1. Normal death sends that clear with anim(null, 0)
+    // after p_delay(3) (Content/scripts/player/scripts/death.rs2). The Phoenix save must do the same.
+    const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
+    const played: number[] = [];
+    const real = bot.player.playAnimation.bind(bot.player);
+    bot.player.playAnimation = (anim: number, delay: number) => {
+        played.push(anim);
+        real(anim, delay);
+    };
+    bot.debugproc('relic_hit', 50);
+    bot.waitUntil(() => played.includes(-1), 20, 'the death pose to be cleared');
+    assert.ok(played.indexOf(ids.seq('human_death')) < played.indexOf(-1), `animations played: ${JSON.stringify(played)}`);
+});
+
 test('Phoenix: the player says "I rise from the ashes!" overhead and a fire graphic plays as they stand back up (2026-10-13)', t => {
     if (skip()) return t.skip(String(skip()));
     const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
