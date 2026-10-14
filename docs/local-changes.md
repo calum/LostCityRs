@@ -12,6 +12,7 @@ Hooks live on `main` of each fork (fast-forwarded from the former `relic-mode` b
 | M3 | Content | `scripts/skill_combat/scripts/npc/npc_death.rs2:11` (first line of `[proc,npc_death]`) | `~relic_on_kill; // relic hook` | `5321d0828` |
 | M4 | Content | `scripts/login_logout/login.rs2` (after `queue(macro_event_login, 0, 0);`) | `~relic_on_login; // relic hook` | `f249435bb` |
 | M4 | Content | `scripts/tutorial/scripts/tutorial.rs2` (end of `[label,tutorial_complete]`) | `~relic_first_offer; // relic hook` | `0df341314` |
+| Hosting | Content | `scripts/tutorial/scripts/guides/runescape_guide.rs2:11-18` (`[label,newbie_basics_instructor_welcome]`) | skip-tutorial prompt no longer wrapped in `if (map_live = false)`, so it is offered when `node.production` is on (`mise run host`). Not a relic hook. Test: `tests/skip-tutorial-hosting.test.ts`. Commit is local only (see [setup/hosting-for-friends.md](setup/hosting-for-friends.md)) | `72cd697b2` (local branch `skip-tutorial-hosting`, not on the fork) |
 | M5 | Content | `scripts/player/scripts/damage.rs2:6` (`damage_self`) | `$amount = ~relic_damage_taken($amount); // relic hook` | `3c261fc97` |
 | M5 | Content | `scripts/skill_combat/scripts/npc/npc_combat.rs2:428` (`npc_max_dealt`, last return) | return value wrapped in `~relic_dealt(...)` | `ec59fab1d` |
 | M5 | Content | `scripts/skill_magic/scripts/spells/alchemy.rs2:25,61` | `$profit` wrapped in `~relic_alch_profit(...)` (2 lines) | `2f51e8084` |
