@@ -14,6 +14,10 @@ python = "3.12"
 # Only needed for `mise run host` (public https tunnel, scripts/host-public.mjs). Not pinned: installing it through mise was not verified (see docs/setup/hosting-for-friends.md).
 cloudflared = "latest"
 
+[env]
+# Loads .env (not committed; see .gitignore) into every mise task, e.g. CF_TUNNEL_HOSTNAME for `mise run host`.
+_.file = ".env"
+
 [tasks.up]
 description = "Update submodules to the recorded commits, set up, build the web client, then start the server (open the URL it prints)"
 # Order matters (submodules first, so installs and the build see the new code), so no `depends`.
