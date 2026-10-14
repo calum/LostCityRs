@@ -27,6 +27,8 @@ In `[proc,relic_damage_taken]` (`relic_effects.rs2`), when the save triggers: th
 
 - **Full HP (Calum, 2026-10-13, same day):** the save no longer leaves 1 HP (that only meant dying on the next hitsplat). The lethal hit is negated (`$amount = 0`) and `stat_heal(hitpoints, 0, 100)` restores 100% of the base level (`relic_effects.rs2`). The 500-tick recharge is unchanged.
 
+- **Stale cooldown after a restart (Calum, 2026-10-14):** `relic_phoenix_until` is a perm varp (`mods/relics/configs/relic.varp`), but `map_clock` is `World.currentTick` (`Engine-TS/src/engine/script/handlers/ServerOps.ts:16-17`), which starts at 0 on boot (`Engine-TS/src/engine/World.ts:165`, only ever incremented at `World.ts:504`). A cooldown saved by an earlier run can therefore be far ahead of the new clock and block every save until the clock catches up. Found by reading the code; reproduced in the harness with a seeded value (red: HP 0 after a lethal hit). Fix: `[proc,relic_phoenix_ready]` in `relic_effects.rs2` treats any value more than 500 ticks ahead as stale (a real cooldown is never that far ahead). Not checked: a real server reboot (open question 142).
+
 ## Tests
 
-`tests/relic-special-offers.test.ts` (rewritten), `relic-offers.test.ts`, `relic-menus.test.ts`, `relic-all-relics.test.ts`, `relic-tasks.test.ts`, `relic-combat.test.ts` (new Phoenix test). Red run first: 25 failures for the expected reasons (multiplier still in offers, monkey still listed, no Phoenix text). Final run in the commit message.
+`tests/relic-special-offers.test.ts` (rewritten), `relic-offers.test.ts`, `relic-menus.test.ts`, `relic-all-relics.test.ts`, `relic-tasks.test.ts`, `relic-combat.test.ts` (new Phoenix test; a stale-cooldown test added 2026-10-14, red first with HP 0 against the old check, green after the fix). Red run first: 25 failures for the expected reasons (multiplier still in offers, monkey still listed, no Phoenix text). Final run in the commit message.

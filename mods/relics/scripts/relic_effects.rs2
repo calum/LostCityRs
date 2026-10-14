@@ -3,6 +3,18 @@
 [proc,relic_has](int $id)(int)
 return(testbit(%relic_owned, $id));
 
+// 6 Phoenix cooldown check. relic_phoenix_until is perm, but map_clock restarts at 0 on every server boot, so a value
+// stored by an earlier run can be far in the future. A real cooldown is never more than 500 ticks ahead, so anything
+// further is stale and counts as ready (Calum, 2026-10-14: a stale value blocked the save after a restart).
+[proc,relic_phoenix_ready]()(int)
+if (%relic_phoenix_until > calc(map_clock + 500)) {
+    return(1);
+}
+if (map_clock >= %relic_phoenix_until) {
+    return(1);
+}
+return(0);
+
 // damage.rs2 hook. 3 Stoneskin: half damage. 5 Glass Cannon: x1.5 taken. 6 Phoenix: a lethal hit is negated and restores full HP, once per 5 minutes.
 [proc,relic_damage_taken](int $amount)(int)
 if ($amount <= 0) {
@@ -14,7 +26,7 @@ if (~relic_has(3) = 1) {
 if (~relic_has(5) = 1) {
     $amount = calc(($amount * 3 + 1) / 2);
 }
-if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & map_clock >= %relic_phoenix_until) {
+if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & ~relic_phoenix_ready = 1) {
     %relic_phoenix_until = calc(map_clock + 500);
     $amount = 0; // the lethal hit is negated and hitpoints go back to full (Calum, 2026-10-13: 1 HP just meant dying on the next hitsplat)
     stat_heal(hitpoints, 0, 100); // 100% of the base level, capped at it

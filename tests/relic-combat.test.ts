@@ -236,6 +236,25 @@ test('Phoenix + Stoneskin: the save is checked on the already halved amount', t 
     assert.equal(other.varp('relic_phoenix_until'), 0);
 });
 
+test('Phoenix: a cooldown stored by an earlier server run does not block a save (map_clock restarts at 0 on boot)', t => {
+    if (skip()) return t.skip(String(skip()));
+    // relic_phoenix_until is a perm varp, so it survives a restart, but World.currentTick (map_clock) starts again at 0
+    // (Engine-TS/src/engine/World.ts currentTick). A value from a long earlier run is then far in the future, and
+    // without a guard it blocks every save until the new clock catches up.
+    // Far ahead of this run's clock: a real cooldown is at most 500 ticks ahead, so this one can only be stale.
+    const stale = World.currentTick + 100000;
+    const bot = Bot.spawn({
+        at: SPOT.phoenix,
+        levels: { hitpoints: 10 },
+        varps: { relic_owned: 1 << 6, relic_phoenix_until: stale }
+    });
+    bot.debugproc('relic_hit', 50);
+    assert.equal(bot.stat('hitpoints'), 10, 'a stale cooldown must not block the save');
+    bot.expectMessage('Your Phoenix relic saves you from a lethal hit!');
+    const until = bot.varp('relic_phoenix_until') as number;
+    assert.ok(until <= World.currentTick + 502, `cooldown reset to this run's clock, got ${until}`);
+});
+
 // ----------------------------------------------------------------------- 5 Glass Cannon (dealt)
 
 test('Glass Cannon doubles the max hit returned by npc_max_dealt (the proc every player attack uses)', t => {
