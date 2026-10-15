@@ -16,3 +16,5 @@
 
 // Glass Cannon (5): longest chain of extra hitsplats one attack can roll (safety cap).
 ^relic_glass_extra_max = 10
+// Phoenix (relic 6) shout: players within this many tiles of the owner hear it.
+^relic_phoenix_shout_radius = 15

@@ -167,3 +167,10 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Client-TS | `src/mapview/MapSearch.ts` (new), `src/mapview/MapView.ts` (`searchQuery`, `selectSearch`, `clearSearch`, `drawSearchHighlights`, `globalThis.worldMapSearch` handle, one call in `renderWorldMap`'s caller) | search over the index, ring the spawns, pan and switch area. Tests: `test/map-search.test.ts`. Design: [design/map-search.md](design/map-search.md) | `b351ab3`, stepping `d081cc2` |
 | Engine-TS | `public/worldmap.html` (search box), `public/mapsearch.json` (generated), `public/client/mapview.js` (rebuilt) | UI and generated index | `eefa2b85`, stepping `8f0539df` |
 | root | `scripts/build-map-search.mjs`, `scripts/lib/map-search-index.ts`, `tests/map-search-index.test.ts`, `mise.toml` (`client:build` runs the builder) | index builder and its test | `HEAD` of this change |
+
+## Phoenix shout sound (2026-10-15)
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Content | `pack/synth.pack`, `synth/relic_phoenix.synth` | pack id `913=relic_phoenix`, copy of `synth/magic/magicalsounds/fire_blast_all.synth` | `53a8c10e4` |
+| Client-TS | `src/sound/CustomSounds.ts` | `913: 'relic_phoenix'` so a recording replaces it. Guide: [guide/relic-phoenix-shout.md](guide/relic-phoenix-shout.md) | `645fa04` |
+| root | `mods/relics/scripts/relic_effects.rs2`, `configs/relic.constant` | `[queue,relic_phoenix_shout_q]` sends the sound to players within `^relic_phoenix_shout_radius` (15). Test: `tests/relic-phoenix-shout.test.ts` | `HEAD` of this change |

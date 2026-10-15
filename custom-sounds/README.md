@@ -1,1 +1,1 @@
-Drop your recorded sounds here. See docs/guide/relic-attune-sound.md.
+Drop your recorded sounds here. Names the client looks for: relic_attune (attuned chime, docs/guide/relic-attune-sound.md), relic_phoenix (Phoenix shout, docs/guide/relic-phoenix-shout.md), chop_suey and halo_theme (lair music, docs/guide/lair-music.md). Extensions .wav, .mp3, .ogg.
