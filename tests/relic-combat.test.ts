@@ -719,3 +719,34 @@ test('every combat relic (3-9) gives +50% to the attack roll of every style, and
         assert.equal(callProc(many, 'player_attack_roll_specific', 3), pct * 10, `${relics.length} combat relics`);
     }
 });
+
+// Kept at the end of the file on purpose: these tests tick ~600 world ticks, which moves the phase of the 100 tick
+// [timer,stat_regen] and made 'Vampire in real melee' see +1 prayer when they ran before it.
+test('Phoenix: a real death clears the cooldown, so Phoenix saves again right after the respawn (Calum, 2026-10-16)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
+    bot.debugproc('relic_hit', 50); // the save starts the cooldown
+    assert.ok((bot.varp('relic_phoenix_until') as number) > World.currentTick + 400);
+    bot.debugproc('relic_hit', 50); // inside the window: a real death
+    bot.waitForMessage('Oh dear you are dead!', 20);
+    bot.waitUntil(() => bot.stat('hitpoints') === 10, 20, 'stats reset after death');
+    assert.equal(bot.varp('relic_phoenix_until'), 0, 'the death reset the cooldown');
+    bot.debugproc('relic_hit', 50);
+    assert.equal(bot.stat('hitpoints'), 10, 'Phoenix is ready again after the respawn');
+    assert.equal(bot.messages.filter(m => /Phoenix relic saves/.test(m)).length, 2);
+});
+
+test('Phoenix: while the cooldown runs a message every minute (100 ticks) says how long is left, then "ready" once and no more (Calum, 2026-10-16)', t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = relicBot(SPOT.phoenix, [6], { hitpoints: 10 });
+    bot.debugproc('relic_hit', 50);
+    bot.expectMessage('Your Phoenix relic saves you');
+    const cd = () => bot.messages.filter(m => /Phoenix.*cooldown/i.test(m));
+    bot.waitForMessage(/Phoenix.*cooldown/i, 110);
+    assert.match(cd()[0], /4m 0\ds|3m 5\ds/, cd()[0]); // about 4 minutes of 5 left (500 ticks = 300 s)
+    bot.waitUntil(() => cd().length >= 4, 400, 'four cooldown updates');
+    bot.waitForMessage(/Phoenix relic is ready/, 120);
+    const count = bot.messages.filter(m => /Phoenix/.test(m)).length;
+    bot.tick(250);
+    assert.equal(bot.messages.filter(m => /Phoenix/.test(m)).length, count, 'the messages stop once ready');
+});

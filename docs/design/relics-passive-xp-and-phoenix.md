@@ -34,3 +34,12 @@ In `[proc,relic_damage_taken]` (`relic_effects.rs2`), when the save triggers: th
 ## Tests
 
 `tests/relic-special-offers.test.ts` (rewritten), `relic-offers.test.ts`, `relic-menus.test.ts`, `relic-all-relics.test.ts`, `relic-tasks.test.ts`, `relic-combat.test.ts` (new Phoenix test; a stale-cooldown test added 2026-10-14, red first with HP 0 against the old check, green after the fix). Red run first: 25 failures for the expected reasons (multiplier still in offers, monkey still listed, no Phoenix text). Final run in the commit message.
+
+### Phoenix cooldown reset and reminders (Calum, 2026-10-16)
+
+Asked: "when I die with phoenix relic, it should reset the cooldown timer and it should also print to the messages every minute with an update on how long I have left." Engine-TS cd2f9e8c, root 5e8e973 before this change; method: read and ran the harness (red first: both new tests failed, `1438 !== 0` and a 110-tick timeout; then 24/24 in `tests/relic-combat.test.ts`).
+
+- **Reset on death (interpretation, Calum can correct):** "die" is read as a real death while the cooldown runs. `[proc,relic_phoenix_death_reset]` (`relic_effects.rs2`) sets `%relic_phoenix_until = 0` and is called first in `[proc,relic_stash_items]` (`relic_death.rs2`), which `death.rs2:62` (`~relic_stash_items`) calls from `player_death_lose_items`. That proc returns early for staff above level 1 on a live world (`death.rs2:55`), so such deaths do not reset it.
+- **Reminders:** `[softtimer,relic_phoenix_cd]` (`relic_effects.rs2`) runs every 100 ticks (one minute), printing `Phoenix cooldown: Xm YYs left.` until the cooldown is over, then once `Your Phoenix relic is ready...` and clears itself. The save starts it (`~relic_phoenix_timer_start`); `relic_on_login` (`relic_offer.rs2`) restarts it because softtimers are not saved. A death clears it. Same softtimer pattern as `relic_playtime_timer`.
+- **Not tested:** the login restart (code path only), the staff-live case, and how it reads in a real client chat box.
+- **Test-order note:** the two new tests tick about 600 world ticks and are placed at the end of `relic-combat.test.ts`. Run earlier in the file they shifted the phase of the 100-tick `[timer,stat_regen]` and "Vampire in real melee" saw prayer +1 (11 !== 9). That test is phase-sensitive on its own (it lowers prayer to 10 and relies on no regen tick).

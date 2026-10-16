@@ -15,6 +15,34 @@ if (map_clock >= %relic_phoenix_until) {
 }
 return(0);
 
+// 6 Phoenix cooldown reminder (Calum, 2026-10-16): while the cooldown runs, a game message every minute (100 ticks) says how long
+// is left, and a last one says Phoenix is ready. A softtimer is not saved, so the login hook (relic_on_login) restarts it.
+[softtimer,relic_phoenix_cd]
+def_int $left = calc(%relic_phoenix_until - map_clock);
+if (~relic_has(6) = 0 | ~relic_phoenix_ready = 1 | $left <= 0) {
+    clearsofttimer(relic_phoenix_cd);
+    ~relic_say("Your Phoenix relic is ready: Phoenix is ready to save you again.");
+    return;
+}
+def_int $secs = calc($left * 6 / 10);
+def_string $ss = tostring(calc($secs % 60));
+if (calc($secs % 60) < 10) {
+    $ss = "0<$ss>";
+}
+~relic_say("Phoenix cooldown: <tostring(calc($secs / 60))>m <$ss>s left.");
+
+// Starts the reminder if a cooldown is running (called by the save and by the login hook). Does nothing when ready or without the relic.
+[proc,relic_phoenix_timer_start]
+clearsofttimer(relic_phoenix_cd);
+if (~relic_has(6) = 1 & ~relic_phoenix_ready = 0) {
+    softtimer(relic_phoenix_cd, 100);
+}
+
+// death.rs2 hook (via relic_stash_items): a real death resets the Phoenix cooldown so it is ready again after the respawn.
+[proc,relic_phoenix_death_reset]
+%relic_phoenix_until = 0;
+clearsofttimer(relic_phoenix_cd);
+
 // damage.rs2 hook. 3 Stoneskin: half damage. 5 Glass Cannon: x1.5 taken. 6 Phoenix: a lethal hit is negated and restores full HP, once per 5 minutes.
 [proc,relic_damage_taken](int $amount)(int)
 if ($amount <= 0) {
@@ -28,6 +56,7 @@ if (~relic_has(5) = 1) {
 }
 if (~relic_has(6) = 1 & $amount >= stat(hitpoints) & ~relic_phoenix_ready = 1) {
     %relic_phoenix_until = calc(map_clock + 500);
+    ~relic_phoenix_timer_start;
     $amount = 0; // the lethal hit is negated and hitpoints go back to full (Calum, 2026-10-13: 1 HP just meant dying on the next hitsplat)
     stat_heal(hitpoints, 0, 100); // 100% of the base level, capped at it
     anim(human_death, 0); // so the player sees it trigger

@@ -375,6 +375,7 @@ queue(relic_offer_q, 0, 0);
 // login.rs2 hook: characters that already finished the tutorial start their run, others wait for the tutorial hook.
 [proc,relic_on_login]
 ~relic_playtime_start;
+~relic_phoenix_timer_start;
 if (%tutorial < ^tutorial_complete) {
     return;
 }

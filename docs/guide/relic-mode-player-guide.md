@@ -56,7 +56,7 @@ Tick the box when you take a relic or finish a task. Ticks are saved in **this b
 | 3 | Stoneskin | You take **half** damage. | automatic |
 | 4 | Quickstrike | You attack **twice as fast**. Melee rounds down, so a 5-tick weapon becomes 2 ticks (ranged and magic round up). | automatic |
 | 5 | Glass Cannon | You deal **double** damage to NPCs and take **1.5x** damage. Every attack that lands also has a **25% chance of an extra hitsplat**, and each extra hitsplat has its own 25% chance of another one (up to 10 extras from a single attack). Extra hitsplats roll their damage like a normal hit and give you combat XP, and Vampire heals from them. | automatic |
-| 6 | Phoenix | If a hit would kill you, the hit is cancelled and you are **restored to full hitpoints**. Your **death animation plays**, you call out **"I rise from the ashes!"** (overhead text every nearby player sees) and a **ball of fire** flares around you as you get back up. Works once every **5 minutes**. | automatic |
+| 6 | Phoenix | If a hit would kill you, the hit is cancelled and you are **restored to full hitpoints**. Your **death animation plays**, you call out **"I rise from the ashes!"** (overhead text every nearby player sees) and a **ball of fire** flares around you as you get back up. Works once every **5 minutes**; while it recharges you get a game message every minute with the time left, and one when it is ready. If you really die, the recharge is reset and Phoenix is ready again after you respawn. | automatic |
 | 7 | Vampire | Every hit you land on an NPC heals you for **10% of the damage, rounded up**, as both hitpoints and prayer points. A 25 hit heals 3 of each and even a 1 hit heals 1. | automatic |
 | 8 | Executioner | NPCs below 25% HP die instantly. | automatic |
 | 9 | Bounty | Every kill drops **coins plus a piece of food**, bigger for tougher NPCs. The coins are **five times** what they were: (5 + 3 x the NPC's hitpoints) x 5. | pick the drop up |
@@ -92,7 +92,7 @@ Good to know:
 - **Light Fingers**: the repeat stops when you walk, click something else, or your backpack is full. It picks or steals about every 3 ticks. If a click does not take (it can be ignored on the tick you are mid-pick), click again. Guards and stall owners **never notice** you stealing from a stall.
 - **Midas Loop** stops when you walk or click something else.
 - **Executioner** finishes an NPC below 25% HP on your next landed hit. It gives slightly too much attack XP.
-- **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge.
+- **Phoenix** only protects you from a hit that would kill you outright, and then needs 5 minutes to recharge (dying resets it).
 - **Closing a relic offer** without choosing keeps the same three relics for later.
 
 ### If you die

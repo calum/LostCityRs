@@ -44,6 +44,7 @@ while ($i < $size) {
 
 // death.rs2 hook: runs before the drops.
 [proc,relic_stash_items]
+~relic_phoenix_death_reset;
 ~relic_stash_inv(inv);
 ~relic_stash_inv(worn);
 
