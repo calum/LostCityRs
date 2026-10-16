@@ -11,3 +11,17 @@ name=Bonus glow
 model1=man_torso_basic
 blockwalk=none
 timer=2
+
+// One marker per bonus boss killed (KBD or flying Kalphite Queen) while the fight runs; the fourth one starts the party.
+[relic_bonus_kill]
+vislevel=hide
+name=Bonus kill
+model1=man_torso_basic
+blockwalk=none
+
+// Waits 3 ticks after the last bonus boss died, then the congratulating crowd arrives (relic_party.rs2).
+[relic_party_timer]
+vislevel=hide
+name=Party timer
+model1=man_torso_basic
+blockwalk=none

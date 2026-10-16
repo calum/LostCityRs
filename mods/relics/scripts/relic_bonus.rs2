@@ -19,20 +19,51 @@ return(npc_find(0_42_153_12_3, relic_bonus_glow, 5, 0));
 
 // Last line of [proc,relic_on_kill] (the dying npc is active; the dotted commands leave it alone).
 [proc,relic_bonus_arm]
-if (npc_type ! king_dragon) {
+if (npc_type ! king_dragon & npc_type ! kalphite_flyingqueen) {
     return;
 }
 if (~relic_bonus_in_lair(npc_coord) = false) {
     return;
 }
+// a fight is running: this death is one of the four that end it (a KQ only dies for good in its flying form)
+if (.npc_find(0_42_153_12_3, relic_bonus_glow, 5, 0) = true) {
+    ~relic_bonus_count_kill;
+    return;
+}
+if (npc_type ! king_dragon) {
+    return;
+}
 // one round at a time: the bonus bosses are king_dragons too, and so is the respawned static one
-if (.npc_find(0_42_153_12_3, relic_bonus_glow, 5, 0) = true | .npc_find(0_42_153_12_3, relic_bonus_timer, 5, 0) = true) {
+if (.npc_find(0_42_153_12_3, relic_bonus_timer, 5, 0) = true) {
     return;
 }
 .npc_add(0_42_153_12_3, relic_bonus_timer, 25);
 
+// Four deaths end the fight and start the party (relic_party.rs2). The markers are cleared when the fourth lands and at the start of
+// every round, so a round that was never finished leaves nothing behind.
+[proc,relic_bonus_count_kill]
+.npc_add(0_42_153_12_3, relic_bonus_kill, 3000);
+def_int $kills = 0;
+.npc_findall(0_42_153_12_3, relic_bonus_kill, 5, 0);
+while (.npc_findnext = true) {
+    $kills = calc($kills + 1);
+}
+if ($kills < 4) {
+    return;
+}
+.npc_findall(0_42_153_12_3, relic_bonus_kill, 5, 0);
+while (.npc_findnext = true) {
+    .npc_del;
+}
+.npc_add(0_42_153_12_3, relic_party_timer, 3);
+
 // The timer npc ran out: the fight starts.
 [ai_despawn,relic_bonus_timer]
+// stale kill markers of a round that was never finished
+npc_findall(0_42_153_12_3, relic_bonus_kill, 5, 0);
+while (npc_findnext = true) {
+    npc_del;
+}
 npc_add(0_42_153_23_30, king_dragon, 3000);
 npc_add(0_42_153_34_18, king_dragon, 3000);
 npc_add(0_42_153_36_25, kalphite_queen, 3000);

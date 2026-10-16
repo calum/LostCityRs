@@ -8,6 +8,8 @@ Calum's wording, kept as given:
 
 ## 1. Congratulating bot players after the final wave
 
+**Built 2026-10-16:** see [relics-party-bots.md](relics-party-bots.md) (cosmetic server-side npcs, not real logins).
+
 > After finishing the special final wave with multiple KQ and KBD, it would be funny if a load of bot players spawned in following each of us, randomly distributed between the online players and we're saying congratulations and various messages like that. Their usernames would be from a famous list like zezima, b0aty, soup, framed, settled, woox and so on. The more of them spawned in the funnier.
 
 Details recorded:

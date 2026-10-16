@@ -1,0 +1,3 @@
+// The player a party bot follows (relic_party.rs2).
+[relic_party_target]
+type=player_uid

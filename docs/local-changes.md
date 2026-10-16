@@ -174,3 +174,10 @@ Now `main` of `calum/Client-TS` (former branch `calum-research`, kept), branched
 | Content | `pack/synth.pack`, `synth/relic_phoenix.synth` | pack id `913=relic_phoenix`, copy of `synth/magic/magicalsounds/fire_blast_all.synth` | `53a8c10e4` |
 | Client-TS | `src/sound/CustomSounds.ts` | `913: 'relic_phoenix'` so a recording replaces it. Guide: [guide/relic-phoenix-shout.md](guide/relic-phoenix-shout.md) | `645fa04` |
 | root | `mods/relics/scripts/relic_effects.rs2`, `configs/relic.constant` | `[queue,relic_phoenix_shout_q]` sends the sound to players within `^relic_phoenix_shout_radius` (15). Test: `tests/relic-phoenix-shout.test.ts` | `HEAD` of this change |
+
+## Party bots (2026-10-16)
+
+| Repo | File | Change | Commit |
+|---|---|---|---|
+| Content | `pack/npc.pack` | pack ids for `relic_party_1..61`, `relic_bonus_kill`, `relic_party_timer` | `7602b1c0e` |
+| root | `mods/relics/scripts/relic_bonus.rs2` (`relic_bonus_arm`), `relic_party.rs2`, generated `configs/relic_party.*` | the party; design [design/relics-party-bots.md](design/relics-party-bots.md) | this change |
