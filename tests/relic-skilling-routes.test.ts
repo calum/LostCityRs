@@ -418,6 +418,32 @@ test("hunter's haul: each dragon hide tans to its own leather", t => {
     }
 });
 
+test("hunter's haul: also grants the crafting xp of making those 10 leather into bodies (xp units as stat_advance)", t => {
+    if (skip()) return t.skip(String(skip()));
+    // leather.dbrow productexp / leather needed: leather body 250/1, d'hide bodies 1860,2100,2340,2580 / 3.
+    const cases: [string, string, number][] = [
+        ['cow_hide', 'leather', 2500],
+        ['dragonhide_green', 'dragon_leather', 6200],
+        ['dragonhide_blue', 'dragon_leather_blue', 7000],
+        ['dragonhide_red', 'dragon_leather_red', 7800],
+        ['dragonhide_black', 'dragon_leather_black', 8600]
+    ];
+    for (const [hide, leather, xp] of cases) {
+        const bot = relicBot([HAUL]);
+        const xp0 = bot.xp('crafting');
+        dropHides(bot, 1, hide, leather);
+        assert.equal(bot.xp('crafting') - xp0, xp * xpMulti(bot), hide);
+    }
+});
+
+test("hunter's haul control: without the relic no crafting xp", t => {
+    if (skip()) return t.skip(String(skip()));
+    const bot = relicBot([]);
+    const xp0 = bot.xp('crafting');
+    dropHides(bot, 1);
+    assert.equal(bot.xp('crafting'), xp0);
+});
+
 test("hunter's haul: a real cow kill and a real green dragon kill use the hook", t => {
     if (skip()) return t.skip(String(skip()));
     const bot = relicBot([HAUL]);

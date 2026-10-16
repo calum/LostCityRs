@@ -38,7 +38,8 @@ stat_advance(fletching, $xp);
 mes("Fletcher's Echo: you make an extra <lowercase(oc_name($product))>.");
 
 // 29 Hunter's Haul, replaces obj_add(npc_coord, <hide>, 1, ...) in the cow and dragon drop tables ($hide dropped as before without
-// the relic). With it: ten tanned hides to the bank, and half the time a random uncut gem as well. The death queue has no
+// the relic). With it: ten tanned hides to the bank, the Crafting XP of making those ten leather into bodies (leather body 250 per
+// leather; d'hide bodies 1860/2100/2340/2580 per 3 leather, from leather.dbrow), and half the time a random uncut gem as well. The death queue has no
 // protected access to the killer's inventories (inv_add to the bank is refused), so the items are added from player queues.
 [proc,relic_drop_hide](namedobj $hide, namedobj $leather)
 if (~relic_has(29) = 0) {
@@ -46,6 +47,17 @@ if (~relic_has(29) = 0) {
     return;
 }
 queue*(relic_haul_hide, 0)($leather);
+if ($leather = dragon_leather) {
+    queue*(relic_haul_xp, 0)(6200);
+} else if ($leather = dragon_leather_blue) {
+    queue*(relic_haul_xp, 0)(7000);
+} else if ($leather = dragon_leather_red) {
+    queue*(relic_haul_xp, 0)(7800);
+} else if ($leather = dragon_leather_black) {
+    queue*(relic_haul_xp, 0)(8600);
+} else {
+    queue*(relic_haul_xp, 0)(2500);
+}
 if (random(2) = 1) {
     def_int $gem = random(4);
     if ($gem = 0) {
@@ -62,6 +74,9 @@ if (random(2) = 1) {
 [queue,relic_haul_hide](namedobj $leather)
 ~relic_bank_extra($leather, 10);
 mes("Hunter's Haul: the hide is tanned and sent to your bank.");
+
+[queue,relic_haul_xp](int $xp)
+stat_advance(crafting, $xp);
 
 [queue,relic_haul_gem](namedobj $gem)
 ~relic_bank_extra($gem, 1);
